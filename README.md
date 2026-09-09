@@ -18,13 +18,15 @@ No account, no key, no quota. The service asks one thing of a caller: say who yo
 
 ## Install
 
-Not on PyPI yet; install from the repository:
-
 ```sh
-pip install git+https://github.com/truewire-dev/weather-gov
+pip install truewire-weather-gov
 ```
 
-The import name is `weather_gov`, and the distribution is `truewire-weather-gov`. Python 3.11 or newer.
+The import name is `weather_gov`, and the distribution is `truewire-weather-gov`. Python
+3.11 or newer.
+
+One thing worth knowing before you install: PyPI already has an unrelated `weather-gov`
+package, which also imports as `weather_gov`. The two cannot share an environment.
 
 ## Use
 
