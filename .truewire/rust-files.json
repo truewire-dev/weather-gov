@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "files": [
+    "alerts/get_active_alerts.rs",
+    "alerts/get_alert.rs",
+    "alerts/mod.rs",
+    "client.rs",
+    "forecast/get_forecast.rs",
+    "forecast/get_grid_data.rs",
+    "forecast/get_hourly_forecast.rs",
+    "forecast/mod.rs",
+    "lib.rs",
+    "meta.rs",
+    "offices/get_office.rs",
+    "offices/mod.rs",
+    "points/get_point.rs",
+    "points/mod.rs",
+    "products/list_product_types.rs",
+    "products/mod.rs",
+    "stations/get_latest_observation.rs",
+    "stations/get_observations.rs",
+    "stations/list_stations.rs",
+    "stations/mod.rs",
+    "types/mod.rs"
+  ]
+}

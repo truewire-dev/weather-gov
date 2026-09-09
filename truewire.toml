@@ -34,3 +34,8 @@ base = "weather_gov.core:Endpoint"
 package = "weather-gov"
 src = "packages/typescript/src"
 name = "Weather"
+
+[rust]
+package = "weather_gov"
+src = "packages/rust/src"
+name = "Weather"

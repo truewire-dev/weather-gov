@@ -3,6 +3,7 @@
   <tr>
     <td align="center"><a href="./README.md">🐍 Python</a></td>
     <td align="center"><a href="./packages/typescript/README.md">🟦 TypeScript</a></td>
+    <td align="center"><a href="./packages/rust/README.md">🦀 Rust</a></td>
     <td align="center"><a href="https://github.com/truewire-dev/weather-gov/tree/main/spec">📐 The spec</a></td>
     <td align="center"><b>🧩 Toolchain gaps</b></td>
   </tr>
@@ -11,9 +12,9 @@
 
 # Toolchain gaps
 
-What [Truewire](https://github.com/truewire-dev/truewire) could not express while this client was written, and what was done instead. A showcase is worth building partly because it finds these; leaving them undocumented would waste the finding.
+What [Truewire](https://github.com/truewire-dev/truewire) could not express while this client was written, and what was done instead. A showcase is worth building partly because it finds these; leaving them undocumented would waste the finding. Seven findings in half a day, from one API generated into three languages and actually run.
 
-Two of them were defects rather than gaps, and were fixed in the toolchain rather than worked around here.
+Two of them were defects rather than gaps, and were fixed in the toolchain rather than worked around here (released as truewire 0.9.1).
 
 ## 1. An enum member spelled like its own record broke the generated Python
 
@@ -55,7 +56,19 @@ So the endpoint declares no pagination at all rather than declaring it wrong. `c
 
 That leaves the truncation guard as the whole of what the declaration buys, and it turns out to be worth the declaration on its own: the service caps a response at 500 observations and says nothing about the ones it withheld, so a caller asking for a week gets the newest 500 and a silent hole. The guard raises instead. `limit` declares `default: 500` because that is measurably what the service does whether or not `limit` is sent, and the declared default is what arms the guard.
 
-## 5. A regex constraint is not an enumeration
+## 5. The Rust backend has no `window` walker
+
+**Gap, and it says so.** `truewire generate rust` prints it rather than rendering something half-right:
+
+```
+skipped stations.get_observations: a `window` walk has no Rust walker yet; call the method per page
+```
+
+The endpoint itself generates and is typed; only the `_paged` variant is missing, so a Rust caller loops by hand. That means a Rust caller does not get the truncation guard, which is the whole safety of the declaration here — the service caps a response at 500 observations and says nothing about the ones it withheld. The [Rust page](packages/rust/README.md) says so where a reader will hit it.
+
+Worth stating plainly: this is the only place in this project where the three clients are not equivalent, and it is the generator's gap rather than the API's.
+
+## 6. A regex constraint is not an enumeration
 
 **Gap, minor.** `alerts.get_active_alerts` takes a `zone`, and the service constrains it with a regex over every state and zone-type combination:
 
@@ -65,7 +78,7 @@ That leaves the truncation guard as the whole of what the declaration buys, and 
 
 A real constraint, and not one this spec format carries: `pattern` on a request property is not part of the plan. It stays a `str`, described, and the service's own 400 catches it. Nothing to fix urgently — but it is the difference between a mistake caught at compile time and one caught on the wire, and this API happens to illustrate both in the same method: `severity` is an enumeration and rejects `'severe'` in the type checker, while `zone` is a regex and only fails on the round trip.
 
-## 6. `meta` carries the envelope, because the core has to be told per call
+## 7. `meta` carries the envelope, because the core has to be told per call
 
 **Convention, not a gap.** Five of the eleven endpoints declare `envelope.payload: "properties"`. A JSON-RPC API unwraps every response the same way, so its core can do so unconditionally; here it is per endpoint, and the core has to be told which is which on the call.
 
