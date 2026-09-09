@@ -18,15 +18,15 @@ No account, no key, no quota. The service asks one thing of a caller: say who yo
 
 ## Install
 
-Not on crates.io yet; the crate lives in this repository. The package is
-`truewire-weather-gov` and the library it exposes is `weather_gov`, so a git dependency
-has to name both:
-
 ```toml
 [dependencies]
-weather_gov = { package = "truewire-weather-gov", git = "https://github.com/truewire-dev/weather-gov" }
+weather_gov = { package = "truewire-weather-gov", version = "0.1" }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 ```
+
+The package is `truewire-weather-gov`, matching the PyPI and npm names; the library it
+exposes is `weather_gov`. The `package` key names both, so `use weather_gov::...` works
+as it reads.
 
 ## Use
 
