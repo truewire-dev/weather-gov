@@ -1,0 +1,125 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/office",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/offices/{office_id}",
+    "method": "GET",
+    "description": "One weather forecast office: who to contact, and everything it is responsible for.",
+    "request": {
+      "title": "GetOfficeRequest",
+      "type": "object",
+      "description": "Which office.",
+      "properties": {
+        "office_id": {
+          "type": "string",
+          "description": "Three-letter office code, such as `SEW`. `points.get_point` returns it as `gridId`."
+        }
+      },
+      "required": [
+        "office_id"
+      ]
+    },
+    "response": {
+      "title": "Office",
+      "type": "object",
+      "description": "The office. A schema.org `GovernmentOrganization`, not a GeoJSON feature -- this corner of the API answers in a different vocabulary from the rest of it.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Office code, such as `SEW`."
+        },
+        "name": {
+          "type": "string",
+          "description": "Office name, such as `Seattle/Tacoma, WA`."
+        },
+        "address": {
+          "title": "OfficeAddress",
+          "type": "object",
+          "description": "Where the office is.",
+          "properties": {
+            "streetAddress": {
+              "type": "string",
+              "description": "Street address."
+            },
+            "addressLocality": {
+              "type": "string",
+              "description": "City."
+            },
+            "addressRegion": {
+              "type": "string",
+              "description": "Two-letter state code."
+            },
+            "postalCode": {
+              "type": "string",
+              "description": "ZIP code."
+            }
+          }
+        },
+        "telephone": {
+          "type": "string",
+          "description": "Public telephone number."
+        },
+        "faxNumber": {
+          "type": "string",
+          "description": "Fax number; often empty."
+        },
+        "email": {
+          "type": "string",
+          "description": "Webmaster address."
+        },
+        "sameAs": {
+          "type": "string",
+          "description": "The office's own website."
+        },
+        "nwsRegion": {
+          "type": "string",
+          "description": "Region the office belongs to, such as `wr` for Western."
+        },
+        "parentOrganization": {
+          "type": "string",
+          "description": "URL of the regional headquarters."
+        },
+        "responsibleCounties": {
+          "type": "array",
+          "description": "URLs of the county zones the office covers.",
+          "items": {
+            "type": "string",
+            "description": "One county zone URL."
+          }
+        },
+        "responsibleForecastZones": {
+          "type": "array",
+          "description": "URLs of the forecast zones the office covers.",
+          "items": {
+            "type": "string",
+            "description": "One forecast zone URL."
+          }
+        },
+        "responsibleFireZones": {
+          "type": "array",
+          "description": "URLs of the fire-weather zones the office covers.",
+          "items": {
+            "type": "string",
+            "description": "One fire zone URL."
+          }
+        },
+        "approvedObservationStations": {
+          "type": "array",
+          "description": "URLs of the stations the office draws observations from.",
+          "items": {
+            "type": "string",
+            "description": "One station URL."
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    }
+  }
+}

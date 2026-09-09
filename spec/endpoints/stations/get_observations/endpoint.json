@@ -1,0 +1,105 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/station_observation_list",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/stations/{station_id}/observations",
+    "method": "GET",
+    "description": "What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.",
+    "request": {
+      "title": "GetObservationsRequest",
+      "type": "object",
+      "description": "Which station, over which span.",
+      "properties": {
+        "station_id": {
+          "type": "string",
+          "description": "Station identifier, such as `KSEA`. `stations.list_stations` returns it as `stationIdentifier`."
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Start of the span, inclusive. The service keeps about a week of observations; a start older than that returns nothing rather than failing."
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time",
+          "description": "End of the span, inclusive."
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Observations per response. Range [1, 500]; the service caps a response at 500 whether or not this is sent, so 500 is also the default.",
+          "minimum": 1,
+          "maximum": 500,
+          "default": 500
+        }
+      },
+      "required": [
+        "station_id"
+      ]
+    },
+    "response": {
+      "title": "ObservationCollection",
+      "type": "object",
+      "description": "The observations in the span, as a GeoJSON feature collection, newest first.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "FeatureCollection"
+          ],
+          "description": "Always `FeatureCollection`."
+        },
+        "features": {
+          "type": "array",
+          "description": "The observations, newest first.",
+          "items": {
+            "$ref": "ObservationFeature",
+            "description": "One observation."
+          }
+        },
+        "pagination": {
+          "title": "ObservationPagination",
+          "type": "object",
+          "description": "Where the next page is, as a whole URL. The declared walk moves the time window instead and never reads this.",
+          "properties": {
+            "next": {
+              "type": "string",
+              "description": "URL of the next page. Absent on the last one."
+            }
+          }
+        }
+      },
+      "required": [
+        "type",
+        "features"
+      ]
+    }
+  },
+  "pagination": {
+    "strategy": "window",
+    "bound": {
+      "start": "start",
+      "end": "end"
+    },
+    "order": "descending",
+    "step": {
+      "unit": "s",
+      "size": 1
+    },
+    "size": {
+      "parameter": "limit"
+    },
+    "done": {
+      "kind": "empty",
+      "rows": "features"
+    }
+  },
+  "notes": [
+    "Both bounds are inclusive, so the step is one second: a window whose `end` equalled the previous window's `start` would re-read the observation on the boundary.",
+    "The service also pages this endpoint by cursor, in a `pagination.next` URL. The time window is the walk a caller actually means here -- \"what did this station report yesterday\" -- and it is the one that can be declared, since the cursor arrives inside a URL rather than on its own.",
+    "`limit` declares `default: 500` because that is what the service does, not because it documents it: a six-day span of KSEA observations comes back as exactly 500 rows with `limit` sent and with it omitted. The declared default is what arms the walk's truncation guard -- without it a caller asking for a week silently gets the newest 500 observations and no indication that the rest were withheld."
+  ]
+}

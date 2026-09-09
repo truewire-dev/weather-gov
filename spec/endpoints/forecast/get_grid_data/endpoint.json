@@ -1,0 +1,283 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/gridpoint",
+  "meta": {
+    "payload": "properties"
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/gridpoints/{office}/{grid_x},{grid_y}",
+    "method": "GET",
+    "description": "The raw gridded forecast for one cell: the seventy-odd series the narrative forecasts are rendered from, each a run of intervals with its own unit. This is the endpoint to reach for when the prose is not enough -- a snow-load calculation wants `snowfallAmount`, not `Snow likely, with 2 to 4 inches possible`.",
+    "request": {
+      "title": "GetGridDataRequest",
+      "type": "object",
+      "description": "Which grid cell.",
+      "properties": {
+        "office": {
+          "type": "string",
+          "description": "Three-letter forecast office code addressing the grid, such as `SEW`. `points.get_point` returns it as `gridId`."
+        },
+        "grid_x": {
+          "type": "integer",
+          "description": "Grid column, from `points.get_point`."
+        },
+        "grid_y": {
+          "type": "integer",
+          "description": "Grid row, from `points.get_point`."
+        }
+      },
+      "required": [
+        "office",
+        "grid_x",
+        "grid_y"
+      ]
+    },
+    "response": {
+      "title": "GridDataFeature",
+      "type": "object",
+      "description": "The gridded data, in the GeoJSON feature the API wraps it in. The geometry is the outline of the grid cell, which the caller already named, so the client hands back `properties`.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Feature"
+          ],
+          "description": "Always `Feature`."
+        },
+        "geometry": {
+          "$ref": "PolygonGeometry",
+          "description": "Outline of the grid cell."
+        },
+        "properties": {
+          "title": "GridData",
+          "type": "object",
+          "description": "The series themselves. Every one is optional: which series a cell carries depends on where it is -- a coastal cell has wave heights, an inland one does not.",
+          "properties": {
+            "updateTime": {
+              "type": "string",
+              "format": "date-time",
+              "description": "When this grid was last updated."
+            },
+            "validTimes": {
+              "type": "string",
+              "description": "ISO 8601 interval the grid covers, as `<start>/<duration>`."
+            },
+            "elevation": {
+              "$ref": "QuantitativeValue",
+              "description": "Elevation of the grid cell."
+            },
+            "forecastOffice": {
+              "type": "string",
+              "description": "URL of the office that produced it."
+            },
+            "gridId": {
+              "type": "string",
+              "description": "Office code addressing the grid."
+            },
+            "gridX": {
+              "type": "integer",
+              "description": "Grid column."
+            },
+            "gridY": {
+              "type": "integer",
+              "description": "Grid row."
+            },
+            "temperature": {
+              "$ref": "GridSeries",
+              "description": "Air temperature."
+            },
+            "dewpoint": {
+              "$ref": "GridSeries",
+              "description": "Dew point."
+            },
+            "maxTemperature": {
+              "$ref": "GridSeries",
+              "description": "Daily maximum temperature."
+            },
+            "minTemperature": {
+              "$ref": "GridSeries",
+              "description": "Daily minimum temperature."
+            },
+            "relativeHumidity": {
+              "$ref": "GridSeries",
+              "description": "Relative humidity."
+            },
+            "apparentTemperature": {
+              "$ref": "GridSeries",
+              "description": "What the air feels like, combining heat index and wind chill."
+            },
+            "heatIndex": {
+              "$ref": "GridSeries",
+              "description": "Heat index."
+            },
+            "windChill": {
+              "$ref": "GridSeries",
+              "description": "Wind chill."
+            },
+            "skyCover": {
+              "$ref": "GridSeries",
+              "description": "Fraction of the sky covered by cloud."
+            },
+            "windDirection": {
+              "$ref": "GridSeries",
+              "description": "Direction the wind comes from, in degrees clockwise from true north."
+            },
+            "windSpeed": {
+              "$ref": "GridSeries",
+              "description": "Sustained wind speed."
+            },
+            "windGust": {
+              "$ref": "GridSeries",
+              "description": "Peak gust."
+            },
+            "probabilityOfPrecipitation": {
+              "$ref": "GridSeries",
+              "description": "Chance of measurable precipitation."
+            },
+            "quantitativePrecipitation": {
+              "$ref": "GridSeries",
+              "description": "Expected liquid precipitation."
+            },
+            "iceAccumulation": {
+              "$ref": "GridSeries",
+              "description": "Expected ice accumulation."
+            },
+            "snowfallAmount": {
+              "$ref": "GridSeries",
+              "description": "Expected snowfall."
+            },
+            "ceilingHeight": {
+              "$ref": "GridSeries",
+              "description": "Cloud ceiling above ground."
+            },
+            "visibility": {
+              "$ref": "GridSeries",
+              "description": "Horizontal visibility."
+            },
+            "probabilityOfThunder": {
+              "$ref": "GridSeries",
+              "description": "Chance of thunder."
+            },
+            "weather": {
+              "title": "WeatherSeries",
+              "type": "object",
+              "description": "Forecast weather phenomena over time. Unlike the numeric series it carries no `uom`, and each value is a list of simultaneous phenomena rather than a number.",
+              "properties": {
+                "values": {
+                  "type": "array",
+                  "description": "The values, in time order.",
+                  "items": {
+                    "title": "WeatherInterval",
+                    "type": "object",
+                    "description": "The phenomena forecast over one interval.",
+                    "properties": {
+                      "validTime": {
+                        "type": "string",
+                        "description": "ISO 8601 interval, as `<start>/<duration>`."
+                      },
+                      "value": {
+                        "type": "array",
+                        "description": "Phenomena forecast simultaneously over the interval. A single entry with every field null means no weather.",
+                        "items": {
+                          "title": "WeatherPhenomenon",
+                          "type": "object",
+                          "description": "One forecast phenomenon.",
+                          "properties": {
+                            "coverage": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "description": "The coverage term."
+                                },
+                                {
+                                  "type": "null",
+                                  "description": "None forecast."
+                                }
+                              ],
+                              "description": "How widespread it is: `patchy`, `scattered`, `likely`, `definite`."
+                            },
+                            "weather": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "description": "The phenomenon."
+                                },
+                                {
+                                  "type": "null",
+                                  "description": "None forecast."
+                                }
+                              ],
+                              "description": "The phenomenon: `rain`, `snow`, `fog`, `thunderstorms`."
+                            },
+                            "intensity": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "description": "The intensity."
+                                },
+                                {
+                                  "type": "null",
+                                  "description": "Not qualified."
+                                }
+                              ],
+                              "description": "`very_light`, `light`, `moderate` or `heavy`."
+                            },
+                            "visibility": {
+                              "$ref": "QuantitativeValue",
+                              "description": "Visibility in the phenomenon."
+                            },
+                            "attributes": {
+                              "type": "array",
+                              "description": "Extra qualifiers, such as `damaging_wind` or `small_hail`.",
+                              "items": {
+                                "type": "string",
+                                "description": "One qualifier."
+                              }
+                            }
+                          },
+                          "required": [
+                            "coverage",
+                            "weather",
+                            "intensity"
+                          ]
+                        }
+                      }
+                    },
+                    "required": [
+                      "validTime",
+                      "value"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "values"
+              ]
+            }
+          },
+          "required": [
+            "updateTime",
+            "validTimes",
+            "gridId",
+            "gridX",
+            "gridY"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "properties"
+      ]
+    }
+  },
+  "envelope": {
+    "payload": "properties"
+  },
+  "notes": [
+    "A subset of the series the API can return: the twenty this schema names are the ones every land cell carries. The marine, fire-weather and dispersion series (`waveHeight`, `hainesIndex`, `mixingHeight` and the rest) are real but regional; validation drops what it was not told about, so a caller that needs one adds it here rather than working around the client.",
+    "`hazards` is left out deliberately. Its values nest a list of hazard objects whose fields the service does not document, and this project does not guess at a schema it cannot check against a recording."
+  ]
+}

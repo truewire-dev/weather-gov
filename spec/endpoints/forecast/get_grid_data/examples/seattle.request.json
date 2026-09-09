@@ -1,0 +1,8 @@
+{
+  "description": "Every raw series for the Seattle grid cell",
+  "request": {
+    "office": "SEW",
+    "grid_x": 125,
+    "grid_y": 68
+  }
+}

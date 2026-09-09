@@ -1,0 +1,5 @@
+{
+  "description": "Watches, warnings and advisories in effect.",
+  "upstream": "https://www.weather.gov/documentation/services-web-api#/default/alerts_active",
+  "core": "default"
+}

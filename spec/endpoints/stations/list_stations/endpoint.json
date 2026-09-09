@@ -1,0 +1,95 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/obs_stations",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/stations",
+    "method": "GET",
+    "description": "The observation stations the service knows about, optionally narrowed to a state or to named identifiers. Use it to find the station code `stations.get_observations` takes.",
+    "request": {
+      "title": "ListStationsRequest",
+      "type": "object",
+      "description": "Which stations, and how many.",
+      "properties": {
+        "id": {
+          "type": "array",
+          "description": "Station identifiers to return, such as `KSEA`. Sent as a repeated query key, one per identifier.",
+          "items": {
+            "type": "string",
+            "description": "One station identifier."
+          }
+        },
+        "state": {
+          "type": "array",
+          "description": "Two-letter state or marine-area codes to narrow to. Sent as a repeated query key.",
+          "items": {
+            "type": "string",
+            "description": "One state or marine-area code."
+          }
+        },
+        "limit": {
+          "type": "integer",
+          "description": "Stations per page. Range [1, 500].",
+          "minimum": 1,
+          "maximum": 500
+        },
+        "cursor": {
+          "type": "string",
+          "description": "Page cursor. The service does not hand this back on its own -- see the note -- so it is here for a caller who has one, not for a walk the client drives."
+        }
+      },
+      "required": []
+    },
+    "response": {
+      "title": "StationCollection",
+      "type": "object",
+      "description": "One page of stations, as a GeoJSON feature collection.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "FeatureCollection"
+          ],
+          "description": "Always `FeatureCollection`."
+        },
+        "features": {
+          "type": "array",
+          "description": "The stations.",
+          "items": {
+            "$ref": "StationFeature",
+            "description": "One station."
+          }
+        },
+        "observationStations": {
+          "type": "array",
+          "description": "The same stations as bare URLs, in the same order.",
+          "items": {
+            "type": "string",
+            "description": "URL of one station."
+          }
+        },
+        "pagination": {
+          "title": "CollectionPagination",
+          "type": "object",
+          "description": "Where the next page is. A whole URL, not a bare cursor -- which is why this endpoint declares no pagination strategy.",
+          "properties": {
+            "next": {
+              "type": "string",
+              "description": "URL of the next page, cursor already in the query string. Absent on the last page."
+            }
+          }
+        }
+      },
+      "required": [
+        "type",
+        "features"
+      ]
+    }
+  },
+  "notes": [
+    "No `pagination` block, deliberately. The service pages this endpoint, but it hands the next page back as a whole URL (`pagination.next`) rather than as the bare `cursor` value the request takes. Truewire's `token` strategy reads a cursor out of the response and sends it as a parameter; it has no way to say \"take the `cursor` query parameter out of this URL\". Declaring `cursor.from: \"pagination.next\"` would send the entire URL as the cursor and page nothing. So the walk is left undeclared rather than declared wrong."
+  ]
+}

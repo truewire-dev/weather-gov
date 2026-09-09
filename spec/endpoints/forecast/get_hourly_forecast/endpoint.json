@@ -1,0 +1,80 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/gridpoint_forecast_hourly",
+  "meta": {
+    "payload": "properties"
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/gridpoints/{office}/{grid_x},{grid_y}/forecast/hourly",
+    "method": "GET",
+    "description": "The hourly forecast for one grid cell: one period per hour for about the next week, carrying dew point and relative humidity the twice-daily forecast leaves out, and no prose.",
+    "request": {
+      "title": "GetHourlyForecastRequest",
+      "type": "object",
+      "description": "Which grid cell, and in which units.",
+      "properties": {
+        "office": {
+          "type": "string",
+          "description": "Three-letter forecast office code addressing the grid, such as `SEW`. `points.get_point` returns it as `gridId`."
+        },
+        "grid_x": {
+          "type": "integer",
+          "description": "Grid column, from `points.get_point`."
+        },
+        "grid_y": {
+          "type": "integer",
+          "description": "Grid row, from `points.get_point`."
+        },
+        "units": {
+          "type": "string",
+          "enum": [
+            "us",
+            "si"
+          ],
+          "description": "Unit system for the rendered temperatures: `us` for Fahrenheit and miles per hour, `si` for Celsius and kilometres per hour. Defaults to `us`.",
+          "default": "us"
+        }
+      },
+      "required": [
+        "office",
+        "grid_x",
+        "grid_y"
+      ]
+    },
+    "response": {
+      "title": "HourlyForecastFeature",
+      "type": "object",
+      "description": "The hourly forecast, in the GeoJSON feature the API wraps it in.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Feature"
+          ],
+          "description": "Always `Feature`."
+        },
+        "geometry": {
+          "$ref": "PolygonGeometry",
+          "description": "Outline of the grid cell the forecast covers."
+        },
+        "properties": {
+          "$ref": "Forecast",
+          "description": "The forecast itself, one period per hour."
+        }
+      },
+      "required": [
+        "type",
+        "properties"
+      ]
+    }
+  },
+  "envelope": {
+    "payload": "properties"
+  },
+  "notes": [
+    "Same shape as the twice-daily forecast, so it shares `Forecast`: the hourly periods leave `name` and `detailedForecast` empty and fill `dewpoint` and `relativeHumidity`, all of which that schema already allows."
+  ]
+}

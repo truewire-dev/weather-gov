@@ -1,0 +1,193 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/point",
+  "meta": {
+    "payload": "properties"
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/points/{latitude},{longitude}",
+    "method": "GET",
+    "description": "Resolve a latitude/longitude to the forecast grid it falls in. Almost every other endpoint here is addressed by grid cell rather than by coordinates, so this is where a caller starts: it returns the office and the grid indices `forecast.get_forecast` takes, plus the zones, the radar station and the nearest city.",
+    "request": {
+      "title": "GetPointRequest",
+      "type": "object",
+      "description": "The coordinates to resolve.",
+      "properties": {
+        "latitude": {
+          "type": "number",
+          "description": "Latitude in WGS 84 decimal degrees. The service rounds to four decimal places and redirects anything longer, so pass no more precision than that.",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "longitude": {
+          "type": "number",
+          "description": "Longitude in WGS 84 decimal degrees, negative west of the prime meridian.",
+          "minimum": -180,
+          "maximum": 180
+        }
+      },
+      "required": [
+        "latitude",
+        "longitude"
+      ]
+    },
+    "response": {
+      "title": "PointFeature",
+      "type": "object",
+      "description": "The grid point, in the GeoJSON feature the API wraps it in. The geometry is the coordinates you asked about, so the client hands back `properties`.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Canonical URL of this point."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "Feature"
+          ],
+          "description": "Always `Feature`."
+        },
+        "geometry": {
+          "$ref": "PointGeometry",
+          "description": "The coordinates that were resolved, rounded."
+        },
+        "properties": {
+          "title": "Point",
+          "type": "object",
+          "description": "What the coordinates resolve to.",
+          "properties": {
+            "cwa": {
+              "type": "string",
+              "description": "County warning area: the three-letter code of the office responsible, such as `SEW`. Identical to `gridId`."
+            },
+            "gridId": {
+              "type": "string",
+              "description": "Forecast office code addressing the grid, such as `SEW`. Pass this as `office` to the `forecast` endpoints."
+            },
+            "gridX": {
+              "type": "integer",
+              "description": "Grid column. Pass this as `grid_x`."
+            },
+            "gridY": {
+              "type": "integer",
+              "description": "Grid row. Pass this as `grid_y`."
+            },
+            "forecastOffice": {
+              "type": "string",
+              "description": "URL of the responsible office."
+            },
+            "forecast": {
+              "type": "string",
+              "description": "URL of the twice-daily forecast for this cell."
+            },
+            "forecastHourly": {
+              "type": "string",
+              "description": "URL of the hourly forecast for this cell."
+            },
+            "forecastGridData": {
+              "type": "string",
+              "description": "URL of the raw gridded data both forecasts are rendered from."
+            },
+            "observationStations": {
+              "type": "string",
+              "description": "URL of the stations that observe this cell."
+            },
+            "forecastZone": {
+              "type": "string",
+              "description": "URL of the forecast zone the point is in."
+            },
+            "county": {
+              "type": "string",
+              "description": "URL of the county zone the point is in."
+            },
+            "fireWeatherZone": {
+              "type": "string",
+              "description": "URL of the fire-weather zone the point is in."
+            },
+            "timeZone": {
+              "type": "string",
+              "description": "IANA time zone of the point, such as `America/Los_Angeles`. Forecast period times are in this zone."
+            },
+            "radarStation": {
+              "type": "string",
+              "description": "Identifier of the radar covering the point, such as `KATX`."
+            },
+            "relativeLocation": {
+              "title": "RelativeLocationFeature",
+              "type": "object",
+              "description": "The nearest named place, as its own GeoJSON feature.",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "Feature"
+                  ],
+                  "description": "Always `Feature`."
+                },
+                "geometry": {
+                  "$ref": "PointGeometry",
+                  "description": "Where that place is."
+                },
+                "properties": {
+                  "title": "RelativeLocation",
+                  "type": "object",
+                  "description": "Which place, and how far away.",
+                  "properties": {
+                    "city": {
+                      "type": "string",
+                      "description": "City name."
+                    },
+                    "state": {
+                      "type": "string",
+                      "description": "Two-letter state code."
+                    },
+                    "distance": {
+                      "$ref": "QuantitativeValue",
+                      "description": "Distance from the point to that city."
+                    },
+                    "bearing": {
+                      "$ref": "QuantitativeValue",
+                      "description": "Bearing from that city to the point, in degrees clockwise from true north."
+                    }
+                  },
+                  "required": [
+                    "city",
+                    "state"
+                  ]
+                }
+              },
+              "required": [
+                "type",
+                "properties"
+              ]
+            }
+          },
+          "required": [
+            "gridId",
+            "gridX",
+            "gridY",
+            "forecast",
+            "forecastHourly",
+            "forecastGridData",
+            "observationStations",
+            "timeZone"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "properties"
+      ]
+    }
+  },
+  "envelope": {
+    "payload": "properties"
+  },
+  "notes": [
+    "The service redirects a request whose coordinates carry more than four decimal places, so the client rounds nothing and passes what the caller gave: over-precise coordinates are the caller's to fix, and the redirect says so."
+  ]
+}

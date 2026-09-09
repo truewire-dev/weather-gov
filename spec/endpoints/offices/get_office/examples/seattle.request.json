@@ -1,0 +1,6 @@
+{
+  "description": "The Seattle/Tacoma forecast office",
+  "request": {
+    "office_id": "SEW"
+  }
+}

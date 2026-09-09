@@ -1,0 +1,67 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/station_observation_latest",
+  "meta": {
+    "payload": "properties"
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/stations/{station_id}/observations/latest",
+    "method": "GET",
+    "description": "The most recent observation from one station. This is the endpoint behind \"what is it doing outside right now\".",
+    "request": {
+      "title": "GetLatestObservationRequest",
+      "type": "object",
+      "description": "Which station.",
+      "properties": {
+        "station_id": {
+          "type": "string",
+          "description": "Station identifier, such as `KSEA`."
+        },
+        "require_qc": {
+          "type": "boolean",
+          "description": "Return only an observation that has passed quality control. Off by default, which is what you want for a current reading: quality control lags the observation."
+        }
+      },
+      "required": [
+        "station_id"
+      ]
+    },
+    "response": {
+      "title": "LatestObservationFeature",
+      "type": "object",
+      "description": "The observation, in the GeoJSON feature the API wraps it in. The geometry repeats the station's own coordinates, which `properties` already identifies, so the client hands back `properties`.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Canonical URL of this observation."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "Feature"
+          ],
+          "description": "Always `Feature`."
+        },
+        "geometry": {
+          "$ref": "PointGeometry",
+          "description": "Where the station is."
+        },
+        "properties": {
+          "$ref": "Observation",
+          "description": "The observation itself."
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "properties"
+      ]
+    }
+  },
+  "envelope": {
+    "payload": "properties"
+  }
+}

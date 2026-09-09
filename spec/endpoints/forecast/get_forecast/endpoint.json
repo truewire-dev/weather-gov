@@ -1,0 +1,80 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/gridpoint_forecast",
+  "meta": {
+    "payload": "properties"
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/gridpoints/{office}/{grid_x},{grid_y}/forecast",
+    "method": "GET",
+    "description": "The twice-daily narrative forecast for one grid cell: about a dozen named periods (`Tonight`, `Wednesday`, `Wednesday Night`) covering the next week, each with a temperature, a wind, and a sentence of prose.",
+    "request": {
+      "title": "GetForecastRequest",
+      "type": "object",
+      "description": "Which grid cell, and in which units.",
+      "properties": {
+        "office": {
+          "type": "string",
+          "description": "Three-letter forecast office code addressing the grid, such as `SEW`. `points.get_point` returns it as `gridId`."
+        },
+        "grid_x": {
+          "type": "integer",
+          "description": "Grid column, from `points.get_point`."
+        },
+        "grid_y": {
+          "type": "integer",
+          "description": "Grid row, from `points.get_point`."
+        },
+        "units": {
+          "type": "string",
+          "enum": [
+            "us",
+            "si"
+          ],
+          "description": "Unit system for the rendered temperatures: `us` for Fahrenheit and miles per hour, `si` for Celsius and kilometres per hour. Defaults to `us`.",
+          "default": "us"
+        }
+      },
+      "required": [
+        "office",
+        "grid_x",
+        "grid_y"
+      ]
+    },
+    "response": {
+      "title": "ForecastFeature",
+      "type": "object",
+      "description": "The forecast, in the GeoJSON feature the API wraps it in. The geometry is the outline of the grid cell, which the caller already named, so the client hands back `properties`.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Feature"
+          ],
+          "description": "Always `Feature`."
+        },
+        "geometry": {
+          "$ref": "PolygonGeometry",
+          "description": "Outline of the grid cell the forecast covers."
+        },
+        "properties": {
+          "$ref": "Forecast",
+          "description": "The forecast itself."
+        }
+      },
+      "required": [
+        "type",
+        "properties"
+      ]
+    }
+  },
+  "envelope": {
+    "payload": "properties"
+  },
+  "notes": [
+    "`periods[].temperature` is a bare number beside a `temperatureUnit` string, not the `QuantitativeValue` the rest of the API uses. That is the wire, so that is the type."
+  ]
+}

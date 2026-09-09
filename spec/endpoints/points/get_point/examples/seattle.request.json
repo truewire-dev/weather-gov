@@ -1,0 +1,7 @@
+{
+  "description": "Downtown Seattle, resolved to the SEW grid",
+  "request": {
+    "latitude": 47.6062,
+    "longitude": -122.3321
+  }
+}

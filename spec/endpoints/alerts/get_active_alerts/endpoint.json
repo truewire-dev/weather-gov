@@ -1,0 +1,165 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/alerts_active",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/alerts/active",
+    "method": "GET",
+    "description": "Every watch, warning and advisory in effect right now, optionally narrowed. Unnarrowed this is the whole country and runs to a few hundred alerts, so narrow by `area`, `zone` or `point` unless you want all of it.",
+    "request": {
+      "title": "GetActiveAlertsRequest",
+      "type": "object",
+      "description": "How to narrow the alerts. Every filter is optional; the array-valued ones are sent as repeated query keys and mean \"any of\".",
+      "properties": {
+        "area": {
+          "type": "array",
+          "description": "Two-letter state, territory or marine-area codes to narrow to, such as `WA` or `PZ`. Sent as a repeated query key. Left un-enumerated deliberately: the service's own 400 lists only the marine half of what it accepts, and a guessed enum would reject the states.",
+          "items": {
+            "type": "string",
+            "description": "One state or marine-area code."
+          }
+        },
+        "region": {
+          "type": "array",
+          "description": "Marine regions to narrow to.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "AL",
+              "AT",
+              "GL",
+              "GM",
+              "PA",
+              "PI"
+            ],
+            "description": "One marine region: `AL` Alaska, `AT` Atlantic, `GL` Great Lakes, `GM` Gulf of Mexico, `PA` Pacific, `PI` Pacific Islands."
+          }
+        },
+        "zone": {
+          "type": "array",
+          "description": "Forecast zone codes, such as `WAZ315`.",
+          "items": {
+            "type": "string",
+            "description": "One zone code."
+          }
+        },
+        "point": {
+          "type": "string",
+          "description": "A `latitude,longitude` pair; returns the alerts covering that point."
+        },
+        "status": {
+          "type": "array",
+          "description": "Alert statuses to include. Lower-case, unlike every other enumerated filter here. Pass `actual` to leave out drills and tests.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "actual",
+              "exercise",
+              "system",
+              "test",
+              "draft"
+            ],
+            "description": "One status."
+          }
+        },
+        "severity": {
+          "type": "array",
+          "description": "Severities to include. Capitalised, unlike `status`.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Extreme",
+              "Severe",
+              "Moderate",
+              "Minor",
+              "Unknown"
+            ],
+            "description": "One severity."
+          }
+        },
+        "urgency": {
+          "type": "array",
+          "description": "Urgencies to include. Capitalised, unlike `status`.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Immediate",
+              "Expected",
+              "Future",
+              "Past",
+              "Unknown"
+            ],
+            "description": "One urgency."
+          }
+        },
+        "certainty": {
+          "type": "array",
+          "description": "Certainties to include. Capitalised, unlike `status`.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Observed",
+              "Likely",
+              "Possible",
+              "Unlikely",
+              "Unknown"
+            ],
+            "description": "One certainty."
+          }
+        },
+        "event": {
+          "type": "array",
+          "description": "Event names to include, such as `Red Flag Warning`.",
+          "items": {
+            "type": "string",
+            "description": "One event name."
+          }
+        }
+      },
+      "required": []
+    },
+    "response": {
+      "title": "AlertCollection",
+      "type": "object",
+      "description": "The alerts in effect, as a GeoJSON feature collection.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "FeatureCollection"
+          ],
+          "description": "Always `FeatureCollection`."
+        },
+        "features": {
+          "type": "array",
+          "description": "The alerts.",
+          "items": {
+            "$ref": "AlertFeature",
+            "description": "One alert."
+          }
+        },
+        "title": {
+          "type": "string",
+          "description": "Human-readable title of the collection."
+        },
+        "updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the collection was assembled."
+        }
+      },
+      "required": [
+        "type",
+        "features"
+      ]
+    }
+  },
+  "notes": [
+    "No `pagination` block: this endpoint takes no `limit` and no cursor. It answers with everything matching the filters in one response, which is why the filters matter.",
+    "The filter enumerations are not guessed: the service publishes each one in the 400 it answers a bad value with (`Does not have a value in the enumeration [...]`), and these are copied from those replies. That is also how the casing quirk surfaced -- `status` takes `actual`, while `severity`, `urgency` and `certainty` take `Severe`, `Immediate`, `Likely`. A client that lower-cased all four uniformly would 400 on three of them.",
+    "`zone` is a plain string. The service constrains it with a regex over every state and zone-type combination (`^(A[KLMNRSZ]|C[AOT]|...)[CZ]\\d{3}$`), which is a real constraint but not an enumeration, and not one this spec format can carry."
+  ]
+}

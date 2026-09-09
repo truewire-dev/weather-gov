@@ -1,0 +1,142 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": [
+      "https://geojson.org/geojson-ld/geojson-context.jsonld",
+      {
+        "@version": "1.1",
+        "wx": "https://api.weather.gov/ontology#",
+        "@vocab": "https://api.weather.gov/ontology#"
+      }
+    ],
+    "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.7fd0f0a51a899b7ab78aa4a49b7bb43280b2764c.001.1",
+    "type": "Feature",
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            -93.35,
+            29.78
+          ],
+          [
+            -93.34,
+            29.76
+          ],
+          [
+            -93.34,
+            29.78
+          ],
+          [
+            -93.33,
+            29.78
+          ],
+          [
+            -93.11,
+            29.77
+          ],
+          [
+            -93.14,
+            29.57
+          ],
+          [
+            -93.77,
+            29.59
+          ],
+          [
+            -93.74,
+            29.77
+          ],
+          [
+            -93.5,
+            29.79
+          ],
+          [
+            -93.35,
+            29.78
+          ]
+        ]
+      ]
+    },
+    "properties": {
+      "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.7fd0f0a51a899b7ab78aa4a49b7bb43280b2764c.001.1",
+      "@type": "wx:Alert",
+      "id": "urn:oid:2.49.0.1.840.0.7fd0f0a51a899b7ab78aa4a49b7bb43280b2764c.001.1",
+      "areaDesc": "Coastal waters from Cameron LA to High Island TX out 20 NM; Coastal waters from Intracoastal City to Cameron LA out 20 NM",
+      "geocode": {
+        "SAME": [
+          "077450",
+          "077452"
+        ],
+        "UGC": [
+          "GMZ450",
+          "GMZ452"
+        ]
+      },
+      "affectedZones": [
+        "https://api.weather.gov/zones/forecast/GMZ450",
+        "https://api.weather.gov/zones/forecast/GMZ452"
+      ],
+      "references": [],
+      "sent": "2026-09-09T08:56:00-05:00",
+      "effective": "2026-09-09T08:56:00-05:00",
+      "onset": "2026-09-09T08:56:00-05:00",
+      "expires": "2026-09-09T10:00:00-05:00",
+      "ends": "2026-09-09T10:00:00-05:00",
+      "status": "Actual",
+      "messageType": "Alert",
+      "category": "Met",
+      "severity": "Severe",
+      "certainty": "Likely",
+      "urgency": "Immediate",
+      "event": "Special Marine Warning",
+      "sender": "w-nws.webmaster@noaa.gov",
+      "senderName": "NWS Lake Charles LA",
+      "headline": "Special Marine Warning issued September 9 at 8:56AM CDT until September 9 at 10:00AM CDT by NWS Lake Charles LA",
+      "description": "SMWLCH\n\nThe National Weather Service in Lake Charles has issued a\n\n* Special Marine Warning for...\nCoastal waters from Cameron LA to High Island TX out 20 NM...\nCoastal waters from Intracoastal City to Cameron LA out 20 NM...\n\n* Until 1000 AM CDT.\n\n* At 855 AM CDT, a cluster of storms producing waterspouts was\nlocated near West Cameron 45, or 14 nm southwest of Cameron,\nmoving west at 10 knots.\n\nHAZARD...Waterspouts and wind gusts 34 knots or greater.\n\nSOURCE...Off duty forecaster.\n\nIMPACT...Waterspouts can easily overturn boats and create locally\nhazardous seas. Small craft could be damaged in briefly\nhigher winds and suddenly higher waves.\n\n* Locations impacted include...\nWest Cameron 66, West Cameron 45, West Cameron 53, West Cameron 65,\nWest Cameron 62, West Cameron 73, West Cameron 48, and Cameron.",
+      "instruction": "Thunderstorms can produce sudden waterspouts. Waterspouts can easily\noverturn boats and create locally hazardous seas. Seek safe harbor\nimmediately.",
+      "response": "Avoid",
+      "note": null,
+      "parameters": {
+        "AWIPSidentifier": [
+          "SMWLCH"
+        ],
+        "WMOidentifier": [
+          "WHUS54 KLCH 091356"
+        ],
+        "eventMotionDescription": [
+          "2026-09-09T13:55:00-00:00...storm...110DEG...9KT...29.71,-93.54"
+        ],
+        "waterspoutDetection": [
+          "OBSERVED"
+        ],
+        "BLOCKCHANNEL": [
+          "EAS",
+          "NWEM",
+          "CMAS"
+        ],
+        "EAS-ORG": [
+          "WXR"
+        ],
+        "VTEC": [
+          "/O.NEW.KLCH.MA.W.0082.260909T1356Z-260909T1500Z/"
+        ],
+        "eventEndingTime": [
+          "2026-09-09T10:00:00-05:00"
+        ]
+      },
+      "scope": "Public",
+      "code": "IPAWSv1.0",
+      "language": "en-US",
+      "web": "http://www.weather.gov",
+      "eventCode": {
+        "SAME": [
+          "SMW"
+        ],
+        "NationalWeatherService": [
+          "MAW"
+        ]
+      }
+    }
+  }
+}

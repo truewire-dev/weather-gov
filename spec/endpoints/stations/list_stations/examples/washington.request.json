@@ -1,0 +1,9 @@
+{
+  "description": "The first page of Washington State stations",
+  "request": {
+    "state": [
+      "WA"
+    ],
+    "limit": 20
+  }
+}

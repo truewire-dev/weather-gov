@@ -1,0 +1,53 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/product_types",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/products/types",
+    "method": "GET",
+    "description": "Every kind of text product the service issues, by code. Three-letter codes such as `AFD` (area forecast discussion) or `TOR` (tornado warning), each with the name it stands for.",
+    "request": {
+      "title": "ListProductTypesRequest",
+      "type": "object",
+      "description": "Takes nothing.",
+      "properties": {},
+      "required": []
+    },
+    "response": {
+      "title": "ProductTypeCollection",
+      "type": "object",
+      "description": "The product types, in a JSON-LD graph -- the third response vocabulary this API uses, after GeoJSON and schema.org.",
+      "properties": {
+        "@graph": {
+          "type": "array",
+          "description": "The product types, ordered by code.",
+          "items": {
+            "title": "ProductType",
+            "type": "object",
+            "description": "One kind of text product.",
+            "properties": {
+              "productCode": {
+                "type": "string",
+                "description": "Three-letter code, such as `AFD`."
+              },
+              "productName": {
+                "type": "string",
+                "description": "What the code stands for, such as `Area Forecast Discussion`."
+              }
+            },
+            "required": [
+              "productCode",
+              "productName"
+            ]
+          }
+        }
+      },
+      "required": [
+        "@graph"
+      ]
+    }
+  }
+}

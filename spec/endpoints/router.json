@@ -1,0 +1,5 @@
+{
+  "description": "The United States National Weather Service API (`api.weather.gov`): forecasts, observations, active alerts and the offices and stations behind them. No credentials -- the service asks only that a caller identify itself in `User-Agent`.",
+  "upstream": "https://www.weather.gov/documentation/services-web-api",
+  "core": "root"
+}

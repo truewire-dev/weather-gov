@@ -1,0 +1,5 @@
+{
+  "description": "Observation stations and what they have reported.",
+  "upstream": "https://www.weather.gov/documentation/services-web-api#/default/obs_stations",
+  "core": "default"
+}

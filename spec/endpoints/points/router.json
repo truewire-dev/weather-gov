@@ -1,0 +1,5 @@
+{
+  "description": "Turning a latitude/longitude into the grid the rest of the API is addressed by.",
+  "upstream": "https://www.weather.gov/documentation/services-web-api#/default/point",
+  "core": "default"
+}

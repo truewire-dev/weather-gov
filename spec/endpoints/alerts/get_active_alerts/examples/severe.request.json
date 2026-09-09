@@ -1,0 +1,11 @@
+{
+  "description": "Every severe alert in effect across the country",
+  "request": {
+    "status": [
+      "actual"
+    ],
+    "severity": [
+      "Severe"
+    ]
+  }
+}

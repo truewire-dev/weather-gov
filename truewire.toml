@@ -1,0 +1,31 @@
+[project]
+name = "weather_gov"
+
+[spec]
+dir = "spec"
+
+[cores.default]
+# Every endpoint here is answered without credentials, so no endpoint tells the core
+# anything about auth (authoring rule 9). What the core does need -- the `User-Agent` the
+# National Weather Service asks every caller to identify itself with -- is a property of
+# the client, not of one endpoint, so it lives on the transport instead.
+#
+# What is per-endpoint is the envelope. Most of this API answers in GeoJSON, and for some
+# endpoints the wrapper carries nothing the caller did not already have: the geometry of a
+# forecast is the outline of the grid cell they named. Those endpoints declare
+# `envelope.payload` so `truewire check` still validates the whole wire frame (ADR 0010),
+# and repeat it here as `meta.payload` so the core knows what to unwrap on this call. The
+# two are checked against each other by `test_spec.py`; neither can drift.
+meta = { type = "object", properties = { payload = { type = "string" } }, additionalProperties = false }
+
+[python]
+package = "weather_gov"
+src = "packages/python/src"
+name = "Weather"
+ruff = "packages/python/ruff.toml"
+
+[python.cores.root]
+base = "weather_gov.core:ClientBase"
+
+[python.cores.default]
+base = "weather_gov.core:Endpoint"

@@ -1,0 +1,5 @@
+{
+  "description": "The text products the service publishes, by type.",
+  "upstream": "https://www.weather.gov/documentation/services-web-api#/default/product_types",
+  "core": "default"
+}

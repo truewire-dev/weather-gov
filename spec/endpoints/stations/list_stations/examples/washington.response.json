@@ -1,0 +1,620 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": [
+      "https://geojson.org/geojson-ld/geojson-context.jsonld",
+      {
+        "@version": "1.1",
+        "wx": "https://api.weather.gov/ontology#",
+        "s": "https://schema.org/",
+        "geo": "http://www.opengis.net/ont/geosparql#",
+        "unit": "http://codes.wmo.int/common/unit/",
+        "@vocab": "https://api.weather.gov/ontology#",
+        "geometry": {
+          "@id": "s:GeoCoordinates",
+          "@type": "geo:wktLiteral"
+        },
+        "city": "s:addressLocality",
+        "state": "s:addressRegion",
+        "distance": {
+          "@id": "s:Distance",
+          "@type": "s:QuantitativeValue"
+        },
+        "bearing": {
+          "@type": "s:QuantitativeValue"
+        },
+        "value": {
+          "@id": "s:value"
+        },
+        "unitCode": {
+          "@id": "s:unitCode",
+          "@type": "@id"
+        },
+        "forecastOffice": {
+          "@type": "@id"
+        },
+        "forecastGridData": {
+          "@type": "@id"
+        },
+        "publicZone": {
+          "@type": "@id"
+        },
+        "county": {
+          "@type": "@id"
+        },
+        "observationStations": {
+          "@container": "@list",
+          "@type": "@id"
+        }
+      }
+    ],
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "id": "https://api.weather.gov/stations/001AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.1416,
+            47.699
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/001AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 629.1072
+          },
+          "stationIdentifier": "001AV",
+          "name": "Wellesley Ave",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ036",
+          "county": "https://api.weather.gov/zones/county/WAC063",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ708"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/002AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.4001,
+            47.819
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/002AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 597.408
+          },
+          "stationIdentifier": "002AV",
+          "name": "Bidwell Park",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ036",
+          "county": "https://api.weather.gov/zones/county/WAC063",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ701"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/003AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.42494,
+            47.8747
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/003AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 632.7648
+          },
+          "stationIdentifier": "003AV",
+          "name": "Chattaroy",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ036",
+          "county": "https://api.weather.gov/zones/county/WAC063",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ701"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/004AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.62181,
+            48.06148
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/004AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 741.2736
+          },
+          "stationIdentifier": "004AV",
+          "name": "Loon Lake",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ037",
+          "county": "https://api.weather.gov/zones/county/WAC065",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ701"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/005AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.35884,
+            47.95751
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/005AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 602.2848
+          },
+          "stationIdentifier": "005AV",
+          "name": "Riverside High",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ037",
+          "county": "https://api.weather.gov/zones/county/WAC063",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ701"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/006AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.37135,
+            48.03448
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/006AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 637.032
+          },
+          "stationIdentifier": "006AV",
+          "name": "Pocahontas Bay",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ037",
+          "county": "https://api.weather.gov/zones/county/WAC063",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ701"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/007AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.26142,
+            47.82358
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/007AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 721.1568
+          },
+          "stationIdentifier": "007AV",
+          "name": "Green Bluff",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ036",
+          "county": "https://api.weather.gov/zones/county/WAC063",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ701"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/008AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.10913,
+            47.62133
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/008AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 669.3408
+          },
+          "stationIdentifier": "008AV",
+          "name": "S Molter Rd",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ036",
+          "county": "https://api.weather.gov/zones/county/WAC063",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ708"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/009AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.09497,
+            47.651
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/009AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 648.6144
+          },
+          "stationIdentifier": "009AV",
+          "name": "Liberty Lake",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ036",
+          "county": "https://api.weather.gov/zones/county/WAC063",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ708"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/010AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.49249,
+            47.96024
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/010AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 657.4536
+          },
+          "stationIdentifier": "010AV",
+          "name": "Deer Park",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ037",
+          "county": "https://api.weather.gov/zones/county/WAC063",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ701"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/011AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.96641,
+            48.72561
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/011AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 673.3032
+          },
+          "stationIdentifier": "011AV",
+          "name": "Evan's Cutoff Road",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ037",
+          "county": "https://api.weather.gov/zones/county/WAC065",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ699"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/012AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -118.10225,
+            48.78481
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/012AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 607.7712
+          },
+          "stationIdentifier": "012AV",
+          "name": "Barstow",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ037",
+          "county": "https://api.weather.gov/zones/county/WAC065",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ699"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/013AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.80896,
+            48.02647
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/013AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 765.6576
+          },
+          "stationIdentifier": "013AV",
+          "name": "SW Springdale",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ037",
+          "county": "https://api.weather.gov/zones/county/WAC065",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ701"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/014AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.70439,
+            48.30123
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/014AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 578.5104
+          },
+          "stationIdentifier": "014AV",
+          "name": "Chewelah",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ037",
+          "county": "https://api.weather.gov/zones/county/WAC065",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ701"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/015AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.60608,
+            48.1075
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/015AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 760.476
+          },
+          "stationIdentifier": "015AV",
+          "name": "Deer Lake",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ037",
+          "county": "https://api.weather.gov/zones/county/WAC065",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ701"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/016AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.69031,
+            47.6322
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/016AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 744.6264
+          },
+          "stationIdentifier": "016AV",
+          "name": "Sunwest Ave",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ036",
+          "county": "https://api.weather.gov/zones/county/WAC063",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ708"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/017AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.683,
+            47.8697
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/017AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 538.2768
+          },
+          "stationIdentifier": "017AV",
+          "name": "McClellan Conservation Area",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ036",
+          "county": "https://api.weather.gov/zones/county/WAC063",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ708"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/022AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -118.11572,
+            48.61562
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/022AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 406.908
+          },
+          "stationIdentifier": "022AV",
+          "name": "Kettle Falls",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ037",
+          "county": "https://api.weather.gov/zones/county/WAC065",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ701"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/023AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -118.06871,
+            48.43949
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/023AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 995.7816
+          },
+          "stationIdentifier": "023AV",
+          "name": "Orin-Rice Road",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ037",
+          "county": "https://api.weather.gov/zones/county/WAC065",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ701"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/030AV",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -117.46444,
+            47.6127
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/030AV",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 705.612
+          },
+          "stationIdentifier": "030AV",
+          "name": "Dorset Rd",
+          "timeZone": "America/Los_Angeles",
+          "provider": "MesoWest",
+          "subProvider": "AVISTA",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ036",
+          "county": "https://api.weather.gov/zones/county/WAC063",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ708"
+        }
+      }
+    ],
+    "observationStations": [
+      "https://api.weather.gov/stations/001AV",
+      "https://api.weather.gov/stations/002AV",
+      "https://api.weather.gov/stations/003AV",
+      "https://api.weather.gov/stations/004AV",
+      "https://api.weather.gov/stations/005AV",
+      "https://api.weather.gov/stations/006AV",
+      "https://api.weather.gov/stations/007AV",
+      "https://api.weather.gov/stations/008AV",
+      "https://api.weather.gov/stations/009AV",
+      "https://api.weather.gov/stations/010AV",
+      "https://api.weather.gov/stations/011AV",
+      "https://api.weather.gov/stations/012AV",
+      "https://api.weather.gov/stations/013AV",
+      "https://api.weather.gov/stations/014AV",
+      "https://api.weather.gov/stations/015AV",
+      "https://api.weather.gov/stations/016AV",
+      "https://api.weather.gov/stations/017AV",
+      "https://api.weather.gov/stations/022AV",
+      "https://api.weather.gov/stations/023AV",
+      "https://api.weather.gov/stations/030AV"
+    ],
+    "pagination": {
+      "next": "https://api.weather.gov/stations?state%5B0%5D=WA&limit=20&cursor=eyJzIjoyMH0%3D"
+    }
+  }
+}

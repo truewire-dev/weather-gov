@@ -1,0 +1,1001 @@
+{
+  "QuantitativeValue": {
+    "title": "QuantitativeValue",
+    "type": "object",
+    "description": "A measurement and the unit it is in. The service never sends a bare number: every value arrives beside the WMO unit code it is expressed in, and `value` is null wherever the measurement is missing rather than zero.",
+    "properties": {
+      "unitCode": {
+        "type": "string",
+        "description": "WMO unit of measure, as a URI shorthand: `wmoUnit:degC`, `wmoUnit:km_h-1`, `wmoUnit:percent`, `wmoUnit:Pa`, `wmoUnit:m`."
+      },
+      "value": {
+        "anyOf": [
+          {
+            "type": "number",
+            "description": "The measurement, in `unitCode`."
+          },
+          {
+            "type": "null",
+            "description": "No measurement -- the sensor did not report, or the field does not apply to this observation."
+          }
+        ],
+        "description": "The measurement, or null where there is none. Null is common and is not an error: an airport station reports `windGust` only when there were gusts."
+      },
+      "qualityControl": {
+        "type": "string",
+        "description": "Quality-control flag the observation carried: `V` validated, `S` screened, `C` coarse-passed, `Z` preliminary, `Q` questionable. Present on observations, absent on forecasts."
+      },
+      "maxValue": {
+        "type": "number",
+        "description": "Upper end, where the value is a range rather than a point."
+      },
+      "minValue": {
+        "type": "number",
+        "description": "Lower end, where the value is a range rather than a point."
+      }
+    },
+    "required": [
+      "unitCode",
+      "value"
+    ]
+  },
+  "Position": {
+    "title": "Position",
+    "type": "array",
+    "description": "A GeoJSON position: longitude first, then latitude, in WGS 84 decimal degrees.",
+    "minItems": 2,
+    "maxItems": 2,
+    "prefixItems": [
+      {
+        "title": "longitude",
+        "type": "number",
+        "description": "Longitude, decimal degrees east of the prime meridian."
+      },
+      {
+        "title": "latitude",
+        "type": "number",
+        "description": "Latitude, decimal degrees north of the equator."
+      }
+    ]
+  },
+  "PointGeometry": {
+    "title": "PointGeometry",
+    "type": "object",
+    "description": "GeoJSON geometry of a feature that sits at a single place: a station, an observation, a forecast point.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "Point"
+        ],
+        "description": "Always `Point` for these features."
+      },
+      "coordinates": {
+        "$ref": "Position",
+        "description": "Where the feature is."
+      }
+    },
+    "required": [
+      "type",
+      "coordinates"
+    ]
+  },
+  "PolygonGeometry": {
+    "title": "PolygonGeometry",
+    "type": "object",
+    "description": "GeoJSON geometry of an area: one outer ring, then any holes.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "Polygon"
+        ],
+        "description": "Always `Polygon`."
+      },
+      "coordinates": {
+        "type": "array",
+        "description": "Linear rings. The first is the outer boundary; any others are holes in it. Each ring repeats its first position as its last.",
+        "items": {
+          "type": "array",
+          "description": "One linear ring.",
+          "items": {
+            "$ref": "Position",
+            "description": "One corner of the ring."
+          }
+        }
+      }
+    },
+    "required": [
+      "type",
+      "coordinates"
+    ]
+  },
+  "MultiPolygonGeometry": {
+    "title": "MultiPolygonGeometry",
+    "type": "object",
+    "description": "GeoJSON geometry of several disjoint areas -- an alert covering counties that do not touch.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "MultiPolygon"
+        ],
+        "description": "Always `MultiPolygon`."
+      },
+      "coordinates": {
+        "type": "array",
+        "description": "One entry per polygon, each shaped like `PolygonGeometry.coordinates`.",
+        "items": {
+          "type": "array",
+          "description": "The linear rings of one polygon.",
+          "items": {
+            "type": "array",
+            "description": "One linear ring.",
+            "items": {
+              "$ref": "Position",
+              "description": "One corner of the ring."
+            }
+          }
+        }
+      }
+    },
+    "required": [
+      "type",
+      "coordinates"
+    ]
+  },
+  "AlertGeometry": {
+    "title": "AlertGeometry",
+    "anyOf": [
+      {
+        "$ref": "PolygonGeometry",
+        "description": "A single area."
+      },
+      {
+        "$ref": "MultiPolygonGeometry",
+        "description": "Several disjoint areas."
+      },
+      {
+        "type": "null",
+        "description": "No polygon. The common case: most alerts are issued for whole zones and counties, named in `affectedZones` and `geocode` rather than drawn."
+      }
+    ],
+    "description": "The area an alert covers, when it was drawn as a polygon rather than named as zones."
+  },
+  "CloudLayer": {
+    "title": "CloudLayer",
+    "type": "object",
+    "description": "One reported cloud layer: how much of the sky it covers and how high its base is.",
+    "properties": {
+      "base": {
+        "$ref": "QuantitativeValue",
+        "description": "Height of the layer's base above the station."
+      },
+      "amount": {
+        "type": "string",
+        "enum": [
+          "OVC",
+          "BKN",
+          "SCT",
+          "FEW",
+          "SKC",
+          "CLR",
+          "VV"
+        ],
+        "description": "METAR sky-cover code: `OVC` overcast, `BKN` broken, `SCT` scattered, `FEW` few, `SKC`/`CLR` clear, `VV` vertical visibility (sky obscured)."
+      }
+    },
+    "required": [
+      "base",
+      "amount"
+    ]
+  },
+  "PresentWeather": {
+    "title": "PresentWeather",
+    "type": "object",
+    "description": "One present-weather group decoded from the station's METAR.",
+    "properties": {
+      "intensity": {
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "The reported intensity."
+          },
+          {
+            "type": "null",
+            "description": "Not qualified."
+          }
+        ],
+        "description": "`light`, `heavy`, or null for moderate."
+      },
+      "modifier": {
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "The reported modifier."
+          },
+          {
+            "type": "null",
+            "description": "Not qualified."
+          }
+        ],
+        "description": "Qualifier such as `patches` or `blowing`."
+      },
+      "weather": {
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "The phenomenon."
+          },
+          {
+            "type": "null",
+            "description": "Not reported."
+          }
+        ],
+        "description": "The phenomenon itself: `rain`, `snow`, `fog_mist`, `thunderstorms`."
+      },
+      "rawString": {
+        "type": "string",
+        "description": "The METAR group this was decoded from, such as `-RA`."
+      }
+    },
+    "required": [
+      "rawString"
+    ]
+  },
+  "Observation": {
+    "title": "Observation",
+    "type": "object",
+    "description": "One observation from one station, at one moment. Every measurement is a `QuantitativeValue`, and any of them can be null.",
+    "properties": {
+      "station": {
+        "type": "string",
+        "description": "URL of the station that reported it."
+      },
+      "stationId": {
+        "type": "string",
+        "description": "Station identifier, such as `KSEA`."
+      },
+      "stationName": {
+        "type": "string",
+        "description": "Human-readable station name."
+      },
+      "timestamp": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When the observation was taken."
+      },
+      "rawMessage": {
+        "type": "string",
+        "description": "The raw METAR the observation was decoded from; empty for stations that do not report one."
+      },
+      "textDescription": {
+        "type": "string",
+        "description": "Short plain-language summary, such as `Mostly Cloudy`."
+      },
+      "icon": {
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "URL of the icon."
+          },
+          {
+            "type": "null",
+            "description": "No icon for this observation."
+          }
+        ],
+        "description": "URL of a weather icon for the observation."
+      },
+      "elevation": {
+        "$ref": "QuantitativeValue",
+        "description": "Station elevation above sea level."
+      },
+      "presentWeather": {
+        "type": "array",
+        "description": "Present-weather groups decoded from the METAR; empty when nothing was reported.",
+        "items": {
+          "$ref": "PresentWeather",
+          "description": "One group."
+        }
+      },
+      "temperature": {
+        "$ref": "QuantitativeValue",
+        "description": "Air temperature."
+      },
+      "dewpoint": {
+        "$ref": "QuantitativeValue",
+        "description": "Dew point."
+      },
+      "windDirection": {
+        "$ref": "QuantitativeValue",
+        "description": "Direction the wind is coming from, in degrees clockwise from true north."
+      },
+      "windSpeed": {
+        "$ref": "QuantitativeValue",
+        "description": "Sustained wind speed."
+      },
+      "windGust": {
+        "$ref": "QuantitativeValue",
+        "description": "Peak gust; null when there were no gusts."
+      },
+      "barometricPressure": {
+        "$ref": "QuantitativeValue",
+        "description": "Station pressure."
+      },
+      "seaLevelPressure": {
+        "$ref": "QuantitativeValue",
+        "description": "Pressure reduced to sea level."
+      },
+      "visibility": {
+        "$ref": "QuantitativeValue",
+        "description": "Horizontal visibility."
+      },
+      "maxTemperatureLast24Hours": {
+        "$ref": "QuantitativeValue",
+        "description": "Highest temperature in the last 24 hours; reported once a day."
+      },
+      "minTemperatureLast24Hours": {
+        "$ref": "QuantitativeValue",
+        "description": "Lowest temperature in the last 24 hours; reported once a day."
+      },
+      "precipitationLastHour": {
+        "$ref": "QuantitativeValue",
+        "description": "Precipitation accumulated in the last hour."
+      },
+      "precipitationLast3Hours": {
+        "$ref": "QuantitativeValue",
+        "description": "Precipitation accumulated in the last three hours."
+      },
+      "precipitationLast6Hours": {
+        "$ref": "QuantitativeValue",
+        "description": "Precipitation accumulated in the last six hours."
+      },
+      "relativeHumidity": {
+        "$ref": "QuantitativeValue",
+        "description": "Relative humidity."
+      },
+      "windChill": {
+        "$ref": "QuantitativeValue",
+        "description": "Wind chill; null unless it is cold and windy enough to compute one."
+      },
+      "heatIndex": {
+        "$ref": "QuantitativeValue",
+        "description": "Heat index; null unless it is hot and humid enough to compute one."
+      },
+      "cloudLayers": {
+        "type": "array",
+        "description": "Reported cloud layers, lowest first.",
+        "items": {
+          "$ref": "CloudLayer",
+          "description": "One layer."
+        }
+      }
+    },
+    "required": [
+      "station",
+      "timestamp",
+      "temperature",
+      "dewpoint",
+      "windSpeed",
+      "cloudLayers"
+    ]
+  },
+  "ObservationFeature": {
+    "title": "ObservationFeature",
+    "type": "object",
+    "description": "One observation, in the GeoJSON feature the API wraps it in.",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Canonical URL of this observation."
+      },
+      "type": {
+        "type": "string",
+        "enum": [
+          "Feature"
+        ],
+        "description": "Always `Feature`."
+      },
+      "geometry": {
+        "$ref": "PointGeometry",
+        "description": "Where the station is."
+      },
+      "properties": {
+        "$ref": "Observation",
+        "description": "The observation itself."
+      }
+    },
+    "required": [
+      "id",
+      "type",
+      "properties"
+    ]
+  },
+  "Station": {
+    "title": "Station",
+    "type": "object",
+    "description": "One observation station.",
+    "properties": {
+      "stationIdentifier": {
+        "type": "string",
+        "description": "Station identifier, such as `KSEA`. This is what `stations.get_observations` takes."
+      },
+      "name": {
+        "type": "string",
+        "description": "Human-readable station name."
+      },
+      "timeZone": {
+        "type": "string",
+        "description": "IANA time zone the station is in, such as `America/Los_Angeles`."
+      },
+      "elevation": {
+        "$ref": "QuantitativeValue",
+        "description": "Station elevation above sea level."
+      },
+      "forecast": {
+        "type": "string",
+        "description": "URL of the forecast zone the station is in."
+      },
+      "county": {
+        "type": "string",
+        "description": "URL of the county zone the station is in."
+      },
+      "fireWeatherZone": {
+        "type": "string",
+        "description": "URL of the fire-weather zone the station is in."
+      },
+      "provider": {
+        "type": "string",
+        "description": "Network the station belongs to, such as `NWS/FAA` or `MesoWest`."
+      },
+      "subProvider": {
+        "type": "string",
+        "description": "Operator within the network."
+      }
+    },
+    "required": [
+      "stationIdentifier",
+      "name"
+    ]
+  },
+  "StationFeature": {
+    "title": "StationFeature",
+    "type": "object",
+    "description": "One station, in the GeoJSON feature the API wraps it in.",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Canonical URL of this station."
+      },
+      "type": {
+        "type": "string",
+        "enum": [
+          "Feature"
+        ],
+        "description": "Always `Feature`."
+      },
+      "geometry": {
+        "$ref": "PointGeometry",
+        "description": "Where the station is."
+      },
+      "properties": {
+        "$ref": "Station",
+        "description": "The station itself."
+      }
+    },
+    "required": [
+      "id",
+      "type",
+      "properties"
+    ]
+  },
+  "AlertReference": {
+    "title": "AlertReference",
+    "type": "object",
+    "description": "An earlier alert this one updates, corrects or cancels.",
+    "properties": {
+      "identifier": {
+        "type": "string",
+        "description": "Identifier of the referenced alert."
+      },
+      "sender": {
+        "type": "string",
+        "description": "Who sent the referenced alert."
+      },
+      "sent": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When the referenced alert was sent."
+      }
+    },
+    "required": [
+      "identifier"
+    ]
+  },
+  "Alert": {
+    "title": "Alert",
+    "type": "object",
+    "description": "One watch, warning or advisory, in the Common Alerting Protocol vocabulary the service issues them in.",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Identifier of this alert, such as `urn:oid:2.49.0.1.840.0.<hash>.001.1`. This is what `alerts.get_alert` takes."
+      },
+      "areaDesc": {
+        "type": "string",
+        "description": "Semicolon-separated names of the areas covered."
+      },
+      "geocode": {
+        "title": "AlertGeocode",
+        "type": "object",
+        "description": "The areas covered, as codes rather than prose.",
+        "properties": {
+          "SAME": {
+            "type": "array",
+            "description": "SAME (Specific Area Message Encoding) codes, one per county.",
+            "items": {
+              "type": "string",
+              "description": "One SAME code."
+            }
+          },
+          "UGC": {
+            "type": "array",
+            "description": "UGC (Universal Geographic Code) zone codes.",
+            "items": {
+              "type": "string",
+              "description": "One UGC code."
+            }
+          }
+        }
+      },
+      "affectedZones": {
+        "type": "array",
+        "description": "URLs of the forecast zones covered.",
+        "items": {
+          "type": "string",
+          "description": "One zone URL."
+        }
+      },
+      "references": {
+        "type": "array",
+        "description": "Earlier alerts this one supersedes.",
+        "items": {
+          "$ref": "AlertReference",
+          "description": "One referenced alert."
+        }
+      },
+      "sent": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When the alert was sent."
+      },
+      "effective": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When it takes effect."
+      },
+      "onset": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the event begins."
+          },
+          {
+            "type": "null",
+            "description": "No separate onset."
+          }
+        ],
+        "description": "When the event itself is expected to begin, if later than `effective`."
+      },
+      "expires": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When the alert expires unless updated."
+      },
+      "ends": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the event ends."
+          },
+          {
+            "type": "null",
+            "description": "No stated end."
+          }
+        ],
+        "description": "When the event itself is expected to end."
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "Actual",
+          "Exercise",
+          "System",
+          "Test",
+          "Draft"
+        ],
+        "description": "Whether this is a real alert. Filter on `Actual` unless you want drills."
+      },
+      "messageType": {
+        "type": "string",
+        "enum": [
+          "Alert",
+          "Update",
+          "Cancel",
+          "Ack",
+          "Error"
+        ],
+        "description": "Whether this issues, updates or cancels."
+      },
+      "category": {
+        "type": "string",
+        "enum": [
+          "Met",
+          "Geo",
+          "Safety",
+          "Security",
+          "Rescue",
+          "Fire",
+          "Health",
+          "Env",
+          "Transport",
+          "Infra",
+          "CBRNE",
+          "Other"
+        ],
+        "description": "Broad category; `Met` for weather."
+      },
+      "severity": {
+        "type": "string",
+        "enum": [
+          "Extreme",
+          "Severe",
+          "Moderate",
+          "Minor",
+          "Unknown"
+        ],
+        "description": "How bad the impact would be."
+      },
+      "certainty": {
+        "type": "string",
+        "enum": [
+          "Observed",
+          "Likely",
+          "Possible",
+          "Unlikely",
+          "Unknown"
+        ],
+        "description": "How likely it is to happen."
+      },
+      "urgency": {
+        "type": "string",
+        "enum": [
+          "Immediate",
+          "Expected",
+          "Future",
+          "Past",
+          "Unknown"
+        ],
+        "description": "How soon to act."
+      },
+      "event": {
+        "type": "string",
+        "description": "The event name, such as `Flood Watch` or `Red Flag Warning`."
+      },
+      "sender": {
+        "type": "string",
+        "description": "Email address of the sender."
+      },
+      "senderName": {
+        "type": "string",
+        "description": "The issuing office, such as `NWS Seattle WA`."
+      },
+      "headline": {
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "The headline."
+          },
+          {
+            "type": "null",
+            "description": "No headline."
+          }
+        ],
+        "description": "One-line summary with the times spelled out."
+      },
+      "description": {
+        "type": "string",
+        "description": "The full text of the alert."
+      },
+      "instruction": {
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "What to do."
+          },
+          {
+            "type": "null",
+            "description": "No instruction given."
+          }
+        ],
+        "description": "What the public is being told to do."
+      },
+      "response": {
+        "type": "string",
+        "enum": [
+          "Shelter",
+          "Evacuate",
+          "Prepare",
+          "Execute",
+          "Avoid",
+          "Monitor",
+          "AllClear",
+          "Assess",
+          "None"
+        ],
+        "description": "The recommended action."
+      },
+      "parameters": {
+        "type": "object",
+        "description": "Free-form parameters the issuing system attached: `NWSheadline`, `VTEC`, `AWIPSidentifier` and others. Every value is a list, even when it holds one item.",
+        "additionalProperties": {
+          "type": "array",
+          "description": "The values for one parameter name.",
+          "items": {
+            "type": "string",
+            "description": "One value."
+          }
+        }
+      }
+    },
+    "required": [
+      "id",
+      "areaDesc",
+      "sent",
+      "effective",
+      "expires",
+      "status",
+      "messageType",
+      "severity",
+      "certainty",
+      "urgency",
+      "event",
+      "senderName",
+      "description"
+    ]
+  },
+  "AlertFeature": {
+    "title": "AlertFeature",
+    "type": "object",
+    "description": "One alert, in the GeoJSON feature the API wraps it in.",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Canonical URL of this alert."
+      },
+      "type": {
+        "type": "string",
+        "enum": [
+          "Feature"
+        ],
+        "description": "Always `Feature`."
+      },
+      "geometry": {
+        "$ref": "AlertGeometry",
+        "description": "The area covered, when it was drawn as a polygon."
+      },
+      "properties": {
+        "$ref": "Alert",
+        "description": "The alert itself."
+      }
+    },
+    "required": [
+      "id",
+      "type",
+      "properties"
+    ]
+  },
+  "ForecastPeriod": {
+    "title": "ForecastPeriod",
+    "type": "object",
+    "description": "One period of a narrative forecast: a named half-day in the twice-daily forecast, or one hour in the hourly one.",
+    "properties": {
+      "number": {
+        "type": "integer",
+        "description": "Sequence number within the forecast, starting at 1."
+      },
+      "name": {
+        "type": "string",
+        "description": "Name of the period, such as `Tonight` or `Wednesday`. Empty in the hourly forecast, which names nothing."
+      },
+      "startTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When the period begins, in the forecast point's own local time."
+      },
+      "endTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When the period ends."
+      },
+      "isDaytime": {
+        "type": "boolean",
+        "description": "Whether this is a daytime period."
+      },
+      "temperature": {
+        "type": "number",
+        "description": "Forecast temperature, in `temperatureUnit`. A bare number here, unlike everywhere else in this API."
+      },
+      "temperatureUnit": {
+        "type": "string",
+        "enum": [
+          "F",
+          "C"
+        ],
+        "description": "Unit `temperature` is in: `F` under `units=us`, `C` under `units=si`."
+      },
+      "temperatureTrend": {
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "The trend."
+          },
+          {
+            "type": "null",
+            "description": "No trend -- the usual case."
+          }
+        ],
+        "description": "`rising` or `falling` where the temperature moves against the usual daily cycle."
+      },
+      "probabilityOfPrecipitation": {
+        "$ref": "QuantitativeValue",
+        "description": "Chance of measurable precipitation."
+      },
+      "dewpoint": {
+        "$ref": "QuantitativeValue",
+        "description": "Forecast dew point. Hourly forecasts only."
+      },
+      "relativeHumidity": {
+        "$ref": "QuantitativeValue",
+        "description": "Forecast relative humidity. Hourly forecasts only."
+      },
+      "windSpeed": {
+        "type": "string",
+        "description": "Wind speed as prose with its unit, such as `5 to 10 mph`. A string, not a `QuantitativeValue`."
+      },
+      "windDirection": {
+        "type": "string",
+        "description": "Compass direction the wind comes from, such as `NNE`."
+      },
+      "icon": {
+        "type": "string",
+        "description": "URL of an icon for the period."
+      },
+      "shortForecast": {
+        "type": "string",
+        "description": "A few words, such as `Partly Sunny`."
+      },
+      "detailedForecast": {
+        "type": "string",
+        "description": "A sentence or two. Empty in the hourly forecast."
+      }
+    },
+    "required": [
+      "number",
+      "name",
+      "startTime",
+      "endTime",
+      "isDaytime",
+      "temperature",
+      "temperatureUnit",
+      "windSpeed",
+      "windDirection",
+      "shortForecast",
+      "detailedForecast"
+    ]
+  },
+  "Forecast": {
+    "title": "Forecast",
+    "type": "object",
+    "description": "A narrative forecast for one grid cell, as a list of periods.",
+    "properties": {
+      "units": {
+        "type": "string",
+        "enum": [
+          "us",
+          "si"
+        ],
+        "description": "Unit system the periods are rendered in."
+      },
+      "forecastGenerator": {
+        "type": "string",
+        "description": "Which generator produced it, such as `BaselineForecastGenerator`."
+      },
+      "generatedAt": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When this rendering was generated."
+      },
+      "updateTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When the underlying grid data was last updated."
+      },
+      "validTimes": {
+        "type": "string",
+        "description": "ISO 8601 interval the forecast covers, as `<start>/<duration>`."
+      },
+      "elevation": {
+        "$ref": "QuantitativeValue",
+        "description": "Elevation of the grid cell."
+      },
+      "periods": {
+        "type": "array",
+        "description": "The forecast periods, in order.",
+        "items": {
+          "$ref": "ForecastPeriod",
+          "description": "One period."
+        }
+      }
+    },
+    "required": [
+      "units",
+      "generatedAt",
+      "updateTime",
+      "validTimes",
+      "periods"
+    ]
+  },
+  "GridValue": {
+    "title": "GridValue",
+    "type": "object",
+    "description": "One value of a gridded series, and the interval it holds over.",
+    "properties": {
+      "validTime": {
+        "type": "string",
+        "description": "ISO 8601 interval this value covers, as `<start>/<duration>` -- one string carrying both, such as `2026-09-09T01:00:00+00:00/PT1H`."
+      },
+      "value": {
+        "anyOf": [
+          {
+            "type": "number",
+            "description": "The value, in the series' `uom`."
+          },
+          {
+            "type": "null",
+            "description": "No value over this interval."
+          }
+        ],
+        "description": "The value over `validTime`."
+      }
+    },
+    "required": [
+      "validTime",
+      "value"
+    ]
+  },
+  "GridSeries": {
+    "title": "GridSeries",
+    "type": "object",
+    "description": "One gridded series: a unit and a run of intervals, each with its own value. Consecutive intervals with the same value are collapsed into one, so the series is not evenly spaced.",
+    "properties": {
+      "uom": {
+        "type": "string",
+        "description": "WMO unit code every value is in."
+      },
+      "values": {
+        "type": "array",
+        "description": "The values, in time order.",
+        "items": {
+          "$ref": "GridValue",
+          "description": "One interval."
+        }
+      }
+    },
+    "required": [
+      "values"
+    ]
+  }
+}

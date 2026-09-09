@@ -1,0 +1,34 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/alerts_single",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/alerts/{id}",
+    "method": "GET",
+    "description": "One alert by its identifier, including the polygon it was drawn for when it has one. The identifiers come from `alerts.get_active_alerts`.",
+    "request": {
+      "title": "GetAlertRequest",
+      "type": "object",
+      "description": "Which alert.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Alert identifier, such as `urn:oid:2.49.0.1.840.0.<hash>.001.1`. `alerts.get_active_alerts` returns it as `properties.id`."
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "response": {
+      "$ref": "AlertFeature",
+      "description": "The alert, in the GeoJSON feature the API wraps it in. No envelope is declared here: unlike the forecast endpoints, this geometry is real data -- the area the alert was drawn for."
+    }
+  },
+  "notes": [
+    "The identifier contains colons and periods, which the client percent-encodes into the path."
+  ]
+}

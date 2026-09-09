@@ -1,0 +1,5 @@
+{
+  "description": "The weather forecast offices that issue everything else here.",
+  "upstream": "https://www.weather.gov/documentation/services-web-api#/default/office",
+  "core": "default"
+}

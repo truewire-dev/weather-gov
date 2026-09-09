@@ -1,0 +1,9 @@
+{
+  "description": "Six hours of observations from Seattle-Tacoma airport",
+  "request": {
+    "station_id": "KSEA",
+    "start": "2026-09-08T00:00:00Z",
+    "end": "2026-09-08T06:00:00Z",
+    "limit": 500
+  }
+}
