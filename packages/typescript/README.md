@@ -18,11 +18,8 @@ No account, no key, no quota. The service asks one thing of a caller: say who yo
 
 ## Install
 
-Not on npm yet; the package lives in this repository:
-
 ```sh
-git clone https://github.com/truewire-dev/weather-gov
-cd weather-gov/packages/typescript && yarn install
+npm install @truewire/weather-gov
 ```
 
 Node 20 or newer, or any runtime with `fetch` and `URLSearchParams` — the transport is `fetch` and nothing else, so Deno, Bun and the browser work unchanged. `api.weather.gov` sends `Access-Control-Allow-Origin: *`, so a browser is a real target here rather than a theoretical one.
