@@ -12,11 +12,10 @@
 use std::io::{BufRead, BufReader};
 use std::path::{Path, PathBuf};
 use std::process::{Child, Command, Stdio};
-use std::sync::Arc;
 
 use truewire_core::serde_json::Value;
 use truewire_core::CallOptions;
-use weather_gov::core::{Core, CoreOptions};
+use weather_gov::core::CoreOptions;
 use weather_gov::types::QuantitativeValue;
 use weather_gov::Weather;
 
@@ -77,9 +76,7 @@ fn start_mock() -> Mock {
 }
 
 fn client(mock: &Mock) -> Weather {
-    Weather::new(Arc::new(Core::new(
-        CoreOptions::new(CONTACT).base_url(mock.http.clone()),
-    )))
+    Weather::with_options(CoreOptions::new(CONTACT).base_url(mock.http.clone()))
 }
 
 /// The request half of one recorded example: the source of truth for what to replay.

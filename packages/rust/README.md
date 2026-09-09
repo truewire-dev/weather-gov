@@ -20,7 +20,7 @@ No account, no key, no quota. The service asks one thing of a caller: say who yo
 
 ```toml
 [dependencies]
-weather_gov = { package = "truewire-weather-gov", version = "0.1" }
+weather_gov = { package = "truewire-weather-gov", version = "0.2" }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 ```
 
@@ -33,15 +33,12 @@ as it reads.
 Almost everything in this API is addressed by *grid cell*, not by coordinates, so a caller starts at `points.get_point` and uses what it returns:
 
 ```rust
-use std::sync::Arc;
-
 use truewire_core::CallOptions;
-use weather_gov::core::{Core, CoreOptions};
 use weather_gov::{forecast, points, Weather};
 
 #[tokio::main]
 async fn main() -> truewire_core::Result<()> {
-    let client = Weather::new(Arc::new(Core::new(CoreOptions::new("you@example.com"))));
+    let client = Weather::new("you@example.com");
 
     let point = client
         .points
@@ -89,7 +86,6 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use truewire_core::CallOptions;
-use weather_gov::core::{Core, CoreOptions};
 use weather_gov::{alerts, Weather};
 
 async fn severe(client: &Weather) -> truewire_core::Result<usize> {
@@ -108,7 +104,7 @@ async fn severe(client: &Weather) -> truewire_core::Result<usize> {
 }
 
 async fn build() -> truewire_core::Result<()> {
-    let client = Weather::new(Arc::new(Core::new(CoreOptions::new("you@example.com"))));
+    let client = Weather::new("you@example.com");
     println!("{} severe alerts", severe(&client).await?);
     Ok(())
 }
