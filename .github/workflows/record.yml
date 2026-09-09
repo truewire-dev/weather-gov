@@ -1,0 +1,96 @@
+name: Record
+
+# Re-record every example from the live weather.gov API and open a pull request with the
+# result. Manual: Actions > Record > Run workflow.
+#
+# There is nothing to configure and no secret to set. The National Weather Service answers
+# every endpoint in this project to anyone who identifies themselves in `User-Agent`, so a
+# runner can re-record the whole showcase unattended -- which is most of why this API was
+# chosen as a showcase in the first place.
+#
+# An endpoint that fails to record does not stop the others: the pull request carries
+# whatever the API did answer, and the job still ends red so the failure is not lost.
+on:
+  # Recordings go stale on their own: a live API changes underneath them, and nothing in
+  # this repository notices until someone re-records. So the runner re-records weekly by
+  # itself and opens the pull request; a human or an agent only has to judge the diff.
+  schedule:
+    - cron: '0 7 * * 1'
+  workflow_dispatch:
+    inputs:
+      contact:
+        description: The contact address to identify this run in User-Agent.
+        default: hello@truewire.dev
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+      - name: Install
+        run: |
+          uv venv --python 3.12 .venv
+          uv pip install --python .venv/bin/python --refresh-package truewire -e 'packages/python[dev]'
+      - name: Record through the generated client
+        # `refresh_examples.py` runs first and repoints the two examples that go stale on
+        # their own -- the observation window the service has since dropped, and the alert
+        # that has since expired. Then `truewire capture` replays every request half.
+        env:
+          PYTHON: .venv/bin/python
+          CONTACT: ${{ inputs.contact || 'hello@truewire.dev' }}
+        # Failures are reported by the script and re-raised at the end of the job, so the
+        # recordings that did succeed still reach a pull request.
+        continue-on-error: true
+        id: record
+        run: PATH="$PWD/.venv/bin:$PATH" sh packages/python/test/recapture.sh
+      - name: Gates on the recordings
+        run: |
+          .venv/bin/truewire check
+          .venv/bin/truewire examples --require-verified --verbose | tee coverage.txt
+          .venv/bin/python -m pytest packages/python/test -q -rs
+      - name: Open a pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- spec; then
+            echo "Recordings unchanged; nothing to open."
+            exit 0
+          fi
+          branch="record/${{ github.run_id }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add spec
+          git commit -m "Record examples from the live weather.gov API" \
+            -m "Recorded by the Record workflow, run ${{ github.run_id }}, through the generated client."
+          git push origin "$branch"
+          {
+            echo "Recorded by the [Record workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) through the generated client."
+            echo
+            echo "Every changed endpoint keeps its request half and gains the response the API sent. The observation window and the alert identifier move on purpose: the service keeps about a week of observations, and alerts expire."
+            echo
+            echo '```'
+            cat coverage.txt
+            echo '```'
+          } > body.md
+          # A repository with "Allow GitHub Actions to create and approve pull requests"
+          # off (Settings > Actions > General) pushes the branch and then cannot open
+          # anything for it. The recordings are safe on the branch either way, so say
+          # where they are rather than losing the run over a setting.
+          if ! gh pr create --title "Record examples from the live weather.gov API" \
+            --body-file body.md --base main --head "$branch"; then
+            url="${{ github.server_url }}/${{ github.repository }}/compare/main...$branch?expand=1"
+            echo "::warning::could not open a pull request; the recordings are on $branch, open it at $url"
+            { echo "### Recordings are on \`$branch\`"; echo; echo "[Open the pull request]($url)"; } \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Some examples did not record
+        if: steps.record.outcome == 'failure'
+        run: |
+          echo "::error::at least one example did not record; the pull request carries the rest"
+          exit 1

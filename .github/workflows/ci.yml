@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+      - name: Install
+        run: |
+          uv venv --python ${{ matrix.python }} .venv
+          # `--refresh-package truewire`: on the day the toolchain releases, a runner that
+          # resolved before PyPI's index caught up caches "no such version", and
+          # `setup-uv` restores that cache into every later run of this job -- so the
+          # failure repeats on a re-run and looks like a bad pin. One metadata fetch
+          # avoids it; the wheel cache is untouched.
+          uv pip install --python .venv/bin/python --refresh-package truewire -e 'packages/python[dev]'
+      - name: Spec checks
+        run: .venv/bin/truewire check
+      - name: Standards
+        run: .venv/bin/truewire standards
+      - name: Generated code is current
+        # `--check` compares the manifest; regenerating and diffing also catches a stale
+        # file body.
+        run: |
+          .venv/bin/truewire generate python --check
+          .venv/bin/truewire generate python
+          .venv/bin/truewire generate typescript --check
+          .venv/bin/truewire generate typescript
+          git diff --exit-code -- packages .truewire
+      - name: Tests against the mock server
+        run: .venv/bin/python -m pytest packages/python/test -q -rs
+      - name: Type check
+        run: .venv/bin/pyright --project packages/python/pyrightconfig.json
+      - name: Lint and format
+        run: |
+          .venv/bin/ruff check --config packages/python/ruff.toml packages/python/src packages/python/test
+          .venv/bin/ruff format --check --config packages/python/ruff.toml packages/python/src packages/python/test
+      - name: Docs
+        # Every Python code block in README.md is type-checked against the package, and
+        # every link in the docs is resolved.
+        run: |
+          .venv/bin/truewire docs check
+          .venv/bin/truewire docs lint
+
+  typescript:
+    name: TypeScript client
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install
+        # `truewire mock` serves the recordings the tests replay, so the Python toolchain
+        # is needed here too.
+        run: |
+          uv venv --python 3.12 .venv
+          uv pip install --python .venv/bin/python --refresh-package truewire -e 'packages/python[dev]'
+          cd packages/typescript && yarn install --frozen-lockfile
+      - name: Type check
+        working-directory: packages/typescript
+        run: yarn run typecheck
+      - name: Replay the recordings through the generated client
+        # Also compiles every TypeScript block in the package README.
+        working-directory: packages/typescript
+        run: yarn run test
+
+  recordings:
+    name: Every endpoint has a recording
+    runs-on: ubuntu-latest
+    # Required. Every endpoint of this API answers without credentials, so unlike the
+    # Bluesky showcase there is no endpoint here with an excuse for having no recording:
+    # an endpoint arrives with one, or the pull request is red.
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+      - name: Install
+        run: |
+          uv venv --python 3.12 .venv
+          uv pip install --python .venv/bin/python --refresh-package truewire -e 'packages/python[dev]'
+      - name: Recorded, every one
+        run: .venv/bin/truewire examples --require-verified --verbose

@@ -61,7 +61,7 @@
           "description": "Outline of the grid cell the forecast covers."
         },
         "properties": {
-          "$ref": "Forecast",
+          "$ref": "GridpointForecast",
           "description": "The forecast itself, one period per hour."
         }
       },

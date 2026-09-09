@@ -29,3 +29,8 @@ base = "weather_gov.core:ClientBase"
 
 [python.cores.default]
 base = "weather_gov.core:Endpoint"
+
+[typescript]
+package = "weather-gov"
+src = "packages/typescript/src"
+name = "Weather"

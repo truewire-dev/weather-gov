@@ -251,8 +251,8 @@ class AlertFeature(TypedDict):
   properties: Alert
 
 
-class Forecast(TypedDict):
-  """A narrative forecast for one grid cell, as a list of periods."""
+class GridpointForecast(TypedDict):
+  """A narrative forecast for one grid cell, as a list of periods. Named for the service's own term: `/gridpoints/{office}/{x},{y}/forecast` is the gridpoint forecast."""
 
   units: Literal['us', 'si']
   """Unit system the periods are rendered in."""

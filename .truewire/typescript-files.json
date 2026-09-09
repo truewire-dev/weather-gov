@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "files": [
+    "alerts/get_active_alerts.ts",
+    "alerts/get_alert.ts",
+    "alerts/index.ts",
+    "forecast/get_forecast.ts",
+    "forecast/get_grid_data.ts",
+    "forecast/get_hourly_forecast.ts",
+    "forecast/index.ts",
+    "index.ts",
+    "main.ts",
+    "meta.ts",
+    "offices/get_office.ts",
+    "offices/index.ts",
+    "points/get_point.ts",
+    "points/index.ts",
+    "products/index.ts",
+    "products/list_product_types.ts",
+    "stations/get_latest_observation.ts",
+    "stations/get_observations.ts",
+    "stations/index.ts",
+    "stations/list_stations.ts",
+    "types/index.ts"
+  ]
+}

@@ -896,10 +896,10 @@
       "detailedForecast"
     ]
   },
-  "Forecast": {
-    "title": "Forecast",
+  "GridpointForecast": {
+    "title": "GridpointForecast",
     "type": "object",
-    "description": "A narrative forecast for one grid cell, as a list of periods.",
+    "description": "A narrative forecast for one grid cell, as a list of periods. Named for the service's own term: `/gridpoints/{office}/{x},{y}/forecast` is the gridpoint forecast.",
     "properties": {
       "units": {
         "type": "string",
