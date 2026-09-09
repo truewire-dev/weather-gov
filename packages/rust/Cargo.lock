@@ -1363,7 +1363,8 @@ dependencies = [
 [[package]]
 name = "truewire-core"
 version = "0.1.0"
-source = "git+https://github.com/truewire-dev/truewire?branch=main#6cc2749ada8e0e1c3f50e0c3c7f032a380ef3063"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ff8fa46e3b1a5530ed3d63d57e1fbce6d191b52c797e9d5d959120a5258c87f8"
 dependencies = [
  "async-trait",
  "bytes",
@@ -1378,6 +1379,17 @@ dependencies = [
  "tokio",
  "tokio-tungstenite",
  "url",
+]
+
+[[package]]
+name = "truewire-weather-gov"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "futures",
+ "serde",
+ "tokio",
+ "truewire-core",
 ]
 
 [[package]]
@@ -1518,17 +1530,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "81941cd78d0c92026c33e5e01312845a4cb1e9af3407f9134b100dd03144103e"
 dependencies = [
  "unicode-ident",
-]
-
-[[package]]
-name = "weather_gov"
-version = "0.1.0"
-dependencies = [
- "async-trait",
- "futures",
- "serde",
- "tokio",
- "truewire-core",
 ]
 
 [[package]]
