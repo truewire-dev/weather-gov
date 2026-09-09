@@ -42,7 +42,7 @@
     "properties": {
       "units": "us",
       "forecastGenerator": "HourlyForecastGenerator",
-      "generatedAt": "2026-09-09T13:07:52+00:00",
+      "generatedAt": "2026-09-09T14:02:42+00:00",
       "updateTime": "2026-09-09T07:30:54+00:00",
       "validTimes": "2026-09-09T01:00:00+00:00/P8D",
       "elevation": {
@@ -52,33 +52,6 @@
       "periods": [
         {
           "number": 1,
-          "name": "",
-          "startTime": "2026-09-09T06:00:00-07:00",
-          "endTime": "2026-09-09T07:00:00-07:00",
-          "isDaytime": true,
-          "temperature": 56,
-          "temperatureUnit": "F",
-          "temperatureTrend": null,
-          "probabilityOfPrecipitation": {
-            "unitCode": "wmoUnit:percent",
-            "value": 0
-          },
-          "dewpoint": {
-            "unitCode": "wmoUnit:degC",
-            "value": 11.666666666666666
-          },
-          "relativeHumidity": {
-            "unitCode": "wmoUnit:percent",
-            "value": 91
-          },
-          "windSpeed": "2 mph",
-          "windDirection": "NNE",
-          "icon": "https://api.weather.gov/icons/land/day/few?size=small",
-          "shortForecast": "Sunny",
-          "detailedForecast": ""
-        },
-        {
-          "number": 2,
           "name": "",
           "startTime": "2026-09-09T07:00:00-07:00",
           "endTime": "2026-09-09T08:00:00-07:00",
@@ -105,7 +78,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 3,
+          "number": 2,
           "name": "",
           "startTime": "2026-09-09T08:00:00-07:00",
           "endTime": "2026-09-09T09:00:00-07:00",
@@ -132,7 +105,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 4,
+          "number": 3,
           "name": "",
           "startTime": "2026-09-09T09:00:00-07:00",
           "endTime": "2026-09-09T10:00:00-07:00",
@@ -159,7 +132,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 5,
+          "number": 4,
           "name": "",
           "startTime": "2026-09-09T10:00:00-07:00",
           "endTime": "2026-09-09T11:00:00-07:00",
@@ -186,7 +159,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 6,
+          "number": 5,
           "name": "",
           "startTime": "2026-09-09T11:00:00-07:00",
           "endTime": "2026-09-09T12:00:00-07:00",
@@ -213,7 +186,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 7,
+          "number": 6,
           "name": "",
           "startTime": "2026-09-09T12:00:00-07:00",
           "endTime": "2026-09-09T13:00:00-07:00",
@@ -240,7 +213,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 8,
+          "number": 7,
           "name": "",
           "startTime": "2026-09-09T13:00:00-07:00",
           "endTime": "2026-09-09T14:00:00-07:00",
@@ -267,7 +240,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 9,
+          "number": 8,
           "name": "",
           "startTime": "2026-09-09T14:00:00-07:00",
           "endTime": "2026-09-09T15:00:00-07:00",
@@ -294,7 +267,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 10,
+          "number": 9,
           "name": "",
           "startTime": "2026-09-09T15:00:00-07:00",
           "endTime": "2026-09-09T16:00:00-07:00",
@@ -321,7 +294,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 11,
+          "number": 10,
           "name": "",
           "startTime": "2026-09-09T16:00:00-07:00",
           "endTime": "2026-09-09T17:00:00-07:00",
@@ -348,7 +321,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 12,
+          "number": 11,
           "name": "",
           "startTime": "2026-09-09T17:00:00-07:00",
           "endTime": "2026-09-09T18:00:00-07:00",
@@ -375,7 +348,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 13,
+          "number": 12,
           "name": "",
           "startTime": "2026-09-09T18:00:00-07:00",
           "endTime": "2026-09-09T19:00:00-07:00",
@@ -402,7 +375,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 14,
+          "number": 13,
           "name": "",
           "startTime": "2026-09-09T19:00:00-07:00",
           "endTime": "2026-09-09T20:00:00-07:00",
@@ -429,7 +402,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 15,
+          "number": 14,
           "name": "",
           "startTime": "2026-09-09T20:00:00-07:00",
           "endTime": "2026-09-09T21:00:00-07:00",
@@ -456,7 +429,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 16,
+          "number": 15,
           "name": "",
           "startTime": "2026-09-09T21:00:00-07:00",
           "endTime": "2026-09-09T22:00:00-07:00",
@@ -483,7 +456,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 17,
+          "number": 16,
           "name": "",
           "startTime": "2026-09-09T22:00:00-07:00",
           "endTime": "2026-09-09T23:00:00-07:00",
@@ -510,7 +483,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 18,
+          "number": 17,
           "name": "",
           "startTime": "2026-09-09T23:00:00-07:00",
           "endTime": "2026-09-10T00:00:00-07:00",
@@ -537,7 +510,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 19,
+          "number": 18,
           "name": "",
           "startTime": "2026-09-10T00:00:00-07:00",
           "endTime": "2026-09-10T01:00:00-07:00",
@@ -564,7 +537,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 20,
+          "number": 19,
           "name": "",
           "startTime": "2026-09-10T01:00:00-07:00",
           "endTime": "2026-09-10T02:00:00-07:00",
@@ -591,7 +564,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 21,
+          "number": 20,
           "name": "",
           "startTime": "2026-09-10T02:00:00-07:00",
           "endTime": "2026-09-10T03:00:00-07:00",
@@ -618,7 +591,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 22,
+          "number": 21,
           "name": "",
           "startTime": "2026-09-10T03:00:00-07:00",
           "endTime": "2026-09-10T04:00:00-07:00",
@@ -645,7 +618,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 23,
+          "number": 22,
           "name": "",
           "startTime": "2026-09-10T04:00:00-07:00",
           "endTime": "2026-09-10T05:00:00-07:00",
@@ -672,7 +645,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 24,
+          "number": 23,
           "name": "",
           "startTime": "2026-09-10T05:00:00-07:00",
           "endTime": "2026-09-10T06:00:00-07:00",
@@ -699,7 +672,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 25,
+          "number": 24,
           "name": "",
           "startTime": "2026-09-10T06:00:00-07:00",
           "endTime": "2026-09-10T07:00:00-07:00",
@@ -726,7 +699,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 26,
+          "number": 25,
           "name": "",
           "startTime": "2026-09-10T07:00:00-07:00",
           "endTime": "2026-09-10T08:00:00-07:00",
@@ -753,7 +726,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 27,
+          "number": 26,
           "name": "",
           "startTime": "2026-09-10T08:00:00-07:00",
           "endTime": "2026-09-10T09:00:00-07:00",
@@ -780,7 +753,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 28,
+          "number": 27,
           "name": "",
           "startTime": "2026-09-10T09:00:00-07:00",
           "endTime": "2026-09-10T10:00:00-07:00",
@@ -807,7 +780,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 29,
+          "number": 28,
           "name": "",
           "startTime": "2026-09-10T10:00:00-07:00",
           "endTime": "2026-09-10T11:00:00-07:00",
@@ -834,7 +807,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 30,
+          "number": 29,
           "name": "",
           "startTime": "2026-09-10T11:00:00-07:00",
           "endTime": "2026-09-10T12:00:00-07:00",
@@ -861,7 +834,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 31,
+          "number": 30,
           "name": "",
           "startTime": "2026-09-10T12:00:00-07:00",
           "endTime": "2026-09-10T13:00:00-07:00",
@@ -888,7 +861,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 32,
+          "number": 31,
           "name": "",
           "startTime": "2026-09-10T13:00:00-07:00",
           "endTime": "2026-09-10T14:00:00-07:00",
@@ -915,7 +888,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 33,
+          "number": 32,
           "name": "",
           "startTime": "2026-09-10T14:00:00-07:00",
           "endTime": "2026-09-10T15:00:00-07:00",
@@ -942,7 +915,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 34,
+          "number": 33,
           "name": "",
           "startTime": "2026-09-10T15:00:00-07:00",
           "endTime": "2026-09-10T16:00:00-07:00",
@@ -969,7 +942,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 35,
+          "number": 34,
           "name": "",
           "startTime": "2026-09-10T16:00:00-07:00",
           "endTime": "2026-09-10T17:00:00-07:00",
@@ -996,7 +969,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 36,
+          "number": 35,
           "name": "",
           "startTime": "2026-09-10T17:00:00-07:00",
           "endTime": "2026-09-10T18:00:00-07:00",
@@ -1023,7 +996,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 37,
+          "number": 36,
           "name": "",
           "startTime": "2026-09-10T18:00:00-07:00",
           "endTime": "2026-09-10T19:00:00-07:00",
@@ -1050,7 +1023,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 38,
+          "number": 37,
           "name": "",
           "startTime": "2026-09-10T19:00:00-07:00",
           "endTime": "2026-09-10T20:00:00-07:00",
@@ -1077,7 +1050,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 39,
+          "number": 38,
           "name": "",
           "startTime": "2026-09-10T20:00:00-07:00",
           "endTime": "2026-09-10T21:00:00-07:00",
@@ -1104,7 +1077,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 40,
+          "number": 39,
           "name": "",
           "startTime": "2026-09-10T21:00:00-07:00",
           "endTime": "2026-09-10T22:00:00-07:00",
@@ -1131,7 +1104,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 41,
+          "number": 40,
           "name": "",
           "startTime": "2026-09-10T22:00:00-07:00",
           "endTime": "2026-09-10T23:00:00-07:00",
@@ -1158,7 +1131,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 42,
+          "number": 41,
           "name": "",
           "startTime": "2026-09-10T23:00:00-07:00",
           "endTime": "2026-09-11T00:00:00-07:00",
@@ -1185,7 +1158,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 43,
+          "number": 42,
           "name": "",
           "startTime": "2026-09-11T00:00:00-07:00",
           "endTime": "2026-09-11T01:00:00-07:00",
@@ -1212,7 +1185,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 44,
+          "number": 43,
           "name": "",
           "startTime": "2026-09-11T01:00:00-07:00",
           "endTime": "2026-09-11T02:00:00-07:00",
@@ -1239,7 +1212,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 45,
+          "number": 44,
           "name": "",
           "startTime": "2026-09-11T02:00:00-07:00",
           "endTime": "2026-09-11T03:00:00-07:00",
@@ -1266,7 +1239,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 46,
+          "number": 45,
           "name": "",
           "startTime": "2026-09-11T03:00:00-07:00",
           "endTime": "2026-09-11T04:00:00-07:00",
@@ -1293,7 +1266,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 47,
+          "number": 46,
           "name": "",
           "startTime": "2026-09-11T04:00:00-07:00",
           "endTime": "2026-09-11T05:00:00-07:00",
@@ -1320,7 +1293,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 48,
+          "number": 47,
           "name": "",
           "startTime": "2026-09-11T05:00:00-07:00",
           "endTime": "2026-09-11T06:00:00-07:00",
@@ -1347,7 +1320,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 49,
+          "number": 48,
           "name": "",
           "startTime": "2026-09-11T06:00:00-07:00",
           "endTime": "2026-09-11T07:00:00-07:00",
@@ -1374,7 +1347,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 50,
+          "number": 49,
           "name": "",
           "startTime": "2026-09-11T07:00:00-07:00",
           "endTime": "2026-09-11T08:00:00-07:00",
@@ -1401,7 +1374,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 51,
+          "number": 50,
           "name": "",
           "startTime": "2026-09-11T08:00:00-07:00",
           "endTime": "2026-09-11T09:00:00-07:00",
@@ -1428,7 +1401,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 52,
+          "number": 51,
           "name": "",
           "startTime": "2026-09-11T09:00:00-07:00",
           "endTime": "2026-09-11T10:00:00-07:00",
@@ -1455,7 +1428,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 53,
+          "number": 52,
           "name": "",
           "startTime": "2026-09-11T10:00:00-07:00",
           "endTime": "2026-09-11T11:00:00-07:00",
@@ -1482,7 +1455,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 54,
+          "number": 53,
           "name": "",
           "startTime": "2026-09-11T11:00:00-07:00",
           "endTime": "2026-09-11T12:00:00-07:00",
@@ -1509,7 +1482,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 55,
+          "number": 54,
           "name": "",
           "startTime": "2026-09-11T12:00:00-07:00",
           "endTime": "2026-09-11T13:00:00-07:00",
@@ -1536,7 +1509,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 56,
+          "number": 55,
           "name": "",
           "startTime": "2026-09-11T13:00:00-07:00",
           "endTime": "2026-09-11T14:00:00-07:00",
@@ -1563,7 +1536,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 57,
+          "number": 56,
           "name": "",
           "startTime": "2026-09-11T14:00:00-07:00",
           "endTime": "2026-09-11T15:00:00-07:00",
@@ -1590,7 +1563,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 58,
+          "number": 57,
           "name": "",
           "startTime": "2026-09-11T15:00:00-07:00",
           "endTime": "2026-09-11T16:00:00-07:00",
@@ -1617,7 +1590,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 59,
+          "number": 58,
           "name": "",
           "startTime": "2026-09-11T16:00:00-07:00",
           "endTime": "2026-09-11T17:00:00-07:00",
@@ -1644,7 +1617,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 60,
+          "number": 59,
           "name": "",
           "startTime": "2026-09-11T17:00:00-07:00",
           "endTime": "2026-09-11T18:00:00-07:00",
@@ -1671,7 +1644,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 61,
+          "number": 60,
           "name": "",
           "startTime": "2026-09-11T18:00:00-07:00",
           "endTime": "2026-09-11T19:00:00-07:00",
@@ -1698,7 +1671,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 62,
+          "number": 61,
           "name": "",
           "startTime": "2026-09-11T19:00:00-07:00",
           "endTime": "2026-09-11T20:00:00-07:00",
@@ -1725,7 +1698,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 63,
+          "number": 62,
           "name": "",
           "startTime": "2026-09-11T20:00:00-07:00",
           "endTime": "2026-09-11T21:00:00-07:00",
@@ -1752,7 +1725,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 64,
+          "number": 63,
           "name": "",
           "startTime": "2026-09-11T21:00:00-07:00",
           "endTime": "2026-09-11T22:00:00-07:00",
@@ -1779,7 +1752,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 65,
+          "number": 64,
           "name": "",
           "startTime": "2026-09-11T22:00:00-07:00",
           "endTime": "2026-09-11T23:00:00-07:00",
@@ -1806,7 +1779,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 66,
+          "number": 65,
           "name": "",
           "startTime": "2026-09-11T23:00:00-07:00",
           "endTime": "2026-09-12T00:00:00-07:00",
@@ -1833,7 +1806,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 67,
+          "number": 66,
           "name": "",
           "startTime": "2026-09-12T00:00:00-07:00",
           "endTime": "2026-09-12T01:00:00-07:00",
@@ -1860,7 +1833,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 68,
+          "number": 67,
           "name": "",
           "startTime": "2026-09-12T01:00:00-07:00",
           "endTime": "2026-09-12T02:00:00-07:00",
@@ -1887,7 +1860,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 69,
+          "number": 68,
           "name": "",
           "startTime": "2026-09-12T02:00:00-07:00",
           "endTime": "2026-09-12T03:00:00-07:00",
@@ -1914,7 +1887,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 70,
+          "number": 69,
           "name": "",
           "startTime": "2026-09-12T03:00:00-07:00",
           "endTime": "2026-09-12T04:00:00-07:00",
@@ -1941,7 +1914,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 71,
+          "number": 70,
           "name": "",
           "startTime": "2026-09-12T04:00:00-07:00",
           "endTime": "2026-09-12T05:00:00-07:00",
@@ -1968,7 +1941,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 72,
+          "number": 71,
           "name": "",
           "startTime": "2026-09-12T05:00:00-07:00",
           "endTime": "2026-09-12T06:00:00-07:00",
@@ -1995,7 +1968,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 73,
+          "number": 72,
           "name": "",
           "startTime": "2026-09-12T06:00:00-07:00",
           "endTime": "2026-09-12T07:00:00-07:00",
@@ -2022,7 +1995,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 74,
+          "number": 73,
           "name": "",
           "startTime": "2026-09-12T07:00:00-07:00",
           "endTime": "2026-09-12T08:00:00-07:00",
@@ -2049,7 +2022,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 75,
+          "number": 74,
           "name": "",
           "startTime": "2026-09-12T08:00:00-07:00",
           "endTime": "2026-09-12T09:00:00-07:00",
@@ -2076,7 +2049,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 76,
+          "number": 75,
           "name": "",
           "startTime": "2026-09-12T09:00:00-07:00",
           "endTime": "2026-09-12T10:00:00-07:00",
@@ -2103,7 +2076,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 77,
+          "number": 76,
           "name": "",
           "startTime": "2026-09-12T10:00:00-07:00",
           "endTime": "2026-09-12T11:00:00-07:00",
@@ -2130,7 +2103,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 78,
+          "number": 77,
           "name": "",
           "startTime": "2026-09-12T11:00:00-07:00",
           "endTime": "2026-09-12T12:00:00-07:00",
@@ -2157,7 +2130,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 79,
+          "number": 78,
           "name": "",
           "startTime": "2026-09-12T12:00:00-07:00",
           "endTime": "2026-09-12T13:00:00-07:00",
@@ -2184,7 +2157,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 80,
+          "number": 79,
           "name": "",
           "startTime": "2026-09-12T13:00:00-07:00",
           "endTime": "2026-09-12T14:00:00-07:00",
@@ -2211,7 +2184,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 81,
+          "number": 80,
           "name": "",
           "startTime": "2026-09-12T14:00:00-07:00",
           "endTime": "2026-09-12T15:00:00-07:00",
@@ -2238,7 +2211,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 82,
+          "number": 81,
           "name": "",
           "startTime": "2026-09-12T15:00:00-07:00",
           "endTime": "2026-09-12T16:00:00-07:00",
@@ -2265,7 +2238,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 83,
+          "number": 82,
           "name": "",
           "startTime": "2026-09-12T16:00:00-07:00",
           "endTime": "2026-09-12T17:00:00-07:00",
@@ -2292,7 +2265,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 84,
+          "number": 83,
           "name": "",
           "startTime": "2026-09-12T17:00:00-07:00",
           "endTime": "2026-09-12T18:00:00-07:00",
@@ -2319,7 +2292,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 85,
+          "number": 84,
           "name": "",
           "startTime": "2026-09-12T18:00:00-07:00",
           "endTime": "2026-09-12T19:00:00-07:00",
@@ -2346,7 +2319,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 86,
+          "number": 85,
           "name": "",
           "startTime": "2026-09-12T19:00:00-07:00",
           "endTime": "2026-09-12T20:00:00-07:00",
@@ -2373,7 +2346,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 87,
+          "number": 86,
           "name": "",
           "startTime": "2026-09-12T20:00:00-07:00",
           "endTime": "2026-09-12T21:00:00-07:00",
@@ -2400,7 +2373,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 88,
+          "number": 87,
           "name": "",
           "startTime": "2026-09-12T21:00:00-07:00",
           "endTime": "2026-09-12T22:00:00-07:00",
@@ -2427,7 +2400,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 89,
+          "number": 88,
           "name": "",
           "startTime": "2026-09-12T22:00:00-07:00",
           "endTime": "2026-09-12T23:00:00-07:00",
@@ -2454,7 +2427,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 90,
+          "number": 89,
           "name": "",
           "startTime": "2026-09-12T23:00:00-07:00",
           "endTime": "2026-09-13T00:00:00-07:00",
@@ -2481,7 +2454,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 91,
+          "number": 90,
           "name": "",
           "startTime": "2026-09-13T00:00:00-07:00",
           "endTime": "2026-09-13T01:00:00-07:00",
@@ -2508,7 +2481,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 92,
+          "number": 91,
           "name": "",
           "startTime": "2026-09-13T01:00:00-07:00",
           "endTime": "2026-09-13T02:00:00-07:00",
@@ -2535,7 +2508,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 93,
+          "number": 92,
           "name": "",
           "startTime": "2026-09-13T02:00:00-07:00",
           "endTime": "2026-09-13T03:00:00-07:00",
@@ -2562,7 +2535,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 94,
+          "number": 93,
           "name": "",
           "startTime": "2026-09-13T03:00:00-07:00",
           "endTime": "2026-09-13T04:00:00-07:00",
@@ -2589,7 +2562,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 95,
+          "number": 94,
           "name": "",
           "startTime": "2026-09-13T04:00:00-07:00",
           "endTime": "2026-09-13T05:00:00-07:00",
@@ -2616,7 +2589,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 96,
+          "number": 95,
           "name": "",
           "startTime": "2026-09-13T05:00:00-07:00",
           "endTime": "2026-09-13T06:00:00-07:00",
@@ -2643,7 +2616,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 97,
+          "number": 96,
           "name": "",
           "startTime": "2026-09-13T06:00:00-07:00",
           "endTime": "2026-09-13T07:00:00-07:00",
@@ -2670,7 +2643,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 98,
+          "number": 97,
           "name": "",
           "startTime": "2026-09-13T07:00:00-07:00",
           "endTime": "2026-09-13T08:00:00-07:00",
@@ -2697,7 +2670,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 99,
+          "number": 98,
           "name": "",
           "startTime": "2026-09-13T08:00:00-07:00",
           "endTime": "2026-09-13T09:00:00-07:00",
@@ -2724,7 +2697,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 100,
+          "number": 99,
           "name": "",
           "startTime": "2026-09-13T09:00:00-07:00",
           "endTime": "2026-09-13T10:00:00-07:00",
@@ -2751,7 +2724,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 101,
+          "number": 100,
           "name": "",
           "startTime": "2026-09-13T10:00:00-07:00",
           "endTime": "2026-09-13T11:00:00-07:00",
@@ -2778,7 +2751,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 102,
+          "number": 101,
           "name": "",
           "startTime": "2026-09-13T11:00:00-07:00",
           "endTime": "2026-09-13T12:00:00-07:00",
@@ -2805,7 +2778,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 103,
+          "number": 102,
           "name": "",
           "startTime": "2026-09-13T12:00:00-07:00",
           "endTime": "2026-09-13T13:00:00-07:00",
@@ -2832,7 +2805,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 104,
+          "number": 103,
           "name": "",
           "startTime": "2026-09-13T13:00:00-07:00",
           "endTime": "2026-09-13T14:00:00-07:00",
@@ -2859,7 +2832,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 105,
+          "number": 104,
           "name": "",
           "startTime": "2026-09-13T14:00:00-07:00",
           "endTime": "2026-09-13T15:00:00-07:00",
@@ -2886,7 +2859,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 106,
+          "number": 105,
           "name": "",
           "startTime": "2026-09-13T15:00:00-07:00",
           "endTime": "2026-09-13T16:00:00-07:00",
@@ -2913,7 +2886,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 107,
+          "number": 106,
           "name": "",
           "startTime": "2026-09-13T16:00:00-07:00",
           "endTime": "2026-09-13T17:00:00-07:00",
@@ -2940,7 +2913,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 108,
+          "number": 107,
           "name": "",
           "startTime": "2026-09-13T17:00:00-07:00",
           "endTime": "2026-09-13T18:00:00-07:00",
@@ -2967,7 +2940,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 109,
+          "number": 108,
           "name": "",
           "startTime": "2026-09-13T18:00:00-07:00",
           "endTime": "2026-09-13T19:00:00-07:00",
@@ -2994,7 +2967,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 110,
+          "number": 109,
           "name": "",
           "startTime": "2026-09-13T19:00:00-07:00",
           "endTime": "2026-09-13T20:00:00-07:00",
@@ -3021,7 +2994,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 111,
+          "number": 110,
           "name": "",
           "startTime": "2026-09-13T20:00:00-07:00",
           "endTime": "2026-09-13T21:00:00-07:00",
@@ -3048,7 +3021,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 112,
+          "number": 111,
           "name": "",
           "startTime": "2026-09-13T21:00:00-07:00",
           "endTime": "2026-09-13T22:00:00-07:00",
@@ -3075,7 +3048,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 113,
+          "number": 112,
           "name": "",
           "startTime": "2026-09-13T22:00:00-07:00",
           "endTime": "2026-09-13T23:00:00-07:00",
@@ -3102,7 +3075,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 114,
+          "number": 113,
           "name": "",
           "startTime": "2026-09-13T23:00:00-07:00",
           "endTime": "2026-09-14T00:00:00-07:00",
@@ -3129,7 +3102,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 115,
+          "number": 114,
           "name": "",
           "startTime": "2026-09-14T00:00:00-07:00",
           "endTime": "2026-09-14T01:00:00-07:00",
@@ -3156,7 +3129,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 116,
+          "number": 115,
           "name": "",
           "startTime": "2026-09-14T01:00:00-07:00",
           "endTime": "2026-09-14T02:00:00-07:00",
@@ -3183,7 +3156,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 117,
+          "number": 116,
           "name": "",
           "startTime": "2026-09-14T02:00:00-07:00",
           "endTime": "2026-09-14T03:00:00-07:00",
@@ -3210,7 +3183,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 118,
+          "number": 117,
           "name": "",
           "startTime": "2026-09-14T03:00:00-07:00",
           "endTime": "2026-09-14T04:00:00-07:00",
@@ -3237,7 +3210,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 119,
+          "number": 118,
           "name": "",
           "startTime": "2026-09-14T04:00:00-07:00",
           "endTime": "2026-09-14T05:00:00-07:00",
@@ -3264,7 +3237,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 120,
+          "number": 119,
           "name": "",
           "startTime": "2026-09-14T05:00:00-07:00",
           "endTime": "2026-09-14T06:00:00-07:00",
@@ -3291,7 +3264,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 121,
+          "number": 120,
           "name": "",
           "startTime": "2026-09-14T06:00:00-07:00",
           "endTime": "2026-09-14T07:00:00-07:00",
@@ -3318,7 +3291,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 122,
+          "number": 121,
           "name": "",
           "startTime": "2026-09-14T07:00:00-07:00",
           "endTime": "2026-09-14T08:00:00-07:00",
@@ -3345,7 +3318,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 123,
+          "number": 122,
           "name": "",
           "startTime": "2026-09-14T08:00:00-07:00",
           "endTime": "2026-09-14T09:00:00-07:00",
@@ -3372,7 +3345,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 124,
+          "number": 123,
           "name": "",
           "startTime": "2026-09-14T09:00:00-07:00",
           "endTime": "2026-09-14T10:00:00-07:00",
@@ -3399,7 +3372,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 125,
+          "number": 124,
           "name": "",
           "startTime": "2026-09-14T10:00:00-07:00",
           "endTime": "2026-09-14T11:00:00-07:00",
@@ -3426,7 +3399,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 126,
+          "number": 125,
           "name": "",
           "startTime": "2026-09-14T11:00:00-07:00",
           "endTime": "2026-09-14T12:00:00-07:00",
@@ -3453,7 +3426,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 127,
+          "number": 126,
           "name": "",
           "startTime": "2026-09-14T12:00:00-07:00",
           "endTime": "2026-09-14T13:00:00-07:00",
@@ -3480,7 +3453,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 128,
+          "number": 127,
           "name": "",
           "startTime": "2026-09-14T13:00:00-07:00",
           "endTime": "2026-09-14T14:00:00-07:00",
@@ -3507,7 +3480,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 129,
+          "number": 128,
           "name": "",
           "startTime": "2026-09-14T14:00:00-07:00",
           "endTime": "2026-09-14T15:00:00-07:00",
@@ -3534,7 +3507,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 130,
+          "number": 129,
           "name": "",
           "startTime": "2026-09-14T15:00:00-07:00",
           "endTime": "2026-09-14T16:00:00-07:00",
@@ -3561,7 +3534,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 131,
+          "number": 130,
           "name": "",
           "startTime": "2026-09-14T16:00:00-07:00",
           "endTime": "2026-09-14T17:00:00-07:00",
@@ -3588,7 +3561,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 132,
+          "number": 131,
           "name": "",
           "startTime": "2026-09-14T17:00:00-07:00",
           "endTime": "2026-09-14T18:00:00-07:00",
@@ -3615,7 +3588,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 133,
+          "number": 132,
           "name": "",
           "startTime": "2026-09-14T18:00:00-07:00",
           "endTime": "2026-09-14T19:00:00-07:00",
@@ -3642,7 +3615,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 134,
+          "number": 133,
           "name": "",
           "startTime": "2026-09-14T19:00:00-07:00",
           "endTime": "2026-09-14T20:00:00-07:00",
@@ -3669,7 +3642,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 135,
+          "number": 134,
           "name": "",
           "startTime": "2026-09-14T20:00:00-07:00",
           "endTime": "2026-09-14T21:00:00-07:00",
@@ -3696,7 +3669,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 136,
+          "number": 135,
           "name": "",
           "startTime": "2026-09-14T21:00:00-07:00",
           "endTime": "2026-09-14T22:00:00-07:00",
@@ -3723,7 +3696,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 137,
+          "number": 136,
           "name": "",
           "startTime": "2026-09-14T22:00:00-07:00",
           "endTime": "2026-09-14T23:00:00-07:00",
@@ -3750,7 +3723,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 138,
+          "number": 137,
           "name": "",
           "startTime": "2026-09-14T23:00:00-07:00",
           "endTime": "2026-09-15T00:00:00-07:00",
@@ -3777,7 +3750,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 139,
+          "number": 138,
           "name": "",
           "startTime": "2026-09-15T00:00:00-07:00",
           "endTime": "2026-09-15T01:00:00-07:00",
@@ -3804,7 +3777,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 140,
+          "number": 139,
           "name": "",
           "startTime": "2026-09-15T01:00:00-07:00",
           "endTime": "2026-09-15T02:00:00-07:00",
@@ -3831,7 +3804,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 141,
+          "number": 140,
           "name": "",
           "startTime": "2026-09-15T02:00:00-07:00",
           "endTime": "2026-09-15T03:00:00-07:00",
@@ -3858,7 +3831,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 142,
+          "number": 141,
           "name": "",
           "startTime": "2026-09-15T03:00:00-07:00",
           "endTime": "2026-09-15T04:00:00-07:00",
@@ -3885,7 +3858,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 143,
+          "number": 142,
           "name": "",
           "startTime": "2026-09-15T04:00:00-07:00",
           "endTime": "2026-09-15T05:00:00-07:00",
@@ -3912,7 +3885,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 144,
+          "number": 143,
           "name": "",
           "startTime": "2026-09-15T05:00:00-07:00",
           "endTime": "2026-09-15T06:00:00-07:00",
@@ -3939,7 +3912,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 145,
+          "number": 144,
           "name": "",
           "startTime": "2026-09-15T06:00:00-07:00",
           "endTime": "2026-09-15T07:00:00-07:00",
@@ -3966,7 +3939,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 146,
+          "number": 145,
           "name": "",
           "startTime": "2026-09-15T07:00:00-07:00",
           "endTime": "2026-09-15T08:00:00-07:00",
@@ -3993,7 +3966,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 147,
+          "number": 146,
           "name": "",
           "startTime": "2026-09-15T08:00:00-07:00",
           "endTime": "2026-09-15T09:00:00-07:00",
@@ -4020,7 +3993,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 148,
+          "number": 147,
           "name": "",
           "startTime": "2026-09-15T09:00:00-07:00",
           "endTime": "2026-09-15T10:00:00-07:00",
@@ -4047,7 +4020,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 149,
+          "number": 148,
           "name": "",
           "startTime": "2026-09-15T10:00:00-07:00",
           "endTime": "2026-09-15T11:00:00-07:00",
@@ -4074,7 +4047,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 150,
+          "number": 149,
           "name": "",
           "startTime": "2026-09-15T11:00:00-07:00",
           "endTime": "2026-09-15T12:00:00-07:00",
@@ -4101,7 +4074,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 151,
+          "number": 150,
           "name": "",
           "startTime": "2026-09-15T12:00:00-07:00",
           "endTime": "2026-09-15T13:00:00-07:00",
@@ -4128,7 +4101,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 152,
+          "number": 151,
           "name": "",
           "startTime": "2026-09-15T13:00:00-07:00",
           "endTime": "2026-09-15T14:00:00-07:00",
@@ -4155,7 +4128,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 153,
+          "number": 152,
           "name": "",
           "startTime": "2026-09-15T14:00:00-07:00",
           "endTime": "2026-09-15T15:00:00-07:00",
@@ -4182,7 +4155,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 154,
+          "number": 153,
           "name": "",
           "startTime": "2026-09-15T15:00:00-07:00",
           "endTime": "2026-09-15T16:00:00-07:00",
@@ -4209,7 +4182,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 155,
+          "number": 154,
           "name": "",
           "startTime": "2026-09-15T16:00:00-07:00",
           "endTime": "2026-09-15T17:00:00-07:00",
@@ -4236,7 +4209,7 @@
           "detailedForecast": ""
         },
         {
-          "number": 156,
+          "number": 155,
           "name": "",
           "startTime": "2026-09-15T17:00:00-07:00",
           "endTime": "2026-09-15T18:00:00-07:00",
@@ -4260,6 +4233,33 @@
           "windDirection": "NW",
           "icon": "https://api.weather.gov/icons/land/day/sct?size=small",
           "shortForecast": "Mostly Sunny",
+          "detailedForecast": ""
+        },
+        {
+          "number": 156,
+          "name": "",
+          "startTime": "2026-09-15T18:00:00-07:00",
+          "endTime": "2026-09-15T19:00:00-07:00",
+          "isDaytime": false,
+          "temperature": 67,
+          "temperatureUnit": "F",
+          "temperatureTrend": null,
+          "probabilityOfPrecipitation": {
+            "unitCode": "wmoUnit:percent",
+            "value": 5
+          },
+          "dewpoint": {
+            "unitCode": "wmoUnit:degC",
+            "value": 12.222222222222221
+          },
+          "relativeHumidity": {
+            "unitCode": "wmoUnit:percent",
+            "value": 64
+          },
+          "windSpeed": "7 mph",
+          "windDirection": "NW",
+          "icon": "https://api.weather.gov/icons/land/night/sct?size=small",
+          "shortForecast": "Partly Cloudy",
           "detailedForecast": ""
         }
       ]

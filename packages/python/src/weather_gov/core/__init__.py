@@ -142,15 +142,17 @@ class Transport:
     """Send one request and return the body; a non-2xx status raises.
 
     A `{name}` placeholder in the path is filled from the request and removed from the
-    query. The value is percent-encoded because some of them need it: an alert id is
-    `urn:oid:2.49.0.1.840.0.<hash>.001.1`, and a station or office code never does -- so
-    encoding always is simpler than deciding per parameter. `/` is encoded too: no path
-    parameter here is a path fragment, so a `/` in one would be an injected path segment.
+    query. The value is percent-encoded, with one exception: `:` is left alone. It is a
+    legal path character (RFC 3986 `pchar`), an alert id is
+    `urn:oid:2.49.0.1.840.0.<hash>.001.1`, and the service publishes that id inside the
+    URL it hands back -- so encoding it would send a different URL than the one the API
+    itself printed. Everything else is encoded, `/` included: no path parameter here is a
+    path fragment, so a `/` in one would be an injected path segment.
     """
     filled = path
     for name, value in list(params.items()):
       if f'{{{name}}}' in filled:
-        filled = filled.replace(f'{{{name}}}', quote(str(value), safe=''))
+        filled = filled.replace(f'{{{name}}}', quote(str(value), safe=':'))
         params.pop(name)
     response = await self.http.request(
       method,

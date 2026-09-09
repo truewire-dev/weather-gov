@@ -12,6 +12,146 @@
     "type": "FeatureCollection",
     "features": [
       {
+        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e6ed06bf264e7370a4e1c8a09b908e86f4954764.001.1",
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -94.72,
+                29.8
+              ],
+              [
+                -94.67,
+                29.75
+              ],
+              [
+                -94.67,
+                29.73
+              ],
+              [
+                -94.68,
+                29.65
+              ],
+              [
+                -94.73,
+                29.56
+              ],
+              [
+                -94.72,
+                29.55
+              ],
+              [
+                -94.88,
+                29.51
+              ],
+              [
+                -95.02,
+                29.6
+              ],
+              [
+                -95.01,
+                29.63
+              ],
+              [
+                -94.94,
+                29.7
+              ],
+              [
+                -94.91,
+                29.68
+              ],
+              [
+                -94.8,
+                29.78
+              ],
+              [
+                -94.72,
+                29.8
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e6ed06bf264e7370a4e1c8a09b908e86f4954764.001.1",
+          "@type": "wx:Alert",
+          "id": "urn:oid:2.49.0.1.840.0.e6ed06bf264e7370a4e1c8a09b908e86f4954764.001.1",
+          "areaDesc": "Galveston Bay",
+          "geocode": {
+            "SAME": [
+              "077335"
+            ],
+            "UGC": [
+              "GMZ335"
+            ]
+          },
+          "affectedZones": [
+            "https://api.weather.gov/zones/forecast/GMZ335"
+          ],
+          "references": [],
+          "sent": "2026-09-09T09:09:00-05:00",
+          "effective": "2026-09-09T09:09:00-05:00",
+          "onset": "2026-09-09T09:09:00-05:00",
+          "expires": "2026-09-09T09:45:00-05:00",
+          "ends": "2026-09-09T09:45:00-05:00",
+          "status": "Actual",
+          "messageType": "Alert",
+          "category": "Met",
+          "severity": "Severe",
+          "certainty": "Likely",
+          "urgency": "Immediate",
+          "event": "Special Marine Warning",
+          "sender": "w-nws.webmaster@noaa.gov",
+          "senderName": "NWS Houston/Galveston TX",
+          "headline": "Special Marine Warning issued September 9 at 9:09AM CDT until September 9 at 9:45AM CDT by NWS Houston/Galveston TX",
+          "description": "SMWHGX\n\nThe National Weather Service in League City has issued a\n\n* Special Marine Warning for...\nGalveston Bay...\n\n* Until 945 AM CDT.\n\n* At 908 AM CDT, a severe thunderstorm capable of producing\nwaterspouts was located over southwestern Trinity Bay. The severe\nthunderstorm was nearly stationary.\n\nHAZARD...Waterspouts and wind gusts 34 knots or greater.\n\nSOURCE...Radar.\n\nIMPACT...Waterspouts can easily overturn boats and create locally\nhazardous seas. Small craft could be damaged in briefly\nhigher winds and suddenly higher waves.\n\n* Locations impacted include...\nTrinity Bay and northern Galveston Bay.",
+          "instruction": "Move to safe harbor until hazardous weather passes.\n\nThunderstorms can produce sudden waterspouts. Waterspouts can easily\noverturn boats and create locally hazardous seas. Seek safe harbor\nimmediately.\n\nFrequent lightning is occurring with this storm. If caught on the\nopen water stay below deck if possible, keep away from ungrounded\nmetal objects.",
+          "response": "Avoid",
+          "note": null,
+          "parameters": {
+            "AWIPSidentifier": [
+              "SMWHGX"
+            ],
+            "WMOidentifier": [
+              "WHUS54 KHGX 091409"
+            ],
+            "eventMotionDescription": [
+              "2026-09-09T14:08:00-00:00...storm...229DEG...2KT...29.64,-94.83"
+            ],
+            "waterspoutDetection": [
+              "POSSIBLE"
+            ],
+            "BLOCKCHANNEL": [
+              "EAS",
+              "NWEM",
+              "CMAS"
+            ],
+            "EAS-ORG": [
+              "WXR"
+            ],
+            "VTEC": [
+              "/O.NEW.KHGX.MA.W.0075.260909T1409Z-260909T1445Z/"
+            ],
+            "eventEndingTime": [
+              "2026-09-09T09:45:00-05:00"
+            ]
+          },
+          "scope": "Public",
+          "code": "IPAWSv1.0",
+          "language": "en-US",
+          "web": "http://www.weather.gov",
+          "eventCode": {
+            "SAME": [
+              "SMW"
+            ],
+            "NationalWeatherService": [
+              "MAW"
+            ]
+          }
+        }
+      },
+      {
         "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.7fd0f0a51a899b7ab78aa4a49b7bb43280b2764c.001.1",
         "type": "Feature",
         "geometry": {
@@ -377,124 +517,6 @@
         }
       },
       {
-        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.1287b8d28b5ee4796a4a96c1959cab1e2680f966.001.1",
-        "type": "Feature",
-        "geometry": {
-          "type": "Polygon",
-          "coordinates": [
-            [
-              [
-                -93.6,
-                41.56
-              ],
-              [
-                -93.68,
-                41.54
-              ],
-              [
-                -93.68,
-                41.59
-              ],
-              [
-                -93.61,
-                41.6
-              ],
-              [
-                -93.6,
-                41.56
-              ]
-            ]
-          ]
-        },
-        "properties": {
-          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.1287b8d28b5ee4796a4a96c1959cab1e2680f966.001.1",
-          "@type": "wx:Alert",
-          "id": "urn:oid:2.49.0.1.840.0.1287b8d28b5ee4796a4a96c1959cab1e2680f966.001.1",
-          "areaDesc": "Polk, IA",
-          "geocode": {
-            "SAME": [
-              "019153"
-            ],
-            "UGC": [
-              "IAC153"
-            ]
-          },
-          "affectedZones": [
-            "https://api.weather.gov/zones/county/IAC153"
-          ],
-          "references": [
-            {
-              "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.09f71dacf79d19effa23c403865abb1b3c358158.001.1",
-              "identifier": "urn:oid:2.49.0.1.840.0.09f71dacf79d19effa23c403865abb1b3c358158.001.1",
-              "sender": "w-nws.webmaster@noaa.gov",
-              "sent": "2026-09-09T04:59:00-05:00"
-            },
-            {
-              "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.07ef6d3149dc829ac372fa61d25410790741e238.003.1",
-              "identifier": "urn:oid:2.49.0.1.840.0.07ef6d3149dc829ac372fa61d25410790741e238.003.1",
-              "sender": "w-nws.webmaster@noaa.gov",
-              "sent": "2026-09-09T06:32:00-05:00"
-            }
-          ],
-          "sent": "2026-09-09T07:07:00-05:00",
-          "effective": "2026-09-09T07:07:00-05:00",
-          "onset": "2026-09-09T07:07:00-05:00",
-          "expires": "2026-09-09T19:15:00-05:00",
-          "ends": "2026-09-10T23:54:00-05:00",
-          "status": "Actual",
-          "messageType": "Update",
-          "category": "Met",
-          "severity": "Severe",
-          "certainty": "Observed",
-          "urgency": "Immediate",
-          "event": "Flood Warning",
-          "sender": "w-nws.webmaster@noaa.gov",
-          "senderName": "NWS Des Moines IA",
-          "headline": "Flood Warning issued September 9 at 7:07AM CDT until September 10 at 11:54PM CDT by NWS Des Moines IA",
-          "description": "...The Flood Warning continues for the following rivers in Iowa...\n\nRaccoon River at Des Moines Fleur Dr affecting Polk County.\n\nWalnut Creek at Clive I-80/35 affecting Dallas and Polk Counties.\n\nWalnut Creek at Des Moines 63rd St affecting Polk County.\n\n* WHAT...Minor flooding is forecast.\n\n* WHERE...Raccoon River at Des Moines Fleur Dr, or from Walnut Creek\nto the Des Moines River.\n\n* WHEN...Until Thursday evening.\n\n* IMPACTS...At 13.5 feet, Water affects the low areas of Water Works\nPark.\n\n* ADDITIONAL DETAILS...\n- At 6:47 AM CDT Wednesday the stage was 12.0 feet, and rising.\n- Forecast...The river is expected to rise to a crest of 14.5 feet\njust after midnight tonight. It will then fall below flood stage\ntomorrow afternoon.\n- Flood stage is 12.0 feet.",
-          "instruction": "Turn around, don't drown when encountering flooded roads. Most flood\ndeaths occur in vehicles.\n\nFor the latest stream observations and forecasts refer to\nweather.gov/desmoines/water.\n\nRiver forecasts include observed precipitation plus forecast\nprecipitation over the next 24 hours.",
-          "response": "Avoid",
-          "note": null,
-          "parameters": {
-            "AWIPSidentifier": [
-              "FLSDMX"
-            ],
-            "WMOidentifier": [
-              "WGUS83 KDMX 091207"
-            ],
-            "NWSheadline": [
-              "FLOOD WARNING NOW IN EFFECT UNTIL THURSDAY EVENING"
-            ],
-            "BLOCKCHANNEL": [
-              "EAS",
-              "NWEM",
-              "CMAS"
-            ],
-            "EAS-ORG": [
-              "WXR"
-            ],
-            "VTEC": [
-              "/O.EXT.KDMX.FL.W.0019.000000T0000Z-260911T0454Z/"
-            ],
-            "eventEndingTime": [
-              "2026-09-10T23:54:00-05:00"
-            ]
-          },
-          "scope": "Public",
-          "code": "IPAWSv1.0",
-          "language": "en-US",
-          "web": "http://www.weather.gov",
-          "eventCode": {
-            "SAME": [
-              "FLS"
-            ],
-            "NationalWeatherService": [
-              "FLW"
-            ]
-          }
-        }
-      },
-      {
         "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.1287b8d28b5ee4796a4a96c1959cab1e2680f966.003.1",
         "type": "Feature",
         "geometry": {
@@ -602,6 +624,124 @@
             ],
             "eventEndingTime": [
               "2026-09-09T21:30:00-05:00"
+            ]
+          },
+          "scope": "Public",
+          "code": "IPAWSv1.0",
+          "language": "en-US",
+          "web": "http://www.weather.gov",
+          "eventCode": {
+            "SAME": [
+              "FLS"
+            ],
+            "NationalWeatherService": [
+              "FLW"
+            ]
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.1287b8d28b5ee4796a4a96c1959cab1e2680f966.001.1",
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -93.6,
+                41.56
+              ],
+              [
+                -93.68,
+                41.54
+              ],
+              [
+                -93.68,
+                41.59
+              ],
+              [
+                -93.61,
+                41.6
+              ],
+              [
+                -93.6,
+                41.56
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.1287b8d28b5ee4796a4a96c1959cab1e2680f966.001.1",
+          "@type": "wx:Alert",
+          "id": "urn:oid:2.49.0.1.840.0.1287b8d28b5ee4796a4a96c1959cab1e2680f966.001.1",
+          "areaDesc": "Polk, IA",
+          "geocode": {
+            "SAME": [
+              "019153"
+            ],
+            "UGC": [
+              "IAC153"
+            ]
+          },
+          "affectedZones": [
+            "https://api.weather.gov/zones/county/IAC153"
+          ],
+          "references": [
+            {
+              "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.09f71dacf79d19effa23c403865abb1b3c358158.001.1",
+              "identifier": "urn:oid:2.49.0.1.840.0.09f71dacf79d19effa23c403865abb1b3c358158.001.1",
+              "sender": "w-nws.webmaster@noaa.gov",
+              "sent": "2026-09-09T04:59:00-05:00"
+            },
+            {
+              "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.07ef6d3149dc829ac372fa61d25410790741e238.003.1",
+              "identifier": "urn:oid:2.49.0.1.840.0.07ef6d3149dc829ac372fa61d25410790741e238.003.1",
+              "sender": "w-nws.webmaster@noaa.gov",
+              "sent": "2026-09-09T06:32:00-05:00"
+            }
+          ],
+          "sent": "2026-09-09T07:07:00-05:00",
+          "effective": "2026-09-09T07:07:00-05:00",
+          "onset": "2026-09-09T07:07:00-05:00",
+          "expires": "2026-09-09T19:15:00-05:00",
+          "ends": "2026-09-10T23:54:00-05:00",
+          "status": "Actual",
+          "messageType": "Update",
+          "category": "Met",
+          "severity": "Severe",
+          "certainty": "Observed",
+          "urgency": "Immediate",
+          "event": "Flood Warning",
+          "sender": "w-nws.webmaster@noaa.gov",
+          "senderName": "NWS Des Moines IA",
+          "headline": "Flood Warning issued September 9 at 7:07AM CDT until September 10 at 11:54PM CDT by NWS Des Moines IA",
+          "description": "...The Flood Warning continues for the following rivers in Iowa...\n\nRaccoon River at Des Moines Fleur Dr affecting Polk County.\n\nWalnut Creek at Clive I-80/35 affecting Dallas and Polk Counties.\n\nWalnut Creek at Des Moines 63rd St affecting Polk County.\n\n* WHAT...Minor flooding is forecast.\n\n* WHERE...Raccoon River at Des Moines Fleur Dr, or from Walnut Creek\nto the Des Moines River.\n\n* WHEN...Until Thursday evening.\n\n* IMPACTS...At 13.5 feet, Water affects the low areas of Water Works\nPark.\n\n* ADDITIONAL DETAILS...\n- At 6:47 AM CDT Wednesday the stage was 12.0 feet, and rising.\n- Forecast...The river is expected to rise to a crest of 14.5 feet\njust after midnight tonight. It will then fall below flood stage\ntomorrow afternoon.\n- Flood stage is 12.0 feet.",
+          "instruction": "Turn around, don't drown when encountering flooded roads. Most flood\ndeaths occur in vehicles.\n\nFor the latest stream observations and forecasts refer to\nweather.gov/desmoines/water.\n\nRiver forecasts include observed precipitation plus forecast\nprecipitation over the next 24 hours.",
+          "response": "Avoid",
+          "note": null,
+          "parameters": {
+            "AWIPSidentifier": [
+              "FLSDMX"
+            ],
+            "WMOidentifier": [
+              "WGUS83 KDMX 091207"
+            ],
+            "NWSheadline": [
+              "FLOOD WARNING NOW IN EFFECT UNTIL THURSDAY EVENING"
+            ],
+            "BLOCKCHANNEL": [
+              "EAS",
+              "NWEM",
+              "CMAS"
+            ],
+            "EAS-ORG": [
+              "WXR"
+            ],
+            "VTEC": [
+              "/O.EXT.KDMX.FL.W.0019.000000T0000Z-260911T0454Z/"
+            ],
+            "eventEndingTime": [
+              "2026-09-10T23:54:00-05:00"
             ]
           },
           "scope": "Public",
@@ -930,123 +1070,41 @@
         }
       },
       {
-        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.aaf219374760c7ed45c5a93a13f41c321f17c73b.005.1",
+        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.aaf219374760c7ed45c5a93a13f41c321f17c73b.001.1",
         "type": "Feature",
         "geometry": null,
         "properties": {
-          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.aaf219374760c7ed45c5a93a13f41c321f17c73b.005.1",
+          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.aaf219374760c7ed45c5a93a13f41c321f17c73b.001.1",
           "@type": "wx:Alert",
-          "id": "urn:oid:2.49.0.1.840.0.aaf219374760c7ed45c5a93a13f41c321f17c73b.005.1",
-          "areaDesc": "Parker Valley; Central La Paz; Palo Verde Valley; Chuckwalla Valley",
+          "id": "urn:oid:2.49.0.1.840.0.aaf219374760c7ed45c5a93a13f41c321f17c73b.001.1",
+          "areaDesc": "Kofa; Southeast Yuma County; Gila River Valley; Tonopah Desert; Gila Bend; Sonoran Desert Natl Monument",
           "geocode": {
             "SAME": [
               "004012",
-              "006025",
-              "006065"
+              "004027",
+              "004013"
             ],
             "UGC": [
-              "AZZ530",
-              "AZZ533",
-              "CAZ569",
-              "CAZ570"
+              "AZZ531",
+              "AZZ535",
+              "AZZ536",
+              "AZZ538",
+              "AZZ539",
+              "AZZ559"
             ]
           },
           "affectedZones": [
-            "https://api.weather.gov/zones/forecast/AZZ530",
-            "https://api.weather.gov/zones/forecast/AZZ533",
-            "https://api.weather.gov/zones/forecast/CAZ569",
-            "https://api.weather.gov/zones/forecast/CAZ570"
+            "https://api.weather.gov/zones/forecast/AZZ531",
+            "https://api.weather.gov/zones/forecast/AZZ535",
+            "https://api.weather.gov/zones/forecast/AZZ536",
+            "https://api.weather.gov/zones/forecast/AZZ538",
+            "https://api.weather.gov/zones/forecast/AZZ539",
+            "https://api.weather.gov/zones/forecast/AZZ559"
           ],
           "references": [
             {
-              "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.584fd59be8737281b62d15bc75eb473ffaec99d0.005.1",
-              "identifier": "urn:oid:2.49.0.1.840.0.584fd59be8737281b62d15bc75eb473ffaec99d0.005.1",
-              "sender": "w-nws.webmaster@noaa.gov",
-              "sent": "2026-09-08T11:33:00-07:00"
-            }
-          ],
-          "sent": "2026-09-09T04:22:00-07:00",
-          "effective": "2026-09-09T04:22:00-07:00",
-          "onset": "2026-09-09T10:00:00-07:00",
-          "expires": "2026-09-09T16:00:00-07:00",
-          "ends": "2026-09-11T20:00:00-07:00",
-          "status": "Actual",
-          "messageType": "Update",
-          "category": "Met",
-          "severity": "Severe",
-          "certainty": "Likely",
-          "urgency": "Expected",
-          "event": "Extreme Heat Warning",
-          "sender": "w-nws.webmaster@noaa.gov",
-          "senderName": "NWS Phoenix AZ",
-          "headline": "Extreme Heat Warning issued September 9 at 4:22AM MST until September 11 at 8:00PM MST by NWS Phoenix AZ",
-          "description": "* WHAT...Dangerously hot and humid conditions. Afternoon temperatures\n102 to 112 expected. Major Heat Risk.\n\n* WHERE...In Arizona, Central La Paz and Parker Valley. In\nCalifornia, Chuckwalla Valley and Palo Verde Valley.\n\n* WHEN...From 10 AM MST /10 AM PDT/ this morning to 8 PM MST /8 PM\nPDT/ Friday.\n\n* IMPACTS...Heat related illnesses increase significantly during\nextreme heat events. Overexposure can cause heat cramps and heat\nexhaustion to develop and, without intervention, can lead to heat\nstroke.",
-          "instruction": "An Extreme Heat Warning means that a period of very hot temperatures,\neven by local standards, will occur. Actions should be taken to\nlessen the impact of the extreme heat.\n\nTake extra precautions if you work or spend time outside. When\npossible, reschedule strenuous activities to early morning or\nevening. Know the signs and symptoms of heat exhaustion and heat\nstroke. Wear lightweight and loose-fitting clothing when possible and\ndrink plenty of water.\n\nTo reduce risk during outdoor work, the Occupational Safety and\nHealth Administration recommends scheduling frequent rest breaks in\nshaded or air conditioned environments. Anyone overcome by heat\nshould be moved to a cool and shaded location. Heat stroke is an\nemergency! Call 9 1 1.\n\nPublic cooling shelters are available in some areas. Consult county\nofficials for more details.",
-          "response": "Execute",
-          "note": null,
-          "parameters": {
-            "AWIPSidentifier": [
-              "NPWPSR"
-            ],
-            "WMOidentifier": [
-              "WWUS75 KPSR 091122"
-            ],
-            "NWSheadline": [
-              "EXTREME HEAT WARNING REMAINS IN EFFECT FROM 10 AM MST /10 AM PDT/ THIS MORNING TO 8 PM MST /8 PM PDT/ FRIDAY"
-            ],
-            "BLOCKCHANNEL": [
-              "EAS",
-              "NWEM",
-              "CMAS"
-            ],
-            "VTEC": [
-              "/O.CON.KPSR.XH.W.0009.260909T1700Z-260912T0300Z/"
-            ],
-            "eventEndingTime": [
-              "2026-09-11T20:00:00-07:00"
-            ],
-            "expiredReferences": [
-              "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.225bea99f80706e3c62bbe4f3e3d291985452803.005.1,2026-09-08T01:09:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2faa926d3648b66d824fd446892c69945f7acf52.006.1,2026-09-07T08:39:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.ee31f48d7b85974bcfdf73be08db467b213d5bfb.005.1,2026-09-07T00:33:00-07:00"
-            ]
-          },
-          "scope": "Public",
-          "code": "IPAWSv1.0",
-          "language": "en-US",
-          "web": "http://www.weather.gov",
-          "eventCode": {
-            "SAME": [
-              "NWS"
-            ],
-            "NationalWeatherService": [
-              "XHW"
-            ]
-          }
-        }
-      },
-      {
-        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.aaf219374760c7ed45c5a93a13f41c321f17c73b.002.1",
-        "type": "Feature",
-        "geometry": null,
-        "properties": {
-          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.aaf219374760c7ed45c5a93a13f41c321f17c73b.002.1",
-          "@type": "wx:Alert",
-          "id": "urn:oid:2.49.0.1.840.0.aaf219374760c7ed45c5a93a13f41c321f17c73b.002.1",
-          "areaDesc": "Yuma",
-          "geocode": {
-            "SAME": [
-              "004027"
-            ],
-            "UGC": [
-              "AZZ532"
-            ]
-          },
-          "affectedZones": [
-            "https://api.weather.gov/zones/forecast/AZZ532"
-          ],
-          "references": [
-            {
-              "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.584fd59be8737281b62d15bc75eb473ffaec99d0.001.1",
-              "identifier": "urn:oid:2.49.0.1.840.0.584fd59be8737281b62d15bc75eb473ffaec99d0.001.1",
+              "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.584fd59be8737281b62d15bc75eb473ffaec99d0.002.1",
+              "identifier": "urn:oid:2.49.0.1.840.0.584fd59be8737281b62d15bc75eb473ffaec99d0.002.1",
               "sender": "w-nws.webmaster@noaa.gov",
               "sent": "2026-09-08T11:33:00-07:00"
             }
@@ -1055,7 +1113,7 @@
           "effective": "2026-09-09T04:22:00-07:00",
           "onset": "2026-09-09T04:22:00-07:00",
           "expires": "2026-09-09T16:00:00-07:00",
-          "ends": "2026-09-11T20:00:00-07:00",
+          "ends": "2026-09-10T20:00:00-07:00",
           "status": "Actual",
           "messageType": "Update",
           "category": "Met",
@@ -1065,8 +1123,8 @@
           "event": "Extreme Heat Warning",
           "sender": "w-nws.webmaster@noaa.gov",
           "senderName": "NWS Phoenix AZ",
-          "headline": "Extreme Heat Warning issued September 9 at 4:22AM MST until September 11 at 8:00PM MST by NWS Phoenix AZ",
-          "description": "* WHAT...Dangerously hot and humid conditions. Afternoon temperatures\n107 to 110 expected. Major Heat Risk.\n\n* WHERE...Yuma.\n\n* WHEN...Until 8 PM MST Friday.\n\n* IMPACTS...Heat related illnesses increase significantly during\nextreme heat events. Overexposure can cause heat cramps and heat\nexhaustion to develop and, without intervention, can lead to heat\nstroke.",
+          "headline": "Extreme Heat Warning issued September 9 at 4:22AM MST until September 10 at 8:00PM MST by NWS Phoenix AZ",
+          "description": "* WHAT...Dangerously hot conditions. Afternoon temperatures 104 to\n110 expected. Major Heat Risk.\n\n* WHERE...Gila Bend, Sonoran Desert Natl Monument, Tonopah Desert,\nGila River Valley, Kofa, and Southeast Yuma County.\n\n* WHEN...Until 8 PM MST Thursday.\n\n* IMPACTS...Heat related illnesses increase significantly during\nextreme heat events. Overexposure can cause heat cramps and heat\nexhaustion to develop and, without intervention, can lead to heat\nstroke.\n\n* ADDITIONAL DETAILS...In Maricopa County, call 2-1-1 to find a free\ncooling center, transportation, water, and more.\nhttps://www.maricopa.gov/heat",
           "instruction": "An Extreme Heat Warning means that a period of very hot temperatures,\neven by local standards, will occur. Actions should be taken to\nlessen the impact of the extreme heat.\n\nTake extra precautions if you work or spend time outside. When\npossible, reschedule strenuous activities to early morning or\nevening. Know the signs and symptoms of heat exhaustion and heat\nstroke. Wear lightweight and loose-fitting clothing when possible and\ndrink plenty of water.\n\nTo reduce risk during outdoor work, the Occupational Safety and\nHealth Administration recommends scheduling frequent rest breaks in\nshaded or air conditioned environments. Anyone overcome by heat\nshould be moved to a cool and shaded location. Heat stroke is an\nemergency! Call 9 1 1.\n\nPublic cooling shelters are available in some areas. Consult county\nofficials for more details.",
           "response": "Execute",
           "note": null,
@@ -1078,7 +1136,7 @@
               "WWUS75 KPSR 091122"
             ],
             "NWSheadline": [
-              "EXTREME HEAT WARNING REMAINS IN EFFECT UNTIL 8 PM MST FRIDAY"
+              "EXTREME HEAT WARNING REMAINS IN EFFECT UNTIL 8 PM MST THURSDAY"
             ],
             "BLOCKCHANNEL": [
               "EAS",
@@ -1086,13 +1144,13 @@
               "CMAS"
             ],
             "VTEC": [
-              "/O.CON.KPSR.XH.W.0009.000000T0000Z-260912T0300Z/"
+              "/O.CON.KPSR.XH.W.0009.000000T0000Z-260911T0300Z/"
             ],
             "eventEndingTime": [
-              "2026-09-11T20:00:00-07:00"
+              "2026-09-10T20:00:00-07:00"
             ],
             "expiredReferences": [
-              "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.225bea99f80706e3c62bbe4f3e3d291985452803.002.1,2026-09-08T01:09:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2faa926d3648b66d824fd446892c69945f7acf52.003.1,2026-09-07T08:39:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.ee31f48d7b85974bcfdf73be08db467b213d5bfb.002.1,2026-09-07T00:33:00-07:00"
+              "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.225bea99f80706e3c62bbe4f3e3d291985452803.001.1,2026-09-08T01:09:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2faa926d3648b66d824fd446892c69945f7acf52.002.1,2026-09-07T08:39:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.ee31f48d7b85974bcfdf73be08db467b213d5bfb.001.1,2026-09-07T00:33:00-07:00"
             ]
           },
           "scope": "Public",
@@ -1216,41 +1274,29 @@
         }
       },
       {
-        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.aaf219374760c7ed45c5a93a13f41c321f17c73b.001.1",
+        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.aaf219374760c7ed45c5a93a13f41c321f17c73b.002.1",
         "type": "Feature",
         "geometry": null,
         "properties": {
-          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.aaf219374760c7ed45c5a93a13f41c321f17c73b.001.1",
+          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.aaf219374760c7ed45c5a93a13f41c321f17c73b.002.1",
           "@type": "wx:Alert",
-          "id": "urn:oid:2.49.0.1.840.0.aaf219374760c7ed45c5a93a13f41c321f17c73b.001.1",
-          "areaDesc": "Kofa; Southeast Yuma County; Gila River Valley; Tonopah Desert; Gila Bend; Sonoran Desert Natl Monument",
+          "id": "urn:oid:2.49.0.1.840.0.aaf219374760c7ed45c5a93a13f41c321f17c73b.002.1",
+          "areaDesc": "Yuma",
           "geocode": {
             "SAME": [
-              "004012",
-              "004027",
-              "004013"
+              "004027"
             ],
             "UGC": [
-              "AZZ531",
-              "AZZ535",
-              "AZZ536",
-              "AZZ538",
-              "AZZ539",
-              "AZZ559"
+              "AZZ532"
             ]
           },
           "affectedZones": [
-            "https://api.weather.gov/zones/forecast/AZZ531",
-            "https://api.weather.gov/zones/forecast/AZZ535",
-            "https://api.weather.gov/zones/forecast/AZZ536",
-            "https://api.weather.gov/zones/forecast/AZZ538",
-            "https://api.weather.gov/zones/forecast/AZZ539",
-            "https://api.weather.gov/zones/forecast/AZZ559"
+            "https://api.weather.gov/zones/forecast/AZZ532"
           ],
           "references": [
             {
-              "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.584fd59be8737281b62d15bc75eb473ffaec99d0.002.1",
-              "identifier": "urn:oid:2.49.0.1.840.0.584fd59be8737281b62d15bc75eb473ffaec99d0.002.1",
+              "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.584fd59be8737281b62d15bc75eb473ffaec99d0.001.1",
+              "identifier": "urn:oid:2.49.0.1.840.0.584fd59be8737281b62d15bc75eb473ffaec99d0.001.1",
               "sender": "w-nws.webmaster@noaa.gov",
               "sent": "2026-09-08T11:33:00-07:00"
             }
@@ -1259,7 +1305,7 @@
           "effective": "2026-09-09T04:22:00-07:00",
           "onset": "2026-09-09T04:22:00-07:00",
           "expires": "2026-09-09T16:00:00-07:00",
-          "ends": "2026-09-10T20:00:00-07:00",
+          "ends": "2026-09-11T20:00:00-07:00",
           "status": "Actual",
           "messageType": "Update",
           "category": "Met",
@@ -1269,8 +1315,8 @@
           "event": "Extreme Heat Warning",
           "sender": "w-nws.webmaster@noaa.gov",
           "senderName": "NWS Phoenix AZ",
-          "headline": "Extreme Heat Warning issued September 9 at 4:22AM MST until September 10 at 8:00PM MST by NWS Phoenix AZ",
-          "description": "* WHAT...Dangerously hot conditions. Afternoon temperatures 104 to\n110 expected. Major Heat Risk.\n\n* WHERE...Gila Bend, Sonoran Desert Natl Monument, Tonopah Desert,\nGila River Valley, Kofa, and Southeast Yuma County.\n\n* WHEN...Until 8 PM MST Thursday.\n\n* IMPACTS...Heat related illnesses increase significantly during\nextreme heat events. Overexposure can cause heat cramps and heat\nexhaustion to develop and, without intervention, can lead to heat\nstroke.\n\n* ADDITIONAL DETAILS...In Maricopa County, call 2-1-1 to find a free\ncooling center, transportation, water, and more.\nhttps://www.maricopa.gov/heat",
+          "headline": "Extreme Heat Warning issued September 9 at 4:22AM MST until September 11 at 8:00PM MST by NWS Phoenix AZ",
+          "description": "* WHAT...Dangerously hot and humid conditions. Afternoon temperatures\n107 to 110 expected. Major Heat Risk.\n\n* WHERE...Yuma.\n\n* WHEN...Until 8 PM MST Friday.\n\n* IMPACTS...Heat related illnesses increase significantly during\nextreme heat events. Overexposure can cause heat cramps and heat\nexhaustion to develop and, without intervention, can lead to heat\nstroke.",
           "instruction": "An Extreme Heat Warning means that a period of very hot temperatures,\neven by local standards, will occur. Actions should be taken to\nlessen the impact of the extreme heat.\n\nTake extra precautions if you work or spend time outside. When\npossible, reschedule strenuous activities to early morning or\nevening. Know the signs and symptoms of heat exhaustion and heat\nstroke. Wear lightweight and loose-fitting clothing when possible and\ndrink plenty of water.\n\nTo reduce risk during outdoor work, the Occupational Safety and\nHealth Administration recommends scheduling frequent rest breaks in\nshaded or air conditioned environments. Anyone overcome by heat\nshould be moved to a cool and shaded location. Heat stroke is an\nemergency! Call 9 1 1.\n\nPublic cooling shelters are available in some areas. Consult county\nofficials for more details.",
           "response": "Execute",
           "note": null,
@@ -1282,7 +1328,7 @@
               "WWUS75 KPSR 091122"
             ],
             "NWSheadline": [
-              "EXTREME HEAT WARNING REMAINS IN EFFECT UNTIL 8 PM MST THURSDAY"
+              "EXTREME HEAT WARNING REMAINS IN EFFECT UNTIL 8 PM MST FRIDAY"
             ],
             "BLOCKCHANNEL": [
               "EAS",
@@ -1290,13 +1336,107 @@
               "CMAS"
             ],
             "VTEC": [
-              "/O.CON.KPSR.XH.W.0009.000000T0000Z-260911T0300Z/"
+              "/O.CON.KPSR.XH.W.0009.000000T0000Z-260912T0300Z/"
             ],
             "eventEndingTime": [
-              "2026-09-10T20:00:00-07:00"
+              "2026-09-11T20:00:00-07:00"
             ],
             "expiredReferences": [
-              "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.225bea99f80706e3c62bbe4f3e3d291985452803.001.1,2026-09-08T01:09:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2faa926d3648b66d824fd446892c69945f7acf52.002.1,2026-09-07T08:39:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.ee31f48d7b85974bcfdf73be08db467b213d5bfb.001.1,2026-09-07T00:33:00-07:00"
+              "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.225bea99f80706e3c62bbe4f3e3d291985452803.002.1,2026-09-08T01:09:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2faa926d3648b66d824fd446892c69945f7acf52.003.1,2026-09-07T08:39:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.ee31f48d7b85974bcfdf73be08db467b213d5bfb.002.1,2026-09-07T00:33:00-07:00"
+            ]
+          },
+          "scope": "Public",
+          "code": "IPAWSv1.0",
+          "language": "en-US",
+          "web": "http://www.weather.gov",
+          "eventCode": {
+            "SAME": [
+              "NWS"
+            ],
+            "NationalWeatherService": [
+              "XHW"
+            ]
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.aaf219374760c7ed45c5a93a13f41c321f17c73b.005.1",
+        "type": "Feature",
+        "geometry": null,
+        "properties": {
+          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.aaf219374760c7ed45c5a93a13f41c321f17c73b.005.1",
+          "@type": "wx:Alert",
+          "id": "urn:oid:2.49.0.1.840.0.aaf219374760c7ed45c5a93a13f41c321f17c73b.005.1",
+          "areaDesc": "Parker Valley; Central La Paz; Palo Verde Valley; Chuckwalla Valley",
+          "geocode": {
+            "SAME": [
+              "004012",
+              "006025",
+              "006065"
+            ],
+            "UGC": [
+              "AZZ530",
+              "AZZ533",
+              "CAZ569",
+              "CAZ570"
+            ]
+          },
+          "affectedZones": [
+            "https://api.weather.gov/zones/forecast/AZZ530",
+            "https://api.weather.gov/zones/forecast/AZZ533",
+            "https://api.weather.gov/zones/forecast/CAZ569",
+            "https://api.weather.gov/zones/forecast/CAZ570"
+          ],
+          "references": [
+            {
+              "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.584fd59be8737281b62d15bc75eb473ffaec99d0.005.1",
+              "identifier": "urn:oid:2.49.0.1.840.0.584fd59be8737281b62d15bc75eb473ffaec99d0.005.1",
+              "sender": "w-nws.webmaster@noaa.gov",
+              "sent": "2026-09-08T11:33:00-07:00"
+            }
+          ],
+          "sent": "2026-09-09T04:22:00-07:00",
+          "effective": "2026-09-09T04:22:00-07:00",
+          "onset": "2026-09-09T10:00:00-07:00",
+          "expires": "2026-09-09T16:00:00-07:00",
+          "ends": "2026-09-11T20:00:00-07:00",
+          "status": "Actual",
+          "messageType": "Update",
+          "category": "Met",
+          "severity": "Severe",
+          "certainty": "Likely",
+          "urgency": "Expected",
+          "event": "Extreme Heat Warning",
+          "sender": "w-nws.webmaster@noaa.gov",
+          "senderName": "NWS Phoenix AZ",
+          "headline": "Extreme Heat Warning issued September 9 at 4:22AM MST until September 11 at 8:00PM MST by NWS Phoenix AZ",
+          "description": "* WHAT...Dangerously hot and humid conditions. Afternoon temperatures\n102 to 112 expected. Major Heat Risk.\n\n* WHERE...In Arizona, Central La Paz and Parker Valley. In\nCalifornia, Chuckwalla Valley and Palo Verde Valley.\n\n* WHEN...From 10 AM MST /10 AM PDT/ this morning to 8 PM MST /8 PM\nPDT/ Friday.\n\n* IMPACTS...Heat related illnesses increase significantly during\nextreme heat events. Overexposure can cause heat cramps and heat\nexhaustion to develop and, without intervention, can lead to heat\nstroke.",
+          "instruction": "An Extreme Heat Warning means that a period of very hot temperatures,\neven by local standards, will occur. Actions should be taken to\nlessen the impact of the extreme heat.\n\nTake extra precautions if you work or spend time outside. When\npossible, reschedule strenuous activities to early morning or\nevening. Know the signs and symptoms of heat exhaustion and heat\nstroke. Wear lightweight and loose-fitting clothing when possible and\ndrink plenty of water.\n\nTo reduce risk during outdoor work, the Occupational Safety and\nHealth Administration recommends scheduling frequent rest breaks in\nshaded or air conditioned environments. Anyone overcome by heat\nshould be moved to a cool and shaded location. Heat stroke is an\nemergency! Call 9 1 1.\n\nPublic cooling shelters are available in some areas. Consult county\nofficials for more details.",
+          "response": "Execute",
+          "note": null,
+          "parameters": {
+            "AWIPSidentifier": [
+              "NPWPSR"
+            ],
+            "WMOidentifier": [
+              "WWUS75 KPSR 091122"
+            ],
+            "NWSheadline": [
+              "EXTREME HEAT WARNING REMAINS IN EFFECT FROM 10 AM MST /10 AM PDT/ THIS MORNING TO 8 PM MST /8 PM PDT/ FRIDAY"
+            ],
+            "BLOCKCHANNEL": [
+              "EAS",
+              "NWEM",
+              "CMAS"
+            ],
+            "VTEC": [
+              "/O.CON.KPSR.XH.W.0009.260909T1700Z-260912T0300Z/"
+            ],
+            "eventEndingTime": [
+              "2026-09-11T20:00:00-07:00"
+            ],
+            "expiredReferences": [
+              "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.225bea99f80706e3c62bbe4f3e3d291985452803.005.1,2026-09-08T01:09:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2faa926d3648b66d824fd446892c69945f7acf52.006.1,2026-09-07T08:39:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.ee31f48d7b85974bcfdf73be08db467b213d5bfb.005.1,2026-09-07T00:33:00-07:00"
             ]
           },
           "scope": "Public",
@@ -1393,36 +1533,33 @@
         }
       },
       {
-        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.006.1",
+        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.004.1",
         "type": "Feature",
         "geometry": null,
         "properties": {
-          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.006.1",
+          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.004.1",
           "@type": "wx:Alert",
-          "id": "urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.006.1",
-          "areaDesc": "Coachella Valley; San Diego County Deserts; San Gorgonio Pass Near Banning",
+          "id": "urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.004.1",
+          "areaDesc": "Santa Ana Mountains and Foothills",
           "geocode": {
             "SAME": [
+              "006059",
               "006065",
               "006073"
             ],
             "UGC": [
-              "CAZ061",
-              "CAZ062",
-              "CAZ065"
+              "CAZ057"
             ]
           },
           "affectedZones": [
-            "https://api.weather.gov/zones/forecast/CAZ061",
-            "https://api.weather.gov/zones/forecast/CAZ062",
-            "https://api.weather.gov/zones/forecast/CAZ065"
+            "https://api.weather.gov/zones/forecast/CAZ057"
           ],
           "references": [],
           "sent": "2026-09-09T02:58:00-07:00",
           "effective": "2026-09-09T02:58:00-07:00",
-          "onset": "2026-09-09T10:00:00-07:00",
+          "onset": "2026-09-09T02:58:00-07:00",
           "expires": "2026-09-09T15:30:00-07:00",
-          "ends": "2026-09-11T20:00:00-07:00",
+          "ends": "2026-09-09T20:00:00-07:00",
           "status": "Actual",
           "messageType": "Alert",
           "category": "Met",
@@ -1432,8 +1569,167 @@
           "event": "Extreme Heat Warning",
           "sender": "w-nws.webmaster@noaa.gov",
           "senderName": "NWS San Diego CA",
-          "headline": "Extreme Heat Warning issued September 9 at 2:58AM PDT until September 11 at 8:00PM PDT by NWS San Diego CA",
-          "description": "* WHAT...Dangerously hot conditions with high temperatures of 110 to\n114 expected with low temperatures in the 80s expected.\n\n* WHERE...Coachella Valley, San Diego County Deserts, and San\nGorgonio Pass near Banning.\n\n* WHEN...From 10 AM this morning to 8 PM PDT Friday.\n\n* IMPACTS...Heat related illnesses increase significantly during\nextreme heat events.\n\n* ADDITIONAL DETAILS...Areas of Major HeatRisk. Very warm overnight\ntemperatures will limit relief from the heat.",
+          "headline": "Extreme Heat Warning issued September 9 at 2:58AM PDT until September 9 at 8:00PM PDT by NWS San Diego CA",
+          "description": "* WHAT...For the Extreme Heat Warning, dangerously hot conditions\nwith high temperatures in the 90s to near 100 with low temperatures\nin the 70s expected. For the Heat Advisory, high temperatures in\nthe mid 80s to mid 90s expected.\n\n* WHERE...Santa Ana Mountains and Foothills.\n\n* WHEN...For the Extreme Heat Warning, until 8 PM PDT this evening.\nFor the Heat Advisory, from 8 PM this evening to 8 PM PDT Thursday.\n\n* IMPACTS...Heat related illnesses increase significantly during\nextreme heat events.\n\n* ADDITIONAL DETAILS...Areas of Major HeatRisk. Very warm overnight\ntemperatures will limit relief from the heat.",
+          "instruction": "Drink plenty of fluids, stay in an air-conditioned room, stay out of\nthe sun, and check up on relatives and neighbors.\n\nTake extra precautions when outside. Wear lightweight and loose\nfitting clothing. Try to limit strenuous activities to early morning\nor evening. Take action when you see symptoms of heat exhaustion and\nheat stroke.",
+          "response": "Execute",
+          "note": null,
+          "parameters": {
+            "AWIPSidentifier": [
+              "NPWSGX"
+            ],
+            "WMOidentifier": [
+              "WWUS76 KSGX 090958"
+            ],
+            "NWSheadline": [
+              "EXTREME HEAT WARNING REMAINS IN EFFECT UNTIL 8 PM PDT THIS EVENING... ...HEAT ADVISORY REMAINS IN EFFECT FROM 8 PM THIS EVENING TO 8 PM PDT THURSDAY"
+            ],
+            "BLOCKCHANNEL": [
+              "EAS",
+              "NWEM",
+              "CMAS"
+            ],
+            "VTEC": [
+              "/O.CON.KSGX.XH.W.0009.000000T0000Z-260910T0300Z/"
+            ],
+            "eventEndingTime": [
+              "2026-09-09T20:00:00-07:00"
+            ],
+            "expiredReferences": [
+              "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2afa2a5fffbede2ea119cdc29b39634da2af3c0d.004.1,2026-09-08T13:52:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.d08b94d87354ecf3e8d25b90298a55729c451e97.001.2,2026-09-08T07:01:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.8aab9f4b99ef35906b9c395fb246176afdd628ac.001.1,2026-09-08T06:52:00-07:00"
+            ]
+          },
+          "scope": "Public",
+          "code": "IPAWSv1.0",
+          "language": "en-US",
+          "web": "http://www.weather.gov",
+          "eventCode": {
+            "SAME": [
+              "NWS"
+            ],
+            "NationalWeatherService": [
+              "XHW"
+            ]
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.002.1",
+        "type": "Feature",
+        "geometry": null,
+        "properties": {
+          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.002.1",
+          "@type": "wx:Alert",
+          "id": "urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.002.1",
+          "areaDesc": "San Bernardino and Riverside County Valleys-The Inland Empire",
+          "geocode": {
+            "SAME": [
+              "006065",
+              "006071"
+            ],
+            "UGC": [
+              "CAZ048"
+            ]
+          },
+          "affectedZones": [
+            "https://api.weather.gov/zones/forecast/CAZ048"
+          ],
+          "references": [],
+          "sent": "2026-09-09T02:58:00-07:00",
+          "effective": "2026-09-09T02:58:00-07:00",
+          "onset": "2026-09-09T02:58:00-07:00",
+          "expires": "2026-09-09T15:30:00-07:00",
+          "ends": "2026-09-09T20:00:00-07:00",
+          "status": "Actual",
+          "messageType": "Alert",
+          "category": "Met",
+          "severity": "Severe",
+          "certainty": "Likely",
+          "urgency": "Expected",
+          "event": "Extreme Heat Warning",
+          "sender": "w-nws.webmaster@noaa.gov",
+          "senderName": "NWS San Diego CA",
+          "headline": "Extreme Heat Warning issued September 9 at 2:58AM PDT until September 9 at 8:00PM PDT by NWS San Diego CA",
+          "description": "* WHAT...For the Extreme Heat Warning, dangerously hot conditions\nwith high temperatures of 104 to 110 with low temperatures in the\n70s and lower 80s expected. For the Heat Advisory, high\ntemperatures in the upper  90s to 105 expected.\n\n* WHERE...San Bernardino and Riverside County Valleys-The Inland\nEmpire.\n\n* WHEN...For the Extreme Heat Warning, until 8 PM PDT this evening.\nFor the Heat Advisory, from 8 PM this evening to 8 PM PDT Thursday.\n\n* IMPACTS...Heat related illnesses increase significantly during\nextreme heat events.\n\n* ADDITIONAL DETAILS...Major HeatRisk through today. Warm overnight\ntemperatures will limit relief from the heat.",
+          "instruction": "Drink plenty of fluids, stay in an air-conditioned room, stay out of\nthe sun, and check up on relatives and neighbors.\n\nDo not leave young children and pets in unattended vehicles. Car\ninteriors will reach lethal temperatures in a matter of minutes.",
+          "response": "Execute",
+          "note": null,
+          "parameters": {
+            "AWIPSidentifier": [
+              "NPWSGX"
+            ],
+            "WMOidentifier": [
+              "WWUS76 KSGX 090958"
+            ],
+            "NWSheadline": [
+              "EXTREME HEAT WARNING REMAINS IN EFFECT UNTIL 8 PM PDT THIS EVENING... ...HEAT ADVISORY REMAINS IN EFFECT FROM 8 PM THIS EVENING TO 8 PM PDT THURSDAY"
+            ],
+            "BLOCKCHANNEL": [
+              "EAS",
+              "NWEM",
+              "CMAS"
+            ],
+            "VTEC": [
+              "/O.CON.KSGX.XH.W.0009.000000T0000Z-260910T0300Z/"
+            ],
+            "eventEndingTime": [
+              "2026-09-09T20:00:00-07:00"
+            ],
+            "expiredReferences": [
+              "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2afa2a5fffbede2ea119cdc29b39634da2af3c0d.002.1,2026-09-08T13:52:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.4a51a92a0c9bfd1650738f2dc8a8c6e05107d877.002.1,2026-09-08T03:44:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.d08b94d87354ecf3e8d25b90298a55729c451e97.003.1,2026-09-08T07:01:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.8aab9f4b99ef35906b9c395fb246176afdd628ac.003.1,2026-09-08T06:52:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2977be557cee696cd06196f0918b468e5a1500b8.004.1,2026-09-08T03:10:00-07:00"
+            ]
+          },
+          "scope": "Public",
+          "code": "IPAWSv1.0",
+          "language": "en-US",
+          "web": "http://www.weather.gov",
+          "eventCode": {
+            "SAME": [
+              "NWS"
+            ],
+            "NationalWeatherService": [
+              "XHW"
+            ]
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.003.1",
+        "type": "Feature",
+        "geometry": null,
+        "properties": {
+          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.003.1",
+          "@type": "wx:Alert",
+          "id": "urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.003.1",
+          "areaDesc": "San Diego County Inland Valleys",
+          "geocode": {
+            "SAME": [
+              "006073"
+            ],
+            "UGC": [
+              "CAZ050"
+            ]
+          },
+          "affectedZones": [
+            "https://api.weather.gov/zones/forecast/CAZ050"
+          ],
+          "references": [],
+          "sent": "2026-09-09T02:58:00-07:00",
+          "effective": "2026-09-09T02:58:00-07:00",
+          "onset": "2026-09-09T02:58:00-07:00",
+          "expires": "2026-09-09T15:30:00-07:00",
+          "ends": "2026-09-09T20:00:00-07:00",
+          "status": "Actual",
+          "messageType": "Alert",
+          "category": "Met",
+          "severity": "Severe",
+          "certainty": "Likely",
+          "urgency": "Expected",
+          "event": "Extreme Heat Warning",
+          "sender": "w-nws.webmaster@noaa.gov",
+          "senderName": "NWS San Diego CA",
+          "headline": "Extreme Heat Warning issued September 9 at 2:58AM PDT until September 9 at 8:00PM PDT by NWS San Diego CA",
+          "description": "* WHAT...For the Extreme Heat Warning, dangerously hot conditions\nwith high temperatures in the mid 90s to 107 with low temperatures\nin the 70s expected. For the Heat Advisory, high temperatures in\nthe mid 90s to 104 expected.\n\n* WHERE...San Diego County Valleys.\n\n* WHEN...For the Extreme Heat Warning, until 8 PM PDT this evening.\nFor the Heat Advisory, from 8 PM this evening to 8 PM PDT Thursday.\n\n* IMPACTS...Heat related illnesses increase significantly during\nextreme heat events.\n\n* ADDITIONAL DETAILS...Major to Extreme HeatRisk. Warm overnight\ntemperatures will limit relief from the heat.",
           "instruction": "Drink plenty of fluids, stay in an air-conditioned room, stay out of\nthe sun, and check up on relatives and neighbors.",
           "response": "Execute",
           "note": null,
@@ -1445,7 +1741,7 @@
               "WWUS76 KSGX 090958"
             ],
             "NWSheadline": [
-              "EXTREME HEAT WARNING REMAINS IN EFFECT FROM 10 AM THIS MORNING TO 8 PM PDT FRIDAY"
+              "EXTREME HEAT WARNING REMAINS IN EFFECT UNTIL 8 PM PDT THIS EVENING... ...HEAT ADVISORY REMAINS IN EFFECT FROM 8 PM THIS EVENING TO 8 PM PDT THURSDAY"
             ],
             "BLOCKCHANNEL": [
               "EAS",
@@ -1453,13 +1749,13 @@
               "CMAS"
             ],
             "VTEC": [
-              "/O.CON.KSGX.XH.W.0009.260909T1700Z-260912T0300Z/"
+              "/O.CON.KSGX.XH.W.0009.000000T0000Z-260910T0300Z/"
             ],
             "eventEndingTime": [
-              "2026-09-11T20:00:00-07:00"
+              "2026-09-09T20:00:00-07:00"
             ],
             "expiredReferences": [
-              "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2afa2a5fffbede2ea119cdc29b39634da2af3c0d.006.1,2026-09-08T13:52:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.4a51a92a0c9bfd1650738f2dc8a8c6e05107d877.005.1,2026-09-08T03:44:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.d08b94d87354ecf3e8d25b90298a55729c451e97.006.1,2026-09-08T07:01:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.8aab9f4b99ef35906b9c395fb246176afdd628ac.006.1,2026-09-08T06:52:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2977be557cee696cd06196f0918b468e5a1500b8.006.1,2026-09-08T03:10:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.9781086943425f317f517d30846b423c2556491d.001.1,2026-09-07T20:16:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.c1ee2511df0052eb682e4457c29db4f3cea9ccb1.001.1,2026-09-07T11:09:00-07:00"
+              "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2afa2a5fffbede2ea119cdc29b39634da2af3c0d.003.1,2026-09-08T13:52:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.4a51a92a0c9bfd1650738f2dc8a8c6e05107d877.003.1,2026-09-08T03:44:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.d08b94d87354ecf3e8d25b90298a55729c451e97.004.1,2026-09-08T07:01:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.8aab9f4b99ef35906b9c395fb246176afdd628ac.004.1,2026-09-08T06:52:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2977be557cee696cd06196f0918b468e5a1500b8.005.1,2026-09-08T03:10:00-07:00"
             ]
           },
           "scope": "Public",
@@ -1559,31 +1855,36 @@
         }
       },
       {
-        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.003.1",
+        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.006.1",
         "type": "Feature",
         "geometry": null,
         "properties": {
-          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.003.1",
+          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.006.1",
           "@type": "wx:Alert",
-          "id": "urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.003.1",
-          "areaDesc": "San Diego County Inland Valleys",
+          "id": "urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.006.1",
+          "areaDesc": "Coachella Valley; San Diego County Deserts; San Gorgonio Pass Near Banning",
           "geocode": {
             "SAME": [
+              "006065",
               "006073"
             ],
             "UGC": [
-              "CAZ050"
+              "CAZ061",
+              "CAZ062",
+              "CAZ065"
             ]
           },
           "affectedZones": [
-            "https://api.weather.gov/zones/forecast/CAZ050"
+            "https://api.weather.gov/zones/forecast/CAZ061",
+            "https://api.weather.gov/zones/forecast/CAZ062",
+            "https://api.weather.gov/zones/forecast/CAZ065"
           ],
           "references": [],
           "sent": "2026-09-09T02:58:00-07:00",
           "effective": "2026-09-09T02:58:00-07:00",
-          "onset": "2026-09-09T02:58:00-07:00",
+          "onset": "2026-09-09T10:00:00-07:00",
           "expires": "2026-09-09T15:30:00-07:00",
-          "ends": "2026-09-09T20:00:00-07:00",
+          "ends": "2026-09-11T20:00:00-07:00",
           "status": "Actual",
           "messageType": "Alert",
           "category": "Met",
@@ -1593,8 +1894,8 @@
           "event": "Extreme Heat Warning",
           "sender": "w-nws.webmaster@noaa.gov",
           "senderName": "NWS San Diego CA",
-          "headline": "Extreme Heat Warning issued September 9 at 2:58AM PDT until September 9 at 8:00PM PDT by NWS San Diego CA",
-          "description": "* WHAT...For the Extreme Heat Warning, dangerously hot conditions\nwith high temperatures in the mid 90s to 107 with low temperatures\nin the 70s expected. For the Heat Advisory, high temperatures in\nthe mid 90s to 104 expected.\n\n* WHERE...San Diego County Valleys.\n\n* WHEN...For the Extreme Heat Warning, until 8 PM PDT this evening.\nFor the Heat Advisory, from 8 PM this evening to 8 PM PDT Thursday.\n\n* IMPACTS...Heat related illnesses increase significantly during\nextreme heat events.\n\n* ADDITIONAL DETAILS...Major to Extreme HeatRisk. Warm overnight\ntemperatures will limit relief from the heat.",
+          "headline": "Extreme Heat Warning issued September 9 at 2:58AM PDT until September 11 at 8:00PM PDT by NWS San Diego CA",
+          "description": "* WHAT...Dangerously hot conditions with high temperatures of 110 to\n114 expected with low temperatures in the 80s expected.\n\n* WHERE...Coachella Valley, San Diego County Deserts, and San\nGorgonio Pass near Banning.\n\n* WHEN...From 10 AM this morning to 8 PM PDT Friday.\n\n* IMPACTS...Heat related illnesses increase significantly during\nextreme heat events.\n\n* ADDITIONAL DETAILS...Areas of Major HeatRisk. Very warm overnight\ntemperatures will limit relief from the heat.",
           "instruction": "Drink plenty of fluids, stay in an air-conditioned room, stay out of\nthe sun, and check up on relatives and neighbors.",
           "response": "Execute",
           "note": null,
@@ -1606,7 +1907,7 @@
               "WWUS76 KSGX 090958"
             ],
             "NWSheadline": [
-              "EXTREME HEAT WARNING REMAINS IN EFFECT UNTIL 8 PM PDT THIS EVENING... ...HEAT ADVISORY REMAINS IN EFFECT FROM 8 PM THIS EVENING TO 8 PM PDT THURSDAY"
+              "EXTREME HEAT WARNING REMAINS IN EFFECT FROM 10 AM THIS MORNING TO 8 PM PDT FRIDAY"
             ],
             "BLOCKCHANNEL": [
               "EAS",
@@ -1614,174 +1915,13 @@
               "CMAS"
             ],
             "VTEC": [
-              "/O.CON.KSGX.XH.W.0009.000000T0000Z-260910T0300Z/"
+              "/O.CON.KSGX.XH.W.0009.260909T1700Z-260912T0300Z/"
             ],
             "eventEndingTime": [
-              "2026-09-09T20:00:00-07:00"
+              "2026-09-11T20:00:00-07:00"
             ],
             "expiredReferences": [
-              "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2afa2a5fffbede2ea119cdc29b39634da2af3c0d.003.1,2026-09-08T13:52:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.4a51a92a0c9bfd1650738f2dc8a8c6e05107d877.003.1,2026-09-08T03:44:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.d08b94d87354ecf3e8d25b90298a55729c451e97.004.1,2026-09-08T07:01:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.8aab9f4b99ef35906b9c395fb246176afdd628ac.004.1,2026-09-08T06:52:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2977be557cee696cd06196f0918b468e5a1500b8.005.1,2026-09-08T03:10:00-07:00"
-            ]
-          },
-          "scope": "Public",
-          "code": "IPAWSv1.0",
-          "language": "en-US",
-          "web": "http://www.weather.gov",
-          "eventCode": {
-            "SAME": [
-              "NWS"
-            ],
-            "NationalWeatherService": [
-              "XHW"
-            ]
-          }
-        }
-      },
-      {
-        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.002.1",
-        "type": "Feature",
-        "geometry": null,
-        "properties": {
-          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.002.1",
-          "@type": "wx:Alert",
-          "id": "urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.002.1",
-          "areaDesc": "San Bernardino and Riverside County Valleys-The Inland Empire",
-          "geocode": {
-            "SAME": [
-              "006065",
-              "006071"
-            ],
-            "UGC": [
-              "CAZ048"
-            ]
-          },
-          "affectedZones": [
-            "https://api.weather.gov/zones/forecast/CAZ048"
-          ],
-          "references": [],
-          "sent": "2026-09-09T02:58:00-07:00",
-          "effective": "2026-09-09T02:58:00-07:00",
-          "onset": "2026-09-09T02:58:00-07:00",
-          "expires": "2026-09-09T15:30:00-07:00",
-          "ends": "2026-09-09T20:00:00-07:00",
-          "status": "Actual",
-          "messageType": "Alert",
-          "category": "Met",
-          "severity": "Severe",
-          "certainty": "Likely",
-          "urgency": "Expected",
-          "event": "Extreme Heat Warning",
-          "sender": "w-nws.webmaster@noaa.gov",
-          "senderName": "NWS San Diego CA",
-          "headline": "Extreme Heat Warning issued September 9 at 2:58AM PDT until September 9 at 8:00PM PDT by NWS San Diego CA",
-          "description": "* WHAT...For the Extreme Heat Warning, dangerously hot conditions\nwith high temperatures of 104 to 110 with low temperatures in the\n70s and lower 80s expected. For the Heat Advisory, high\ntemperatures in the upper  90s to 105 expected.\n\n* WHERE...San Bernardino and Riverside County Valleys-The Inland\nEmpire.\n\n* WHEN...For the Extreme Heat Warning, until 8 PM PDT this evening.\nFor the Heat Advisory, from 8 PM this evening to 8 PM PDT Thursday.\n\n* IMPACTS...Heat related illnesses increase significantly during\nextreme heat events.\n\n* ADDITIONAL DETAILS...Major HeatRisk through today. Warm overnight\ntemperatures will limit relief from the heat.",
-          "instruction": "Drink plenty of fluids, stay in an air-conditioned room, stay out of\nthe sun, and check up on relatives and neighbors.\n\nDo not leave young children and pets in unattended vehicles. Car\ninteriors will reach lethal temperatures in a matter of minutes.",
-          "response": "Execute",
-          "note": null,
-          "parameters": {
-            "AWIPSidentifier": [
-              "NPWSGX"
-            ],
-            "WMOidentifier": [
-              "WWUS76 KSGX 090958"
-            ],
-            "NWSheadline": [
-              "EXTREME HEAT WARNING REMAINS IN EFFECT UNTIL 8 PM PDT THIS EVENING... ...HEAT ADVISORY REMAINS IN EFFECT FROM 8 PM THIS EVENING TO 8 PM PDT THURSDAY"
-            ],
-            "BLOCKCHANNEL": [
-              "EAS",
-              "NWEM",
-              "CMAS"
-            ],
-            "VTEC": [
-              "/O.CON.KSGX.XH.W.0009.000000T0000Z-260910T0300Z/"
-            ],
-            "eventEndingTime": [
-              "2026-09-09T20:00:00-07:00"
-            ],
-            "expiredReferences": [
-              "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2afa2a5fffbede2ea119cdc29b39634da2af3c0d.002.1,2026-09-08T13:52:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.4a51a92a0c9bfd1650738f2dc8a8c6e05107d877.002.1,2026-09-08T03:44:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.d08b94d87354ecf3e8d25b90298a55729c451e97.003.1,2026-09-08T07:01:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.8aab9f4b99ef35906b9c395fb246176afdd628ac.003.1,2026-09-08T06:52:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2977be557cee696cd06196f0918b468e5a1500b8.004.1,2026-09-08T03:10:00-07:00"
-            ]
-          },
-          "scope": "Public",
-          "code": "IPAWSv1.0",
-          "language": "en-US",
-          "web": "http://www.weather.gov",
-          "eventCode": {
-            "SAME": [
-              "NWS"
-            ],
-            "NationalWeatherService": [
-              "XHW"
-            ]
-          }
-        }
-      },
-      {
-        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.004.1",
-        "type": "Feature",
-        "geometry": null,
-        "properties": {
-          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.004.1",
-          "@type": "wx:Alert",
-          "id": "urn:oid:2.49.0.1.840.0.e5db6b8d9fc05dff1d95522368b5a7b8c0290140.004.1",
-          "areaDesc": "Santa Ana Mountains and Foothills",
-          "geocode": {
-            "SAME": [
-              "006059",
-              "006065",
-              "006073"
-            ],
-            "UGC": [
-              "CAZ057"
-            ]
-          },
-          "affectedZones": [
-            "https://api.weather.gov/zones/forecast/CAZ057"
-          ],
-          "references": [],
-          "sent": "2026-09-09T02:58:00-07:00",
-          "effective": "2026-09-09T02:58:00-07:00",
-          "onset": "2026-09-09T02:58:00-07:00",
-          "expires": "2026-09-09T15:30:00-07:00",
-          "ends": "2026-09-09T20:00:00-07:00",
-          "status": "Actual",
-          "messageType": "Alert",
-          "category": "Met",
-          "severity": "Severe",
-          "certainty": "Likely",
-          "urgency": "Expected",
-          "event": "Extreme Heat Warning",
-          "sender": "w-nws.webmaster@noaa.gov",
-          "senderName": "NWS San Diego CA",
-          "headline": "Extreme Heat Warning issued September 9 at 2:58AM PDT until September 9 at 8:00PM PDT by NWS San Diego CA",
-          "description": "* WHAT...For the Extreme Heat Warning, dangerously hot conditions\nwith high temperatures in the 90s to near 100 with low temperatures\nin the 70s expected. For the Heat Advisory, high temperatures in\nthe mid 80s to mid 90s expected.\n\n* WHERE...Santa Ana Mountains and Foothills.\n\n* WHEN...For the Extreme Heat Warning, until 8 PM PDT this evening.\nFor the Heat Advisory, from 8 PM this evening to 8 PM PDT Thursday.\n\n* IMPACTS...Heat related illnesses increase significantly during\nextreme heat events.\n\n* ADDITIONAL DETAILS...Areas of Major HeatRisk. Very warm overnight\ntemperatures will limit relief from the heat.",
-          "instruction": "Drink plenty of fluids, stay in an air-conditioned room, stay out of\nthe sun, and check up on relatives and neighbors.\n\nTake extra precautions when outside. Wear lightweight and loose\nfitting clothing. Try to limit strenuous activities to early morning\nor evening. Take action when you see symptoms of heat exhaustion and\nheat stroke.",
-          "response": "Execute",
-          "note": null,
-          "parameters": {
-            "AWIPSidentifier": [
-              "NPWSGX"
-            ],
-            "WMOidentifier": [
-              "WWUS76 KSGX 090958"
-            ],
-            "NWSheadline": [
-              "EXTREME HEAT WARNING REMAINS IN EFFECT UNTIL 8 PM PDT THIS EVENING... ...HEAT ADVISORY REMAINS IN EFFECT FROM 8 PM THIS EVENING TO 8 PM PDT THURSDAY"
-            ],
-            "BLOCKCHANNEL": [
-              "EAS",
-              "NWEM",
-              "CMAS"
-            ],
-            "VTEC": [
-              "/O.CON.KSGX.XH.W.0009.000000T0000Z-260910T0300Z/"
-            ],
-            "eventEndingTime": [
-              "2026-09-09T20:00:00-07:00"
-            ],
-            "expiredReferences": [
-              "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2afa2a5fffbede2ea119cdc29b39634da2af3c0d.004.1,2026-09-08T13:52:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.d08b94d87354ecf3e8d25b90298a55729c451e97.001.2,2026-09-08T07:01:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.8aab9f4b99ef35906b9c395fb246176afdd628ac.001.1,2026-09-08T06:52:00-07:00"
+              "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2afa2a5fffbede2ea119cdc29b39634da2af3c0d.006.1,2026-09-08T13:52:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.4a51a92a0c9bfd1650738f2dc8a8c6e05107d877.005.1,2026-09-08T03:44:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.d08b94d87354ecf3e8d25b90298a55729c451e97.006.1,2026-09-08T07:01:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.8aab9f4b99ef35906b9c395fb246176afdd628ac.006.1,2026-09-08T06:52:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.2977be557cee696cd06196f0918b468e5a1500b8.006.1,2026-09-08T03:10:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.9781086943425f317f517d30846b423c2556491d.001.1,2026-09-07T20:16:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.c1ee2511df0052eb682e4457c29db4f3cea9ccb1.001.1,2026-09-07T11:09:00-07:00"
             ]
           },
           "scope": "Public",
@@ -2497,90 +2637,6 @@
         }
       },
       {
-        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.3aeccd0b68747c8e236387f5c059e1a4ba59e57d.001.2",
-        "type": "Feature",
-        "geometry": null,
-        "properties": {
-          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.3aeccd0b68747c8e236387f5c059e1a4ba59e57d.001.2",
-          "@type": "wx:Alert",
-          "id": "urn:oid:2.49.0.1.840.0.3aeccd0b68747c8e236387f5c059e1a4ba59e57d.001.2",
-          "areaDesc": "Lincoln and Uinta Counties/Lower Elevations; Upper Green River Basin/Rock Springs BLM; Sweetwater County/Rock Springs BLM/Flaming Gorge NRA",
-          "geocode": {
-            "SAME": [
-              "056023",
-              "056035",
-              "056037",
-              "056041",
-              "056013"
-            ],
-            "UGC": [
-              "WYZ277",
-              "WYZ278",
-              "WYZ279"
-            ]
-          },
-          "affectedZones": [
-            "https://api.weather.gov/zones/fire/WYZ277",
-            "https://api.weather.gov/zones/fire/WYZ278",
-            "https://api.weather.gov/zones/fire/WYZ279"
-          ],
-          "references": [],
-          "sent": "2026-09-09T02:08:00-06:00",
-          "effective": "2026-09-09T02:08:00-06:00",
-          "onset": "2026-09-09T12:00:00-06:00",
-          "expires": "2026-09-09T17:00:00-06:00",
-          "ends": "2026-09-10T21:00:00-06:00",
-          "status": "Actual",
-          "messageType": "Alert",
-          "category": "Met",
-          "severity": "Severe",
-          "certainty": "Likely",
-          "urgency": "Expected",
-          "event": "Red Flag Warning",
-          "sender": "w-nws.webmaster@noaa.gov",
-          "senderName": "NWS Riverton WY",
-          "headline": "Red Flag Warning issued September 9 at 2:08AM MDT until September 10 at 9:00PM MDT by NWS Riverton WY",
-          "description": "The National Weather Service in Riverton has issued a Red Flag\nWarning, which is in effect from noon today to 9 PM MDT Thursday.\nthe Fire Weather Watch is no longer in effect.\n\n* AFFECTED AREA:\nIn Southwest WY Fire Zones...277...279.\nIn West Central WY Fire Zone....278.\n\n* COUNTIES AFFECTED:\nIn Southwest WY...Sweetwater...Uinta.\nIn West Central WY...Lincoln...Sublette.\n\n* IMPACTS: Low Humidities and Strong Gusty Winds could cause\nerratic fire behavior.\n\n* WIND: West 10 to 20 mph with gusts up to 25 mph. Thursday, west 15\nto 25 mph with gusts of 30 to 35 mph.\n\n* HUMIDITY: As low as 10 percent. RH recovery will be fair to poor\ntonight in zones 277 and 279.",
-          "instruction": "A Red Flag Warning means that critical fire weather conditions are\neither occurring now....or will shortly. A combination of strong\nwinds...low relative humidity...and warm temperatures can\ncontribute to extreme fire behavior.",
-          "response": "Prepare",
-          "note": null,
-          "parameters": {
-            "AWIPSidentifier": [
-              "RFWRIW"
-            ],
-            "WMOidentifier": [
-              "WWUS85 KRIW 090808"
-            ],
-            "NWSheadline": [
-              "RED FLAG WARNING IN EFFECT FROM NOON TODAY TO 9 PM MDT THURSDAY"
-            ],
-            "BLOCKCHANNEL": [
-              "EAS",
-              "NWEM",
-              "CMAS"
-            ],
-            "VTEC": [
-              "/O.EXB.KRIW.FW.W.0027.260909T1800Z-260911T0300Z/"
-            ],
-            "eventEndingTime": [
-              "2026-09-10T21:00:00-06:00"
-            ]
-          },
-          "scope": "Public",
-          "code": "IPAWSv1.0",
-          "language": "en-US",
-          "web": "http://www.weather.gov",
-          "eventCode": {
-            "SAME": [
-              "NWS"
-            ],
-            "NationalWeatherService": [
-              "FWW"
-            ]
-          }
-        }
-      },
-      {
         "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.3aeccd0b68747c8e236387f5c059e1a4ba59e57d.002.1",
         "type": "Feature",
         "geometry": null,
@@ -2663,6 +2719,90 @@
             ],
             "expiredReferences": [
               "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.ead00ce8fe0edc5329ad967ea8902bf0062b5231.001.1,2026-09-08T00:58:00-06:00"
+            ]
+          },
+          "scope": "Public",
+          "code": "IPAWSv1.0",
+          "language": "en-US",
+          "web": "http://www.weather.gov",
+          "eventCode": {
+            "SAME": [
+              "NWS"
+            ],
+            "NationalWeatherService": [
+              "FWW"
+            ]
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.3aeccd0b68747c8e236387f5c059e1a4ba59e57d.001.2",
+        "type": "Feature",
+        "geometry": null,
+        "properties": {
+          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.3aeccd0b68747c8e236387f5c059e1a4ba59e57d.001.2",
+          "@type": "wx:Alert",
+          "id": "urn:oid:2.49.0.1.840.0.3aeccd0b68747c8e236387f5c059e1a4ba59e57d.001.2",
+          "areaDesc": "Lincoln and Uinta Counties/Lower Elevations; Upper Green River Basin/Rock Springs BLM; Sweetwater County/Rock Springs BLM/Flaming Gorge NRA",
+          "geocode": {
+            "SAME": [
+              "056023",
+              "056035",
+              "056037",
+              "056041",
+              "056013"
+            ],
+            "UGC": [
+              "WYZ277",
+              "WYZ278",
+              "WYZ279"
+            ]
+          },
+          "affectedZones": [
+            "https://api.weather.gov/zones/fire/WYZ277",
+            "https://api.weather.gov/zones/fire/WYZ278",
+            "https://api.weather.gov/zones/fire/WYZ279"
+          ],
+          "references": [],
+          "sent": "2026-09-09T02:08:00-06:00",
+          "effective": "2026-09-09T02:08:00-06:00",
+          "onset": "2026-09-09T12:00:00-06:00",
+          "expires": "2026-09-09T17:00:00-06:00",
+          "ends": "2026-09-10T21:00:00-06:00",
+          "status": "Actual",
+          "messageType": "Alert",
+          "category": "Met",
+          "severity": "Severe",
+          "certainty": "Likely",
+          "urgency": "Expected",
+          "event": "Red Flag Warning",
+          "sender": "w-nws.webmaster@noaa.gov",
+          "senderName": "NWS Riverton WY",
+          "headline": "Red Flag Warning issued September 9 at 2:08AM MDT until September 10 at 9:00PM MDT by NWS Riverton WY",
+          "description": "The National Weather Service in Riverton has issued a Red Flag\nWarning, which is in effect from noon today to 9 PM MDT Thursday.\nthe Fire Weather Watch is no longer in effect.\n\n* AFFECTED AREA:\nIn Southwest WY Fire Zones...277...279.\nIn West Central WY Fire Zone....278.\n\n* COUNTIES AFFECTED:\nIn Southwest WY...Sweetwater...Uinta.\nIn West Central WY...Lincoln...Sublette.\n\n* IMPACTS: Low Humidities and Strong Gusty Winds could cause\nerratic fire behavior.\n\n* WIND: West 10 to 20 mph with gusts up to 25 mph. Thursday, west 15\nto 25 mph with gusts of 30 to 35 mph.\n\n* HUMIDITY: As low as 10 percent. RH recovery will be fair to poor\ntonight in zones 277 and 279.",
+          "instruction": "A Red Flag Warning means that critical fire weather conditions are\neither occurring now....or will shortly. A combination of strong\nwinds...low relative humidity...and warm temperatures can\ncontribute to extreme fire behavior.",
+          "response": "Prepare",
+          "note": null,
+          "parameters": {
+            "AWIPSidentifier": [
+              "RFWRIW"
+            ],
+            "WMOidentifier": [
+              "WWUS85 KRIW 090808"
+            ],
+            "NWSheadline": [
+              "RED FLAG WARNING IN EFFECT FROM NOON TODAY TO 9 PM MDT THURSDAY"
+            ],
+            "BLOCKCHANNEL": [
+              "EAS",
+              "NWEM",
+              "CMAS"
+            ],
+            "VTEC": [
+              "/O.EXB.KRIW.FW.W.0027.260909T1800Z-260911T0300Z/"
+            ],
+            "eventEndingTime": [
+              "2026-09-10T21:00:00-06:00"
             ]
           },
           "scope": "Public",
@@ -3276,6 +3416,6 @@
       }
     ],
     "title": "Current watches, warnings, and advisories",
-    "updated": "2026-09-09T14:03:12+00:00"
+    "updated": "2026-09-09T14:10:16+00:00"
   }
 }

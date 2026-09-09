@@ -1,9 +1,9 @@
 {
-  "description": "Six hours of observations from Seattle-Tacoma airport",
+  "description": "The same six hours, capped at ten rows: what a truncated window looks like",
   "request": {
     "station_id": "KSEA",
     "start": "2026-09-09T02:00:00Z",
     "end": "2026-09-09T08:00:00Z",
-    "limit": 500
+    "limit": 10
   }
 }
