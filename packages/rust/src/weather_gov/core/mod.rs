@@ -224,3 +224,27 @@ fn map_error(method: &str, path: &str, response: &Response) -> Error {
     };
     error.with_status(response.status).with_body(body)
 }
+
+impl crate::Weather {
+    /// A client for the live API.
+    ///
+    /// `truewire generate rust` names the generated constructor `from_core` and leaves
+    /// `new` for a core to define; this is that, and it is why the first line of a
+    /// program using this crate is one call rather than four.
+    ///
+    /// # Arguments
+    ///
+    /// * `contact` - How the service can reach you: an email address or a project URL.
+    ///   It is sent in `User-Agent` on every call, which the National Weather Service
+    ///   asks of every caller. There is no API key; this is the whole of identifying
+    ///   yourself, and a client that will not say who it is gets 403.
+    pub fn new(contact: impl Into<String>) -> Self {
+        Self::with_options(CoreOptions::new(contact))
+    }
+
+    /// A client with the transport configured -- another host (a `truewire mock` address
+    /// in tests), or an HTTP client to share.
+    pub fn with_options(options: CoreOptions) -> Self {
+        Self::from_core(Core::new(options))
+    }
+}

@@ -32,7 +32,8 @@ pub struct Weather {
 }
 
 impl Weather {
-    pub fn new(core: Arc<dyn HttpEndpoint<DefaultMeta>>) -> Self {
+    pub fn from_core(core: impl HttpEndpoint<DefaultMeta> + 'static) -> Self {
+        let core: Arc<dyn HttpEndpoint<DefaultMeta>> = Arc::new(core);
         Self {
             alerts: Alerts::new(core.clone()),
             forecast: Forecast::new(core.clone()),

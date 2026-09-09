@@ -17,15 +17,12 @@ use std::path::Path;
 mod readme_1 {
     #![allow(dead_code, unused_imports, unused_variables)]
 
-use std::sync::Arc;
-
 use truewire_core::CallOptions;
-use weather_gov::core::{Core, CoreOptions};
 use weather_gov::{forecast, points, Weather};
 
 #[tokio::main]
 async fn main() -> truewire_core::Result<()> {
-    let client = Weather::new(Arc::new(Core::new(CoreOptions::new("you@example.com"))));
+    let client = Weather::new("you@example.com");
 
     let point = client
         .points
@@ -63,7 +60,6 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use truewire_core::CallOptions;
-use weather_gov::core::{Core, CoreOptions};
 use weather_gov::{alerts, Weather};
 
 async fn severe(client: &Weather) -> truewire_core::Result<usize> {
@@ -82,7 +78,7 @@ async fn severe(client: &Weather) -> truewire_core::Result<usize> {
 }
 
 async fn build() -> truewire_core::Result<()> {
-    let client = Weather::new(Arc::new(Core::new(CoreOptions::new("you@example.com"))));
+    let client = Weather::new("you@example.com");
     println!("{} severe alerts", severe(&client).await?);
     Ok(())
 }
