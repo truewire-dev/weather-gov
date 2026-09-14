@@ -47,7 +47,7 @@
     "type": "FeatureCollection",
     "features": [
       {
-        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:55:00+00:00",
+        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:55:00+00:00",
         "type": "Feature",
         "geometry": {
           "type": "Point",
@@ -57,7 +57,7 @@
           ]
         },
         "properties": {
-          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:55:00+00:00",
+          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:55:00+00:00",
           "@type": "wx:ObservationStation",
           "elevation": {
             "unitCode": "wmoUnit:m",
@@ -66,14 +66,14 @@
           "station": "https://api.weather.gov/stations/KSEA",
           "stationId": "KSEA",
           "stationName": "Seattle, Seattle-Tacoma International Airport",
-          "timestamp": "2026-09-09T07:55:00+00:00",
+          "timestamp": "2026-09-14T06:55:00+00:00",
           "rawMessage": "",
           "textDescription": "Clear",
           "icon": "https://api.weather.gov/icons/land/night/skc?size=medium",
           "presentWeather": [],
           "temperature": {
             "unitCode": "wmoUnit:degC",
-            "value": 17,
+            "value": 14,
             "qualityControl": "V"
           },
           "dewpoint": {
@@ -83,12 +83,12 @@
           },
           "windDirection": {
             "unitCode": "wmoUnit:degree_(angle)",
-            "value": 10,
+            "value": 180,
             "qualityControl": "V"
           },
           "windSpeed": {
             "unitCode": "wmoUnit:km_h-1",
-            "value": 12.96,
+            "value": 14.832,
             "qualityControl": "V"
           },
           "windGust": {
@@ -98,7 +98,7 @@
           },
           "barometricPressure": {
             "unitCode": "wmoUnit:Pa",
-            "value": 102472.12,
+            "value": 101896.44,
             "qualityControl": "V"
           },
           "seaLevelPressure": {
@@ -126,7 +126,7 @@
           },
           "relativeHumidity": {
             "unitCode": "wmoUnit:percent",
-            "value": 67.769403902783,
+            "value": 82.135480367498,
             "qualityControl": "V"
           },
           "windChill": {
@@ -151,7 +151,7 @@
         }
       },
       {
-        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:53:00+00:00",
+        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:53:00+00:00",
         "type": "Feature",
         "geometry": {
           "type": "Point",
@@ -161,7 +161,7 @@
           ]
         },
         "properties": {
-          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:53:00+00:00",
+          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:53:00+00:00",
           "@type": "wx:ObservationStation",
           "elevation": {
             "unitCode": "wmoUnit:m",
@@ -170,14 +170,14 @@
           "station": "https://api.weather.gov/stations/KSEA",
           "stationId": "KSEA",
           "stationName": "Seattle, Seattle-Tacoma International Airport",
-          "timestamp": "2026-09-09T07:53:00+00:00",
+          "timestamp": "2026-09-14T06:53:00+00:00",
           "rawMessage": "",
           "textDescription": "",
           "icon": null,
           "presentWeather": [],
           "temperature": {
             "unitCode": "wmoUnit:degC",
-            "value": 16.7,
+            "value": 13.9,
             "qualityControl": "V"
           },
           "dewpoint": {
@@ -187,7 +187,7 @@
           },
           "windDirection": {
             "unitCode": "wmoUnit:degree_(angle)",
-            "value": 20,
+            "value": 190,
             "qualityControl": "V"
           },
           "windSpeed": {
@@ -202,12 +202,12 @@
           },
           "barometricPressure": {
             "unitCode": "wmoUnit:Pa",
-            "value": 102470,
+            "value": 101900,
             "qualityControl": "V"
           },
           "seaLevelPressure": {
             "unitCode": "wmoUnit:Pa",
-            "value": 102510,
+            "value": 101940,
             "qualityControl": "V"
           },
           "visibility": {
@@ -240,7 +240,7 @@
           },
           "relativeHumidity": {
             "unitCode": "wmoUnit:percent",
-            "value": 69.530934577901,
+            "value": 83.220266513554,
             "qualityControl": "V"
           },
           "windChill": {
@@ -257,7 +257,7 @@
         }
       },
       {
-        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:50:00+00:00",
+        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:50:00+00:00",
         "type": "Feature",
         "geometry": {
           "type": "Point",
@@ -267,7 +267,7 @@
           ]
         },
         "properties": {
-          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:50:00+00:00",
+          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:50:00+00:00",
           "@type": "wx:ObservationStation",
           "elevation": {
             "unitCode": "wmoUnit:m",
@@ -276,110 +276,14 @@
           "station": "https://api.weather.gov/stations/KSEA",
           "stationId": "KSEA",
           "stationName": "Seattle, Seattle-Tacoma International Airport",
-          "timestamp": "2026-09-09T07:50:00+00:00",
-          "rawMessage": "",
-          "textDescription": "",
-          "icon": null,
-          "presentWeather": [],
-          "temperature": {
-            "unitCode": "wmoUnit:degC",
-            "value": 17,
-            "qualityControl": "V"
-          },
-          "dewpoint": {
-            "unitCode": "wmoUnit:degC",
-            "value": 11,
-            "qualityControl": "V"
-          },
-          "windDirection": {
-            "unitCode": "wmoUnit:degree_(angle)",
-            "value": 20,
-            "qualityControl": "V"
-          },
-          "windSpeed": {
-            "unitCode": "wmoUnit:km_h-1",
-            "value": 14.832,
-            "qualityControl": "V"
-          },
-          "windGust": {
-            "unitCode": "wmoUnit:km_h-1",
-            "value": null,
-            "qualityControl": "Z"
-          },
-          "barometricPressure": {
-            "unitCode": "wmoUnit:Pa",
-            "value": 102472.12,
-            "qualityControl": "V"
-          },
-          "seaLevelPressure": {
-            "unitCode": "wmoUnit:Pa",
-            "value": null,
-            "qualityControl": "Z"
-          },
-          "visibility": {
-            "unitCode": "wmoUnit:m",
-            "value": 16093.44,
-            "qualityControl": "C"
-          },
-          "maxTemperatureLast24Hours": {
-            "unitCode": "wmoUnit:degC",
-            "value": null
-          },
-          "minTemperatureLast24Hours": {
-            "unitCode": "wmoUnit:degC",
-            "value": null
-          },
-          "precipitationLast3Hours": {
-            "unitCode": "wmoUnit:mm",
-            "value": null,
-            "qualityControl": "Z"
-          },
-          "relativeHumidity": {
-            "unitCode": "wmoUnit:percent",
-            "value": 67.769403902783,
-            "qualityControl": "V"
-          },
-          "windChill": {
-            "unitCode": "wmoUnit:degC",
-            "value": null,
-            "qualityControl": "V"
-          },
-          "heatIndex": {
-            "unitCode": "wmoUnit:degC",
-            "value": null,
-            "qualityControl": "V"
-          },
-          "cloudLayers": []
-        }
-      },
-      {
-        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:45:00+00:00",
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            -122.3,
-            47.45
-          ]
-        },
-        "properties": {
-          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:45:00+00:00",
-          "@type": "wx:ObservationStation",
-          "elevation": {
-            "unitCode": "wmoUnit:m",
-            "value": 137
-          },
-          "station": "https://api.weather.gov/stations/KSEA",
-          "stationId": "KSEA",
-          "stationName": "Seattle, Seattle-Tacoma International Airport",
-          "timestamp": "2026-09-09T07:45:00+00:00",
+          "timestamp": "2026-09-14T06:50:00+00:00",
           "rawMessage": "",
           "textDescription": "Clear",
           "icon": "https://api.weather.gov/icons/land/night/skc?size=medium",
           "presentWeather": [],
           "temperature": {
             "unitCode": "wmoUnit:degC",
-            "value": 17,
+            "value": 14,
             "qualityControl": "V"
           },
           "dewpoint": {
@@ -389,7 +293,7 @@
           },
           "windDirection": {
             "unitCode": "wmoUnit:degree_(angle)",
-            "value": 20,
+            "value": 180,
             "qualityControl": "V"
           },
           "windSpeed": {
@@ -404,7 +308,7 @@
           },
           "barometricPressure": {
             "unitCode": "wmoUnit:Pa",
-            "value": 102472.12,
+            "value": 101862.57,
             "qualityControl": "V"
           },
           "seaLevelPressure": {
@@ -432,7 +336,7 @@
           },
           "relativeHumidity": {
             "unitCode": "wmoUnit:percent",
-            "value": 67.769403902783,
+            "value": 82.135480367498,
             "qualityControl": "V"
           },
           "windChill": {
@@ -457,7 +361,7 @@
         }
       },
       {
-        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:40:00+00:00",
+        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:45:00+00:00",
         "type": "Feature",
         "geometry": {
           "type": "Point",
@@ -467,7 +371,7 @@
           ]
         },
         "properties": {
-          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:40:00+00:00",
+          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:45:00+00:00",
           "@type": "wx:ObservationStation",
           "elevation": {
             "unitCode": "wmoUnit:m",
@@ -476,14 +380,14 @@
           "station": "https://api.weather.gov/stations/KSEA",
           "stationId": "KSEA",
           "stationName": "Seattle, Seattle-Tacoma International Airport",
-          "timestamp": "2026-09-09T07:40:00+00:00",
+          "timestamp": "2026-09-14T06:45:00+00:00",
           "rawMessage": "",
           "textDescription": "Clear",
           "icon": "https://api.weather.gov/icons/land/night/skc?size=medium",
           "presentWeather": [],
           "temperature": {
             "unitCode": "wmoUnit:degC",
-            "value": 17,
+            "value": 14,
             "qualityControl": "V"
           },
           "dewpoint": {
@@ -493,12 +397,12 @@
           },
           "windDirection": {
             "unitCode": "wmoUnit:degree_(angle)",
-            "value": 20,
+            "value": 190,
             "qualityControl": "V"
           },
           "windSpeed": {
             "unitCode": "wmoUnit:km_h-1",
-            "value": 14.832,
+            "value": 18.504,
             "qualityControl": "V"
           },
           "windGust": {
@@ -508,7 +412,7 @@
           },
           "barometricPressure": {
             "unitCode": "wmoUnit:Pa",
-            "value": 102472.12,
+            "value": 101862.57,
             "qualityControl": "V"
           },
           "seaLevelPressure": {
@@ -536,7 +440,7 @@
           },
           "relativeHumidity": {
             "unitCode": "wmoUnit:percent",
-            "value": 67.769403902783,
+            "value": 82.135480367498,
             "qualityControl": "V"
           },
           "windChill": {
@@ -561,7 +465,7 @@
         }
       },
       {
-        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:35:00+00:00",
+        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:40:00+00:00",
         "type": "Feature",
         "geometry": {
           "type": "Point",
@@ -571,7 +475,7 @@
           ]
         },
         "properties": {
-          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:35:00+00:00",
+          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:40:00+00:00",
           "@type": "wx:ObservationStation",
           "elevation": {
             "unitCode": "wmoUnit:m",
@@ -580,128 +484,24 @@
           "station": "https://api.weather.gov/stations/KSEA",
           "stationId": "KSEA",
           "stationName": "Seattle, Seattle-Tacoma International Airport",
-          "timestamp": "2026-09-09T07:35:00+00:00",
+          "timestamp": "2026-09-14T06:40:00+00:00",
           "rawMessage": "",
           "textDescription": "Clear",
           "icon": "https://api.weather.gov/icons/land/night/skc?size=medium",
           "presentWeather": [],
           "temperature": {
             "unitCode": "wmoUnit:degC",
-            "value": 17,
+            "value": 14,
             "qualityControl": "V"
           },
           "dewpoint": {
             "unitCode": "wmoUnit:degC",
-            "value": 12,
+            "value": 11,
             "qualityControl": "V"
           },
           "windDirection": {
             "unitCode": "wmoUnit:degree_(angle)",
-            "value": 20,
-            "qualityControl": "V"
-          },
-          "windSpeed": {
-            "unitCode": "wmoUnit:km_h-1",
-            "value": 14.832,
-            "qualityControl": "V"
-          },
-          "windGust": {
-            "unitCode": "wmoUnit:km_h-1",
-            "value": null,
-            "qualityControl": "Z"
-          },
-          "barometricPressure": {
-            "unitCode": "wmoUnit:Pa",
-            "value": 102472.12,
-            "qualityControl": "V"
-          },
-          "seaLevelPressure": {
-            "unitCode": "wmoUnit:Pa",
-            "value": null,
-            "qualityControl": "Z"
-          },
-          "visibility": {
-            "unitCode": "wmoUnit:m",
-            "value": 16093.44,
-            "qualityControl": "C"
-          },
-          "maxTemperatureLast24Hours": {
-            "unitCode": "wmoUnit:degC",
-            "value": null
-          },
-          "minTemperatureLast24Hours": {
-            "unitCode": "wmoUnit:degC",
-            "value": null
-          },
-          "precipitationLast3Hours": {
-            "unitCode": "wmoUnit:mm",
-            "value": null,
-            "qualityControl": "Z"
-          },
-          "relativeHumidity": {
-            "unitCode": "wmoUnit:percent",
-            "value": 72.401374699018,
-            "qualityControl": "V"
-          },
-          "windChill": {
-            "unitCode": "wmoUnit:degC",
-            "value": null,
-            "qualityControl": "V"
-          },
-          "heatIndex": {
-            "unitCode": "wmoUnit:degC",
-            "value": null,
-            "qualityControl": "V"
-          },
-          "cloudLayers": [
-            {
-              "base": {
-                "unitCode": "wmoUnit:m",
-                "value": 3810
-              },
-              "amount": "CLR"
-            }
-          ]
-        }
-      },
-      {
-        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:30:00+00:00",
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            -122.3,
-            47.45
-          ]
-        },
-        "properties": {
-          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:30:00+00:00",
-          "@type": "wx:ObservationStation",
-          "elevation": {
-            "unitCode": "wmoUnit:m",
-            "value": 137
-          },
-          "station": "https://api.weather.gov/stations/KSEA",
-          "stationId": "KSEA",
-          "stationName": "Seattle, Seattle-Tacoma International Airport",
-          "timestamp": "2026-09-09T07:30:00+00:00",
-          "rawMessage": "",
-          "textDescription": "Clear",
-          "icon": "https://api.weather.gov/icons/land/night/skc?size=medium",
-          "presentWeather": [],
-          "temperature": {
-            "unitCode": "wmoUnit:degC",
-            "value": 17,
-            "qualityControl": "V"
-          },
-          "dewpoint": {
-            "unitCode": "wmoUnit:degC",
-            "value": 12,
-            "qualityControl": "V"
-          },
-          "windDirection": {
-            "unitCode": "wmoUnit:degree_(angle)",
-            "value": 20,
+            "value": 190,
             "qualityControl": "V"
           },
           "windSpeed": {
@@ -716,7 +516,7 @@
           },
           "barometricPressure": {
             "unitCode": "wmoUnit:Pa",
-            "value": 102472.12,
+            "value": 101862.57,
             "qualityControl": "V"
           },
           "seaLevelPressure": {
@@ -744,7 +544,7 @@
           },
           "relativeHumidity": {
             "unitCode": "wmoUnit:percent",
-            "value": 72.401374699018,
+            "value": 82.135480367498,
             "qualityControl": "V"
           },
           "windChill": {
@@ -769,7 +569,7 @@
         }
       },
       {
-        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:25:00+00:00",
+        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:35:00+00:00",
         "type": "Feature",
         "geometry": {
           "type": "Point",
@@ -779,7 +579,7 @@
           ]
         },
         "properties": {
-          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:25:00+00:00",
+          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:35:00+00:00",
           "@type": "wx:ObservationStation",
           "elevation": {
             "unitCode": "wmoUnit:m",
@@ -788,29 +588,29 @@
           "station": "https://api.weather.gov/stations/KSEA",
           "stationId": "KSEA",
           "stationName": "Seattle, Seattle-Tacoma International Airport",
-          "timestamp": "2026-09-09T07:25:00+00:00",
+          "timestamp": "2026-09-14T06:35:00+00:00",
           "rawMessage": "",
           "textDescription": "Clear",
           "icon": "https://api.weather.gov/icons/land/night/skc?size=medium",
           "presentWeather": [],
           "temperature": {
             "unitCode": "wmoUnit:degC",
-            "value": 17,
+            "value": 14,
             "qualityControl": "V"
           },
           "dewpoint": {
             "unitCode": "wmoUnit:degC",
-            "value": 12,
+            "value": 11,
             "qualityControl": "V"
           },
           "windDirection": {
             "unitCode": "wmoUnit:degree_(angle)",
-            "value": 20,
+            "value": 180,
             "qualityControl": "V"
           },
           "windSpeed": {
             "unitCode": "wmoUnit:km_h-1",
-            "value": 14.832,
+            "value": 18.504,
             "qualityControl": "V"
           },
           "windGust": {
@@ -820,7 +620,7 @@
           },
           "barometricPressure": {
             "unitCode": "wmoUnit:Pa",
-            "value": 102472.12,
+            "value": 101862.57,
             "qualityControl": "V"
           },
           "seaLevelPressure": {
@@ -848,7 +648,7 @@
           },
           "relativeHumidity": {
             "unitCode": "wmoUnit:percent",
-            "value": 72.401374699018,
+            "value": 82.135480367498,
             "qualityControl": "V"
           },
           "windChill": {
@@ -873,7 +673,7 @@
         }
       },
       {
-        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:20:00+00:00",
+        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:30:00+00:00",
         "type": "Feature",
         "geometry": {
           "type": "Point",
@@ -883,7 +683,7 @@
           ]
         },
         "properties": {
-          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:20:00+00:00",
+          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:30:00+00:00",
           "@type": "wx:ObservationStation",
           "elevation": {
             "unitCode": "wmoUnit:m",
@@ -892,29 +692,29 @@
           "station": "https://api.weather.gov/stations/KSEA",
           "stationId": "KSEA",
           "stationName": "Seattle, Seattle-Tacoma International Airport",
-          "timestamp": "2026-09-09T07:20:00+00:00",
+          "timestamp": "2026-09-14T06:30:00+00:00",
           "rawMessage": "",
           "textDescription": "Clear",
           "icon": "https://api.weather.gov/icons/land/night/skc?size=medium",
           "presentWeather": [],
           "temperature": {
             "unitCode": "wmoUnit:degC",
-            "value": 17,
+            "value": 13,
             "qualityControl": "V"
           },
           "dewpoint": {
             "unitCode": "wmoUnit:degC",
-            "value": 12,
+            "value": 11,
             "qualityControl": "V"
           },
           "windDirection": {
             "unitCode": "wmoUnit:degree_(angle)",
-            "value": 30,
+            "value": 180,
             "qualityControl": "V"
           },
           "windSpeed": {
             "unitCode": "wmoUnit:km_h-1",
-            "value": 14.832,
+            "value": 16.668,
             "qualityControl": "V"
           },
           "windGust": {
@@ -924,7 +724,7 @@
           },
           "barometricPressure": {
             "unitCode": "wmoUnit:Pa",
-            "value": 102472.12,
+            "value": 101862.57,
             "qualityControl": "V"
           },
           "seaLevelPressure": {
@@ -952,7 +752,7 @@
           },
           "relativeHumidity": {
             "unitCode": "wmoUnit:percent",
-            "value": 72.401374699018,
+            "value": 87.659298938668,
             "qualityControl": "V"
           },
           "windChill": {
@@ -977,7 +777,7 @@
         }
       },
       {
-        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:15:00+00:00",
+        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:20:00+00:00",
         "type": "Feature",
         "geometry": {
           "type": "Point",
@@ -987,7 +787,7 @@
           ]
         },
         "properties": {
-          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-09T07:15:00+00:00",
+          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:20:00+00:00",
           "@type": "wx:ObservationStation",
           "elevation": {
             "unitCode": "wmoUnit:m",
@@ -996,14 +796,14 @@
           "station": "https://api.weather.gov/stations/KSEA",
           "stationId": "KSEA",
           "stationName": "Seattle, Seattle-Tacoma International Airport",
-          "timestamp": "2026-09-09T07:15:00+00:00",
+          "timestamp": "2026-09-14T06:20:00+00:00",
           "rawMessage": "",
           "textDescription": "Clear",
           "icon": "https://api.weather.gov/icons/land/night/skc?size=medium",
           "presentWeather": [],
           "temperature": {
             "unitCode": "wmoUnit:degC",
-            "value": 17,
+            "value": 14,
             "qualityControl": "V"
           },
           "dewpoint": {
@@ -1013,12 +813,12 @@
           },
           "windDirection": {
             "unitCode": "wmoUnit:degree_(angle)",
-            "value": 20,
+            "value": 180,
             "qualityControl": "V"
           },
           "windSpeed": {
             "unitCode": "wmoUnit:km_h-1",
-            "value": 12.96,
+            "value": 18.504,
             "qualityControl": "V"
           },
           "windGust": {
@@ -1028,7 +828,7 @@
           },
           "barometricPressure": {
             "unitCode": "wmoUnit:Pa",
-            "value": 102472.12,
+            "value": 101862.57,
             "qualityControl": "V"
           },
           "seaLevelPressure": {
@@ -1056,7 +856,215 @@
           },
           "relativeHumidity": {
             "unitCode": "wmoUnit:percent",
-            "value": 72.401374699018,
+            "value": 87.749358083507,
+            "qualityControl": "V"
+          },
+          "windChill": {
+            "unitCode": "wmoUnit:degC",
+            "value": null,
+            "qualityControl": "V"
+          },
+          "heatIndex": {
+            "unitCode": "wmoUnit:degC",
+            "value": null,
+            "qualityControl": "V"
+          },
+          "cloudLayers": [
+            {
+              "base": {
+                "unitCode": "wmoUnit:m",
+                "value": 3810
+              },
+              "amount": "CLR"
+            }
+          ]
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:15:00+00:00",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -122.3,
+            47.45
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:15:00+00:00",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 137
+          },
+          "station": "https://api.weather.gov/stations/KSEA",
+          "stationId": "KSEA",
+          "stationName": "Seattle, Seattle-Tacoma International Airport",
+          "timestamp": "2026-09-14T06:15:00+00:00",
+          "rawMessage": "",
+          "textDescription": "Clear",
+          "icon": "https://api.weather.gov/icons/land/night/skc?size=medium",
+          "presentWeather": [],
+          "temperature": {
+            "unitCode": "wmoUnit:degC",
+            "value": 14,
+            "qualityControl": "V"
+          },
+          "dewpoint": {
+            "unitCode": "wmoUnit:degC",
+            "value": 11,
+            "qualityControl": "V"
+          },
+          "windDirection": {
+            "unitCode": "wmoUnit:degree_(angle)",
+            "value": 180,
+            "qualityControl": "V"
+          },
+          "windSpeed": {
+            "unitCode": "wmoUnit:km_h-1",
+            "value": 20.376,
+            "qualityControl": "V"
+          },
+          "windGust": {
+            "unitCode": "wmoUnit:km_h-1",
+            "value": null,
+            "qualityControl": "Z"
+          },
+          "barometricPressure": {
+            "unitCode": "wmoUnit:Pa",
+            "value": 101862.57,
+            "qualityControl": "V"
+          },
+          "seaLevelPressure": {
+            "unitCode": "wmoUnit:Pa",
+            "value": null,
+            "qualityControl": "Z"
+          },
+          "visibility": {
+            "unitCode": "wmoUnit:m",
+            "value": 16093.44,
+            "qualityControl": "C"
+          },
+          "maxTemperatureLast24Hours": {
+            "unitCode": "wmoUnit:degC",
+            "value": null
+          },
+          "minTemperatureLast24Hours": {
+            "unitCode": "wmoUnit:degC",
+            "value": null
+          },
+          "precipitationLast3Hours": {
+            "unitCode": "wmoUnit:mm",
+            "value": null,
+            "qualityControl": "Z"
+          },
+          "relativeHumidity": {
+            "unitCode": "wmoUnit:percent",
+            "value": 82.135480367498,
+            "qualityControl": "V"
+          },
+          "windChill": {
+            "unitCode": "wmoUnit:degC",
+            "value": null,
+            "qualityControl": "V"
+          },
+          "heatIndex": {
+            "unitCode": "wmoUnit:degC",
+            "value": null,
+            "qualityControl": "V"
+          },
+          "cloudLayers": [
+            {
+              "base": {
+                "unitCode": "wmoUnit:m",
+                "value": 3810
+              },
+              "amount": "CLR"
+            }
+          ]
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:10:00+00:00",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -122.3,
+            47.45
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/KSEA/observations/2026-09-14T06:10:00+00:00",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 137
+          },
+          "station": "https://api.weather.gov/stations/KSEA",
+          "stationId": "KSEA",
+          "stationName": "Seattle, Seattle-Tacoma International Airport",
+          "timestamp": "2026-09-14T06:10:00+00:00",
+          "rawMessage": "",
+          "textDescription": "Clear",
+          "icon": "https://api.weather.gov/icons/land/night/skc?size=medium",
+          "presentWeather": [],
+          "temperature": {
+            "unitCode": "wmoUnit:degC",
+            "value": 14,
+            "qualityControl": "V"
+          },
+          "dewpoint": {
+            "unitCode": "wmoUnit:degC",
+            "value": 11,
+            "qualityControl": "V"
+          },
+          "windDirection": {
+            "unitCode": "wmoUnit:degree_(angle)",
+            "value": 180,
+            "qualityControl": "V"
+          },
+          "windSpeed": {
+            "unitCode": "wmoUnit:km_h-1",
+            "value": 16.668,
+            "qualityControl": "V"
+          },
+          "windGust": {
+            "unitCode": "wmoUnit:km_h-1",
+            "value": null,
+            "qualityControl": "Z"
+          },
+          "barometricPressure": {
+            "unitCode": "wmoUnit:Pa",
+            "value": 101862.57,
+            "qualityControl": "V"
+          },
+          "seaLevelPressure": {
+            "unitCode": "wmoUnit:Pa",
+            "value": null,
+            "qualityControl": "Z"
+          },
+          "visibility": {
+            "unitCode": "wmoUnit:m",
+            "value": 16093.44,
+            "qualityControl": "C"
+          },
+          "maxTemperatureLast24Hours": {
+            "unitCode": "wmoUnit:degC",
+            "value": null
+          },
+          "minTemperatureLast24Hours": {
+            "unitCode": "wmoUnit:degC",
+            "value": null
+          },
+          "precipitationLast3Hours": {
+            "unitCode": "wmoUnit:mm",
+            "value": null,
+            "qualityControl": "Z"
+          },
+          "relativeHumidity": {
+            "unitCode": "wmoUnit:percent",
+            "value": 82.135480367498,
             "qualityControl": "V"
           },
           "windChill": {
@@ -1082,7 +1090,7 @@
       }
     ],
     "pagination": {
-      "next": "https://api.weather.gov/stations/KSEA/observations?cursor=eyJzIjoiMjAyNi0wOS0wOVQwNzoxNTowMCswMDowMCJ9"
+      "next": "https://api.weather.gov/stations/KSEA/observations?cursor=eyJzIjoiMjAyNi0wOS0xNFQwNjoxMDowMCswMDowMCJ9"
     }
   }
 }

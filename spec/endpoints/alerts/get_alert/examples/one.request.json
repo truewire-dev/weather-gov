@@ -1,6 +1,6 @@
 {
   "description": "One severe alert, fetched by identifier",
   "request": {
-    "id": "urn:oid:2.49.0.1.840.0.e6ed06bf264e7370a4e1c8a09b908e86f4954764.001.1"
+    "id": "urn:oid:2.49.0.1.840.0.5237be68a28563e8ca38faeb318217a7223d37a9.001.1"
   }
 }
