@@ -9,115 +9,80 @@
         "@vocab": "https://api.weather.gov/ontology#"
       }
     ],
-    "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e6ed06bf264e7370a4e1c8a09b908e86f4954764.001.1",
+    "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.98dd4a259cd31c075f985143f8f356067c3bcf73.001.1",
     "type": "Feature",
     "geometry": {
       "type": "Polygon",
       "coordinates": [
         [
           [
-            -94.72,
-            29.8
+            -82.1,
+            39.41
           ],
           [
-            -94.67,
-            29.75
+            -81.89,
+            39.29
           ],
           [
-            -94.67,
-            29.73
+            -82.12,
+            39.3
           ],
           [
-            -94.68,
-            29.65
+            -82.19,
+            39.39
           ],
           [
-            -94.73,
-            29.56
-          ],
-          [
-            -94.72,
-            29.55
-          ],
-          [
-            -94.88,
-            29.51
-          ],
-          [
-            -95.02,
-            29.6
-          ],
-          [
-            -95.01,
-            29.63
-          ],
-          [
-            -94.94,
-            29.7
-          ],
-          [
-            -94.91,
-            29.68
-          ],
-          [
-            -94.8,
-            29.78
-          ],
-          [
-            -94.72,
-            29.8
+            -82.1,
+            39.41
           ]
         ]
       ]
     },
     "properties": {
-      "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e6ed06bf264e7370a4e1c8a09b908e86f4954764.001.1",
+      "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.98dd4a259cd31c075f985143f8f356067c3bcf73.001.1",
       "@type": "wx:Alert",
-      "id": "urn:oid:2.49.0.1.840.0.e6ed06bf264e7370a4e1c8a09b908e86f4954764.001.1",
-      "areaDesc": "Galveston Bay",
+      "id": "urn:oid:2.49.0.1.840.0.98dd4a259cd31c075f985143f8f356067c3bcf73.001.1",
+      "areaDesc": "Athens, OH",
       "geocode": {
         "SAME": [
-          "077335"
+          "039009"
         ],
         "UGC": [
-          "GMZ335"
+          "OHC009"
         ]
       },
       "affectedZones": [
-        "https://api.weather.gov/zones/forecast/GMZ335"
+        "https://api.weather.gov/zones/county/OHC009"
       ],
       "references": [],
-      "sent": "2026-09-09T09:09:00-05:00",
-      "effective": "2026-09-09T09:09:00-05:00",
-      "onset": "2026-09-09T09:09:00-05:00",
-      "expires": "2026-09-09T09:45:00-05:00",
-      "ends": "2026-09-09T09:45:00-05:00",
+      "sent": "2026-09-21T09:00:00-04:00",
+      "effective": "2026-09-21T09:00:00-04:00",
+      "onset": "2026-09-21T12:31:00-04:00",
+      "expires": "2026-09-21T21:00:00-04:00",
+      "ends": "2026-09-22T13:00:00-04:00",
       "status": "Actual",
       "messageType": "Alert",
       "category": "Met",
       "severity": "Severe",
       "certainty": "Likely",
-      "urgency": "Immediate",
-      "event": "Special Marine Warning",
+      "urgency": "Expected",
+      "event": "Flood Warning",
       "sender": "w-nws.webmaster@noaa.gov",
-      "senderName": "NWS Houston/Galveston TX",
-      "headline": "Special Marine Warning issued September 9 at 9:09AM CDT until September 9 at 9:45AM CDT by NWS Houston/Galveston TX",
-      "description": "SMWHGX\n\nThe National Weather Service in League City has issued a\n\n* Special Marine Warning for...\nGalveston Bay...\n\n* Until 945 AM CDT.\n\n* At 908 AM CDT, a severe thunderstorm capable of producing\nwaterspouts was located over southwestern Trinity Bay. The severe\nthunderstorm was nearly stationary.\n\nHAZARD...Waterspouts and wind gusts 34 knots or greater.\n\nSOURCE...Radar.\n\nIMPACT...Waterspouts can easily overturn boats and create locally\nhazardous seas. Small craft could be damaged in briefly\nhigher winds and suddenly higher waves.\n\n* Locations impacted include...\nTrinity Bay and northern Galveston Bay.",
-      "instruction": "Move to safe harbor until hazardous weather passes.\n\nThunderstorms can produce sudden waterspouts. Waterspouts can easily\noverturn boats and create locally hazardous seas. Seek safe harbor\nimmediately.\n\nFrequent lightning is occurring with this storm. If caught on the\nopen water stay below deck if possible, keep away from ungrounded\nmetal objects.",
+      "senderName": "NWS Charleston WV",
+      "headline": "Flood Warning issued September 21 at 9:00AM EDT until September 22 at 1:00PM EDT by NWS Charleston WV",
+      "description": "...The National Weather Service in Charleston has issued a Flood\nWarning for the following rivers in Ohio...\n\nHocking River at Athens affecting Athens County.\n\nFor the Hocking River...Minor flooding is forecast.\n\n* WHAT...Minor flooding is forecast.\n\n* WHERE...Hocking River at Athens.\n\n* WHEN...From this afternoon to Tuesday afternoon.\n\n* IMPACTS...At 18.0 feet, Low sections of Harmony Road begin to\nflood. In Nelsonville, the baseball fields along Watkins Street\nflood. At 20.0 feet, Low areas, campground, and private camps along\nthe river between Athens and Coolville begin to flood. In\nNelsonville, the baseball field adjacent to Lake Hope Drive floods.\nAt 21.0 feet, South Canaan Road and Township Road 605 in the\nvicinity of US Route 50 flood. Glen Ebon Road begins to flood.\nHockhocking Adena Bikeway near West State Street begins to flood.\nIn Chauncey, areas along Ohio Routes 13 and 682 flood.\n\n* ADDITIONAL DETAILS...\n- At 8:30 AM EDT Monday the stage was 18.9 feet.\n- Bankfull stage is 16.0 feet.\n- Forecast...The river is expected to rise above flood stage this\nafternoon to a crest of 21.0 feet this evening. It will then fall\nbelow flood stage tomorrow morning.\n- Flood stage is 20.0 feet.\n- Flood History...This crest compares to a previous crest of 20.8\nfeet on 04/06/2025.\n- http://www.weather.gov/safety/flood",
+      "instruction": "Turn around, don't drown when encountering flooded roads. Most flood\ndeaths occur in vehicles.\n\nReport flooding to the National Weather Service by calling toll free,\n800 401 9535, when you can do so safely.\n\nAdditional information is available at www.weather.gov/rlx.\n\nThe next statement will be issued this evening at 900 PM EDT.",
       "response": "Avoid",
       "note": null,
       "parameters": {
         "AWIPSidentifier": [
-          "SMWHGX"
+          "FLWRLX"
         ],
         "WMOidentifier": [
-          "WHUS54 KHGX 091409"
+          "WGUS41 KRLX 211300"
         ],
-        "eventMotionDescription": [
-          "2026-09-09T14:08:00-00:00...storm...229DEG...2KT...29.64,-94.83"
-        ],
-        "waterspoutDetection": [
-          "POSSIBLE"
+        "NWSheadline": [
+          "FLOOD WARNING IN EFFECT FROM THIS AFTERNOON TO TUESDAY AFTERNOON"
         ],
         "BLOCKCHANNEL": [
           "EAS",
@@ -128,10 +93,10 @@
           "WXR"
         ],
         "VTEC": [
-          "/O.NEW.KHGX.MA.W.0075.260909T1409Z-260909T1445Z/"
+          "/O.NEW.KRLX.FL.W.0015.260921T1631Z-260922T1700Z/"
         ],
         "eventEndingTime": [
-          "2026-09-09T09:45:00-05:00"
+          "2026-09-22T13:00:00-04:00"
         ]
       },
       "scope": "Public",
@@ -140,10 +105,10 @@
       "web": "http://www.weather.gov",
       "eventCode": {
         "SAME": [
-          "SMW"
+          "FLW"
         ],
         "NationalWeatherService": [
-          "MAW"
+          "FLW"
         ]
       }
     }
