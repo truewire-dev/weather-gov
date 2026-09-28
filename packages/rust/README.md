@@ -143,7 +143,37 @@ async fn conditions(client: &Weather) -> truewire_core::Result<()> {
 
 ## Walking a span of observations
 
-`stations.get_observations` declares a `seek` pagination walk, and `get_observations_paged` renders it, as it does in the Python and TypeScript clients. The service caps a response at 500 observations, keeps the newest, and says nothing about the ones it withheld; a full page moves `end` back to the oldest observation it held and asks again. The service's `end` is exclusive, so that request does not return the oldest observation a second time, and the walk would drop it by its timestamp if it did. Await the walk for every row, or walk `rows()`/`pages()` one page at a time.
+`stations.get_observations` declares a `seek` pagination walk, and `get_observations_paged` renders it, as it does in the Python and TypeScript clients. The service caps a response at 500 observations, keeps the newest, and says nothing about the ones it withheld; a full page moves `end` back to the oldest observation it held and asks again. The service's `end` is exclusive, so that request does not return the oldest observation a second time, and the walk would drop it by its timestamp if it did.
+
+Await the walk for every row, or walk `rows()` (or `pages()`, which also carries each page's state) one page at a time. Both are a `futures::Stream`, so `.next()` needs `futures::StreamExt` in scope, and `futures` in your own `Cargo.toml`:
+
+```rust
+use futures::StreamExt; // `futures` in your Cargo.toml: `rows()` is a `Stream`
+use truewire_core::{chrono::Utc, CallOptions, TimestampIso};
+use weather_gov::{stations, Weather};
+
+async fn yesterday(client: &Weather) -> truewire_core::Result<()> {
+    let now = Utc::now();
+    let request = stations::get_observations::Request {
+        station_id: "KSEA".to_string(),
+        start: Some(TimestampIso(now - truewire_core::chrono::Duration::days(1))),
+        end: Some(TimestampIso(now)),
+        ..Default::default()
+    };
+    let walk = client.stations.get_observations_paged(request, CallOptions::default());
+
+    // Every observation in the span, newest first:
+    let all = walk.clone().await?;
+    println!("{} observations", all.len());
+
+    // Or one response at a time:
+    let mut pages = walk.rows();
+    while let Some(page) = pages.next().await {
+        println!("{} more", page?.len());
+    }
+    Ok(())
+}
+```
 
 Eleven endpoints across six groups, the same as the other two clients.
 
