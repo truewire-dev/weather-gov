@@ -101,7 +101,7 @@ async def both_shapes(client: Weather) -> None:
 
 ### Walking a span of observations
 
-`stations.get_observations` is paged by time, and the walk is declared in the spec rather than written by hand. The generated `_paged` variant takes the span you want and knows one thing hand-written code usually does not: the service caps a response at 500 observations, keeps the newest, and says nothing about the ones it withheld. A full page is evidence the span held more, so the walk asks again with `end` moved back to the oldest observation it has, and drops the one observation that request re-reads.
+`stations.get_observations` is paged by time, and the walk is declared in the spec rather than written by hand. The generated `_paged` variant takes the span you want and knows one thing hand-written code usually does not: the service caps a response at 500 observations, keeps the newest, and says nothing about the ones it withheld. A full page is evidence the span held more, so the walk asks again with `end` moved back to the oldest observation it has. The service's `end` is exclusive, so that request stops just short of it; were the service ever to serve it again, the walk would drop it by its timestamp.
 
 Await it for the whole span, newest first:
 

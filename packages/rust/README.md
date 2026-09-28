@@ -143,7 +143,7 @@ async fn conditions(client: &Weather) -> truewire_core::Result<()> {
 
 ## Walking a span of observations
 
-`stations.get_observations` declares a `seek` pagination walk, and `get_observations_paged` renders it, as it does in the Python and TypeScript clients. The service caps a response at 500 observations, keeps the newest, and says nothing about the ones it withheld; a full page moves `end` back to the oldest observation it held and asks again, and the one observation that request re-reads is dropped by its timestamp. Await the walk for every row, or walk `rows()`/`pages()` one page at a time.
+`stations.get_observations` declares a `seek` pagination walk, and `get_observations_paged` renders it, as it does in the Python and TypeScript clients. The service caps a response at 500 observations, keeps the newest, and says nothing about the ones it withheld; a full page moves `end` back to the oldest observation it held and asks again. The service's `end` is exclusive, so that request does not return the oldest observation a second time, and the walk would drop it by its timestamp if it did. Await the walk for every row, or walk `rows()`/`pages()` one page at a time.
 
 Eleven endpoints across six groups, the same as the other two clients.
 
