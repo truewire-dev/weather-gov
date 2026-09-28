@@ -141,17 +141,11 @@ async fn conditions(client: &Weather) -> truewire_core::Result<()> {
 }
 ```
 
-## What is missing here, and why
+## Walking a span of observations
 
-`stations.get_observations` declares a `window` pagination walk. The Python and TypeScript clients get a `get_observations_paged` variant from that declaration, with the truncation guard that makes the walk safe; the Rust backend does not render `window` walks yet and says so when it generates:
+`stations.get_observations` declares a `seek` pagination walk, and `get_observations_paged` renders it, as it does in the Python and TypeScript clients. The service caps a response at 500 observations, keeps the newest, and says nothing about the ones it withheld; a full page moves `end` back to the oldest observation it held and asks again, and the one observation that request re-reads is dropped by its timestamp. Await the walk for every row, or walk `rows()`/`pages()` one page at a time.
 
-```
-skipped stations.get_observations: a `window` walk has no Rust walker yet; call the method per page
-```
-
-So the endpoint is here and typed, and paging it is the caller's own loop. This is stated rather than hidden because it is exactly the kind of thing a generator should be honest about — the guard the other two clients get is real safety (the service caps a response at 500 observations and says nothing about the ones it withheld), and a Rust caller does not have it yet. It is [tracked upstream](https://github.com/truewire-dev/truewire) and in [`NOTES.md`](../../NOTES.md).
-
-Everything else generates: eleven endpoints across six groups, the same as the other two clients.
+Eleven endpoints across six groups, the same as the other two clients.
 
 ## Tests
 

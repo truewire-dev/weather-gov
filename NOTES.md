@@ -48,17 +48,21 @@ Truewire's `token` strategy reads a cursor value out of a response path and send
 
 So the endpoint declares no pagination at all rather than declaring it wrong. `cursor` stays a request parameter for a caller who has one, `pagination.next` stays in the response schema so it is visible, and both say why in their descriptions. This shape is common enough — it is how most `Link`-header and `next`-URL APIs page — that it is the most useful thing this project found.
 
-`stations.get_observations` has the same `pagination.next`, and does not need it: the walk a caller actually means there is over time, which `window` expresses.
+`stations.get_observations` has the same `pagination.next`, and does not need it: the walk a caller actually means there is over time, which the declared `seek` walk expresses.
 
-## 4. A plain `window` walk is one request
+## 4. A plain `window` walk was one request
 
-**Not a defect; worth knowing.** `stations.get_observations` declares `window` pagination, and this is the first recorded, tested use of that strategy anywhere in Truewire. What the generated `_paged` method does is narrower than the name suggests: it requests the window the caller stated, and stops — a second window would be entirely before the caller's own `start`. Walking a caller's range in several requests needs `overlap` with a declared `chunk`, and `overlap` may only be declared where the per-row timestamp is genuinely not unique per row. Observations at one station are one per timestamp, so declaring it here would be a lie.
+**Resolved upstream in truewire 0.11**, which replaces `window` with `seek` (ADR 0013). The endpoint now declares a walk anchored to `end`, measured from its two recordings: capped at ten rows, the service keeps the ten newest of the six hours. A full page moves `end` back to the oldest observation it held and asks again, so a caller's span is walked in as many requests as it needs, and the truncation guard below is no longer needed: a full page is progress, not a fault. What follows is the finding as it stood under 0.10.
+
+**Not a defect; worth knowing.** `stations.get_observations` declared `window` pagination, and this is the first recorded, tested use of that strategy anywhere in Truewire. What the generated `_paged` method does is narrower than the name suggests: it requests the window the caller stated, and stops — a second window would be entirely before the caller's own `start`. Walking a caller's range in several requests needs `overlap` with a declared `chunk`, and `overlap` may only be declared where the per-row timestamp is genuinely not unique per row. Observations at one station are one per timestamp, so declaring it here would be a lie.
 
 That leaves the truncation guard as the whole of what the declaration buys, and it turns out to be worth the declaration on its own: the service caps a response at 500 observations and says nothing about the ones it withheld, so a caller asking for a week gets the newest 500 and a silent hole. The guard raises instead. `limit` declares `default: 500` because that is measurably what the service does whether or not `limit` is sent, and the declared default is what arms the guard.
 
-## 5. The Rust backend has no `window` walker
+## 5. The Rust backend had no `window` walker
 
-**Gap, and it says so.** `truewire generate rust` prints it rather than rendering something half-right:
+**Resolved upstream in truewire 0.11**, where every backend renders the `seek` walk: Rust and TypeScript both have `get_observations_paged`, and the three clients are equivalent. What follows is the finding as it stood under 0.10.
+
+**Gap, and it said so.** `truewire generate rust` prints it rather than rendering something half-right:
 
 ```
 skipped stations.get_observations: a `window` walk has no Rust walker yet; call the method per page
@@ -66,7 +70,7 @@ skipped stations.get_observations: a `window` walk has no Rust walker yet; call 
 
 The endpoint itself generates and is typed; only the `_paged` variant is missing, so a Rust caller loops by hand. That means a Rust caller does not get the truncation guard, which is the whole safety of the declaration here — the service caps a response at 500 observations and says nothing about the ones it withheld. The [Rust page](packages/rust/README.md) says so where a reader will hit it.
 
-Worth stating plainly: this is the only place in this project where the three clients are not equivalent, and it is the generator's gap rather than the API's.
+Worth stating plainly: this was the only place in this project where the three clients were not equivalent, and it was the generator's gap rather than the API's.
 
 ## 6. A regex constraint is not an enumeration
 

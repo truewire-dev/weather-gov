@@ -99,37 +99,28 @@ async def both_shapes(client: Weather) -> None:
     print(feature['properties']['event'], '—', feature['properties']['areaDesc'][:40], f'({where})')
 ```
 
-### Walking a window of observations
+### Walking a span of observations
 
-`stations.get_observations` is paged by time, and the walk is declared in the spec rather than written by hand. The generated `_paged` variant takes the span you want and knows one thing hand-written code usually does not: the service caps a response at 500 observations and says nothing about the ones it withheld. A full page is evidence the window held more, so the walk raises instead of stepping past them.
+`stations.get_observations` is paged by time, and the walk is declared in the spec rather than written by hand. The generated `_paged` variant takes the span you want and knows one thing hand-written code usually does not: the service caps a response at 500 observations, keeps the newest, and says nothing about the ones it withheld. A full page is evidence the span held more, so the walk asks again with `end` moved back to the oldest observation it has, and drops the one observation that request re-reads.
+
+Await it for the whole span, newest first:
 
 ```python
 from datetime import datetime, timedelta, timezone
 
-from truewire_core.exceptions import LogicError
-
 from weather_gov import Weather
 
 
-async def yesterday(client: Weather) -> None:
+async def last_week(client: Weather) -> None:
   end = datetime.now(timezone.utc)
-  try:
-    async for page in client.stations.get_observations_paged(
-      'KSEA', start=end - timedelta(days=7), end=end
-    ):
-      print(len(page['features']), 'observations')
-  except LogicError as truncated:
-    # A week is more than 500 observations, so this is the error you get -- by design.
-    print(truncated)
+  # A week is more than 500 observations, so this is several requests -- by design.
+  observations = await client.stations.get_observations_paged(
+    'KSEA', start=end - timedelta(days=7), end=end
+  )
+  print(len(observations), 'observations')
 ```
 
-```text
-`get_observations_paged` requested the window 2026-09-02 14:00:00+00:00 to 2026-09-09 14:00:00+00:00
-and the API returned a full page of 500 rows, so it may hold more; advancing would move past the rows
-that were left out. Narrow the window, or pass `allow_truncation=True` to accept the loss.
-```
-
-Narrow the window and it walks:
+Or iterate it, one page at a time:
 
 ```python
 from datetime import datetime, timedelta, timezone
@@ -142,7 +133,7 @@ async def six_hours(client: Weather) -> None:
   async for page in client.stations.get_observations_paged(
     'KSEA', start=end - timedelta(hours=6), end=end
   ):
-    for feature in page['features']:
+    for feature in page:
       observation = feature['properties']
       print(observation['timestamp'], observation['temperature']['value'])
 ```
@@ -204,7 +195,7 @@ Eleven endpoints, in six groups:
 
 Three response vocabularies, because the API uses three: GeoJSON for most of it, schema.org for the offices, JSON-LD for the product types. The spec describes each as it actually arrives.
 
-The same eleven endpoints in [TypeScript](packages/typescript/README.md) and [Rust](packages/rust/README.md), from this one spec. The three clients are equivalent but for one thing: the Rust backend has no `window` walker yet, so `stations.get_observations` there is a plain call rather than a guarded walk. That is stated on the Rust page and in [`NOTES.md`](NOTES.md) rather than glossed over.
+The same eleven endpoints in [TypeScript](packages/typescript/README.md) and [Rust](packages/rust/README.md), from this one spec. The three clients are equivalent, `stations.get_observations_paged` included.
 
 ## Recordings
 

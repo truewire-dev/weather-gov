@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+Needs truewire 0.11.
+
+- **Breaking: `stations.get_observations_paged` walks the whole span.** The endpoint
+  declares `seek` pagination anchored to `end` instead of `window` (ADR 0013). A full page
+  now moves `end` back to the oldest observation it held and asks again, where it used to
+  raise. The method returns a `PaginatedResponse`: await it for every observation newest
+  first, or iterate it for one page (a list of observations, no longer the whole
+  `ObservationCollection`) at a time. `max_pages` and `allow_truncation` are gone.
+
 ## 0.1.0
 
 First release.
