@@ -86,7 +86,7 @@ impl GetObservations {
         options: CallOptions,
     ) -> PaginatedResponse<ObservationFeature, SeekState<TimestampIso, ObservationFeature>> {
         let endpoint = self.clone();
-        let size = request.limit.unwrap_or(500);
+        let size = request.limit.unwrap_or(500).min(500);
         let size = Some(size as usize);
         let seek = Seek::new(
             "get_observations_paged",
