@@ -19,7 +19,7 @@ export interface Request {
   station_id: string
   /** Start of the span, inclusive. The service keeps about a week of observations; a start older than that returns nothing rather than failing. */
   start?: TimestampIso
-  /** End of the span, inclusive. */
+  /** End of the span, exclusive: an observation at exactly `end` is not returned. */
   end?: TimestampIso
   /** Observations per response. Range [1, 500]; the service caps a response at 500 whether or not this is sent, so 500 is also the default. */
   limit?: number

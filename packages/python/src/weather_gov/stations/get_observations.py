@@ -23,7 +23,7 @@ class Request(TypedDict):
   start: NotRequired[TimestampIso]
   """Start of the span, inclusive. The service keeps about a week of observations; a start older than that returns nothing rather than failing."""
   end: NotRequired[TimestampIso]
-  """End of the span, inclusive."""
+  """End of the span, exclusive: an observation at exactly `end` is not returned."""
   limit: NotRequired[int]
   """Observations per response. Range [1, 500]; the service caps a response at 500 whether or not this is sent, so 500 is also the default."""
 
@@ -81,7 +81,7 @@ class GetObservations(Endpoint):
     Args:
       station_id: Station identifier, such as `KSEA`. `stations.list_stations` returns it as `stationIdentifier`.
       start: Start of the span, inclusive. The service keeps about a week of observations; a start older than that returns nothing rather than failing.
-      end: End of the span, inclusive.
+      end: End of the span, exclusive: an observation at exactly `end` is not returned.
       limit: Observations per response. Range [1, 500]; the service caps a response at 500 whether or not this is sent, so 500 is also the default.
       validate: Override this call's response validation; falls back to the client-level default when omitted. `False` returns the parsed body as it came, typed `Any`.
 
@@ -164,7 +164,7 @@ class GetObservations(Endpoint):
     Args:
       station_id: Station identifier, such as `KSEA`. `stations.list_stations` returns it as `stationIdentifier`.
       start: Start of the span, inclusive. The service keeps about a week of observations; a start older than that returns nothing rather than failing.
-      end: End of the span, inclusive.
+      end: End of the span, exclusive: an observation at exactly `end` is not returned.
       limit: Observations per response. Range [1, 500]; the service caps a response at 500 whether or not this is sent, so 500 is also the default.
       validate: Override this call's response validation; falls back to the client-level default when omitted. `False` returns the parsed body as it came, typed `Any`.
 

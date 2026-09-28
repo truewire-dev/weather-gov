@@ -30,7 +30,7 @@ pub struct Request {
     /// Start of the span, inclusive. The service keeps about a week of observations; a start older than that returns nothing rather than failing.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub start: Option<TimestampIso>,
-    /// End of the span, inclusive.
+    /// End of the span, exclusive: an observation at exactly `end` is not returned.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub end: Option<TimestampIso>,
     /// Observations per response. Range [1, 500]; the service caps a response at 500 whether or not this is sent, so 500 is also the default.
