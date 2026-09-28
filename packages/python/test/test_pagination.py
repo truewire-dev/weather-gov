@@ -9,8 +9,9 @@ caller on this service's real responses:
 2. a capped page is progress rather than the whole span: the next request ends at the
    oldest observation the capped page held, which is only right because the service keeps
    the newest rows when it caps (the declared `anchor: end`);
-3. the observation on the boundary, which the next request re-reads, is dropped by its
-   timestamp rather than yielded twice.
+3. the service's `end` is exclusive, so that next request does not return the boundary
+   observation again; if the service ever re-served it, it is dropped by its timestamp
+   rather than yielded twice.
 
 Both are real recordings of the same six hours at KSEA: one under the cap, one asked for
 with `limit=10` so the page comes back full.
@@ -83,8 +84,7 @@ class TestACappedPage:
   leave a gap in a time series with no error anywhere.
   """
 
-  @pytest.mark.asyncio
-  async def test_keeps_the_newest_rows(self):
+  def test_keeps_the_newest_rows(self):
     """The recorded fact `anchor: end` rests on: the capped page is the head of the full
     one, not some other slice of it."""
     capped = observations('ksea_capped')
@@ -108,10 +108,11 @@ class TestACappedPage:
 
 class TestTheBoundary:
   @pytest.mark.asyncio
-  async def test_the_re_read_observation_is_not_yielded_twice(self, client):
-    """Both bounds are inclusive, so the request after a capped page re-reads the
-    observation it ended on. Resumed as if a previous page had already yielded the newest
-    observation of the span, the walk drops it by timestamp and yields the rest."""
+  async def test_a_re_served_observation_is_not_yielded_twice(self, client):
+    """If the service re-serves the boundary observation, it is dropped by timestamp. The
+    live service's `end` is exclusive, so it does not; resumed here as if a previous page
+    had already yielded the newest observation of the span, the walk drops that one and
+    yields the rest."""
     walk = client.stations.get_observations_paged('KSEA', start=START, end=END, limit=500)
     rows, following = await walk.next((END, [ROWS[0]]))
     assert following is None
@@ -124,10 +125,13 @@ class TestTheWholeWalk:
   The mock serves only the first request of a capped walk: the continuation is not
   recorded. So the service here is the recorded span itself, answered the way the two
   recordings show the service answers: newest first, capped at `limit` keeping the newest.
+  Its `end` is exclusive, as the live service's is; the inclusive case is the one where
+  the service re-serves the boundary observation, and the walk has to drop it.
   """
 
   @pytest.mark.asyncio
-  async def test_a_capped_span_comes_back_whole_and_once(self, client, monkeypatch):
+  @pytest.mark.parametrize('inclusive_end', [False, True], ids=['exclusive-end', 'inclusive-end'])
+  async def test_a_capped_span_comes_back_whole_and_once(self, client, monkeypatch, inclusive_end):
     """Ten rows a page over the six hours: every observation once, newest first, and every
     request after the first ends at the oldest observation of the one before it."""
     ends: list[datetime] = []
@@ -136,13 +140,18 @@ class TestTheWholeWalk:
       station_id: str, *, start: datetime, end: datetime, limit: int, validate: bool | None
     ) -> dict:
       ends.append(end)
-      held = [row for row in ROWS if start <= instant(row['properties']['timestamp']) <= end]
+      held = [
+        row
+        for row in ROWS
+        if start <= (at := instant(row['properties']['timestamp']))
+        and (at <= end if inclusive_end else at < end)
+      ]
       return {'type': 'FeatureCollection', 'features': held[:limit]}
 
     monkeypatch.setattr(client.stations, 'get_observations', service)
     rows = await client.stations.get_observations_paged('KSEA', start=START, end=END, limit=CAP)
     assert [row['id'] for row in rows] == [row['id'] for row in ROWS]
-    oldest = [
-      instant(ROWS[i]['properties']['timestamp']) for i in range(CAP - 1, len(ROWS), CAP - 1)
-    ]
+    # A re-served boundary row takes one place in every page after the first.
+    step = CAP - 1 if inclusive_end else CAP
+    oldest = [instant(ROWS[i]['properties']['timestamp']) for i in range(CAP - 1, len(ROWS), step)]
     assert ends == [END, *oldest]
