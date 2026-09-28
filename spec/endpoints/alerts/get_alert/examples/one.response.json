@@ -9,115 +9,87 @@
         "@vocab": "https://api.weather.gov/ontology#"
       }
     ],
-    "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e6ed06bf264e7370a4e1c8a09b908e86f4954764.001.1",
+    "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.28d9ff305482b4c577481455a1da49be084ea30a.001.1",
     "type": "Feature",
     "geometry": {
       "type": "Polygon",
       "coordinates": [
         [
           [
-            -94.72,
-            29.8
+            -100.5,
+            45.94
           ],
           [
-            -94.67,
-            29.75
+            -100.22,
+            45.94
           ],
           [
-            -94.67,
-            29.73
+            -100.19,
+            45.78
           ],
           [
-            -94.68,
-            29.65
+            -100.68,
+            45.74
           ],
           [
-            -94.73,
-            29.56
+            -100.8,
+            45.94
           ],
           [
-            -94.72,
-            29.55
-          ],
-          [
-            -94.88,
-            29.51
-          ],
-          [
-            -95.02,
-            29.6
-          ],
-          [
-            -95.01,
-            29.63
-          ],
-          [
-            -94.94,
-            29.7
-          ],
-          [
-            -94.91,
-            29.68
-          ],
-          [
-            -94.8,
-            29.78
-          ],
-          [
-            -94.72,
-            29.8
+            -100.5,
+            45.94
           ]
         ]
       ]
     },
     "properties": {
-      "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e6ed06bf264e7370a4e1c8a09b908e86f4954764.001.1",
+      "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.28d9ff305482b4c577481455a1da49be084ea30a.001.1",
       "@type": "wx:Alert",
-      "id": "urn:oid:2.49.0.1.840.0.e6ed06bf264e7370a4e1c8a09b908e86f4954764.001.1",
-      "areaDesc": "Galveston Bay",
+      "id": "urn:oid:2.49.0.1.840.0.28d9ff305482b4c577481455a1da49be084ea30a.001.1",
+      "areaDesc": "Campbell, SD; Corson, SD",
       "geocode": {
         "SAME": [
-          "077335"
+          "046021",
+          "046031"
         ],
         "UGC": [
-          "GMZ335"
+          "SDC021",
+          "SDC031"
         ]
       },
       "affectedZones": [
-        "https://api.weather.gov/zones/forecast/GMZ335"
+        "https://api.weather.gov/zones/county/SDC021",
+        "https://api.weather.gov/zones/county/SDC031"
       ],
       "references": [],
-      "sent": "2026-09-09T09:09:00-05:00",
-      "effective": "2026-09-09T09:09:00-05:00",
-      "onset": "2026-09-09T09:09:00-05:00",
-      "expires": "2026-09-09T09:45:00-05:00",
-      "ends": "2026-09-09T09:45:00-05:00",
+      "sent": "2026-09-28T09:34:00-05:00",
+      "effective": "2026-09-28T09:34:00-05:00",
+      "onset": "2026-09-28T09:34:00-05:00",
+      "expires": "2026-09-28T15:30:00-05:00",
+      "ends": "2026-09-28T15:30:00-05:00",
       "status": "Actual",
       "messageType": "Alert",
       "category": "Met",
       "severity": "Severe",
       "certainty": "Likely",
-      "urgency": "Immediate",
-      "event": "Special Marine Warning",
+      "urgency": "Expected",
+      "event": "Flood Warning",
       "sender": "w-nws.webmaster@noaa.gov",
-      "senderName": "NWS Houston/Galveston TX",
-      "headline": "Special Marine Warning issued September 9 at 9:09AM CDT until September 9 at 9:45AM CDT by NWS Houston/Galveston TX",
-      "description": "SMWHGX\n\nThe National Weather Service in League City has issued a\n\n* Special Marine Warning for...\nGalveston Bay...\n\n* Until 945 AM CDT.\n\n* At 908 AM CDT, a severe thunderstorm capable of producing\nwaterspouts was located over southwestern Trinity Bay. The severe\nthunderstorm was nearly stationary.\n\nHAZARD...Waterspouts and wind gusts 34 knots or greater.\n\nSOURCE...Radar.\n\nIMPACT...Waterspouts can easily overturn boats and create locally\nhazardous seas. Small craft could be damaged in briefly\nhigher winds and suddenly higher waves.\n\n* Locations impacted include...\nTrinity Bay and northern Galveston Bay.",
-      "instruction": "Move to safe harbor until hazardous weather passes.\n\nThunderstorms can produce sudden waterspouts. Waterspouts can easily\noverturn boats and create locally hazardous seas. Seek safe harbor\nimmediately.\n\nFrequent lightning is occurring with this storm. If caught on the\nopen water stay below deck if possible, keep away from ungrounded\nmetal objects.",
+      "senderName": "NWS Aberdeen SD",
+      "headline": "Flood Warning issued September 28 at 9:34AM CDT until September 28 at 3:30PM CDT by NWS Aberdeen SD",
+      "description": "* WHAT...Flooding caused by excessive rainfall is expected.\n\n* WHERE...Northwestern Campbell County in north central South\nDakota...\nNortheastern Corson County in north central South Dakota...\n\n* WHEN...Until 330 PM CDT /230 PM MDT/.\n\n* IMPACTS...Flooding of rivers, creeks, streams, and other low-lying\nand flood-prone locations is imminent or occurring.\n\n* ADDITIONAL DETAILS...\n- At 934 AM CDT /834 AM MDT/, Doppler radar indicated heavy rain\ndue to thunderstorms. Flooding is ongoing or expected to begin\nshortly in the warned area. Between 0.5 and 2 inches of rain have\nfallen.\n- Some locations that will experience flooding include...\nPollock, Kenel and Mahto.\n- http://www.weather.gov/safety/flood",
+      "instruction": "Turn around, don't drown when encountering flooded roads. Most flood\ndeaths occur in vehicles.\n\nMove to higher ground now. Act quickly to protect your life.",
       "response": "Avoid",
       "note": null,
       "parameters": {
         "AWIPSidentifier": [
-          "SMWHGX"
+          "FLWABR"
         ],
         "WMOidentifier": [
-          "WHUS54 KHGX 091409"
+          "WGUS43 KABR 281434"
         ],
-        "eventMotionDescription": [
-          "2026-09-09T14:08:00-00:00...storm...229DEG...2KT...29.64,-94.83"
-        ],
-        "waterspoutDetection": [
-          "POSSIBLE"
+        "NWSheadline": [
+          "FLOOD WARNING IN EFFECT UNTIL 330 PM CDT /230 PM MDT/ THIS AFTERNOON"
         ],
         "BLOCKCHANNEL": [
           "EAS",
@@ -128,10 +100,10 @@
           "WXR"
         ],
         "VTEC": [
-          "/O.NEW.KHGX.MA.W.0075.260909T1409Z-260909T1445Z/"
+          "/O.NEW.KABR.FA.W.0025.260928T1434Z-260928T2030Z/"
         ],
         "eventEndingTime": [
-          "2026-09-09T09:45:00-05:00"
+          "2026-09-28T15:30:00-05:00"
         ]
       },
       "scope": "Public",
@@ -140,10 +112,10 @@
       "web": "http://www.weather.gov",
       "eventCode": {
         "SAME": [
-          "SMW"
+          "FLW"
         ],
         "NationalWeatherService": [
-          "MAW"
+          "FAW"
         ]
       }
     }
