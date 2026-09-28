@@ -119,7 +119,7 @@
             },
             "skyCover": {
               "$ref": "GridSeries",
-              "description": "Fraction of the sky covered by cloud."
+              "description": "Percentage of the sky covered by cloud."
             },
             "windDirection": {
               "$ref": "GridSeries",

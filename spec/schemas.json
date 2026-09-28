@@ -316,7 +316,7 @@
       },
       "windGust": {
         "$ref": "QuantitativeValue",
-        "description": "Peak gust; null when there were no gusts."
+        "description": "Peak gust; its `value` is null when there were no gusts."
       },
       "barometricPressure": {
         "$ref": "QuantitativeValue",
@@ -356,11 +356,11 @@
       },
       "windChill": {
         "$ref": "QuantitativeValue",
-        "description": "Wind chill; null unless it is cold and windy enough to compute one."
+        "description": "Wind chill; its `value` is null unless it is cold and windy enough to compute one."
       },
       "heatIndex": {
         "$ref": "QuantitativeValue",
-        "description": "Heat index; null unless it is hot and humid enough to compute one."
+        "description": "Heat index; its `value` is null unless it is hot and humid enough to compute one."
       },
       "cloudLayers": {
         "type": "array",
