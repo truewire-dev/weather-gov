@@ -116,3 +116,33 @@ class TestTheBoundary:
     rows, following = await walk.next((END, [ROWS[0]]))
     assert following is None
     assert [row['id'] for row in rows] == [row['id'] for row in ROWS[1:]]
+
+
+class TestTheWholeWalk:
+  """The steps above threaded together, each page's state feeding the next request.
+
+  The mock serves only the first request of a capped walk: the continuation is not
+  recorded. So the service here is the recorded span itself, answered the way the two
+  recordings show the service answers: newest first, capped at `limit` keeping the newest.
+  """
+
+  @pytest.mark.asyncio
+  async def test_a_capped_span_comes_back_whole_and_once(self, client, monkeypatch):
+    """Ten rows a page over the six hours: every observation once, newest first, and every
+    request after the first ends at the oldest observation of the one before it."""
+    ends: list[datetime] = []
+
+    async def service(
+      station_id: str, *, start: datetime, end: datetime, limit: int, validate: bool | None
+    ) -> dict:
+      ends.append(end)
+      held = [row for row in ROWS if start <= instant(row['properties']['timestamp']) <= end]
+      return {'type': 'FeatureCollection', 'features': held[:limit]}
+
+    monkeypatch.setattr(client.stations, 'get_observations', service)
+    rows = await client.stations.get_observations_paged('KSEA', start=START, end=END, limit=CAP)
+    assert [row['id'] for row in rows] == [row['id'] for row in ROWS]
+    oldest = [
+      instant(ROWS[i]['properties']['timestamp']) for i in range(CAP - 1, len(ROWS), CAP - 1)
+    ]
+    assert ends == [END, *oldest]
