@@ -26,7 +26,7 @@
         "end": {
           "type": "string",
           "format": "date-time",
-          "description": "End of the span, inclusive."
+          "description": "End of the span, exclusive: an observation at exactly `end` is not returned."
         },
         "limit": {
           "type": "integer",
@@ -96,7 +96,7 @@
   },
   "notes": [
     "The walk is anchored to `end`, measured from the two recordings of the same six hours of KSEA (02:00 to 08:00 on 2026-09-09): `ksea_window` (limit 500) returns all 76 observations, 07:55 back to 02:00, and `ksea_capped` (limit 10) returns 07:55 back to 07:15, the ten newest and exactly the first ten rows of the uncapped response. A capped response keeps the newest rows, so the walk moves `end` and pages newest-first, which is also the order the service answers in.",
-    "The cursor is an observation's `timestamp`, which is unique per station: the service builds each observation's `id` from it (`/stations/KSEA/observations/2026-09-09T07:55:00+00:00`). Bound inclusivity is not declared; the walk re-reads the boundary observation and drops it by timestamp.",
+    "The cursor is an observation's `timestamp`, which is unique per station: the service builds each observation's `id` from it (`/stations/KSEA/observations/2026-09-09T07:55:00+00:00`). The service treats `start` as inclusive and `end` as exclusive, measured live on 2026-09-28: from 11:00 with `limit=3`, `end=11:55:00Z` answers 11:53, 11:50, 11:45 and `end=11:55:01Z` answers 11:55, 11:53, 11:50. So the request after a full page, which ends at the oldest observation that page held, does not return it again. Inclusivity is not declared (ADR 0013): if the service ever re-served the boundary observation, the walk would drop it by timestamp.",
     "The service also pages this endpoint by cursor, in a `pagination.next` URL. The time window is the walk a caller actually means here -- \"what did this station report yesterday\" -- and it is the one that can be declared, since the cursor arrives inside a URL rather than on its own.",
     "`limit` declares `default: 500` because that is what the service does, not because it documents it: a six-day span of KSEA observations comes back as exactly 500 rows with `limit` sent and with it omitted. The declared default is the walk's row cap: a response of 500 rows means there is more in the span, and the walk moves `end` back to the oldest timestamp it saw and asks again, instead of taking a capped response as the whole span."
   ]
