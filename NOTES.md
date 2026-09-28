@@ -68,7 +68,7 @@ That leaves the truncation guard as the whole of what the declaration buys, and 
 skipped stations.get_observations: a `window` walk has no Rust walker yet; call the method per page
 ```
 
-The endpoint itself generates and is typed; only the `_paged` variant is missing, so a Rust caller loops by hand. That means a Rust caller does not get the truncation guard, which is the whole safety of the declaration here — the service caps a response at 500 observations and says nothing about the ones it withheld. The [Rust page](packages/rust/README.md) says so where a reader will hit it.
+The endpoint itself generates and is typed; only the `_paged` variant is missing, so a Rust caller loops by hand. That means a Rust caller does not get the truncation guard, which is the whole safety of the declaration here — the service caps a response at 500 observations and says nothing about the ones it withheld. The [Rust page](packages/rust/README.md) said so where a reader would hit it.
 
 Worth stating plainly: this was the only place in this project where the three clients were not equivalent, and it was the generator's gap rather than the API's.
 
