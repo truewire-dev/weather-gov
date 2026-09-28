@@ -51,12 +51,29 @@ This API never sends a bare number. A temperature is
 wherever the measurement is missing rather than zero — an airport station reports
 `windGust` only when there were gusts. The types say so, so the null is hard to forget.
 
-## Walking observations safely
+## Walking a span of observations
 
 `stations.get_observations` is paged by time, and the walk knows something hand-written
-code usually does not: the service caps a response at 500 observations and says nothing
-about the ones it withheld. A full page raises `LogicError` rather than letting the walk
-step past them.
+code usually does not: the service caps a response at 500 observations, keeps the newest,
+and says nothing about the ones it withheld. A full page is evidence the span held more, so
+`stations.get_observations_paged` moves `end` back to the oldest observation it held and
+asks again, until the span is done. Await it for every observation in the span, newest
+first, or iterate it for one page at a time:
+
+```python
+from datetime import datetime, timedelta, timezone
+
+from weather_gov import Weather
+
+
+async def last_week(client: Weather) -> None:
+  end = datetime.now(timezone.utc)
+  # A week is more than 500 observations, so this is several requests -- by design.
+  observations = await client.stations.get_observations_paged(
+    'KSEA', start=end - timedelta(days=7), end=end
+  )
+  print(len(observations), 'observations')
+```
 
 ## Everything else
 
