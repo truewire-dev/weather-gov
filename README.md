@@ -62,7 +62,7 @@ Wednesday Night  57°F  Partly Cloudy
 
 ### Every measurement carries its unit
 
-This API never sends a bare number. A temperature is `{"unitCode": "wmoUnit:degC", "value": 13, "qualityControl": "V"}`, and `value` is `None` wherever the measurement is missing rather than zero — an airport station reports `windGust` only when there were gusts. The types say so, so the null is impossible to forget:
+This API never sends a bare number. A temperature is `{"unitCode": "wmoUnit:degC", "value": 13, "qualityControl": "V"}`, and `value` is `None` wherever the measurement is missing rather than zero — an airport station's `windGust` has a `value` only when there were gusts. The types say so, so the null is impossible to forget:
 
 ```python
 from weather_gov import Weather

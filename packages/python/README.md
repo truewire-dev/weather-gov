@@ -48,8 +48,8 @@ asyncio.run(main())
 
 This API never sends a bare number. A temperature is
 `{'unitCode': 'wmoUnit:degC', 'value': 13, 'qualityControl': 'V'}`, and `value` is `None`
-wherever the measurement is missing rather than zero — an airport station reports
-`windGust` only when there were gusts. The types say so, so the null is hard to forget.
+wherever the measurement is missing rather than zero — an airport station's `windGust`
+has a `value` only when there were gusts. The types say so, so the null is hard to forget.
 
 ## Walking a span of observations
 

@@ -114,7 +114,7 @@ The filter values disagree about capitalisation — `status` takes `actual`, `se
 
 ## Every measurement carries its unit
 
-This API never sends a bare number. A temperature is `QuantitativeValue { unit_code, value, quality_control }`, and `value` is `Option<f64>`: null wherever the measurement is missing rather than zero, which is common — an airport station reports `wind_gust` only when there were gusts.
+This API never sends a bare number. A temperature is `QuantitativeValue { unit_code, value, quality_control }`, and `value` is `Option<f64>`: null wherever the measurement is missing rather than zero, which is common — an airport station's `wind_gust` has a `value` only when there were gusts.
 
 ```rust
 use truewire_core::CallOptions;
