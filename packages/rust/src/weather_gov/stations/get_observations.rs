@@ -4,7 +4,8 @@ use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
 use truewire_core::{
-    decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso,
+    decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, PaginatedResponse, Result, Seek,
+    SeekState, TimestampIso,
 };
 
 use crate::meta::DefaultMeta;
@@ -60,6 +61,9 @@ pub struct ObservationCollection {
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
+/// `get_observations_paged`'s request: `Request`, whose `end` the walk moves and whose `start` caps it.
+pub type GetObservationsPagedRequest = Request;
+
 /// What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.
 #[derive(Clone)]
 pub struct GetObservations {
@@ -69,6 +73,44 @@ pub struct GetObservations {
 impl GetObservations {
     pub fn new(core: Arc<dyn HttpEndpoint<DefaultMeta>>) -> Self {
         Self { core }
+    }
+
+    /// What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.
+    ///
+    /// Paged variant of `get_observations`: await it for every row, or walk `rows()`/`pages()` one page at a time. Walks backwards by moving `end` to the extreme `[-1].properties.timestamp` of each full page, never past the caller's own `start`; a page re-serving rows already yielded is deduplicated.
+    ///
+    /// See <https://www.weather.gov/documentation/services-web-api#/default/station_observation_list>.
+    pub fn get_observations_paged(
+        &self,
+        request: GetObservationsPagedRequest,
+        options: CallOptions,
+    ) -> PaginatedResponse<ObservationFeature, SeekState<TimestampIso, ObservationFeature>> {
+        let endpoint = self.clone();
+        let size = request.limit.unwrap_or(500);
+        let size = Some(size as usize);
+        let seek = Seek::new(
+            "get_observations_paged",
+            "[-1].properties.timestamp",
+            true,
+            true,
+        );
+        let seek = seek.cap(size);
+        let init = SeekState::new(request.end);
+        let next = move |state: SeekState<TimestampIso, ObservationFeature>| {
+            let endpoint = endpoint.clone();
+            let request = request.clone();
+            let options = options.clone();
+            let seek = seek.clone();
+            async move {
+                let far = request.start;
+                let mut request = request;
+                request.end = state.pos;
+                let response = endpoint.get_observations(request, options).await?;
+                let rows = response.features;
+                seek.step(&state, rows, None, far.as_ref())
+            }
+        };
+        PaginatedResponse::new(init, next)
     }
 
     /// What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.

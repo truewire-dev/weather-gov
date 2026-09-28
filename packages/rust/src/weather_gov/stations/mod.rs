@@ -6,10 +6,12 @@ pub mod list_stations;
 
 use std::sync::Arc;
 
-use truewire_core::{serde_json, CallOptions, HttpEndpoint, Result};
+use truewire_core::{
+    serde_json, CallOptions, HttpEndpoint, PaginatedResponse, Result, SeekState, TimestampIso,
+};
 
 use crate::meta::DefaultMeta;
-use crate::types::Observation;
+use crate::types::{Observation, ObservationFeature};
 
 /// Observation stations and what they have reported.
 ///
@@ -52,6 +54,20 @@ impl Stations {
         self.get_latest_observation
             .get_latest_observation_raw(request, options)
             .await
+    }
+
+    /// What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.
+    ///
+    /// Paged variant of `get_observations`: await it for every row, or walk `rows()`/`pages()` one page at a time. Walks backwards by moving `end` to the extreme `[-1].properties.timestamp` of each full page, never past the caller's own `start`; a page re-serving rows already yielded is deduplicated.
+    ///
+    /// See <https://www.weather.gov/documentation/services-web-api#/default/station_observation_list>.
+    pub fn get_observations_paged(
+        &self,
+        request: get_observations::GetObservationsPagedRequest,
+        options: CallOptions,
+    ) -> PaginatedResponse<ObservationFeature, SeekState<TimestampIso, ObservationFeature>> {
+        self.get_observations
+            .get_observations_paged(request, options)
     }
 
     /// What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.

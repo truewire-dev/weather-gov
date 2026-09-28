@@ -7,6 +7,7 @@
 pub mod alerts;
 pub mod client;
 pub mod core;
+pub mod dispatch;
 pub mod forecast;
 pub mod meta;
 pub mod offices;

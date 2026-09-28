@@ -170,6 +170,7 @@ class CloudLayer(TypedDict):
   """One reported cloud layer: how much of the sky it covers and how high its base is."""
 
   base: QuantitativeValue
+  """Height of the layer's base above the station."""
   amount: Literal['OVC', 'BKN', 'SCT', 'FEW', 'SKC', 'CLR', 'VV']
   """METAR sky-cover code: `OVC` overcast, `BKN` broken, `SCT` scattered, `FEW` few, `SKC`/`CLR` clear, `VV` vertical visibility (sky obscured)."""
 
@@ -194,8 +195,11 @@ class ForecastPeriod(TypedDict):
   temperatureTrend: NotRequired[str | None]
   """`rising` or `falling` where the temperature moves against the usual daily cycle."""
   probabilityOfPrecipitation: NotRequired[QuantitativeValue]
+  """Chance of measurable precipitation."""
   dewpoint: NotRequired[QuantitativeValue]
+  """Forecast dew point. Hourly forecasts only."""
   relativeHumidity: NotRequired[QuantitativeValue]
+  """Forecast relative humidity. Hourly forecasts only."""
   windSpeed: str
   """Wind speed as prose with its unit, such as `5 to 10 mph`. A string, not a `QuantitativeValue`."""
   windDirection: str
@@ -227,6 +231,7 @@ class Station(TypedDict):
   timeZone: NotRequired[str]
   """IANA time zone the station is in, such as `America/Los_Angeles`."""
   elevation: NotRequired[QuantitativeValue]
+  """Station elevation above sea level."""
   forecast: NotRequired[str]
   """URL of the forecast zone the station is in."""
   county: NotRequired[str]
@@ -249,6 +254,7 @@ class AlertFeature(TypedDict):
   geometry: NotRequired[PolygonGeometry | MultiPolygonGeometry | None]
   """The area an alert covers, when it was drawn as a polygon rather than named as zones."""
   properties: Alert
+  """The alert itself."""
 
 
 class GridpointForecast(TypedDict):
@@ -265,6 +271,7 @@ class GridpointForecast(TypedDict):
   validTimes: str
   """ISO 8601 interval the forecast covers, as `<start>/<duration>`."""
   elevation: NotRequired[QuantitativeValue]
+  """Elevation of the grid cell."""
   periods: list[ForecastPeriod]
   """The forecast periods, in order."""
 
@@ -287,24 +294,41 @@ class Observation(TypedDict):
   icon: NotRequired[str | None]
   """URL of a weather icon for the observation."""
   elevation: NotRequired[QuantitativeValue]
+  """Station elevation above sea level."""
   presentWeather: NotRequired[list[PresentWeather]]
   """Present-weather groups decoded from the METAR; empty when nothing was reported."""
   temperature: QuantitativeValue
+  """Air temperature."""
   dewpoint: QuantitativeValue
+  """Dew point."""
   windDirection: NotRequired[QuantitativeValue]
+  """Direction the wind is coming from, in degrees clockwise from true north."""
   windSpeed: QuantitativeValue
+  """Sustained wind speed."""
   windGust: NotRequired[QuantitativeValue]
+  """Peak gust; null when there were no gusts."""
   barometricPressure: NotRequired[QuantitativeValue]
+  """Station pressure."""
   seaLevelPressure: NotRequired[QuantitativeValue]
+  """Pressure reduced to sea level."""
   visibility: NotRequired[QuantitativeValue]
+  """Horizontal visibility."""
   maxTemperatureLast24Hours: NotRequired[QuantitativeValue]
+  """Highest temperature in the last 24 hours; reported once a day."""
   minTemperatureLast24Hours: NotRequired[QuantitativeValue]
+  """Lowest temperature in the last 24 hours; reported once a day."""
   precipitationLastHour: NotRequired[QuantitativeValue]
+  """Precipitation accumulated in the last hour."""
   precipitationLast3Hours: NotRequired[QuantitativeValue]
+  """Precipitation accumulated in the last three hours."""
   precipitationLast6Hours: NotRequired[QuantitativeValue]
+  """Precipitation accumulated in the last six hours."""
   relativeHumidity: NotRequired[QuantitativeValue]
+  """Relative humidity."""
   windChill: NotRequired[QuantitativeValue]
+  """Wind chill; null unless it is cold and windy enough to compute one."""
   heatIndex: NotRequired[QuantitativeValue]
+  """Heat index; null unless it is hot and humid enough to compute one."""
   cloudLayers: list[CloudLayer]
   """Reported cloud layers, lowest first."""
 
@@ -317,7 +341,9 @@ class StationFeature(TypedDict):
   type: Literal['Feature']
   """Always `Feature`."""
   geometry: NotRequired[PointGeometry]
+  """Where the station is."""
   properties: Station
+  """The station itself."""
 
 
 class ObservationFeature(TypedDict):
@@ -328,4 +354,6 @@ class ObservationFeature(TypedDict):
   type: Literal['Feature']
   """Always `Feature`."""
   geometry: NotRequired[PointGeometry]
+  """Where the station is."""
   properties: Observation
+  """The observation itself."""

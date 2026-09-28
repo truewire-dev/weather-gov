@@ -212,6 +212,7 @@ export const AlertGeometry: Codec<AlertGeometry> = t.union(PolygonGeometry, Mult
 
 /** One reported cloud layer: how much of the sky it covers and how high its base is. */
 export interface CloudLayer {
+  /** Height of the layer's base above the station. */
   base: QuantitativeValue
   /** METAR sky-cover code: `OVC` overcast, `BKN` broken, `SCT` scattered, `FEW` few, `SKC`/`CLR` clear, `VV` vertical visibility (sky obscured). */
   amount: 'OVC' | 'BKN' | 'SCT' | 'FEW' | 'SKC' | 'CLR' | 'VV'
@@ -240,8 +241,11 @@ export interface ForecastPeriod {
   temperatureUnit: 'F' | 'C'
   /** `rising` or `falling` where the temperature moves against the usual daily cycle. */
   temperatureTrend?: string | null
+  /** Chance of measurable precipitation. */
   probabilityOfPrecipitation?: QuantitativeValue
+  /** Forecast dew point. Hourly forecasts only. */
   dewpoint?: QuantitativeValue
+  /** Forecast relative humidity. Hourly forecasts only. */
   relativeHumidity?: QuantitativeValue
   /** Wind speed as prose with its unit, such as `5 to 10 mph`. A string, not a `QuantitativeValue`. */
   windSpeed: string
@@ -295,6 +299,7 @@ export interface Station {
   name: string
   /** IANA time zone the station is in, such as `America/Los_Angeles`. */
   timeZone?: string
+  /** Station elevation above sea level. */
   elevation?: QuantitativeValue
   /** URL of the forecast zone the station is in. */
   forecast?: string
@@ -328,6 +333,7 @@ export interface AlertFeature {
   type: 'Feature'
   /** The area an alert covers, when it was drawn as a polygon rather than named as zones. */
   geometry?: PolygonGeometry | MultiPolygonGeometry | null
+  /** The alert itself. */
   properties: Alert
 }
 
@@ -350,6 +356,7 @@ export interface GridpointForecast {
   updateTime: TimestampIso
   /** ISO 8601 interval the forecast covers, as `<start>/<duration>`. */
   validTimes: string
+  /** Elevation of the grid cell. */
   elevation?: QuantitativeValue
   /** The forecast periods, in order. */
   periods: ForecastPeriod[]
@@ -381,24 +388,41 @@ export interface Observation {
   textDescription?: string
   /** URL of a weather icon for the observation. */
   icon?: string | null
+  /** Station elevation above sea level. */
   elevation?: QuantitativeValue
   /** Present-weather groups decoded from the METAR; empty when nothing was reported. */
   presentWeather?: PresentWeather[]
+  /** Air temperature. */
   temperature: QuantitativeValue
+  /** Dew point. */
   dewpoint: QuantitativeValue
+  /** Direction the wind is coming from, in degrees clockwise from true north. */
   windDirection?: QuantitativeValue
+  /** Sustained wind speed. */
   windSpeed: QuantitativeValue
+  /** Peak gust; null when there were no gusts. */
   windGust?: QuantitativeValue
+  /** Station pressure. */
   barometricPressure?: QuantitativeValue
+  /** Pressure reduced to sea level. */
   seaLevelPressure?: QuantitativeValue
+  /** Horizontal visibility. */
   visibility?: QuantitativeValue
+  /** Highest temperature in the last 24 hours; reported once a day. */
   maxTemperatureLast24Hours?: QuantitativeValue
+  /** Lowest temperature in the last 24 hours; reported once a day. */
   minTemperatureLast24Hours?: QuantitativeValue
+  /** Precipitation accumulated in the last hour. */
   precipitationLastHour?: QuantitativeValue
+  /** Precipitation accumulated in the last three hours. */
   precipitationLast3Hours?: QuantitativeValue
+  /** Precipitation accumulated in the last six hours. */
   precipitationLast6Hours?: QuantitativeValue
+  /** Relative humidity. */
   relativeHumidity?: QuantitativeValue
+  /** Wind chill; null unless it is cold and windy enough to compute one. */
   windChill?: QuantitativeValue
+  /** Heat index; null unless it is hot and humid enough to compute one. */
   heatIndex?: QuantitativeValue
   /** Reported cloud layers, lowest first. */
   cloudLayers: CloudLayer[]
@@ -439,7 +463,9 @@ export interface StationFeature {
   id: string
   /** Always `Feature`. */
   type: 'Feature'
+  /** Where the station is. */
   geometry?: PointGeometry
+  /** The station itself. */
   properties: Station
 }
 
@@ -456,7 +482,9 @@ export interface ObservationFeature {
   id: string
   /** Always `Feature`. */
   type: 'Feature'
+  /** Where the station is. */
   geometry?: PointGeometry
+  /** The observation itself. */
   properties: Observation
 }
 

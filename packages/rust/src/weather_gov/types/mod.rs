@@ -56,6 +56,7 @@ pub enum MultiPolygonGeometryType {
 }
 
 /// GeoJSON geometry of several disjoint areas -- an alert covering counties that do not touch.
+#[allow(clippy::type_complexity)]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct MultiPolygonGeometry {
     /// Always `MultiPolygon`.
@@ -74,6 +75,7 @@ pub enum PointGeometryType {
 }
 
 /// GeoJSON geometry of a feature that sits at a single place: a station, an observation, a forecast point.
+#[allow(clippy::type_complexity)]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct PointGeometry {
     /// Always `Point` for these features.
@@ -92,6 +94,7 @@ pub enum PolygonGeometryType {
 }
 
 /// GeoJSON geometry of an area: one outer ring, then any holes.
+#[allow(clippy::type_complexity)]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct PolygonGeometry {
     /// Always `Polygon`.
@@ -307,10 +310,13 @@ pub struct Alert {
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
+#[allow(clippy::large_enum_variant)]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum AlertGeometryValue {
+    /// A single area.
     PolygonGeometry(PolygonGeometry),
+    /// Several disjoint areas.
     MultiPolygonGeometry(MultiPolygonGeometry),
 }
 
@@ -337,6 +343,7 @@ pub enum CloudLayerAmount {
 /// One reported cloud layer: how much of the sky it covers and how high its base is.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct CloudLayer {
+    /// Height of the layer's base above the station.
     pub base: QuantitativeValue,
     /// METAR sky-cover code: `OVC` overcast, `BKN` broken, `SCT` scattered, `FEW` few, `SKC`/`CLR` clear, `VV` vertical visibility (sky obscured).
     pub amount: CloudLayerAmount,
@@ -380,14 +387,17 @@ pub struct ForecastPeriod {
     )]
     #[serde(with = "truewire_core::validation::double_option")]
     pub temperature_trend: Option<Option<String>>,
+    /// Chance of measurable precipitation.
     #[serde(
         rename = "probabilityOfPrecipitation",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub probability_of_precipitation: Option<QuantitativeValue>,
+    /// Forecast dew point. Hourly forecasts only.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub dewpoint: Option<QuantitativeValue>,
+    /// Forecast relative humidity. Hourly forecasts only.
     #[serde(
         rename = "relativeHumidity",
         default,
@@ -438,6 +448,7 @@ pub struct Station {
     /// IANA time zone the station is in, such as `America/Los_Angeles`.
     #[serde(rename = "timeZone", default, skip_serializing_if = "Option::is_none")]
     pub time_zone: Option<String>,
+    /// Station elevation above sea level.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub elevation: Option<QuantitativeValue>,
     /// URL of the forecast zone the station is in.
@@ -473,10 +484,13 @@ pub enum AlertFeatureType {
     Feature,
 }
 
+#[allow(clippy::large_enum_variant)]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum AlertFeatureGeometry {
+    /// A single area.
     PolygonGeometry(PolygonGeometry),
+    /// Several disjoint areas.
     MultiPolygonGeometry(MultiPolygonGeometry),
 }
 
@@ -492,6 +506,7 @@ pub struct AlertFeature {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[serde(with = "truewire_core::validation::double_option")]
     pub geometry: Option<Option<AlertFeatureGeometry>>,
+    /// The alert itself.
     pub properties: Alert,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
@@ -527,6 +542,7 @@ pub struct GridpointForecast {
     /// ISO 8601 interval the forecast covers, as `<start>/<duration>`.
     #[serde(rename = "validTimes")]
     pub valid_times: String,
+    /// Elevation of the grid cell.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub elevation: Option<QuantitativeValue>,
     /// The forecast periods, in order.
@@ -571,6 +587,7 @@ pub struct Observation {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[serde(with = "truewire_core::validation::double_option")]
     pub icon: Option<Option<String>>,
+    /// Station elevation above sea level.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub elevation: Option<QuantitativeValue>,
     /// Present-weather groups decoded from the METAR; empty when nothing was reported.
@@ -580,70 +597,86 @@ pub struct Observation {
         skip_serializing_if = "Option::is_none"
     )]
     pub present_weather: Option<Vec<PresentWeather>>,
+    /// Air temperature.
     pub temperature: QuantitativeValue,
+    /// Dew point.
     pub dewpoint: QuantitativeValue,
+    /// Direction the wind is coming from, in degrees clockwise from true north.
     #[serde(
         rename = "windDirection",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub wind_direction: Option<QuantitativeValue>,
+    /// Sustained wind speed.
     #[serde(rename = "windSpeed")]
     pub wind_speed: QuantitativeValue,
+    /// Peak gust; null when there were no gusts.
     #[serde(rename = "windGust", default, skip_serializing_if = "Option::is_none")]
     pub wind_gust: Option<QuantitativeValue>,
+    /// Station pressure.
     #[serde(
         rename = "barometricPressure",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub barometric_pressure: Option<QuantitativeValue>,
+    /// Pressure reduced to sea level.
     #[serde(
         rename = "seaLevelPressure",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub sea_level_pressure: Option<QuantitativeValue>,
+    /// Horizontal visibility.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub visibility: Option<QuantitativeValue>,
+    /// Highest temperature in the last 24 hours; reported once a day.
     #[serde(
         rename = "maxTemperatureLast24Hours",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub max_temperature_last24_hours: Option<QuantitativeValue>,
+    /// Lowest temperature in the last 24 hours; reported once a day.
     #[serde(
         rename = "minTemperatureLast24Hours",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub min_temperature_last24_hours: Option<QuantitativeValue>,
+    /// Precipitation accumulated in the last hour.
     #[serde(
         rename = "precipitationLastHour",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub precipitation_last_hour: Option<QuantitativeValue>,
+    /// Precipitation accumulated in the last three hours.
     #[serde(
         rename = "precipitationLast3Hours",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub precipitation_last3_hours: Option<QuantitativeValue>,
+    /// Precipitation accumulated in the last six hours.
     #[serde(
         rename = "precipitationLast6Hours",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub precipitation_last6_hours: Option<QuantitativeValue>,
+    /// Relative humidity.
     #[serde(
         rename = "relativeHumidity",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub relative_humidity: Option<QuantitativeValue>,
+    /// Wind chill; null unless it is cold and windy enough to compute one.
     #[serde(rename = "windChill", default, skip_serializing_if = "Option::is_none")]
     pub wind_chill: Option<QuantitativeValue>,
+    /// Heat index; null unless it is hot and humid enough to compute one.
     #[serde(rename = "heatIndex", default, skip_serializing_if = "Option::is_none")]
     pub heat_index: Option<QuantitativeValue>,
     /// Reported cloud layers, lowest first.
@@ -667,8 +700,10 @@ pub struct StationFeature {
     /// Always `Feature`.
     #[serde(rename = "type")]
     pub type_: StationFeatureType,
+    /// Where the station is.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub geometry: Option<PointGeometry>,
+    /// The station itself.
     pub properties: Station,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
@@ -688,8 +723,10 @@ pub struct ObservationFeature {
     /// Always `Feature`.
     #[serde(rename = "type")]
     pub type_: ObservationFeatureType,
+    /// Where the station is.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub geometry: Option<PointGeometry>,
+    /// The observation itself.
     pub properties: Observation,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]

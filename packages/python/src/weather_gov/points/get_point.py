@@ -21,7 +21,9 @@ class RelativeLocation(TypedDict):
   state: str
   """Two-letter state code."""
   distance: NotRequired[QuantitativeValue]
+  """Distance from the point to that city."""
   bearing: NotRequired[QuantitativeValue]
+  """Bearing from that city to the point, in degrees clockwise from true north."""
 
 
 class RelativeLocationFeature(TypedDict):
@@ -30,6 +32,7 @@ class RelativeLocationFeature(TypedDict):
   type: Literal['Feature']
   """Always `Feature`."""
   geometry: NotRequired[PointGeometry]
+  """Where that place is."""
   properties: RelativeLocation
 
 
