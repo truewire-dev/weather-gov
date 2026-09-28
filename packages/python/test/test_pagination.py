@@ -1,17 +1,19 @@
-"""The declared `window` walk, against the mock.
+"""The declared `seek` walk, against the mock.
 
-`stations.get_observations` is the reason this project exists as the second showcase: it
-is the first recorded, tested use of `window` pagination anywhere in Truewire. The walk
-itself is arithmetic on the request bounds, so what is worth testing is not that it
-divides correctly -- the generator's own suite does that -- but the two things the
-declaration buys a caller here:
+`stations.get_observations` pages by time: the walk moves `end` back to the oldest
+observation of each page that came back full (ADR 0013). The algorithm is the toolchain's
+and its own suite covers it; what is worth testing here is what the declaration buys a
+caller on this service's real responses:
 
-1. the walk stops at the window the caller asked for and does not wander into history;
-2. a page that came back full raises, because the service silently caps a wide window and
-   a walk that stepped past it would lose every observation the cap withheld.
+1. a span under the cap is one request, and the walk does not wander past it;
+2. a capped page is progress rather than the whole span: the next request ends at the
+   oldest observation the capped page held, which is only right because the service keeps
+   the newest rows when it caps (the declared `anchor: end`);
+3. the observation on the boundary, which the next request re-reads, is dropped by its
+   timestamp rather than yielded twice.
 
-Both windows are real recordings of the same six hours at KSEA: one under the cap, one
-asked for with `limit=10` so the page comes back full.
+Both are real recordings of the same six hours at KSEA: one under the cap, one asked for
+with `limit=10` so the page comes back full.
 """
 
 import json
@@ -19,7 +21,6 @@ from datetime import datetime
 from pathlib import Path
 
 import pytest
-from truewire_core.exceptions import LogicError
 
 PROJECT = Path(__file__).resolve().parents[3]
 EXAMPLES = PROJECT / 'spec/endpoints/stations/get_observations/examples'
@@ -36,97 +37,82 @@ def recorded(example: str) -> dict:
   return json.loads((EXAMPLES / f'{example}.request.json').read_text())['request']
 
 
+def observations(example: str) -> list[dict]:
+  return json.loads((EXAMPLES / f'{example}.response.json').read_text())['payload']['features']
+
+
+def instant(value: str) -> datetime:
+  return datetime.fromisoformat(value.replace('Z', '+00:00'))
+
+
 WINDOW = recorded('ksea_window')
 CAPPED = recorded('ksea_capped')
-START = datetime.fromisoformat(WINDOW['start'].replace('Z', '+00:00'))
-END = datetime.fromisoformat(WINDOW['end'].replace('Z', '+00:00'))
+START = instant(WINDOW['start'])
+END = instant(WINDOW['end'])
 CAP = CAPPED['limit']
 
-ROWS = len(json.loads((EXAMPLES / 'ksea_window.response.json').read_text())['payload']['features'])
-"""How many observations the window actually holds. Moves with every re-recording; what
-does not move is that it is under the service's cap, which is why that walk is one page."""
+ROWS = observations('ksea_window')
+"""What the six hours actually hold. Moves with every re-recording; what does not move is
+that it is under the service's cap, which is why that walk is one page."""
 
 
-class TestTheWalk:
+class TestASpanUnderTheCap:
   @pytest.mark.asyncio
-  async def test_the_window_the_caller_asked_for_is_one_page(self, client):
-    """Seventy-four observations, under the service's cap, so the walk is done in one."""
-    pages = [
-      page
-      async for page in client.stations.get_observations_paged(
-        'KSEA', start=START, end=END, limit=500
-      )
-    ]
+  async def test_is_one_page(self, client):
+    """Under the service's cap, so the walk is done in one request. The mock holds one
+    exchange for this span, and a second request would 422 rather than quietly return
+    nothing."""
+    assert len(ROWS) < 500, 'this span is meant to sit under the cap, so the walk is one page'
+    walk = client.stations.get_observations_paged('KSEA', start=START, end=END, limit=500)
+    pages = [page async for page in walk.pages()]
     assert len(pages) == 1
-    assert len(pages[0]['features']) == ROWS
-    assert ROWS < 500, 'this window is meant to sit under the cap, so the walk is one page'
+    assert pages[0].next is None
+    assert len(pages[0].rows) == len(ROWS)
 
   @pytest.mark.asyncio
-  async def test_the_walk_does_not_step_past_the_callers_own_start(self, client):
-    """A window walk moves backwards by its own width. Nothing before `start` was asked
-    for, so nothing before `start` is requested -- the mock holds one exchange, and a
-    second request would 422 rather than quietly return nothing."""
-    seen = 0
-    async for _ in client.stations.get_observations_paged('KSEA', start=START, end=END, limit=500):
-      seen += 1
-    assert seen == 1
-
-  @pytest.mark.asyncio
-  async def test_both_bounds_are_required(self, client):
-    """The window is the walk. Without both ends there is nothing to move."""
-    with pytest.raises(ValueError, match='pass both `start` and `end`'):
-      async for _ in client.stations.get_observations_paged('KSEA', start=START):
-        pass
+  async def test_awaiting_it_returns_every_observation_newest_first(self, client):
+    rows = await client.stations.get_observations_paged('KSEA', start=START, end=END, limit=500)
+    assert [row['id'] for row in rows] == [row['id'] for row in ROWS]
 
 
-class TestTheTruncationGuard:
-  """The defect the guard exists for, on a real response.
+class TestACappedPage:
+  """The defect the walk exists for, on a real response.
 
-  The service answers a window wider than its cap with the newest `limit` rows and says
-  nothing about the ones it withheld. A walk that advanced past that window would skip
-  them silently, and the caller would get a gap in a time series with no error anywhere.
+  The service answers a span wider than its cap with the newest `limit` rows and says
+  nothing about the ones it withheld. A walk that took that page as the whole span would
+  leave a gap in a time series with no error anywhere.
   """
 
   @pytest.mark.asyncio
-  async def test_a_full_page_raises_instead_of_losing_the_rest(self, client):
-    """Ten rows asked for, ten rows returned: the window held more."""
-    with pytest.raises(LogicError, match=f'full page of {CAP} rows'):
-      async for _ in client.stations.get_observations_paged(
-        'KSEA', start=START, end=END, limit=CAP
-      ):
-        pass
+  async def test_keeps_the_newest_rows(self):
+    """The recorded fact `anchor: end` rests on: the capped page is the head of the full
+    one, not some other slice of it."""
+    capped = observations('ksea_capped')
+    assert CAPPED['start'] == WINDOW['start'] and CAPPED['end'] == WINDOW['end']
+    assert len(capped) == CAP < len(ROWS)
+    assert [row['id'] for row in capped] == [row['id'] for row in ROWS[:CAP]]
 
   @pytest.mark.asyncio
-  async def test_the_caller_still_gets_the_page_before_the_raise(self, client):
-    """The rows that did arrive are not thrown away with the error."""
-    pages = []
-    with pytest.raises(LogicError):
-      async for page in client.stations.get_observations_paged(
-        'KSEA', start=START, end=END, limit=10
-      ):
-        pages.append(page)
-    assert len(pages) == 1
-    assert len(pages[0]['features']) == CAP
+  async def test_moves_end_to_the_oldest_observation_it_held(self, client):
+    """Ten rows asked for, ten returned: the span held more, so the walk continues from the
+    oldest of them, and `start` stays the caller's."""
+    walk = client.stations.get_observations_paged('KSEA', start=START, end=END, limit=CAP)
+    rows, following = await walk.next(walk.init)
+    assert len(rows) == CAP
+    assert following is not None
+    pos, carried = following
+    oldest = observations('ksea_capped')[-1]
+    assert pos == instant(oldest['properties']['timestamp'])
+    assert [row['id'] for row in carried] == [oldest['id']]
 
-  @pytest.mark.asyncio
-  async def test_the_error_names_the_window_to_narrow(self, client):
-    """A caller cannot act on 'something was truncated'; they can act on which window."""
-    with pytest.raises(LogicError) as caught:
-      async for _ in client.stations.get_observations_paged(
-        'KSEA', start=START, end=END, limit=CAP
-      ):
-        pass
-    assert str(START) in str(caught.value)
-    assert 'allow_truncation=True' in str(caught.value)
 
+class TestTheBoundary:
   @pytest.mark.asyncio
-  async def test_allow_truncation_accepts_the_loss(self, client):
-    """The opt-out exists because sampling a series is a real use, and the walk then stops
-    at the caller's own bound rather than raising."""
-    pages = [
-      page
-      async for page in client.stations.get_observations_paged(
-        'KSEA', start=START, end=END, limit=CAP, allow_truncation=True
-      )
-    ]
-    assert len(pages) == 1
+  async def test_the_re_read_observation_is_not_yielded_twice(self, client):
+    """Both bounds are inclusive, so the request after a capped page re-reads the
+    observation it ended on. Resumed as if a previous page had already yielded the newest
+    observation of the span, the walk drops it by timestamp and yields the rest."""
+    walk = client.stations.get_observations_paged('KSEA', start=START, end=END, limit=500)
+    rows, following = await walk.next((END, [ROWS[0]]))
+    assert following is None
+    assert [row['id'] for row in rows] == [row['id'] for row in ROWS[1:]]
