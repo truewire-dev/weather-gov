@@ -97,11 +97,8 @@ class GetObservations(Endpoint):
     ]:
       def key_of(item: ObservationFeature):
         """One row's `properties.timestamp`, normalized to compare against the moving bound."""
-        raw = (
-          (item.get('properties') if item is not None else None).get('timestamp')
-          if (item.get('properties') if item is not None else None) is not None
-          else None
-        )
+        raw_0 = item.get('properties') if item is not None else None
+        raw = raw_0.get('timestamp') if raw_0 is not None else None
         return (
           None
           if raw is None
