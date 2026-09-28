@@ -58,7 +58,7 @@ impl Stations {
 
     /// What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.
     ///
-    /// Paged variant of `get_observations`: await it for every row, or walk `rows()`/`pages()` one page at a time. Walks backwards by moving `end` to the extreme `[-1].properties.timestamp` of each full page, never past the caller's own `start`; a page re-serving rows already yielded is deduplicated.
+    /// Paged variant of `get_observations`: await it for every row, or walk `rows()`/`pages()` one page at a time. Walks backwards by moving `end` to the extreme `[-1].properties.timestamp` of each full page, never past the caller's own `start`; a page re-serving rows already yielded is deduplicated. The walk requests pages of at least 2 rows and at most 500: a page must hold one new row beside the one it re-reads.
     ///
     /// See <https://www.weather.gov/documentation/services-web-api#/default/station_observation_list>.
     pub fn get_observations_paged(

@@ -59,12 +59,13 @@ export class GetObservations {
   /**
    * What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.
    *
-   * Paged variant of `getObservations`: walks backwards by moving `end` to the earliest `[-1].properties.timestamp` of each full page (ADR 0013); awaitable (flattens every page) or async-iterable (one page at a time).
+   * Paged variant of `getObservations`: walks backwards by moving `end` to the earliest `[-1].properties.timestamp` of each full page (ADR 0013); awaitable (flattens every page) or async-iterable (one page at a time). The walk requests pages of at least 2 rows and at most 500: a page must hold one new row beside the one it re-reads.
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/station_observation_list
    */
   getObservationsPaged(request: GetObservationsPagedRequest, options?: CallOptions): PaginatedResponse<ObservationFeature, SeekState<ObservationFeature, TimestampIso>>
   getObservationsPaged(request: GetObservationsPagedRequest, options?: CallOptions): PaginatedResponse<ObservationFeature, SeekState<ObservationFeature, TimestampIso>> | PaginatedResponse<unknown, SeekState<unknown, TimestampIso>> {
+    const size = request.limit == null ? undefined : Math.min(Math.max(request.limit, 2), 500)
     return seek<ObservationFeature, TimestampIso>(request.end, {
       method: 'getObservationsPaged',
       field: '[-1].properties.timestamp',
@@ -72,10 +73,10 @@ export class GetObservations {
       keys: timestampIso,
       unique: true,
       descending: true,
-      cap: request.limit === undefined ? 500 : Math.min(request.limit, 500),
+      cap: size ?? 500,
       far: request.start,
       fetch: async (pos) => {
-        const response = await this.getObservations({ ...request, end: pos }, options)
+        const response = await this.getObservations({ ...request, limit: size, end: pos }, options)
         return response.features ?? []
       },
     })
