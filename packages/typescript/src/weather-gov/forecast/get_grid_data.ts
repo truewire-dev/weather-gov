@@ -96,7 +96,7 @@ export interface GridData {
   heatIndex?: GridSeries
   /** Wind chill. */
   windChill?: GridSeries
-  /** Fraction of the sky covered by cloud. */
+  /** Percentage of the sky covered by cloud. */
   skyCover?: GridSeries
   /** Direction the wind comes from, in degrees clockwise from true north. */
   windDirection?: GridSeries

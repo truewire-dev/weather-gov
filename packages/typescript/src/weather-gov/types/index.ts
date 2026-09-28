@@ -400,7 +400,7 @@ export interface Observation {
   windDirection?: QuantitativeValue
   /** Sustained wind speed. */
   windSpeed: QuantitativeValue
-  /** Peak gust; null when there were no gusts. */
+  /** Peak gust; its `value` is null when there were no gusts. */
   windGust?: QuantitativeValue
   /** Station pressure. */
   barometricPressure?: QuantitativeValue
@@ -420,9 +420,9 @@ export interface Observation {
   precipitationLast6Hours?: QuantitativeValue
   /** Relative humidity. */
   relativeHumidity?: QuantitativeValue
-  /** Wind chill; null unless it is cold and windy enough to compute one. */
+  /** Wind chill; its `value` is null unless it is cold and windy enough to compute one. */
   windChill?: QuantitativeValue
-  /** Heat index; null unless it is hot and humid enough to compute one. */
+  /** Heat index; its `value` is null unless it is hot and humid enough to compute one. */
   heatIndex?: QuantitativeValue
   /** Reported cloud layers, lowest first. */
   cloudLayers: CloudLayer[]

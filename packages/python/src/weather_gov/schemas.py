@@ -306,7 +306,7 @@ class Observation(TypedDict):
   windSpeed: QuantitativeValue
   """Sustained wind speed."""
   windGust: NotRequired[QuantitativeValue]
-  """Peak gust; null when there were no gusts."""
+  """Peak gust; its `value` is null when there were no gusts."""
   barometricPressure: NotRequired[QuantitativeValue]
   """Station pressure."""
   seaLevelPressure: NotRequired[QuantitativeValue]
@@ -326,9 +326,9 @@ class Observation(TypedDict):
   relativeHumidity: NotRequired[QuantitativeValue]
   """Relative humidity."""
   windChill: NotRequired[QuantitativeValue]
-  """Wind chill; null unless it is cold and windy enough to compute one."""
+  """Wind chill; its `value` is null unless it is cold and windy enough to compute one."""
   heatIndex: NotRequired[QuantitativeValue]
-  """Heat index; null unless it is hot and humid enough to compute one."""
+  """Heat index; its `value` is null unless it is hot and humid enough to compute one."""
   cloudLayers: list[CloudLayer]
   """Reported cloud layers, lowest first."""
 

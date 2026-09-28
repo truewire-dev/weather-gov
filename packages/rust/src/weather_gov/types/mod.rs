@@ -611,7 +611,7 @@ pub struct Observation {
     /// Sustained wind speed.
     #[serde(rename = "windSpeed")]
     pub wind_speed: QuantitativeValue,
-    /// Peak gust; null when there were no gusts.
+    /// Peak gust; its `value` is null when there were no gusts.
     #[serde(rename = "windGust", default, skip_serializing_if = "Option::is_none")]
     pub wind_gust: Option<QuantitativeValue>,
     /// Station pressure.
@@ -673,10 +673,10 @@ pub struct Observation {
         skip_serializing_if = "Option::is_none"
     )]
     pub relative_humidity: Option<QuantitativeValue>,
-    /// Wind chill; null unless it is cold and windy enough to compute one.
+    /// Wind chill; its `value` is null unless it is cold and windy enough to compute one.
     #[serde(rename = "windChill", default, skip_serializing_if = "Option::is_none")]
     pub wind_chill: Option<QuantitativeValue>,
-    /// Heat index; null unless it is hot and humid enough to compute one.
+    /// Heat index; its `value` is null unless it is hot and humid enough to compute one.
     #[serde(rename = "heatIndex", default, skip_serializing_if = "Option::is_none")]
     pub heat_index: Option<QuantitativeValue>,
     /// Reported cloud layers, lowest first.

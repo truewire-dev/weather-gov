@@ -135,7 +135,7 @@ pub struct GridData {
     /// Wind chill.
     #[serde(rename = "windChill", default, skip_serializing_if = "Option::is_none")]
     pub wind_chill: Option<GridSeries>,
-    /// Fraction of the sky covered by cloud.
+    /// Percentage of the sky covered by cloud.
     #[serde(rename = "skyCover", default, skip_serializing_if = "Option::is_none")]
     pub sky_cover: Option<GridSeries>,
     /// Direction the wind comes from, in degrees clockwise from true north.

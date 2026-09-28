@@ -81,7 +81,7 @@ class GridData(TypedDict):
   windChill: NotRequired[GridSeries]
   """Wind chill."""
   skyCover: NotRequired[GridSeries]
-  """Fraction of the sky covered by cloud."""
+  """Percentage of the sky covered by cloud."""
   windDirection: NotRequired[GridSeries]
   """Direction the wind comes from, in degrees clockwise from true north."""
   windSpeed: NotRequired[GridSeries]
