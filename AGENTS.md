@@ -23,8 +23,8 @@ itself in `User-Agent`, which the core sends. `truewire.toml` declares no `[secr
 
 ## Gates
 
-Run these before pushing. They are the `gates` job in `.github/workflows/ci.yml`; the other
-jobs there run each package's own tests.
+Run these before pushing. CI (`.github/workflows/ci.yml`) runs them in its `gates` and
+`recordings` jobs, and each package's tests in the others.
 
 ```
 truewire check
