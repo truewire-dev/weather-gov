@@ -72,7 +72,10 @@ fn start_mock() -> Mock {
     // `ConnectionReset` on three of eight tests -- a real bug in the harness reading as
     // flakiness in the client.
     std::thread::spawn(move || lines.for_each(drop));
-    Mock { child, http: http.expect("the mock printed an HTTP url") }
+    Mock {
+        child,
+        http: http.expect("the mock printed an HTTP url"),
+    }
 }
 
 fn client(mock: &Mock) -> Weather {
@@ -228,7 +231,10 @@ async fn stations_get_observations_answers_newest_first() {
         .stations
         .get_observations(
             weather_gov::stations::get_observations::Request {
-                station_id: window["station_id"].as_str().expect("a station").to_string(),
+                station_id: window["station_id"]
+                    .as_str()
+                    .expect("a station")
+                    .to_string(),
                 // Through the field's own `Deserialize`, which is the same code path the
                 // client uses on the wire -- so the test cannot parse a timestamp in a way
                 // the client would not.
@@ -294,7 +300,10 @@ async fn alerts_get_alert_keeps_the_whole_feature_and_a_colon_in_the_path() {
     let alert = client
         .alerts
         .get_alert(
-            weather_gov::alerts::get_alert::Request { id: id.clone(), ..Default::default() },
+            weather_gov::alerts::get_alert::Request {
+                id: id.clone(),
+                ..Default::default()
+            },
             CallOptions::default(),
         )
         .await

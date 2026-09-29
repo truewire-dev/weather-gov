@@ -11,9 +11,13 @@
 //! away from the page is the test at the bottom: every ```rust block in the README has to
 //! appear in this file verbatim, so an example cannot be fixed in one place and left
 //! rotting in the other.
+//!
+//! Each `mod readme_N` is `#[rustfmt::skip]`: `cargo fmt` would indent the block into its
+//! module, and it would no longer match the page.
 
 use std::path::Path;
 
+#[rustfmt::skip]
 mod readme_1 {
     #![allow(dead_code, unused_imports, unused_variables)]
 
@@ -53,6 +57,7 @@ async fn main() -> truewire_core::Result<()> {
 }
 }
 
+#[rustfmt::skip]
 mod readme_2 {
     #![allow(dead_code, unused_imports, unused_variables)]
 
@@ -84,6 +89,7 @@ async fn build() -> truewire_core::Result<()> {
 }
 }
 
+#[rustfmt::skip]
 mod readme_3 {
     #![allow(dead_code, unused_imports, unused_variables)]
 
@@ -111,6 +117,7 @@ async fn conditions(client: &Weather) -> truewire_core::Result<()> {
 }
 }
 
+#[rustfmt::skip]
 mod readme_4 {
     #![allow(dead_code, unused_imports, unused_variables)]
 
@@ -156,12 +163,17 @@ fn every_readme_example_is_compiled_here() {
     let mut rest = readme.as_str();
     while let Some(start) = rest.find("```rust\n") {
         let body = &rest[start + "```rust\n".len()..];
-        let end = body.find("\n```").expect("an unterminated ```rust block in the README");
+        let end = body
+            .find("\n```")
+            .expect("an unterminated ```rust block in the README");
         blocks.push(&body[..end + 1]);
         rest = &body[end..];
     }
 
-    assert!(!blocks.is_empty(), "the README has no rust examples to compile");
+    assert!(
+        !blocks.is_empty(),
+        "the README has no rust examples to compile"
+    );
     for (index, block) in blocks.iter().enumerate() {
         assert!(
             source.contains(*block),
