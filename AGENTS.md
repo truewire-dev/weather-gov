@@ -23,8 +23,8 @@ itself in `User-Agent`, which the core sends. `truewire.toml` declares no `[secr
 
 ## Gates
 
-Run these before pushing. CI (`.github/workflows/ci.yml`) runs them in its `gates` and
-`recordings` jobs, and each package's tests in the others.
+Run these from the repository root before pushing. CI (`.github/workflows/ci.yml`) runs the
+block below in its `gates` job, except `examples`, which runs in `recordings`.
 
 ```
 truewire check
@@ -37,7 +37,15 @@ truewire docs lint
 truewire examples --require-verified
 ```
 
-CI also regenerates each language and fails on any `git diff` in `packages` or `.truewire`.
-Also: `pytest packages/python/test`; `pyright` and `ruff check` / `ruff format --check` with
-`--config packages/python/ruff.toml`; `yarn run typecheck` in `packages/typescript`;
-`cargo build` in `packages/rust`.
+`gates` also regenerates each language and fails on any `git diff` in `packages` or
+`.truewire`, and runs the Python package's tests, types and lint, with these arguments:
+
+```
+pytest packages/python/test -q -rs
+pyright --project packages/python/pyrightconfig.json
+ruff check --config packages/python/ruff.toml packages/python/src packages/python/test
+ruff format --check --config packages/python/ruff.toml packages/python/src packages/python/test
+```
+
+The `typescript` job runs `yarn run typecheck` and `yarn run test` in `packages/typescript`.
+The `rust` job runs `cargo build` and `cargo test` in `packages/rust` with `RUSTFLAGS='-D warnings'`, so a warning fails it.
