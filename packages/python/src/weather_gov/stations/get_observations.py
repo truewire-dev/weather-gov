@@ -76,7 +76,7 @@ class GetObservations(Endpoint):
 
     Paged variant of `get_observations`: Walks backwards by moving `end` to the earliest `properties.timestamp` of each page that came back full, never past the caller's own `start` and stops on the first page shorter than the venue's row cap. Awaitable (flattens every page) or async-iterable (one page at a time).
 
-    The boundary row a venue re-serves is dropped by its `properties.timestamp` value, so no row is duplicated or skipped whichever way the venue bounds its ranges.
+    The boundary row a venue re-serves is dropped by its `properties.timestamp` value, so no row is duplicated or skipped whichever way the venue bounds its ranges. The walk requests pages of at least 2 rows and at most 500: a page must hold one new row beside the one it re-reads.
 
     Args:
       station_id: Station identifier, such as `KSEA`. `stations.list_stations` returns it as `stationIdentifier`.
@@ -88,7 +88,8 @@ class GetObservations(Endpoint):
     References:
       - [Official docs](https://www.weather.gov/documentation/services-web-api#/default/station_observation_list)
     """
-    cap: int | None = min(limit, 500) if limit is not None else 500
+    limit = min(max(limit, 2), 500) if limit is not None else None
+    cap: int | None = limit if limit is not None else 500
 
     async def next(
       state: tuple[TimestampIso | None, list[ObservationFeature]],

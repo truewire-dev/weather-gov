@@ -39,7 +39,7 @@ export class Stations {
   /**
    * What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.
    *
-   * Paged variant of `getObservations`: walks backwards by moving `end` to the earliest `[-1].properties.timestamp` of each full page (ADR 0013); awaitable (flattens every page) or async-iterable (one page at a time).
+   * Paged variant of `getObservations`: walks backwards by moving `end` to the earliest `[-1].properties.timestamp` of each full page (ADR 0013); awaitable (flattens every page) or async-iterable (one page at a time). The walk requests pages of at least 2 rows and at most 500: a page must hold one new row beside the one it re-reads.
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/station_observation_list
    */
