@@ -39,7 +39,7 @@ class ObservationCollection(TypedDict):
 
 
 class GetObservations(Endpoint):
-  """What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations."""
+  """What one station reported over a span of time, newest first. A busy airport station such as `KSEA` reports every five minutes, plus an hourly report at 53 minutes past, so a day there is about 300 observations."""
 
   @overload
   def get_observations_paged(
@@ -72,7 +72,7 @@ class GetObservations(Endpoint):
     limit: int | None = None,
     validate: bool | None = None,
   ) -> PaginatedResponse[ObservationFeature, tuple[TimestampIso | None, list[ObservationFeature]]]:
-    """What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.
+    """What one station reported over a span of time, newest first. A busy airport station such as `KSEA` reports every five minutes, plus an hourly report at 53 minutes past, so a day there is about 300 observations.
 
     Paged variant of `get_observations`: Walks backwards by moving `end` to the earliest `properties.timestamp` of each page that came back full, never past the caller's own `start` and stops on the first page shorter than the venue's row cap. Awaitable (flattens every page) or async-iterable (one page at a time).
 
@@ -160,7 +160,7 @@ class GetObservations(Endpoint):
     limit: int | None = None,
     validate: bool | None = None,
   ) -> ObservationCollection:
-    """What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.
+    """What one station reported over a span of time, newest first. A busy airport station such as `KSEA` reports every five minutes, plus an hourly report at 53 minutes past, so a day there is about 300 observations.
 
     Args:
       station_id: Station identifier, such as `KSEA`. `stations.list_stations` returns it as `stationIdentifier`.

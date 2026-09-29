@@ -7,7 +7,8 @@ use truewire_core::{decode, dump, serde_json, CallOptions, Error, Result};
 use crate::Weather;
 
 impl Weather {
-    /// Call the `rpc` endpoint `function` names (`spot.market_data.ticker`) with a wire request: decoded into its `Request`, sent, and the typed response dumped back to a wire value.
+    /// Call the `rpc` endpoint `function` names (`alerts.get_active_alerts`) with a wire request: decoded into its `Request`, sent, and the typed response dumped back to a wire value.
+    #[doc(hidden)]
     pub async fn call(
         &self,
         function: &str,
@@ -78,6 +79,7 @@ impl Weather {
     }
 
     /// `call` through the `_raw` twin: the wire body as it came.
+    #[doc(hidden)]
     pub async fn call_raw(
         &self,
         function: &str,

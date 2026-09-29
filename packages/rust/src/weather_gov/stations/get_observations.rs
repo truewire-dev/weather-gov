@@ -64,7 +64,7 @@ pub struct ObservationCollection {
 /// `get_observations_paged`'s request: `Request`, whose `end` the walk moves and whose `start` caps it.
 pub type GetObservationsPagedRequest = Request;
 
-/// What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.
+/// What one station reported over a span of time, newest first. A busy airport station such as `KSEA` reports every five minutes, plus an hourly report at 53 minutes past, so a day there is about 300 observations.
 #[derive(Clone)]
 pub struct GetObservations {
     core: Arc<dyn HttpEndpoint<DefaultMeta>>,
@@ -75,9 +75,9 @@ impl GetObservations {
         Self { core }
     }
 
-    /// What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.
+    /// What one station reported over a span of time, newest first. A busy airport station such as `KSEA` reports every five minutes, plus an hourly report at 53 minutes past, so a day there is about 300 observations.
     ///
-    /// Paged variant of `get_observations`: await it for every row, or walk `rows()`/`pages()` one page at a time. Walks backwards by moving `end` to the extreme `[-1].properties.timestamp` of each full page, never past the caller's own `start`; a page re-serving rows already yielded is deduplicated. The walk requests pages of at least 2 rows and at most 500: a page must hold one new row beside the one it re-reads.
+    /// Paged variant of [`Self::get_observations`]: await it for every row, or walk `rows()`/`pages()` one page at a time. Walks backwards by moving `end` to the earliest `properties.timestamp` of each page that came back full, never past the caller's own `start`; a page re-serving rows already yielded is deduplicated. The walk requests pages of at least 2 rows and at most 500: a page must hold one new row beside the one it re-reads.
     ///
     /// See <https://www.weather.gov/documentation/services-web-api#/default/station_observation_list>.
     pub fn get_observations_paged(
@@ -89,7 +89,7 @@ impl GetObservations {
         let mut request = request;
         request.limit = request.limit.map(|size| size.clamp(2, 500));
         let size = request.limit.unwrap_or(500);
-        let size = Some(size as usize);
+        let size = usize::try_from(size).ok().filter(|&size| size > 0);
         let seek = Seek::new(
             "get_observations_paged",
             "[-1].properties.timestamp",
@@ -115,7 +115,7 @@ impl GetObservations {
         PaginatedResponse::new(init, next)
     }
 
-    /// What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.
+    /// What one station reported over a span of time, newest first. A busy airport station such as `KSEA` reports every five minutes, plus an hourly report at 53 minutes past, so a day there is about 300 observations.
     ///
     /// See <https://www.weather.gov/documentation/services-web-api#/default/station_observation_list>.
     pub async fn get_observations(

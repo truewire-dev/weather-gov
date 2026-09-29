@@ -37,9 +37,9 @@ export class Stations {
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
   getObservationsPaged(request: getObservations.GetObservationsPagedRequest, options: CallOptions & { validate: false }): PaginatedResponse<unknown, SeekState<unknown, TimestampIso>>
   /**
-   * What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.
+   * What one station reported over a span of time, newest first. A busy airport station such as `KSEA` reports every five minutes, plus an hourly report at 53 minutes past, so a day there is about 300 observations.
    *
-   * Paged variant of `getObservations`: walks backwards by moving `end` to the earliest `[-1].properties.timestamp` of each full page (ADR 0013); awaitable (flattens every page) or async-iterable (one page at a time). The walk requests pages of at least 2 rows and at most 500: a page must hold one new row beside the one it re-reads.
+   * Paged variant of `getObservations`: walks backwards by moving `end` to the earliest `properties.timestamp` of each page that came back full, never past the caller's own `start`; awaitable (flattens every page) or async-iterable (one page at a time). The walk requests pages of at least 2 rows and at most 500: a page must hold one new row beside the one it re-reads.
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/station_observation_list
    */
@@ -51,7 +51,7 @@ export class Stations {
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
   getObservations(request: getObservations.Request, options: CallOptions & { validate: false }): Promise<unknown>
   /**
-   * What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.
+   * What one station reported over a span of time, newest first. A busy airport station such as `KSEA` reports every five minutes, plus an hourly report at 53 minutes past, so a day there is about 300 observations.
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/station_observation_list
    */
