@@ -23,12 +23,21 @@ itself in `User-Agent`, which the core sends. `truewire.toml` declares no `[secr
 
 ## Gates
 
-Run these before pushing; CI runs the same ones, plus each package's tests.
+Run these before pushing. They are the `gates` job in `.github/workflows/ci.yml`; the other
+jobs there run each package's own tests.
 
 ```
 truewire check
 truewire standards
+truewire generate python --check
+truewire generate typescript --check
+truewire generate rust --check
 truewire docs check
 truewire docs lint
 truewire examples --require-verified
 ```
+
+CI also regenerates each language and fails on any `git diff` in `packages` or `.truewire`.
+Also: `pytest packages/python/test`; `pyright` and `ruff check` / `ruff format --check` with
+`--config packages/python/ruff.toml`; `yarn run typecheck` in `packages/typescript`;
+`cargo build` in `packages/rust`.
