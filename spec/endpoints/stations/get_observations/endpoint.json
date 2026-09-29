@@ -8,7 +8,7 @@
     ],
     "path": "/stations/{station_id}/observations",
     "method": "GET",
-    "description": "What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.",
+    "description": "What one station reported over a span of time, newest first. A busy airport station such as `KSEA` reports every five minutes, plus an hourly report at 53 minutes past, so a day there is about 300 observations.",
     "request": {
       "title": "GetObservationsRequest",
       "type": "object",
