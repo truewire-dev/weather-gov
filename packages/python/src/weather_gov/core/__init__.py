@@ -172,7 +172,9 @@ class ClientBase:
   client: Transport
 
   @classmethod
-  def new(cls, *, contact: str, base_url: str = API, validate: bool = True) -> Self:
+  def new(
+    cls, *, contact: str, base_url: str = API, validate: bool = True, proxy: str | None = None
+  ) -> Self:
     """Create a client.
 
     Args:
@@ -183,8 +185,12 @@ class ClientBase:
         tests.
       validate: Whether responses are validated against their declared types by default.
         A call's own `validate=` overrides it.
+      proxy: An HTTP(S) proxy URL every call goes through (`http://user:pass@host:port`).
+        Left out, the environment's `HTTPS_PROXY`/`HTTP_PROXY` is used, and `NO_PROXY`
+        honoured; a proxy given here ignores the environment.
     """
-    return cls(client=Transport(base_url=base_url, contact=contact, validate=validate))
+    http = HttpClient(proxy=proxy)
+    return cls(client=Transport(base_url=base_url, contact=contact, validate=validate, http=http))
 
   async def __aenter__(self) -> Self:
     return self

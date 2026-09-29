@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- **`Weather.new(proxy=...)`**: an HTTP(S) proxy URL every call goes through. Left out,
+  `HTTPS_PROXY` from the environment is still used. Needs `truewire-core>=0.2.2`.
+
 ## 0.1.0
 
 First release.
