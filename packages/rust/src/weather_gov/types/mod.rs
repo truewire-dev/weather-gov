@@ -5,7 +5,7 @@
 use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
-use truewire_core::{serde_json, TimestampIso};
+use truewire_core::{serde_json, DecimalString, TimestampIso};
 
 /// The areas covered, as codes rather than prose.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
@@ -86,6 +86,37 @@ pub struct ObservationPagination {
     /// URL of the next page. Absent on the last one.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub next: Option<String>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+/// One news headline an office has posted: a title and a link, usually to a page or a PDF on the office's own site.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct OfficeHeadline {
+    /// URL of the headline.
+    #[serde(rename = "@id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
+    /// Headline id, such as `058e41fd34b935b395e9aaf0fe175dc9`. This is what `offices.get_headline` takes.
+    #[serde(rename = "id")]
+    pub id2: String,
+    /// URL of the office that posted it.
+    pub office: String,
+    /// Whether the office flagged it as important.
+    pub important: bool,
+    /// When it was posted.
+    #[serde(rename = "issuanceTime")]
+    pub issuance_time: TimestampIso,
+    /// Where the headline points.
+    pub link: String,
+    /// The office's own short name for it, such as `latestbrief`.
+    pub name: String,
+    /// Headline text.
+    pub title: String,
+    /// Longer summary. Null on most headlines: 113 of 149 across every office on 2026-09-30.
+    pub summary: Option<String>,
+    /// The headline as an HTML fragment: an `<a>` around `title`, its `href` percent-encoded.
+    pub content: String,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -175,6 +206,49 @@ pub struct QuantitativeValue {
     /// Lower end, where the value is a range rather than a point.
     #[serde(rename = "minValue", default, skip_serializing_if = "Option::is_none")]
     pub min_value: Option<f64>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum TransmitterType {
+    #[serde(rename = "wx:Transmitter")]
+    WxTransmitter,
+}
+
+/// One NOAA Weather Radio transmitter.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+pub struct Transmitter {
+    /// URL of the transmitter.
+    #[serde(rename = "@id")]
+    pub id: String,
+    /// Always `wx:Transmitter`.
+    #[serde(rename = "@type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<TransmitterType>,
+    /// Which release of the transmitter list this came from.
+    #[serde(rename = "setId", default, skip_serializing_if = "Option::is_none")]
+    pub set_id: Option<String>,
+    /// Call sign, such as `KHB60`.
+    #[serde(rename = "callSign")]
+    pub call_sign: String,
+    /// Frequency in MHz, such as `162.550`.
+    #[serde(rename = "transmitterFrequency")]
+    pub transmitter_frequency: DecimalString,
+    /// Name of the transmitter, such as `Seattle`.
+    #[serde(rename = "siteName", default, skip_serializing_if = "Option::is_none")]
+    pub site_name: Option<String>,
+    /// Where the transmitter stands.
+    #[serde(rename = "siteCity", default, skip_serializing_if = "Option::is_none")]
+    pub site_city: Option<String>,
+    /// Two-letter state of the site.
+    #[serde(rename = "siteState", default, skip_serializing_if = "Option::is_none")]
+    pub site_state: Option<String>,
+    /// SAME codes of the counties it broadcasts for: `0`, the FIPS state, the FIPS county, such as `053033`.
+    #[serde(rename = "sameCodes", default, skip_serializing_if = "Option::is_none")]
+    pub same_codes: Option<Vec<String>>,
+    /// County zone codes it broadcasts for, such as `WAC033`, in the order of `sameCodes`.
+    pub counties: Vec<String>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -634,6 +708,20 @@ pub struct Station {
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
+/// NOAA Weather Radio transmitters, as a JSON-LD graph.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+pub struct TransmitterCollection {
+    /// The transmitters. Each one arrives many times over, identical: 64 copies of each on 2026-09-30.
+    #[serde(rename = "@graph")]
+    pub graph: Vec<Transmitter>,
+    /// Where the next page is. Only `radio.list_transmitters` sends it, and not on its last page.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pagination: Option<CollectionPagination>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ZoneFeatureType {
     Feature,
@@ -970,6 +1058,7 @@ pub struct StationCollection {
         skip_serializing_if = "Option::is_none"
     )]
     pub observation_stations: Option<Vec<String>>,
+    /// Where the next page is.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub pagination: Option<CollectionPagination>,
     /// Keys the spec does not document, kept as they came.

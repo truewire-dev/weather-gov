@@ -8,17 +8,18 @@ use truewire_core::{decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoin
 use crate::meta::DefaultMeta;
 use crate::types::TransmitterCollection;
 
-/// Which county.
+/// Which page.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct Request {
-    /// County code, such as `WAC033`.
-    pub zone_id: String,
+    /// Page cursor, from the `cursor` query parameter of the previous page's `pagination.next`. Leave it out for the first page. The service does not hand it back on its own -- see the notes -- so it is here for a caller who has one, not for a walk the client drives.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub cursor: Option<String>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
-/// The NOAA Weather Radio transmitters that broadcast for a county. JSON-LD, not GeoJSON: the transmitters come as a `@graph`.
+/// Every NOAA Weather Radio transmitter, a page at a time. JSON-LD, not GeoJSON: the transmitters come as a `@graph`.
 #[derive(Clone)]
 pub struct ListTransmitters {
     core: Arc<dyn HttpEndpoint<DefaultMeta>>,
@@ -29,9 +30,9 @@ impl ListTransmitters {
         Self { core }
     }
 
-    /// The NOAA Weather Radio transmitters that broadcast for a county. JSON-LD, not GeoJSON: the transmitters come as a `@graph`.
+    /// Every NOAA Weather Radio transmitter, a page at a time. JSON-LD, not GeoJSON: the transmitters come as a `@graph`.
     ///
-    /// See <https://www.weather.gov/documentation/services-web-api#/default/transmitter_zone>.
+    /// See <https://www.weather.gov/documentation/services-web-api#/default/transmitters>.
     pub async fn list_transmitters(
         &self,
         request: Request,
@@ -47,15 +48,11 @@ impl ListTransmitters {
         request: Request,
         options: CallOptions,
     ) -> Result<serde_json::Value> {
-        let mut request = dump(&request)?;
-        if let Some(object) = request.as_object_mut() {
-            object.insert("zone_type".to_string(), serde_json::json!("county"));
-        }
         let meta = DefaultMeta { payload: None };
         let call = HttpCall {
             method: Some("GET"),
-            path: "/zones/{zone_type}/{zone_id}/radio",
-            request: Some(request),
+            path: "/radio",
+            request: Some(dump(&request)?),
             meta: &meta,
             options,
         };

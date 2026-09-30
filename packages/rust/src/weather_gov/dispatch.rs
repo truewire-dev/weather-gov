@@ -41,9 +41,29 @@ impl Weather {
                 let response = self.forecast.get_hourly_forecast(request, options).await?;
                 dump(&response)
             }
+            "offices.get_briefing" => {
+                let request = decode(request)?;
+                let response = self.offices.get_briefing(request, options).await?;
+                dump(&response)
+            }
+            "offices.get_headline" => {
+                let request = decode(request)?;
+                let response = self.offices.get_headline(request, options).await?;
+                dump(&response)
+            }
             "offices.get_office" => {
                 let request = decode(request)?;
                 let response = self.offices.get_office(request, options).await?;
+                dump(&response)
+            }
+            "offices.list_headlines" => {
+                let request = decode(request)?;
+                let response = self.offices.list_headlines(request, options).await?;
+                dump(&response)
+            }
+            "offices.list_weather_stories" => {
+                let request = decode(request)?;
+                let response = self.offices.list_weather_stories(request, options).await?;
                 dump(&response)
             }
             "points.get_point" => {
@@ -56,12 +76,27 @@ impl Weather {
                 let response = self.products.list_product_types(request, options).await?;
                 dump(&response)
             }
+            "radio.get_transmitter" => {
+                let request = decode(request)?;
+                let response = self.radio.get_transmitter(request, options).await?;
+                dump(&response)
+            }
+            "radio.list_transmitters" => {
+                let request = decode(request)?;
+                let response = self.radio.list_transmitters(request, options).await?;
+                dump(&response)
+            }
             "stations.get_latest_observation" => {
                 let request = decode(request)?;
                 let response = self
                     .stations
                     .get_latest_observation(request, options)
                     .await?;
+                dump(&response)
+            }
+            "stations.get_observation" => {
+                let request = decode(request)?;
+                let response = self.stations.get_observation(request, options).await?;
                 dump(&response)
             }
             "stations.get_observations" => {
@@ -75,6 +110,11 @@ impl Weather {
                     .stations
                     .get_observations_for_zone(request, options)
                     .await?;
+                dump(&response)
+            }
+            "stations.get_station" => {
+                let request = decode(request)?;
+                let response = self.stations.get_station(request, options).await?;
                 dump(&response)
             }
             "stations.list_stations" => {
@@ -96,6 +136,11 @@ impl Weather {
                     .stations
                     .list_stations_for_zone(request, options)
                     .await?;
+                dump(&response)
+            }
+            "stations.list_tafs" => {
+                let request = decode(request)?;
+                let response = self.stations.list_tafs(request, options).await?;
                 dump(&response)
             }
             "zones.get_forecast" => {
@@ -158,9 +203,27 @@ impl Weather {
                     .get_hourly_forecast_raw(request, options)
                     .await
             }
+            "offices.get_briefing" => {
+                let request = decode(request)?;
+                self.offices.get_briefing_raw(request, options).await
+            }
+            "offices.get_headline" => {
+                let request = decode(request)?;
+                self.offices.get_headline_raw(request, options).await
+            }
             "offices.get_office" => {
                 let request = decode(request)?;
                 self.offices.get_office_raw(request, options).await
+            }
+            "offices.list_headlines" => {
+                let request = decode(request)?;
+                self.offices.list_headlines_raw(request, options).await
+            }
+            "offices.list_weather_stories" => {
+                let request = decode(request)?;
+                self.offices
+                    .list_weather_stories_raw(request, options)
+                    .await
             }
             "points.get_point" => {
                 let request = decode(request)?;
@@ -170,11 +233,23 @@ impl Weather {
                 let request = decode(request)?;
                 self.products.list_product_types_raw(request, options).await
             }
+            "radio.get_transmitter" => {
+                let request = decode(request)?;
+                self.radio.get_transmitter_raw(request, options).await
+            }
+            "radio.list_transmitters" => {
+                let request = decode(request)?;
+                self.radio.list_transmitters_raw(request, options).await
+            }
             "stations.get_latest_observation" => {
                 let request = decode(request)?;
                 self.stations
                     .get_latest_observation_raw(request, options)
                     .await
+            }
+            "stations.get_observation" => {
+                let request = decode(request)?;
+                self.stations.get_observation_raw(request, options).await
             }
             "stations.get_observations" => {
                 let request = decode(request)?;
@@ -185,6 +260,10 @@ impl Weather {
                 self.stations
                     .get_observations_for_zone_raw(request, options)
                     .await
+            }
+            "stations.get_station" => {
+                let request = decode(request)?;
+                self.stations.get_station_raw(request, options).await
             }
             "stations.list_stations" => {
                 let request = decode(request)?;
@@ -201,6 +280,10 @@ impl Weather {
                 self.stations
                     .list_stations_for_zone_raw(request, options)
                     .await
+            }
+            "stations.list_tafs" => {
+                let request = decode(request)?;
+                self.stations.list_tafs_raw(request, options).await
             }
             "zones.get_forecast" => {
                 let request = decode(request)?;

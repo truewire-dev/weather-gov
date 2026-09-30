@@ -10,6 +10,7 @@ use crate::meta::DefaultMeta;
 use crate::offices::Offices;
 use crate::points::Points;
 use crate::products::Products;
+use crate::radio::Radio;
 use crate::stations::Stations;
 use crate::zones::Zones;
 
@@ -28,6 +29,8 @@ pub struct Weather {
     pub points: Points,
     /// The text products the service publishes, by type.
     pub products: Products,
+    /// NOAA Weather Radio: the transmitters that broadcast forecasts and warnings, and the counties each one serves.
+    pub radio: Radio,
     /// Observation stations and what they have reported.
     pub stations: Stations,
     /// Forecast, county, fire-weather and marine zones: the areas forecasts, alerts and radio broadcasts are issued for.
@@ -48,6 +51,7 @@ impl Weather {
             offices: Offices::new(core.clone()),
             points: Points::new(core.clone()),
             products: Products::new(core.clone()),
+            radio: Radio::new(core.clone()),
             stations: Stations::new(core.clone()),
             zones: Zones::new(core),
         }
