@@ -1,0 +1,172 @@
+diff -ru wg/spec/endpoints/zones/get_forecast/endpoint.json wg-probe/spec/endpoints/zones/get_forecast/endpoint.json
+--- wg/spec/endpoints/zones/get_forecast/endpoint.json	2026-09-30 11:11:19.213219597 +0000
++++ wg-probe/spec/endpoints/zones/get_forecast/endpoint.json	2026-09-30 11:16:04.415636373 +0000
+@@ -20,17 +20,7 @@
+       "description": "Which zone.",
+       "properties": {
+         "zone_type": {
+-          "type": "string",
+-          "enum": [
+-            "land",
+-            "marine",
+-            "forecast",
+-            "public",
+-            "coastal",
+-            "offshore",
+-            "fire",
+-            "county"
+-          ],
++          "$ref": "ZoneKind",
+           "description": "The zone type. Only public zones have one, addressed as `forecast`, `public` or `land`; a county, fire or marine zone answers 404."
+         },
+         "zone_id": {
+@@ -115,4 +105,4 @@
+       ]
+     }
+   }
+-}
++}
+\ No newline at end of file
+diff -ru wg/spec/endpoints/zones/get_zone/endpoint.json wg-probe/spec/endpoints/zones/get_zone/endpoint.json
+--- wg/spec/endpoints/zones/get_zone/endpoint.json	2026-09-30 11:11:19.213494602 +0000
++++ wg-probe/spec/endpoints/zones/get_zone/endpoint.json	2026-09-30 11:16:04.414636372 +0000
+@@ -15,17 +15,7 @@
+       "description": "Which zone, and as of when.",
+       "properties": {
+         "zone_type": {
+-          "type": "string",
+-          "enum": [
+-            "land",
+-            "marine",
+-            "forecast",
+-            "public",
+-            "coastal",
+-            "offshore",
+-            "fire",
+-            "county"
+-          ],
++          "$ref": "ZoneKind",
+           "description": "The zone type. Any of them finds a zone of another type too (`/zones/forecast/PZZ135` answers the coastal zone), but the code decides what comes back."
+         },
+         "zone_id": {
+@@ -48,4 +38,4 @@
+       "description": "The zone."
+     }
+   }
+-}
++}
+\ No newline at end of file
+diff -ru wg/spec/endpoints/zones/list_transmitters/endpoint.json wg-probe/spec/endpoints/zones/list_transmitters/endpoint.json
+--- wg/spec/endpoints/zones/list_transmitters/endpoint.json	2026-09-30 11:11:19.213978336 +0000
++++ wg-probe/spec/endpoints/zones/list_transmitters/endpoint.json	2026-09-30 11:16:04.377636331 +0000
+@@ -115,4 +115,4 @@
+     "TRU-414 excluded the other `/radio` operation it met, `/points/{point}/radio`, as XML-only. This one answers `application/ld+json` whatever the `Accept` header asks for (measured 2026-09-30 with `application/geo+json`, `application/ld+json` and `*/*`).",
+     "The service repeats every transmitter: `/zones/county/WAC033/radio` held `KHB60` 64 times and nothing else, `/zones/county/ALC001/radio` three transmitters 64 times each, all identical. The spec describes the wire, so the repeats are in the recording and in what the client returns."
+   ]
+-}
++}
+\ No newline at end of file
+diff -ru wg/spec/endpoints/zones/list_zones/endpoint.json wg-probe/spec/endpoints/zones/list_zones/endpoint.json
+--- wg/spec/endpoints/zones/list_zones/endpoint.json	2026-09-30 11:11:19.214431414 +0000
++++ wg-probe/spec/endpoints/zones/list_zones/endpoint.json	2026-09-30 11:16:04.379199236 +0000
+@@ -56,18 +56,7 @@
+           "type": "array",
+           "description": "Zone types to narrow to. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses).",
+           "items": {
+-            "type": "string",
+-            "enum": [
+-              "land",
+-              "marine",
+-              "forecast",
+-              "public",
+-              "coastal",
+-              "offshore",
+-              "fire",
+-              "county"
+-            ],
+-            "description": "One zone type."
++            "$ref": "ZoneKind"
+           }
+         },
+         "point": {
+@@ -97,4 +86,4 @@
+     "The service reads an array filter comma-separated (the OpenAPI declares `explode: false`), and keeps only the last of repeated keys. Measured 2026-09-30: `/zones?id=WAZ315,WAC033` returns both zones, `id=WAZ315&id=WAC033` only `WAC033`. This client's core sends repeated keys, as it does for every other array filter in this API (TRU-495), so until the core joins them only the last value of each filter takes effect. The examples send one value per filter.",
+     "The OpenAPI also lists `include_geometry`. It is not declared: measured 2026-09-30, `include_geometry=true` (and `=1`) still answers `geometry: null` on every zone, with and without other filters. `zones.get_zone` is where a zone's outline comes from."
+   ]
+-}
++}
+\ No newline at end of file
+diff -ru wg/spec/endpoints/zones/list_zones_by_type/endpoint.json wg-probe/spec/endpoints/zones/list_zones_by_type/endpoint.json
+--- wg/spec/endpoints/zones/list_zones_by_type/endpoint.json	2026-09-30 11:11:19.220147682 +0000
++++ wg-probe/spec/endpoints/zones/list_zones_by_type/endpoint.json	2026-09-30 11:16:04.376814559 +0000
+@@ -15,17 +15,7 @@
+       "description": "Which type, and which of its zones. Give one value per array filter: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last.",
+       "properties": {
+         "zone_type": {
+-          "type": "string",
+-          "enum": [
+-            "land",
+-            "marine",
+-            "forecast",
+-            "public",
+-            "coastal",
+-            "offshore",
+-            "fire",
+-            "county"
+-          ],
++          "$ref": "ZoneKind",
+           "description": "The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses)."
+         },
+         "id": {
+@@ -96,4 +86,4 @@
+     "The service reads an array filter comma-separated (the OpenAPI declares `explode: false`), and keeps only the last of repeated keys. Measured 2026-09-30: `/zones?id=WAZ315,WAC033` returns both zones, `id=WAZ315&id=WAC033` only `WAC033`. This client's core sends repeated keys, as it does for every other array filter in this API (TRU-495), so until the core joins them only the last value of each filter takes effect. The examples send one value per filter.",
+     "The OpenAPI also lists `include_geometry`. It is not declared: measured 2026-09-30, `include_geometry=true` (and `=1`) still answers `geometry: null` on every zone, with and without other filters. `zones.get_zone` is where a zone's outline comes from."
+   ]
+-}
++}
+\ No newline at end of file
+diff -ru wg/spec/schemas.json wg-probe/spec/schemas.json
+--- wg/spec/schemas.json	2026-09-30 11:11:19.221661529 +0000
++++ wg-probe/spec/schemas.json	2026-09-30 11:16:04.375636329 +0000
+@@ -1127,17 +1127,7 @@
+         "description": "Zone code: two letters of state or marine area, `Z` or `C`, three digits."
+       },
+       "type": {
+-        "type": "string",
+-        "enum": [
+-          "land",
+-          "marine",
+-          "forecast",
+-          "public",
+-          "coastal",
+-          "offshore",
+-          "fire",
+-          "county"
+-        ],
++        "$ref": "ZoneKind",
+         "description": "The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses)."
+       },
+       "name": {
+@@ -1291,5 +1281,20 @@
+       "type",
+       "features"
+     ]
++  },
++  "ZoneKind": {
++    "title": "ZoneKind",
++    "type": "string",
++    "enum": [
++      "land",
++      "marine",
++      "forecast",
++      "public",
++      "coastal",
++      "offshore",
++      "fire",
++      "county"
++    ],
++    "description": "A zone type."
+   }
+-}
++}
+\ No newline at end of file
