@@ -13,6 +13,14 @@ Generated with truewire 0.11.
 - **`start` and `end` are optional on the walk.** Leaving either out used to raise
   `ValueError`; now a walk without `end` starts from the newest observation, and one
   without `start` goes back as far as the service keeps.
+- **Seven more endpoints: the rest of the alerts API, and the glossary.**
+  `alerts.list_alerts` (the last week, in effect or not, by `cursor`),
+  `alerts.count_active_alerts`, `alerts.get_active_alerts_for_zone`, `_for_area` and
+  `_for_region`, `alerts.list_alert_types`, and `glossary.list_terms`.
+- **`AlertCollection` is a shared schema.** The four endpoints that return alerts in effect
+  and `alerts.list_alerts` all return it, so it moved from
+  `weather_gov.alerts.get_active_alerts` to `weather_gov.schemas`; the old import still
+  works. It gains an optional `pagination.next`, which only `alerts.list_alerts` sends.
 
 ## 0.1.0
 

@@ -1,0 +1,6 @@
+{
+  "description": "The alerts in effect for one forecast zone that had one when recorded",
+  "request": {
+    "zone_id": "ALZ265"
+  }
+}

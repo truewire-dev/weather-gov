@@ -15,6 +15,16 @@ export const AlertGeocode: Codec<AlertGeocode> = t.object({
   UGC: t.optional(t.array(t.string)),
 })
 
+/** Present on `alerts.list_alerts` only: where the next page is. */
+export interface AlertPagination {
+  /** URL of the next page, carrying the `cursor` to send. The service includes it even on the last page, so its presence does not mean there is more. */
+  next: string
+}
+
+export const AlertPagination: Codec<AlertPagination> = t.object({
+  next: t.string,
+})
+
 /** An earlier alert this one updates, corrects or cancels. */
 export interface AlertReference {
   /** Identifier of the referenced alert. */
@@ -474,6 +484,27 @@ export const StationFeature: Codec<StationFeature> = t.object({
   type: t.literal('Feature'),
   geometry: t.optional(PointGeometry),
   properties: Station,
+})
+
+/** Alerts as a GeoJSON feature collection. */
+export interface AlertCollection {
+  /** Always `FeatureCollection`. */
+  type: 'FeatureCollection'
+  /** The alerts. */
+  features: AlertFeature[]
+  /** Human-readable title of the collection. */
+  title?: string
+  /** When the collection was assembled. */
+  updated?: TimestampIso
+  pagination?: AlertPagination
+}
+
+export const AlertCollection: Codec<AlertCollection> = t.object({
+  type: t.literal('FeatureCollection'),
+  features: t.array(AlertFeature),
+  title: t.optional(t.string),
+  updated: t.optional(t.dateTime),
+  pagination: t.optional(AlertPagination),
 })
 
 /** One observation, in the GeoJSON feature the API wraps it in. */

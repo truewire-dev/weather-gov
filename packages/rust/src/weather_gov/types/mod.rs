@@ -21,6 +21,16 @@ pub struct AlertGeocode {
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
+/// Present on `alerts.list_alerts` only: where the next page is.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+pub struct AlertPagination {
+    /// URL of the next page, carrying the `cursor` to send. The service includes it even on the last page, so its presence does not mean there is more.
+    pub next: String,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
 /// An earlier alert this one updates, corrects or cancels.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct AlertReference {
@@ -705,6 +715,32 @@ pub struct StationFeature {
     pub geometry: Option<PointGeometry>,
     /// The station itself.
     pub properties: Station,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum AlertCollectionType {
+    FeatureCollection,
+}
+
+/// Alerts as a GeoJSON feature collection.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct AlertCollection {
+    /// Always `FeatureCollection`.
+    #[serde(rename = "type")]
+    pub type_: AlertCollectionType,
+    /// The alerts.
+    pub features: Vec<AlertFeature>,
+    /// Human-readable title of the collection.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
+    /// When the collection was assembled.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub updated: Option<TimestampIso>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pagination: Option<AlertPagination>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,

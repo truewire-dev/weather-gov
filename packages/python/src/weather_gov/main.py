@@ -2,6 +2,7 @@
 from functools import cached_property
 from .alerts import Alerts
 from .forecast import Forecast
+from .glossary import Glossary
 from .offices import Offices
 from .points import Points
 from .products import Products
@@ -33,6 +34,15 @@ class Weather(ClientBase):
       - [Upstream docs](https://www.weather.gov/documentation/services-web-api#/default/gridpoint_forecast)
     """
     return Forecast(client=self.client)
+
+  @cached_property
+  def glossary(self) -> Glossary:
+    """The service's glossary of weather terms and abbreviations.
+
+    References:
+      - [Upstream docs](https://www.weather.gov/documentation/services-web-api#/default/glossary)
+    """
+    return Glossary(client=self.client)
 
   @cached_property
   def offices(self) -> Offices:

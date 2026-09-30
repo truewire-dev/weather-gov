@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Repoint the two examples that go stale on their own, before anything is captured.
+"""Repoint the examples that go stale on their own, before anything is captured.
 
 Most of this API is stable enough to re-record from a fixed request: the Seattle grid cell
-will still be the Seattle grid cell next week. Two examples are not:
+will still be the Seattle grid cell next week. These examples are not:
 
 - `stations.get_observations` names a six-hour window. The service keeps about a week of
   observations and then drops them, so last month's window records as an empty
@@ -12,6 +12,12 @@ will still be the Seattle grid cell next week. Two examples are not:
 - `alerts.get_alert` names one alert by identifier. Alerts expire, usually within hours,
   and the identifier is then gone. The replacement is read from whatever is severe and in
   effect right now -- the same query `alerts.get_active_alerts` records.
+- `alerts.list_alerts` names a six-hour window, and the service keeps about a week of
+  alerts. It moves with the observation window.
+- `alerts.get_active_alerts_for_zone`, `_for_area` and `_for_region` name a place. Once its
+  alerts expire the place records an empty collection. Each keeps its place while
+  `/alerts/active/count` still counts an alert there, and otherwise moves to the place with
+  the fewest, which keeps the recording small.
 
 Run before `truewire capture`, not after a capture failed: only one of these fails loudly.
 
@@ -36,9 +42,19 @@ it runs before the client has anything current to record -- so it repeats the sa
 OBSERVATIONS = PROJECT / 'spec/endpoints/stations/get_observations/examples'
 ALERT = PROJECT / 'spec/endpoints/alerts/get_alert/examples/one.request.json'
 
+ALERT_WINDOW = PROJECT / 'spec/endpoints/alerts/list_alerts/examples/first_page.request.json'
+PLACES = {
+  'zone_id': ('zones', PROJECT / 'spec/endpoints/alerts/get_active_alerts_for_zone/examples'),
+  'area': ('areas', PROJECT / 'spec/endpoints/alerts/get_active_alerts_for_area/examples'),
+  'region': ('regions', PROJECT / 'spec/endpoints/alerts/get_active_alerts_for_region/examples'),
+}
+"""Each place parameter, the `/alerts/active/count` map that counts it, and its examples."""
+
 ACTIVE = 'https://api.weather.gov/alerts/active?status=actual&severity=Severe'
 """The same query `alerts.get_active_alerts` records, so the alert picked here is one that
 recording also holds."""
+
+COUNT = 'https://api.weather.gov/alerts/active/count'
 
 
 def fetch(url: str) -> dict:
@@ -60,17 +76,44 @@ def rewrite(path: Path, changes: dict) -> None:
   print(f'{path.relative_to(PROJECT)}: {changes}')
 
 
-def refresh_observations() -> None:
-  """Move both observation windows to the most recent whole six hours that has settled.
+def settled_window() -> dict:
+  """The most recent whole six hours that has settled.
 
-  Ending six hours ago rather than now: the newest observations are still arriving, so a
-  window ending at `now` would record a different row count every run for no reason.
+  Ending six hours ago rather than now: the newest rows are still arriving, so a window
+  ending at `now` would record a different row count every run for no reason.
   """
   end = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0) - timedelta(hours=6)
   start = end - timedelta(hours=6)
   stamp = '%Y-%m-%dT%H:%M:%SZ'
+  return {'start': start.strftime(stamp), 'end': end.strftime(stamp)}
+
+
+def refresh_observations() -> None:
+  """Move both observation windows to the same settled six hours."""
+  window = settled_window()
   for request in sorted(OBSERVATIONS.glob('*.request.json')):
-    rewrite(request, {'start': start.strftime(stamp), 'end': end.strftime(stamp)})
+    rewrite(request, window)
+
+
+def refresh_alert_window() -> None:
+  """Move the alert list's window to the settled six hours."""
+  rewrite(ALERT_WINDOW, settled_window())
+
+
+def refresh_alert_places() -> None:
+  """Point each place example at a place with an alert in effect now."""
+  counts = fetch(COUNT)
+  for parameter, (key, examples) in PLACES.items():
+    counted = counts[key]
+    if parameter == 'zone_id':
+      # Forecast zones, not counties: a county's alerts need not name the county.
+      counted = {code: n for code, n in counted.items() if code[2] == 'Z'}
+    if not counted:
+      raise SystemExit(f'no alert is in effect in any of the {key}')
+    for request in sorted(examples.glob('*.request.json')):
+      current = json.loads(request.read_text())['request'][parameter]
+      if current not in counted:
+        rewrite(request, {parameter: min(counted, key=lambda code: (counted[code], code))})
 
 
 def refresh_alert() -> None:
@@ -87,12 +130,12 @@ def refresh_alert() -> None:
 
 def main() -> int:
   failed = []
-  for step in (refresh_observations, refresh_alert):
+  for step in (refresh_observations, refresh_alert, refresh_alert_window, refresh_alert_places):
     try:
       step()
     except (urllib.error.URLError, SystemExit, KeyError, IndexError) as error:
-      # One stale example does not stop the other from being repaired, and neither stops
-      # the nine examples that need no repair at all from recording.
+      # One stale example does not stop the others from being repaired, and none stops the
+      # examples that need no repair at all from recording.
       print(f'{step.__name__}: {error}', file=sys.stderr)
       failed.append(step.__name__)
   return 1 if failed else 0

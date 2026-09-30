@@ -797,6 +797,55 @@
       "properties"
     ]
   },
+  "AlertCollection": {
+    "title": "AlertCollection",
+    "type": "object",
+    "description": "Alerts as a GeoJSON feature collection.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "FeatureCollection"
+        ],
+        "description": "Always `FeatureCollection`."
+      },
+      "features": {
+        "type": "array",
+        "description": "The alerts.",
+        "items": {
+          "$ref": "AlertFeature",
+          "description": "One alert."
+        }
+      },
+      "title": {
+        "type": "string",
+        "description": "Human-readable title of the collection."
+      },
+      "updated": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When the collection was assembled."
+      },
+      "pagination": {
+        "title": "AlertPagination",
+        "type": "object",
+        "description": "Present on `alerts.list_alerts` only: where the next page is.",
+        "properties": {
+          "next": {
+            "type": "string",
+            "description": "URL of the next page, carrying the `cursor` to send. The service includes it even on the last page, so its presence does not mean there is more."
+          }
+        },
+        "required": [
+          "next"
+        ]
+      }
+    },
+    "required": [
+      "type",
+      "features"
+    ]
+  },
   "ForecastPeriod": {
     "title": "ForecastPeriod",
     "type": "object",

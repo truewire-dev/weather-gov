@@ -1,0 +1,185 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/alerts_query",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/alerts",
+    "method": "GET",
+    "description": "Alerts issued over roughly the last seven days, whether or not they are still in effect, newest first, optionally narrowed. For only what is in effect now, use `alerts.get_active_alerts`.",
+    "request": {
+      "title": "ListAlertsRequest",
+      "type": "object",
+      "description": "How to narrow the alerts. Every filter is optional; the array-valued ones are sent as repeated query keys and mean \"any of\". `area`, `point`, `region`, `region_type` and `zone` exclude each other: send at most one.",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Earliest `sent` time to include. The service keeps about the last seven days of alerts."
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Latest `sent` time to include."
+        },
+        "status": {
+          "type": "array",
+          "description": "Alert statuses to include. Lower-case, unlike every other enumerated filter here. Pass `actual` to leave out drills and tests.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "actual",
+              "exercise",
+              "system",
+              "test",
+              "draft"
+            ],
+            "description": "One status."
+          }
+        },
+        "message_type": {
+          "type": "array",
+          "description": "Message types to include: a new alert, an update to one, or its cancellation.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "alert",
+              "update",
+              "cancel"
+            ],
+            "description": "One message type."
+          }
+        },
+        "event": {
+          "type": "array",
+          "description": "Event names to include, such as `Red Flag Warning`.",
+          "items": {
+            "type": "string",
+            "description": "One event name."
+          }
+        },
+        "code": {
+          "type": "array",
+          "description": "Three-letter event codes to include, such as `SVR` (severe thunderstorm warning).",
+          "items": {
+            "type": "string",
+            "description": "One event code."
+          }
+        },
+        "area": {
+          "type": "array",
+          "description": "Two-letter state, territory or marine-area codes to narrow to, such as `WA` or `PZ`. Sent as a repeated query key. Left un-enumerated deliberately: the service's own 400 lists only the marine half of what it accepts, and a guessed enum would reject the states.",
+          "items": {
+            "type": "string",
+            "description": "One state or marine-area code."
+          }
+        },
+        "point": {
+          "type": "string",
+          "description": "A `latitude,longitude` pair; returns the alerts covering that point."
+        },
+        "region": {
+          "type": "array",
+          "description": "Marine regions to narrow to.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "AL",
+              "AT",
+              "GL",
+              "GM",
+              "PA",
+              "PI"
+            ],
+            "description": "One marine region: `AL` Alaska, `AT` Atlantic, `GL` Great Lakes, `GM` Gulf of Mexico, `PA` Pacific, `PI` Pacific Islands."
+          }
+        },
+        "region_type": {
+          "type": "string",
+          "enum": [
+            "land",
+            "marine"
+          ],
+          "description": "Only land or only marine alerts."
+        },
+        "zone": {
+          "type": "array",
+          "description": "Forecast zone codes, such as `WAZ315`.",
+          "items": {
+            "type": "string",
+            "description": "One zone code."
+          }
+        },
+        "urgency": {
+          "type": "array",
+          "description": "Urgencies to include. Capitalised, unlike `status`.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Immediate",
+              "Expected",
+              "Future",
+              "Past",
+              "Unknown"
+            ],
+            "description": "One urgency."
+          }
+        },
+        "severity": {
+          "type": "array",
+          "description": "Severities to include. Capitalised, unlike `status`.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Extreme",
+              "Severe",
+              "Moderate",
+              "Minor",
+              "Unknown"
+            ],
+            "description": "One severity."
+          }
+        },
+        "certainty": {
+          "type": "array",
+          "description": "Certainties to include. Capitalised, unlike `status`.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Observed",
+              "Likely",
+              "Possible",
+              "Unlikely",
+              "Unknown"
+            ],
+            "description": "One certainty."
+          }
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500,
+          "default": 500,
+          "description": "Most alerts to return. Range [1, 500]; defaults to 500."
+        },
+        "cursor": {
+          "type": "string",
+          "description": "Opaque page cursor: the `cursor` query item of a previous response's `pagination.next` URL."
+        }
+      },
+      "required": []
+    },
+    "response": {
+      "$ref": "AlertCollection",
+      "description": "The alerts, as a GeoJSON feature collection with a `pagination.next` link."
+    }
+  },
+  "notes": [
+    "No `pagination` block. The service pages this endpoint by `cursor`, but hands the next page back as a whole URL (`pagination.next`) rather than as the bare cursor, the shape `stations.list_stations` documents: `token` reads a cursor from a response path and cannot take one out of a URL. The URL is also there on the last page (measured 2026-09-30: `start=2026-09-29T00:00:00Z`, `end=2026-09-29T06:00:00Z` returns 213 alerts under the default limit of 500, with a `next` link), so it cannot end a walk either. `limit` and `cursor` are ordinary parameters; a caller pages by reading `cursor` out of `pagination.next` and stopping on an empty page.",
+    "A `seek` walk over `start`/`end` is plausible but undeclared. The window bounds `sent` and the service answers newest first by it (measured 2026-09-30: all 177 actual alerts of 00:00 to 06:00Z on 2026-09-29 were sent inside the window, in descending order), but `sent` repeats (two alerts at 05:57Z in the first five rows), so the walk would need `unique: false`, and its anchor has not been measured.",
+    "The deprecated `active` flag is left out; the OpenAPI marks it deprecated and points at `alerts.get_active_alerts`.",
+    "Enumerations are the ones `alerts.get_active_alerts` copied from the service's 400 replies; `message_type` and `region_type` are the OpenAPI's."
+  ]
+}

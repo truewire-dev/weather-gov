@@ -2,6 +2,7 @@
 import type { HttpEndpoint } from '@truewire/core'
 import { Alerts } from './alerts/index.js'
 import { Forecast } from './forecast/index.js'
+import { Glossary } from './glossary/index.js'
 import type { DefaultMeta } from './meta.js'
 import { Offices } from './offices/index.js'
 import { Points } from './points/index.js'
@@ -22,6 +23,8 @@ export class Weather {
   readonly alerts: Alerts
   /** Forecasts for one grid cell: the twice-daily narrative, the hourly series, and the raw gridded data both are rendered from. */
   readonly forecast: Forecast
+  /** The service's glossary of weather terms and abbreviations. */
+  readonly glossary: Glossary
   /** The weather forecast offices that issue everything else here. */
   readonly offices: Offices
   /** Turning a latitude/longitude into the grid the rest of the API is addressed by. */
@@ -34,6 +37,7 @@ export class Weather {
   constructor(readonly core: HttpEndpoint<DefaultMeta>) {
     this.alerts = new Alerts(core)
     this.forecast = new Forecast(core)
+    this.glossary = new Glossary(core)
     this.offices = new Offices(core)
     this.points = new Points(core)
     this.products = new Products(core)

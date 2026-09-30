@@ -1,0 +1,5 @@
+{
+  "description": "The service's glossary of weather terms and abbreviations.",
+  "upstream": "https://www.weather.gov/documentation/services-web-api#/default/glossary",
+  "core": "default"
+}

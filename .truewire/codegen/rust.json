@@ -1,8 +1,14 @@
 {
   "version": 1,
   "files": [
+    "alerts/count_active_alerts.rs",
     "alerts/get_active_alerts.rs",
+    "alerts/get_active_alerts_for_area.rs",
+    "alerts/get_active_alerts_for_region.rs",
+    "alerts/get_active_alerts_for_zone.rs",
     "alerts/get_alert.rs",
+    "alerts/list_alert_types.rs",
+    "alerts/list_alerts.rs",
     "alerts/mod.rs",
     "client.rs",
     "dispatch.rs",
@@ -10,6 +16,8 @@
     "forecast/get_grid_data.rs",
     "forecast/get_hourly_forecast.rs",
     "forecast/mod.rs",
+    "glossary/list_terms.rs",
+    "glossary/mod.rs",
     "lib.rs",
     "meta.rs",
     "offices/get_office.rs",

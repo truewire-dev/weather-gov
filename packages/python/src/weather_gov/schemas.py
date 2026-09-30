@@ -14,6 +14,13 @@ class AlertGeocode(TypedDict):
   """UGC (Universal Geographic Code) zone codes."""
 
 
+class AlertPagination(TypedDict):
+  """Present on `alerts.list_alerts` only: where the next page is."""
+
+  next: str
+  """URL of the next page, carrying the `cursor` to send. The service includes it even on the last page, so its presence does not mean there is more."""
+
+
 class AlertReference(TypedDict):
   """An earlier alert this one updates, corrects or cancels."""
 
@@ -344,6 +351,20 @@ class StationFeature(TypedDict):
   """Where the station is."""
   properties: Station
   """The station itself."""
+
+
+class AlertCollection(TypedDict):
+  """Alerts as a GeoJSON feature collection."""
+
+  type: Literal['FeatureCollection']
+  """Always `FeatureCollection`."""
+  features: list[AlertFeature]
+  """The alerts."""
+  title: NotRequired[str]
+  """Human-readable title of the collection."""
+  updated: NotRequired[TimestampIso]
+  """When the collection was assembled."""
+  pagination: NotRequired[AlertPagination]
 
 
 class ObservationFeature(TypedDict):

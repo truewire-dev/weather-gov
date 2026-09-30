@@ -1,0 +1,119 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": [
+      "https://geojson.org/geojson-ld/geojson-context.jsonld",
+      {
+        "@version": "1.1",
+        "wx": "https://api.weather.gov/ontology#",
+        "@vocab": "https://api.weather.gov/ontology#"
+      }
+    ],
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.7afa42f59ec420c2770fbe791568aa19fdce765d.001.1",
+        "type": "Feature",
+        "geometry": null,
+        "properties": {
+          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.7afa42f59ec420c2770fbe791568aa19fdce765d.001.1",
+          "@type": "wx:Alert",
+          "id": "urn:oid:2.49.0.1.840.0.7afa42f59ec420c2770fbe791568aa19fdce765d.001.1",
+          "areaDesc": "Kauai Northwest Waters; Kauai Windward Waters; Kauai Leeward Waters; Kauai Channel",
+          "geocode": {
+            "SAME": [
+              "059110",
+              "059111",
+              "059112",
+              "059113"
+            ],
+            "UGC": [
+              "PHZ110",
+              "PHZ111",
+              "PHZ112",
+              "PHZ113"
+            ]
+          },
+          "affectedZones": [
+            "https://api.weather.gov/zones/forecast/PHZ110",
+            "https://api.weather.gov/zones/forecast/PHZ111",
+            "https://api.weather.gov/zones/forecast/PHZ112",
+            "https://api.weather.gov/zones/forecast/PHZ113"
+          ],
+          "references": [
+            {
+              "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.bee089aff8bb19bb4e6075e8c2fcb5855b3eab25.002.1",
+              "identifier": "urn:oid:2.49.0.1.840.0.bee089aff8bb19bb4e6075e8c2fcb5855b3eab25.002.1",
+              "sender": "w-nws.webmaster@noaa.gov",
+              "sent": "2026-09-29T03:14:00-10:00"
+            },
+            {
+              "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.bee089aff8bb19bb4e6075e8c2fcb5855b3eab25.003.1",
+              "identifier": "urn:oid:2.49.0.1.840.0.bee089aff8bb19bb4e6075e8c2fcb5855b3eab25.003.1",
+              "sender": "w-nws.webmaster@noaa.gov",
+              "sent": "2026-09-29T03:14:00-10:00"
+            }
+          ],
+          "sent": "2026-09-29T13:50:00-10:00",
+          "effective": "2026-09-29T13:50:00-10:00",
+          "onset": "2026-09-29T13:50:00-10:00",
+          "expires": "2026-09-30T17:30:00-10:00",
+          "ends": "2026-09-30T18:00:00-10:00",
+          "status": "Actual",
+          "messageType": "Update",
+          "category": "Met",
+          "severity": "Minor",
+          "certainty": "Likely",
+          "urgency": "Expected",
+          "event": "Small Craft Advisory",
+          "sender": "w-nws.webmaster@noaa.gov",
+          "senderName": "NWS Honolulu HI",
+          "headline": "Small Craft Advisory issued September 29 at 1:50PM HST until September 30 at 6:00PM HST by NWS Honolulu HI",
+          "description": "* WHAT...Southeast winds up to 30 kt and seas up to 13 feet.\n\n* WHERE...Kauai Northwest Waters and Kauai Leeward Waters.\n\n* WHEN...Until 6 PM HST Wednesday.\n\n* IMPACTS...Conditions will be hazardous to small craft.",
+          "instruction": "Inexperienced mariners, especially those operating smaller\nvessels, should avoid navigating in these conditions.",
+          "response": "Avoid",
+          "note": null,
+          "parameters": {
+            "AWIPSidentifier": [
+              "MWWHFO"
+            ],
+            "WMOidentifier": [
+              "WHHW70 PHFO 292350"
+            ],
+            "NWSheadline": [
+              "SMALL CRAFT ADVISORY REMAINS IN EFFECT UNTIL 6 PM HST WEDNESDAY"
+            ],
+            "BLOCKCHANNEL": [
+              "EAS",
+              "NWEM",
+              "CMAS"
+            ],
+            "VTEC": [
+              "/O.CON.PHFO.SC.Y.0038.000000T0000Z-261001T0400Z/"
+            ],
+            "eventEndingTime": [
+              "2026-09-30T18:00:00-10:00"
+            ],
+            "expiredReferences": [
+              "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.a862737f8b166f45af20eb964c0dd75b9c4c3bf9.002.1,2026-09-28T13:59:00-10:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.a862737f8b166f45af20eb964c0dd75b9c4c3bf9.001.1,2026-09-28T13:59:00-10:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.01e0ef927eb8d77d6684755323d039257178b4f5.001.1,2026-09-28T03:49:00-10:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.6a75f93ee9be3578410b03cbd082cc228e25322f.001.2,2026-09-27T15:05:00-10:00"
+            ]
+          },
+          "scope": "Public",
+          "code": "IPAWSv1.0",
+          "language": "en-US",
+          "web": "http://www.weather.gov",
+          "eventCode": {
+            "SAME": [
+              "NWS"
+            ],
+            "NationalWeatherService": [
+              "SCY"
+            ]
+          }
+        }
+      }
+    ],
+    "title": "Current watches, warnings, and advisories for Pacific Islands marine zones",
+    "updated": "2026-09-30T07:00:00+00:00"
+  }
+}
