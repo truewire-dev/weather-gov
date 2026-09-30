@@ -5,14 +5,7 @@ from truewire_core.exceptions import LogicError
 from truewire_core.types import TimestampIso, timestamp_iso
 from typing_extensions import Any, Literal, NotRequired, Sequence, TypedDict, cast, overload
 from weather_gov.core import Endpoint
-from weather_gov.schemas import ObservationFeature
-
-
-class ObservationPagination(TypedDict):
-  """Where the next page is, as a whole URL. The declared walk moves the time window instead and never reads this."""
-
-  next: NotRequired[str]
-  """URL of the next page. Absent on the last one."""
+from weather_gov.schemas import ObservationCollection, ObservationFeature
 
 
 class Request(TypedDict):
@@ -26,16 +19,6 @@ class Request(TypedDict):
   """End of the span, exclusive: an observation at exactly `end` is not returned."""
   limit: NotRequired[int]
   """Observations per response. Range [1, 500]; the service caps a response at 500 whether or not this is sent, so 500 is also the default."""
-
-
-class ObservationCollection(TypedDict):
-  """The observations in the span, as a GeoJSON feature collection, newest first."""
-
-  type: Literal['FeatureCollection']
-  """Always `FeatureCollection`."""
-  features: list[ObservationFeature]
-  """The observations, newest first."""
-  pagination: NotRequired[ObservationPagination]
 
 
 class GetObservations(Endpoint):

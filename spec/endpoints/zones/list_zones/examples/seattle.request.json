@@ -1,0 +1,6 @@
+{
+  "description": "The zones containing downtown Seattle: one county, one public, one fire-weather",
+  "request": {
+    "point": "47.6062,-122.3321"
+  }
+}

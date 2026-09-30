@@ -1,0 +1,51 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/zone_obs",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/zones/forecast/{zone_id}/observations",
+    "method": "GET",
+    "description": "Observations from every station in a public forecast zone, over a span, newest first. The same rows `stations.get_observations` returns for each of `stations.list_stations_for_zone`, merged.",
+    "request": {
+      "title": "GetObservationsForZoneRequest",
+      "type": "object",
+      "description": "Which zone, over which span.",
+      "properties": {
+        "zone_id": {
+          "type": "string",
+          "description": "Public zone code, such as `WAZ315`."
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Start of the span, inclusive. The service keeps about a week of observations."
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time",
+          "description": "End of the span, exclusive: an observation at exactly `end` is not returned."
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500,
+          "description": "Observations per response, newest kept. Range [1, 500]."
+        }
+      },
+      "required": [
+        "zone_id"
+      ]
+    },
+    "response": {
+      "$ref": "ObservationCollection",
+      "description": "The observations, newest first."
+    }
+  },
+  "notes": [
+    "No `pagination` block, deliberately. A capped response keeps the newest rows (measured 2026-09-30 on WAZ315, 02:00 to 08:00 on 2026-09-29: `limit=10` answers exactly the first ten of the 373 uncapped rows), so the walk would be a `seek` moving `end`. But `timestamp` is not unique here: the zone's six stations report on the same minutes (73 repeated timestamps in those 373 rows), and `end` is exclusive (`end=07:53:00Z` answers 07:50 rows, `end=07:53:01Z` 07:53 rows). A walk moving an exclusive `end` to a shared minute would skip that minute's unread rows, so no walk is declared rather than a lossy one. For a long span, walk `stations.get_observations_paged` per station.",
+    "The `pagination.next` the service sends is not this endpoint's: it is a `/stations/<first station>/observations?cursor=...` URL."
+  ]
+}

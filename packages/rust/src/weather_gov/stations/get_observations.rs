@@ -9,18 +9,7 @@ use truewire_core::{
 };
 
 use crate::meta::DefaultMeta;
-use crate::types::ObservationFeature;
-
-/// Where the next page is, as a whole URL. The declared walk moves the time window instead and never reads this.
-#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
-pub struct ObservationPagination {
-    /// URL of the next page. Absent on the last one.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub next: Option<String>,
-    /// Keys the spec does not document, kept as they came.
-    #[serde(flatten)]
-    pub extra: serde_json::Map<String, serde_json::Value>,
-}
+use crate::types::{ObservationCollection, ObservationFeature};
 
 /// Which station, over which span.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
@@ -36,26 +25,6 @@ pub struct Request {
     /// Observations per response. Range [1, 500]; the service caps a response at 500 whether or not this is sent, so 500 is also the default.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub limit: Option<i64>,
-    /// Keys the spec does not document, kept as they came.
-    #[serde(flatten)]
-    pub extra: serde_json::Map<String, serde_json::Value>,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub enum ObservationCollectionType {
-    FeatureCollection,
-}
-
-/// The observations in the span, as a GeoJSON feature collection, newest first.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct ObservationCollection {
-    /// Always `FeatureCollection`.
-    #[serde(rename = "type")]
-    pub type_: ObservationCollectionType,
-    /// The observations, newest first.
-    pub features: Vec<ObservationFeature>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub pagination: Option<ObservationPagination>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,

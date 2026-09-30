@@ -1,6 +1,6 @@
 # Reference
 
-Six groups, eleven endpoints, every one recorded against the live API. Each signature is
+Seven groups, nineteen endpoints, every one recorded against the live API. Each signature is
 generated from the endpoint's schema, so the types in your editor are the reference: every
 field carries its description, and every method's docstring links the service's own page
 for the endpoint.
@@ -30,9 +30,14 @@ for the endpoint.
 | `list_stations` | `GET /stations` | whole: a feature collection of stations |
 | `get_observations` | `GET /stations/{station_id}/observations` | whole: a feature collection, newest first |
 | `get_latest_observation` | `GET /stations/{station_id}/observations/latest` | unwrapped: one observation |
+| `list_stations_for_zone` | `GET /zones/forecast/{zone_id}/stations` | whole: the stations in a public zone |
+| `list_stations_for_gridpoint` | `GET /gridpoints/{office}/{grid_x},{grid_y}/stations` | whole: stations nearest a grid cell, with distance and bearing |
+| `get_observations_for_zone` | `GET /zones/forecast/{zone_id}/observations` | whole: every station of a zone, merged newest first |
 
 `get_observations` has a paged twin, `get_observations_paged`, which walks a whole span
 by moving `end` ([Walk a span of observations](../how-to/walk-observations.md)).
+`get_observations_for_zone` has none: its stations report on the same minutes and its
+`end` is exclusive, so a walk would skip rows. Walk each station instead.
 
 ## `alerts`
 
@@ -55,6 +60,19 @@ service spells them: `actual`, but `Severe`, `Immediate` and `Likely`.
 | Endpoint | Upstream | Returns |
 | --- | --- | --- |
 | `list_product_types` | `GET /products/types` | whole: every text product code, in JSON-LD |
+
+## `zones`
+
+| Endpoint | Upstream | Returns |
+| --- | --- | --- |
+| `list_zones` | `GET /zones` | whole: zones of every type, filtered, without outlines |
+| `list_zones_by_type` | `GET /zones/{zone_type}` | whole: the same, of one type |
+| `get_zone` | `GET /zones/{zone_type}/{zone_id}` | whole: one zone, with its outline |
+| `get_forecast` | `GET /zones/{zone_type}/{zone_id}/forecast` | unwrapped: a public zone's text forecast |
+| `list_transmitters` | `GET /zones/{zone_type}/{zone_id}/radio` | whole: a county's weather radio transmitters, in JSON-LD |
+
+Array filters take one value each until TRU-495: the service reads several only
+comma-separated.
 
 ## In each language
 

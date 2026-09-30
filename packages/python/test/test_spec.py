@@ -41,8 +41,8 @@ def test_some_endpoints_unwrap_and_some_do_not():
   payloads = [
     (json.loads(path.read_text()).get('envelope') or {}).get('payload') for path in ENDPOINTS
   ]
-  assert payloads.count('properties') == 5
-  assert payloads.count(None) == len(ENDPOINTS) - 5
+  assert payloads.count('properties') == 6
+  assert payloads.count(None) == len(ENDPOINTS) - 6
 
 
 @pytest.mark.parametrize('path', ENDPOINTS, ids=endpoint_id)

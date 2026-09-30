@@ -31,6 +31,16 @@ export const AlertReference: Codec<AlertReference> = t.object({
   sent: t.optional(t.dateTime),
 })
 
+/** Where the next page is. A whole URL, not a bare cursor -- which is why no endpoint returning this declares a pagination strategy. */
+export interface CollectionPagination {
+  /** URL of the next page, cursor already in the query string. Absent on the last page. */
+  next?: string
+}
+
+export const CollectionPagination: Codec<CollectionPagination> = t.object({
+  next: t.optional(t.string),
+})
+
 /** One value of a gridded series, and the interval it holds over. */
 export interface GridValue {
   /** ISO 8601 interval this value covers, as `<start>/<duration>` -- one string carrying both, such as `2026-09-09T01:00:00+00:00/PT1H`. */
@@ -55,6 +65,16 @@ export interface MultiPolygonGeometry {
 export const MultiPolygonGeometry: Codec<MultiPolygonGeometry> = t.object({
   type: t.literal('MultiPolygon'),
   coordinates: t.array(t.array(t.array(t.tuple([t.number, t.number])))),
+})
+
+/** Where the next page is, as a whole URL. The declared walk moves the time window instead and never reads this. */
+export interface ObservationPagination {
+  /** URL of the next page. Absent on the last one. */
+  next?: string
+}
+
+export const ObservationPagination: Codec<ObservationPagination> = t.object({
+  next: t.optional(t.string),
 })
 
 /** GeoJSON geometry of a feature that sits at a single place: a station, an observation, a forecast point. */
@@ -127,6 +147,65 @@ export const QuantitativeValue: Codec<QuantitativeValue> = t.object({
   maxValue: t.optional(t.number),
   minValue: t.optional(t.number),
 })
+
+/** One zone: a public forecast, county, fire-weather or marine area. */
+export interface Zone {
+  /** Canonical URL of the zone. */
+  '@id': string
+  /** Always `wx:Zone`. */
+  '@type'?: 'wx:Zone'
+  /** Zone code: two letters of state or marine area, `Z` or `C`, three digits. */
+  id: string
+  /** The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses). */
+  type: 'land' | 'marine' | 'forecast' | 'public' | 'coastal' | 'offshore' | 'fire' | 'county'
+  /** Name of the zone, such as `City of Seattle`. */
+  name: string
+  /** When this version of the zone took effect. */
+  effectiveDate: TimestampIso
+  /** When it expires; `2200-01-01` for every zone in effect on 2026-09-30. */
+  expirationDate: TimestampIso
+  /** State or territory the zone is in. */
+  state?: string | null
+  /** URL of the office that forecasts for the zone. */
+  forecastOffice?: string
+  /** Three-letter code of the office's forecast grid, such as `SEW`. */
+  gridIdentifier?: string
+  /** AWIPS identifier of the forecasting office. */
+  awipsLocationIdentifier?: string
+  /** Offices whose warning area covers the zone. Deprecated upstream; use `forecastOffice`. */
+  cwa?: string[]
+  /** URLs of the same offices. Deprecated upstream; use `forecastOffice`. */
+  forecastOffices?: string[]
+  /** IANA time zones the zone is in; two for a zone that straddles a boundary. */
+  timeZone?: string[]
+  /** URLs of the observation stations in the zone. Empty for most county, fire and marine zones. */
+  observationStations?: string[]
+  /** The radar that covers the zone. */
+  radarStation?: string | null
+}
+
+export const Zone: Codec<Zone> = t.object({
+  '@id': t.string,
+  '@type': t.optional(t.literal('wx:Zone')),
+  id: t.string,
+  type: t.literal('land', 'marine', 'forecast', 'public', 'coastal', 'offshore', 'fire', 'county'),
+  name: t.string,
+  effectiveDate: t.dateTime,
+  expirationDate: t.dateTime,
+  state: t.optional(t.nullable(t.string)),
+  forecastOffice: t.optional(t.string),
+  gridIdentifier: t.optional(t.string),
+  awipsLocationIdentifier: t.optional(t.string),
+  cwa: t.optional(t.array(t.string)),
+  forecastOffices: t.optional(t.array(t.string)),
+  timeZone: t.optional(t.array(t.string)),
+  observationStations: t.optional(t.array(t.string)),
+  radarStation: t.optional(t.nullable(t.string)),
+})
+
+export type ZoneKind = 'land' | 'marine' | 'forecast' | 'public' | 'coastal' | 'offshore' | 'fire' | 'county'
+
+export const ZoneKind: Codec<ZoneKind> = t.literal('land', 'marine', 'forecast', 'public', 'coastal', 'offshore', 'fire', 'county')
 
 /** One watch, warning or advisory, in the Common Alerting Protocol vocabulary the service issues them in. */
 export interface Alert {
@@ -311,6 +390,10 @@ export interface Station {
   provider?: string
   /** Operator within the network. */
   subProvider?: string
+  /** How far the station is from the grid cell asked about. Only `stations.list_stations_for_gridpoint` sends it. */
+  distance?: QuantitativeValue
+  /** Direction from the grid cell to the station, in degrees clockwise from true north. Only `stations.list_stations_for_gridpoint` sends it. */
+  bearing?: QuantitativeValue
 }
 
 export const Station: Codec<Station> = t.object({
@@ -323,7 +406,32 @@ export const Station: Codec<Station> = t.object({
   fireWeatherZone: t.optional(t.string),
   provider: t.optional(t.string),
   subProvider: t.optional(t.string),
+  distance: t.optional(QuantitativeValue),
+  bearing: t.optional(QuantitativeValue),
 })
+
+/** One zone, in the GeoJSON feature the API wraps it in. */
+export interface ZoneFeature {
+  /** Canonical URL of the zone. */
+  id: string
+  /** Always `Feature`. */
+  type: 'Feature'
+  /** The area a zone covers. */
+  geometry: PolygonGeometry | MultiPolygonGeometry | null
+  /** The zone itself. */
+  properties: Zone
+}
+
+export const ZoneFeature: Codec<ZoneFeature> = t.object({
+  id: t.string,
+  type: t.literal('Feature'),
+  geometry: t.union(PolygonGeometry, MultiPolygonGeometry, t.null),
+  properties: Zone,
+})
+
+export type ZoneGeometry = PolygonGeometry | MultiPolygonGeometry | null
+
+export const ZoneGeometry: Codec<ZoneGeometry> = t.union(PolygonGeometry, MultiPolygonGeometry, t.null)
 
 /** One alert, in the GeoJSON feature the API wraps it in. */
 export interface AlertFeature {
@@ -476,6 +584,19 @@ export const StationFeature: Codec<StationFeature> = t.object({
   properties: Station,
 })
 
+/** Zones, as a GeoJSON feature collection, ordered by code. */
+export interface ZoneCollection {
+  /** Always `FeatureCollection`. */
+  type: 'FeatureCollection'
+  /** The zones. */
+  features: ZoneFeature[]
+}
+
+export const ZoneCollection: Codec<ZoneCollection> = t.object({
+  type: t.literal('FeatureCollection'),
+  features: t.array(ZoneFeature),
+})
+
 /** One observation, in the GeoJSON feature the API wraps it in. */
 export interface ObservationFeature {
   /** Canonical URL of this observation. */
@@ -493,4 +614,37 @@ export const ObservationFeature: Codec<ObservationFeature> = t.object({
   type: t.literal('Feature'),
   geometry: t.optional(PointGeometry),
   properties: Observation,
+})
+
+/** Stations, as a GeoJSON feature collection. */
+export interface StationCollection {
+  /** Always `FeatureCollection`. */
+  type: 'FeatureCollection'
+  /** The stations. */
+  features: StationFeature[]
+  /** The same stations as bare URLs, in the same order. */
+  observationStations?: string[]
+  pagination?: CollectionPagination
+}
+
+export const StationCollection: Codec<StationCollection> = t.object({
+  type: t.literal('FeatureCollection'),
+  features: t.array(StationFeature),
+  observationStations: t.optional(t.array(t.string)),
+  pagination: t.optional(CollectionPagination),
+})
+
+/** Observations over a span, as a GeoJSON feature collection, newest first. */
+export interface ObservationCollection {
+  /** Always `FeatureCollection`. */
+  type: 'FeatureCollection'
+  /** The observations, newest first. */
+  features: ObservationFeature[]
+  pagination?: ObservationPagination
+}
+
+export const ObservationCollection: Codec<ObservationCollection> = t.object({
+  type: t.literal('FeatureCollection'),
+  features: t.array(ObservationFeature),
+  pagination: t.optional(ObservationPagination),
 })

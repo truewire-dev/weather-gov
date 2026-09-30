@@ -11,6 +11,7 @@ use crate::offices::Offices;
 use crate::points::Points;
 use crate::products::Products;
 use crate::stations::Stations;
+use crate::zones::Zones;
 
 /// The United States National Weather Service API (`api.weather.gov`): forecasts, observations, active alerts and the offices and stations behind them. No credentials -- the service asks only that a caller identify itself in `User-Agent`.
 ///
@@ -29,9 +30,16 @@ pub struct Weather {
     pub products: Products,
     /// Observation stations and what they have reported.
     pub stations: Stations,
+    /// Forecast, county, fire-weather and marine zones: the areas forecasts, alerts and radio broadcasts are issued for.
+    pub zones: Zones,
 }
 
 impl Weather {
+    /// `[policy].rate`: requests per second the core's `HttpClient` paces to; `None` for none.
+    pub const RATE: Option<f64> = None;
+    /// `[policy].retry`: whether the core's `HttpClient` retries on its own.
+    pub const RETRY: bool = false;
+
     pub fn from_core(core: impl HttpEndpoint<DefaultMeta> + 'static) -> Self {
         let core: Arc<dyn HttpEndpoint<DefaultMeta>> = Arc::new(core);
         Self {
@@ -40,7 +48,8 @@ impl Weather {
             offices: Offices::new(core.clone()),
             points: Points::new(core.clone()),
             products: Products::new(core.clone()),
-            stations: Stations::new(core),
+            stations: Stations::new(core.clone()),
+            zones: Zones::new(core),
         }
     }
 }

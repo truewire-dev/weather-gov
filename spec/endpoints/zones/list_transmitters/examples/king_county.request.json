@@ -1,0 +1,7 @@
+{
+  "description": "The NOAA Weather Radio transmitters broadcasting for King County, Washington",
+  "request": {
+    "zone_type": "county",
+    "zone_id": "WAC033"
+  }
+}
