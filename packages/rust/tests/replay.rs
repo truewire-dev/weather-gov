@@ -673,7 +673,8 @@ async fn stations_get_observation_returns_the_observation_at_the_moment_asked() 
             weather_gov::stations::get_observation::Request {
                 station_id: station.clone(),
                 time: timestamp(&asked["time"]),
-                ..Default::default()
+                // No `..Default::default()`: a required timestamp has no default.
+                extra: Default::default(),
             },
             CallOptions::default(),
         )
