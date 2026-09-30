@@ -83,11 +83,13 @@ describe('recorded examples replay through the generated client', () => {
     expect(point.gridX).toBe(125)
     expect(point.gridY).toBe(68)
     expect(point.timeZone).toBe('America/Los_Angeles')
+    expect(point.forecast.endsWith('/gridpoints/SEW/125,68/forecast')).toBe(true)
     // The declared envelope, working: no `properties` to reach through.
     expect('properties' in point).toBe(false)
     const nearest = point.relativeLocation!.properties
     expect(nearest.city).toBe('Seattle')
     expect(nearest.state).toBe('WA')
+    isMeasurement(nearest.distance!, 'wmoUnit:m')
   })
 
   it('forecast.getForecast returns fourteen periods of prose', async () => {
@@ -132,6 +134,11 @@ describe('recorded examples replay through the generated client', () => {
       expect(start).toBeTruthy()
       expect(duration!.startsWith('P')).toBe(true)
     }
+    const weather = grid.weather!.values[0]!.value
+    expect(Array.isArray(weather)).toBe(true)
+    for (const phenomenon of weather) {
+      for (const key of ['coverage', 'weather', 'intensity']) expect(phenomenon).toHaveProperty(key)
+    }
   })
 
   it('stations.listStations sends a repeated query key, not a stringified array', async () => {
@@ -139,8 +146,9 @@ describe('recorded examples replay through the generated client', () => {
     expect(page.type).toBe('FeatureCollection')
     expect(page.features).toHaveLength(20)
     for (const feature of page.features) {
-      expect(feature.geometry!.type).toBe('Point')
+      isPoint(feature.geometry)
       expect(feature.properties.stationIdentifier).toBeTruthy()
+      expect(feature.properties.name).toBeTruthy()
     }
     expect(page.pagination!.next!.startsWith('https://api.weather.gov/stations?')).toBe(true)
   })
@@ -168,10 +176,14 @@ describe('recorded examples replay through the generated client', () => {
       end: new Date(WINDOW.end),
       limit: WINDOW.limit,
     })
-    const timestamps = page.features.map(f => f.properties.timestamp)
+    const timestamps = page.features.map(f => f.properties.timestamp.getTime())
     expect(page.features.length).toBeGreaterThan(0)
     expect(page.features.length).toBeLessThan(500)
-    expect([...timestamps].sort().reverse()).toEqual(timestamps)
+    expect([...timestamps].sort((a, b) => b - a)).toEqual(timestamps)
+    for (const feature of page.features) {
+      isPoint(feature.geometry)
+      isMeasurement(feature.properties.temperature)
+    }
   })
 
   it('alerts.getActiveAlerts honours filters that disagree about capitalisation', async () => {
@@ -181,6 +193,10 @@ describe('recorded examples replay through the generated client', () => {
       expect(feature.properties.severity).toBe('Severe')
       expect(feature.properties.status).toBe('Actual')
       expect(feature.properties.id.startsWith('urn:oid:')).toBe(true)
+      expect(feature.properties.event).toBeTruthy()
+      expect(feature.properties.description).toBeTruthy()
+      // An alert covers zones or a polygon, never neither.
+      expect(feature.geometry != null || feature.properties.affectedZones!.length > 0).toBe(true)
     }
   })
 
@@ -188,6 +204,7 @@ describe('recorded examples replay through the generated client', () => {
     const alert = await client.alerts.getAlert({ id: ALERT.id })
     expect(alert.type).toBe('Feature')
     expect(alert.properties.id).toBe(ALERT.id)
+    expect(alert.properties.severity).toBe('Severe')
     // The identifier is `urn:oid:...`, so this also proves `:` survived the path unencoded.
     expect(ALERT.id).toContain(':')
     if (alert.geometry !== null && alert.geometry !== undefined) {
@@ -200,6 +217,7 @@ describe('recorded examples replay through the generated client', () => {
     expect(office.id).toBe('SEW')
     expect(office.address!.addressRegion).toBe('WA')
     expect(office.responsibleForecastZones!.length).toBeGreaterThan(0)
+    expect(office.approvedObservationStations!.length).toBeGreaterThan(0)
   })
 
   it('products.listProductTypes answers in JSON-LD, a third vocabulary again', async () => {
@@ -208,6 +226,7 @@ describe('recorded examples replay through the generated client', () => {
     const codes = new Set(types['@graph'].map(entry => entry.productCode))
     expect(codes.has('AFD')).toBe(true)
     expect(codes.has('TOR')).toBe(true)
+    for (const entry of types['@graph']) expect(entry.productName).toBeTruthy()
   })
 
   it('zones.listZones finds one zone of each land kind at a point', async () => {
