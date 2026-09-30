@@ -1,0 +1,36 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/latest_product_type_location",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/products/types/{type_id}/locations/{location_id}/latest",
+    "method": "GET",
+    "description": "The newest product of one type from one location, with its text.",
+    "request": {
+      "title": "GetLatestProductRequest",
+      "type": "object",
+      "description": "Which type, from where.",
+      "properties": {
+        "type_id": {
+          "type": "string",
+          "description": "Three-letter product type, such as `AFD`. `products.list_product_types` names every code."
+        },
+        "location_id": {
+          "type": "string",
+          "description": "Issuance location, such as `SEW` for Seattle. `products.list_locations` names every id; `products.list_locations_for_type` narrows them to one type."
+        }
+      },
+      "required": [
+        "type_id",
+        "location_id"
+      ]
+    },
+    "response": {
+      "$ref": "Product",
+      "description": "The product, with its text."
+    }
+  }
+}

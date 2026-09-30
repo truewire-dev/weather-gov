@@ -1,0 +1,31 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/products_type_locations",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/products/types/{type_id}/locations",
+    "method": "GET",
+    "description": "The locations that issue one product type, by id, with their names.",
+    "request": {
+      "title": "ListProductTypeLocationsRequest",
+      "type": "object",
+      "description": "Which type.",
+      "properties": {
+        "type_id": {
+          "type": "string",
+          "description": "Three-letter product type, such as `AFD`. `products.list_product_types` names every code."
+        }
+      },
+      "required": [
+        "type_id"
+      ]
+    },
+    "response": {
+      "$ref": "ProductLocationCollection",
+      "description": "The locations, keyed by id."
+    }
+  }
+}

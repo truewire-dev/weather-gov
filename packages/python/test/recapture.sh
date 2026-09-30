@@ -11,7 +11,7 @@
 #
 # The request half of each example (`examples/<id>.request.json`) is the source of truth:
 # this script replays exactly those, so re-recording keeps the same ids and descriptions
-# and only the responses move. Two of them go stale on their own and are repaired first --
+# and only the responses move. Some of them go stale on their own and are repaired first --
 # see `refresh_examples.py`.
 #
 # One example failing does not stop the rest. A live API will always have one endpoint
@@ -25,7 +25,7 @@ CONTACT=${CONTACT:-hello@truewire.dev}
 failed=''
 recorded=0
 
-# Repaired before anything is captured rather than after a capture failed, because neither
+# Repaired before anything is captured rather than after a capture failed, because none
 # of these fails loudly: an expired observation window records as an empty
 # `FeatureCollection` with a 200, which is a green recording of nothing.
 if ! "$PYTHON" packages/python/test/refresh_examples.py; then

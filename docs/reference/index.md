@@ -1,6 +1,6 @@
 # Reference
 
-Six groups, eleven endpoints, every one recorded against the live API. Each signature is
+Six groups, nineteen endpoints, every one recorded against the live API. Each signature is
 generated from the endpoint's schema, so the types in your editor are the reference: every
 field carries its description, and every method's docstring links the service's own page
 for the endpoint.
@@ -55,6 +55,18 @@ service spells them: `actual`, but `Severe`, `Immediate` and `Likely`.
 | Endpoint | Upstream | Returns |
 | --- | --- | --- |
 | `list_product_types` | `GET /products/types` | whole: every text product code, in JSON-LD |
+| `list_products` | `GET /products` | whole: product headers in a span, newest first, filtered |
+| `get_product` | `GET /products/{product_id}` | whole: one product, with its text |
+| `list_products_by_type` | `GET /products/types/{type_id}` | whole: every held product of one type |
+| `list_products_by_type_and_location` | `GET /products/types/{type_id}/locations/{location_id}` | whole: the same, from one location |
+| `get_latest_product` | `GET /products/types/{type_id}/locations/{location_id}/latest` | whole: the newest of those, with its text |
+| `list_locations` | `GET /products/locations` | whole: every issuance location, by id |
+| `list_locations_for_type` | `GET /products/types/{type_id}/locations` | whole: the locations that issue one type |
+| `list_types_for_location` | `GET /products/locations/{location_id}/types` | whole: the types one location issues |
+
+Product lists carry header fields only; `get_product` and `get_latest_product` add
+`productText`. `list_products` is not paged: its `end` is exclusive and product times
+repeat to the minute, so a walk would skip products.
 
 ## In each language
 

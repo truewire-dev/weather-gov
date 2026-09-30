@@ -1,0 +1,24 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/product_locations",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/products/locations",
+    "method": "GET",
+    "description": "Every location text products are issued for, by id, with a name where the service has one.",
+    "request": {
+      "title": "ListProductLocationsRequest",
+      "type": "object",
+      "description": "Takes nothing.",
+      "properties": {},
+      "required": []
+    },
+    "response": {
+      "$ref": "ProductLocationCollection",
+      "description": "The locations, keyed by id."
+    }
+  }
+}

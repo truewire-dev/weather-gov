@@ -1,0 +1,123 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": {
+      "@version": "1.1",
+      "@vocab": "https://api.weather.gov/ontology#"
+    },
+    "@graph": [
+      {
+        "productCode": "AFD",
+        "productName": "Area Forecast Discussion"
+      },
+      {
+        "productCode": "AVG",
+        "productName": "Avalanche Weather Guidance"
+      },
+      {
+        "productCode": "CF6",
+        "productName": "WFO Monthly/Daily Climate Data"
+      },
+      {
+        "productCode": "CGR",
+        "productName": "Coast Guard Surface Report"
+      },
+      {
+        "productCode": "CLI",
+        "productName": "Climatological Report (Daily)"
+      },
+      {
+        "productCode": "CWF",
+        "productName": "Coastal Waters Forecast"
+      },
+      {
+        "productCode": "FWF",
+        "productName": "Routine Fire Wx Fcst (With/Without 6-10 Day Outlook)"
+      },
+      {
+        "productCode": "FWS",
+        "productName": "Suppression Forecast"
+      },
+      {
+        "productCode": "HML",
+        "productName": "AHPS XML"
+      },
+      {
+        "productCode": "LSR",
+        "productName": "Local Storm Report"
+      },
+      {
+        "productCode": "MWW",
+        "productName": "Marine Weather Message"
+      },
+      {
+        "productCode": "NPW",
+        "productName": "Non-Precipitation Warnings / Watches / Advisories"
+      },
+      {
+        "productCode": "PFM",
+        "productName": "Point Forecast Matrices"
+      },
+      {
+        "productCode": "QPS",
+        "productName": "Quantitative Precipitation Statement"
+      },
+      {
+        "productCode": "REC",
+        "productName": "Recreational Report"
+      },
+      {
+        "productCode": "RER",
+        "productName": "Record Report"
+      },
+      {
+        "productCode": "RR2",
+        "productName": "Hydro-Met Data Report Part 2"
+      },
+      {
+        "productCode": "RR3",
+        "productName": "Hydro-Met Data Report Part 3"
+      },
+      {
+        "productCode": "RR5",
+        "productName": "Hydro-Met Data Report Part 5"
+      },
+      {
+        "productCode": "RR8",
+        "productName": "Hydro-Met Data Report Part 8"
+      },
+      {
+        "productCode": "RRA",
+        "productName": "Automated Hydrologic Observation Sta Report (AHOS)"
+      },
+      {
+        "productCode": "RRM",
+        "productName": "Miscellaneous Hydrologic Data"
+      },
+      {
+        "productCode": "RRS",
+        "productName": "HADS Data"
+      },
+      {
+        "productCode": "SAF",
+        "productName": "Speci Agri Wx Fcst / Advisory / Flying Farmer Fcst Outlook"
+      },
+      {
+        "productCode": "SFT",
+        "productName": "Tabular State Forecast"
+      },
+      {
+        "productCode": "STQ",
+        "productName": "Spot Forecast Request"
+      },
+      {
+        "productCode": "VFT",
+        "productName": "Terminal Aerodrome Forecast (TAF) Verification"
+      },
+      {
+        "productCode": "ZFP",
+        "productName": "Zone Forecast Product"
+      }
+    ]
+  }
+}

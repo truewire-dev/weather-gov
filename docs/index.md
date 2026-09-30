@@ -3,7 +3,7 @@
 The [US National Weather Service API](https://www.weather.gov/documentation/services-web-api)
 serves the forecasts, the hourly forecasts, the raw gridded data behind both, observations
 from every reporting station, and every watch, warning and advisory in effect. This client
-covers eleven of its endpoints, in Python, TypeScript and Rust, generated from one spec.
+covers nineteen of its endpoints, in Python, TypeScript and Rust, generated from one spec.
 
 | Call | What it returns |
 | --- | --- |
@@ -17,7 +17,7 @@ covers eleven of its endpoints, in Python, TypeScript and Rust, generated from o
 | `alerts.get_active_alerts` | every watch, warning and advisory in effect, optionally narrowed |
 | `alerts.get_alert` | one alert, with its polygon when it has one |
 | `offices.get_office` | one forecast office and what it is responsible for |
-| `products.list_product_types` | every kind of text product the service issues |
+| `products.*` | text bulletins by type and place, and their codes |
 
 `stations.get_observations_paged` walks a whole span
 ([Walk a span of observations](how-to/walk-observations.md)). The

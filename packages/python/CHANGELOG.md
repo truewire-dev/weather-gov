@@ -13,6 +13,15 @@ Generated with truewire 0.11.
 - **`start` and `end` are optional on the walk.** Leaving either out used to raise
   `ValueError`; now a walk without `end` starts from the newest observation, and one
   without `start` goes back as far as the service keeps.
+- **Eight more endpoints: the rest of the text products API.** `products.list_products`
+  (a span, filtered by type, office, location or WMO heading), `products.get_product`,
+  `products.list_products_by_type`, `products.list_products_by_type_and_location`,
+  `products.get_latest_product`, `products.list_locations`,
+  `products.list_locations_for_type` and `products.list_types_for_location`.
+- **`ProductTypeCollection` is a shared schema.** `products.list_product_types` and
+  `products.list_types_for_location` both return it, so it moved from
+  `weather_gov.products.list_product_types` to `weather_gov.schemas`, with `ProductType`;
+  the old import of `ProductTypeCollection` still works.
 
 ## 0.1.0
 

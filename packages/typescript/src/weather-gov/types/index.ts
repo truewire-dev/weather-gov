@@ -106,6 +106,60 @@ export const PresentWeather: Codec<PresentWeather> = t.object({
   rawString: t.string,
 })
 
+/** One issued text product: a bulletin such as an area forecast discussion or a tornado warning. Lists carry the header fields only; fetching one product by id, or the latest of a type at a location, adds `productText`. */
+export interface Product {
+  /** URL of this product on the service, `https://api.weather.gov/products/<id>`. */
+  '@id': string
+  /** Product id, a UUID. `products.get_product` takes it as `product_id`. */
+  id: string
+  /** WMO abbreviated heading the bulletin was sent under, such as `FXUS66`. */
+  wmoCollectiveId: string
+  /** Four-letter ICAO code of the issuing office, such as `KSEW`. The three-letter location the product endpoints take (`SEW`) is this without its leading letter for the continental offices. */
+  issuingOffice: string
+  /** When the product was issued, to the minute. Not unique: the service issues about 160 products a minute across the country. */
+  issuanceTime: TimestampIso
+  /** Three-letter product type, such as `AFD`. `products.list_product_types` names every code. */
+  productCode: string
+  /** What the product type is, such as `Area Forecast Discussion`. */
+  productName: string
+  /** The bulletin itself, as fixed-width plain text with its WMO header lines. Absent from lists. */
+  productText?: string
+}
+
+export const Product: Codec<Product> = t.object({
+  '@id': t.string,
+  id: t.string,
+  wmoCollectiveId: t.string,
+  issuingOffice: t.string,
+  issuanceTime: t.dateTime,
+  productCode: t.string,
+  productName: t.string,
+  productText: t.optional(t.string),
+})
+
+/** Text product issuance locations, keyed by location id. */
+export interface ProductLocationCollection {
+  /** Location name by location id, such as `SEW` -> `Seattle/Tacoma, WA`. A map, not a list: the service sends one object keyed by id. */
+  locations: Record<string, string | null>
+}
+
+export const ProductLocationCollection: Codec<ProductLocationCollection> = t.object({
+  locations: t.record(t.nullable(t.string)),
+})
+
+/** One kind of text product. */
+export interface ProductType {
+  /** Three-letter code, such as `AFD`. */
+  productCode: string
+  /** What the code stands for, such as `Area Forecast Discussion`. */
+  productName: string
+}
+
+export const ProductType: Codec<ProductType> = t.object({
+  productCode: t.string,
+  productName: t.string,
+})
+
 /** A measurement and the unit it is in. The service never sends a bare number: every value arrives beside the WMO unit code it is expressed in, and `value` is null wherever the measurement is missing rather than zero. */
 export interface QuantitativeValue {
   /** WMO unit of measure, as a URI shorthand: `wmoUnit:degC`, `wmoUnit:km_h-1`, `wmoUnit:percent`, `wmoUnit:Pa`, `wmoUnit:m`. */
@@ -289,6 +343,26 @@ export interface GridSeries {
 export const GridSeries: Codec<GridSeries> = t.object({
   uom: t.optional(t.string),
   values: t.array(GridValue),
+})
+
+/** Text products in a JSON-LD graph, newest first. Header fields only: no `productText`. */
+export interface ProductCollection {
+  /** The products, newest `issuanceTime` first. */
+  '@graph': Product[]
+}
+
+export const ProductCollection: Codec<ProductCollection> = t.object({
+  '@graph': t.array(Product),
+})
+
+/** Product types, in a JSON-LD graph -- the third response vocabulary this API uses, after GeoJSON and schema.org. */
+export interface ProductTypeCollection {
+  /** The product types, ordered by code. */
+  '@graph': ProductType[]
+}
+
+export const ProductTypeCollection: Codec<ProductTypeCollection> = t.object({
+  '@graph': t.array(ProductType),
 })
 
 /** One observation station. */

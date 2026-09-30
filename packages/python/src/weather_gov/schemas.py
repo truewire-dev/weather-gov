@@ -77,6 +77,47 @@ class PresentWeather(TypedDict):
   """The METAR group this was decoded from, such as `-RA`."""
 
 
+ProductKeywords = TypedDict('ProductKeywords', {'@id': str})
+"""
+- `@id`: URL of this product on the service, `https://api.weather.gov/products/<id>`.
+"""
+
+
+class Product(ProductKeywords):
+  """One issued text product: a bulletin such as an area forecast discussion or a tornado warning. Lists carry the header fields only; fetching one product by id, or the latest of a type at a location, adds `productText`."""
+
+  id: str
+  """Product id, a UUID. `products.get_product` takes it as `product_id`."""
+  wmoCollectiveId: str
+  """WMO abbreviated heading the bulletin was sent under, such as `FXUS66`."""
+  issuingOffice: str
+  """Four-letter ICAO code of the issuing office, such as `KSEW`. The three-letter location the product endpoints take (`SEW`) is this without its leading letter for the continental offices."""
+  issuanceTime: TimestampIso
+  """When the product was issued, to the minute. Not unique: the service issues about 160 products a minute across the country."""
+  productCode: str
+  """Three-letter product type, such as `AFD`. `products.list_product_types` names every code."""
+  productName: str
+  """What the product type is, such as `Area Forecast Discussion`."""
+  productText: NotRequired[str]
+  """The bulletin itself, as fixed-width plain text with its WMO header lines. Absent from lists."""
+
+
+class ProductLocationCollection(TypedDict):
+  """Text product issuance locations, keyed by location id."""
+
+  locations: dict[str, str | None]
+  """Location name by location id, such as `SEW` -> `Seattle/Tacoma, WA`. A map, not a list: the service sends one object keyed by id."""
+
+
+class ProductType(TypedDict):
+  """One kind of text product."""
+
+  productCode: str
+  """Three-letter code, such as `AFD`."""
+  productName: str
+  """What the code stands for, such as `Area Forecast Discussion`."""
+
+
 class QuantitativeValue(TypedDict):
   """A measurement and the unit it is in. The service never sends a bare number: every value arrives beside the WMO unit code it is expressed in, and `value` is null wherever the measurement is missing rather than zero."""
 
@@ -219,6 +260,28 @@ class GridSeries(TypedDict):
   """WMO unit code every value is in."""
   values: list[GridValue]
   """The values, in time order."""
+
+
+ProductCollectionKeywords = TypedDict('ProductCollectionKeywords', {'@graph': list[Product]})
+"""
+- `@graph`: The products, newest `issuanceTime` first.
+"""
+
+
+class ProductCollection(ProductCollectionKeywords):
+  """Text products in a JSON-LD graph, newest first. Header fields only: no `productText`."""
+
+
+ProductTypeCollectionKeywords = TypedDict(
+  'ProductTypeCollectionKeywords', {'@graph': list[ProductType]}
+)
+"""
+- `@graph`: The product types, ordered by code.
+"""
+
+
+class ProductTypeCollection(ProductTypeCollectionKeywords):
+  """Product types, in a JSON-LD graph -- the third response vocabulary this API uses, after GeoJSON and schema.org."""
 
 
 class Station(TypedDict):
