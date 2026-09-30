@@ -14,6 +14,10 @@ import { Stations } from './stations/index.js'
  * @see https://www.weather.gov/documentation/services-web-api
  */
 export class Weather {
+  /** `[policy].rate`: requests per second the core's `HttpClient` paces to; `undefined` for none. */
+  static readonly RATE: number | undefined = undefined
+  /** `[policy].retry`: whether the core's `HttpClient` retries on its own. */
+  static readonly RETRY: boolean = false
   /** Watches, warnings and advisories in effect. */
   readonly alerts: Alerts
   /** Forecasts for one grid cell: the twice-daily narrative, the hourly series, and the raw gridded data both are rendered from. */

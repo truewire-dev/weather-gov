@@ -32,6 +32,11 @@ pub struct Weather {
 }
 
 impl Weather {
+    /// `[policy].rate`: requests per second the core's `HttpClient` paces to; `None` for none.
+    pub const RATE: Option<f64> = None;
+    /// `[policy].retry`: whether the core's `HttpClient` retries on its own.
+    pub const RETRY: bool = false;
+
     pub fn from_core(core: impl HttpEndpoint<DefaultMeta> + 'static) -> Self {
         let core: Arc<dyn HttpEndpoint<DefaultMeta>> = Arc::new(core);
         Self {
