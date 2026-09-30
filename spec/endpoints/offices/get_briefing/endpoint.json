@@ -1,0 +1,105 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/office_briefing",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/offices/{office_id}/briefing",
+    "method": "GET",
+    "description": "The decision-support briefing an office has active, if any: a slide deck for emergency managers, downloadable as a PDF.",
+    "request": {
+      "title": "GetBriefingRequest",
+      "type": "object",
+      "description": "Which office.",
+      "properties": {
+        "office_id": {
+          "type": "string",
+          "description": "Three-letter office code, such as `AKQ`. `points.get_point` returns it as `gridId`."
+        }
+      },
+      "required": [
+        "office_id"
+      ]
+    },
+    "response": {
+      "title": "ActiveBriefing",
+      "type": "object",
+      "description": "The office's active briefing, or null.",
+      "properties": {
+        "briefing": {
+          "description": "The briefing. Null when the office has none active, which is most of them.",
+          "anyOf": [
+            {
+              "title": "OfficeBriefing",
+              "type": "object",
+              "description": "One briefing.",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Briefing id, a UUID."
+                },
+                "officeId": {
+                  "type": "string",
+                  "description": "Code of the office that issued it, such as `AKQ`."
+                },
+                "startTime": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "When the briefing took effect."
+                },
+                "endTime": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "When it stops being current."
+                },
+                "updateTime": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "When it was last updated."
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Title, often only a prompt such as `Click to view briefing`."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "What the briefing covers, as plain text."
+                },
+                "priority": {
+                  "type": "boolean",
+                  "description": "Whether the office flagged it as a priority."
+                },
+                "download": {
+                  "type": "string",
+                  "description": "URL of the briefing as a PDF. The service answers only `application/pdf` there, so no endpoint here fetches it."
+                }
+              },
+              "required": [
+                "id",
+                "officeId",
+                "startTime",
+                "endTime",
+                "updateTime",
+                "title",
+                "description",
+                "priority",
+                "download"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "briefing"
+      ]
+    }
+  },
+  "notes": [
+    "On 2026-09-30, 17 of the 123 offices that issue area forecast discussions had a briefing active; the rest answered `\"briefing\": null` with a 200, which the `seattle` example records.."
+  ]
+}
