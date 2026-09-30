@@ -1,0 +1,85 @@
+$schema: https://truewire.dev/schemas/docs.yml.json
+title: Weather
+description: A typed, validated client for the US National Weather Service API.
+nav:
+  - index.md
+  - api-keys.md
+  - title: How-to
+    pages:
+      - how-to/index.md
+      - how-to/walk-observations.md
+  - reference/index.md
+quickstart:
+  python:
+    install: pip install truewire-weather-gov
+    code: |
+      import asyncio
+
+      from weather_gov import Weather
+
+
+      async def main() -> None:
+        async with Weather.new(contact='you@example.com') as client:
+          point = await client.points.get_point(latitude=47.6062, longitude=-122.3321)
+          forecast = await client.forecast.get_forecast(
+            office=point['gridId'], grid_x=point['gridX'], grid_y=point['gridY']
+          )
+          for period in forecast['periods'][:3]:
+            print(period['name'], period['temperature'], period['shortForecast'])
+
+
+      asyncio.run(main())
+  typescript:
+    install: npm install @truewire/weather-gov
+    code: |
+      import { Weather } from '@truewire/weather-gov'
+
+      const client = Weather.new({ contact: 'you@example.com' })
+      const point = await client.points.getPoint({ latitude: 47.6062, longitude: -122.3321 })
+      const forecast = await client.forecast.getForecast({
+        office: point.gridId,
+        grid_x: point.gridX,
+        grid_y: point.gridY,
+      })
+      for (const period of forecast.periods.slice(0, 3)) {
+        console.log(period.name, period.temperature, period.shortForecast)
+      }
+  rust:
+    install: cargo add truewire-weather-gov --rename weather_gov && cargo add tokio --features macros,rt-multi-thread
+    code: |
+      use weather_gov::{forecast, points, CallOptions, Weather};
+
+      #[tokio::main]
+      async fn main() -> Result<(), Box<dyn std::error::Error>> {
+          let client = Weather::new("you@example.com");
+          let point = client
+              .points
+              .get_point(
+                  points::get_point::Request {
+                      latitude: 47.6062,
+                      longitude: -122.3321,
+                      ..Default::default()
+                  },
+                  CallOptions::default(),
+              )
+              .await?;
+          let forecast = client
+              .forecast
+              .get_forecast(
+                  forecast::get_forecast::Request {
+                      office: point.grid_id.clone(),
+                      grid_x: point.grid_x,
+                      grid_y: point.grid_y,
+                      ..Default::default()
+                  },
+                  CallOptions::default(),
+              )
+              .await?;
+          for period in forecast.periods.iter().take(3) {
+              println!(
+                  "{} {} {}",
+                  period.name, period.temperature, period.short_forecast
+              );
+          }
+          Ok(())
+      }

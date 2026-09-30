@@ -4,22 +4,12 @@ use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
 use truewire_core::{
-    decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso,
+    decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, PaginatedResponse, Result, Seek,
+    SeekState, TimestampIso,
 };
 
 use crate::meta::DefaultMeta;
-use crate::types::ObservationFeature;
-
-/// Where the next page is, as a whole URL. The declared walk moves the time window instead and never reads this.
-#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
-pub struct ObservationPagination {
-    /// URL of the next page. Absent on the last one.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub next: Option<String>,
-    /// Keys the spec does not document, kept as they came.
-    #[serde(flatten)]
-    pub extra: serde_json::Map<String, serde_json::Value>,
-}
+use crate::types::{ObservationCollection, ObservationFeature};
 
 /// Which station, over which span.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
@@ -29,7 +19,7 @@ pub struct Request {
     /// Start of the span, inclusive. The service keeps about a week of observations; a start older than that returns nothing rather than failing.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub start: Option<TimestampIso>,
-    /// End of the span, inclusive.
+    /// End of the span, exclusive: an observation at exactly `end` is not returned.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub end: Option<TimestampIso>,
     /// Observations per response. Range [1, 500]; the service caps a response at 500 whether or not this is sent, so 500 is also the default.
@@ -40,27 +30,10 @@ pub struct Request {
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub enum ObservationCollectionType {
-    FeatureCollection,
-}
+/// `get_observations_paged`'s request: `Request`, whose `end` the walk moves and whose `start` caps it.
+pub type GetObservationsPagedRequest = Request;
 
-/// The observations in the span, as a GeoJSON feature collection, newest first.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct ObservationCollection {
-    /// Always `FeatureCollection`.
-    #[serde(rename = "type")]
-    pub type_: ObservationCollectionType,
-    /// The observations, newest first.
-    pub features: Vec<ObservationFeature>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub pagination: Option<ObservationPagination>,
-    /// Keys the spec does not document, kept as they came.
-    #[serde(flatten)]
-    pub extra: serde_json::Map<String, serde_json::Value>,
-}
-
-/// What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.
+/// What one station reported over a span of time, newest first. A busy airport station such as `KSEA` reports every five minutes, plus an hourly report at 53 minutes past, so a day there is about 300 observations.
 #[derive(Clone)]
 pub struct GetObservations {
     core: Arc<dyn HttpEndpoint<DefaultMeta>>,
@@ -71,7 +44,47 @@ impl GetObservations {
         Self { core }
     }
 
-    /// What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.
+    /// What one station reported over a span of time, newest first. A busy airport station such as `KSEA` reports every five minutes, plus an hourly report at 53 minutes past, so a day there is about 300 observations.
+    ///
+    /// Paged variant of [`Self::get_observations`]: await it for every row, or walk `rows()`/`pages()` one page at a time. Walks backwards by moving `end` to the earliest `properties.timestamp` of each page that came back full, never past the caller's own `start`; a page re-serving rows already yielded is deduplicated. The walk requests pages of at least 2 rows and at most 500: a page must hold one new row beside the one it re-reads.
+    ///
+    /// See <https://www.weather.gov/documentation/services-web-api#/default/station_observation_list>.
+    pub fn get_observations_paged(
+        &self,
+        request: GetObservationsPagedRequest,
+        options: CallOptions,
+    ) -> PaginatedResponse<ObservationFeature, SeekState<TimestampIso, ObservationFeature>> {
+        let endpoint = self.clone();
+        let mut request = request;
+        request.limit = request.limit.map(|size| size.clamp(2, 500));
+        let size = request.limit.unwrap_or(500);
+        let size = usize::try_from(size).ok().filter(|&size| size > 0);
+        let seek = Seek::new(
+            "get_observations_paged",
+            "[-1].properties.timestamp",
+            true,
+            true,
+        );
+        let seek = seek.cap(size);
+        let init = SeekState::new(request.end);
+        let next = move |state: SeekState<TimestampIso, ObservationFeature>| {
+            let endpoint = endpoint.clone();
+            let request = request.clone();
+            let options = options.clone();
+            let seek = seek.clone();
+            async move {
+                let far = request.start;
+                let mut request = request;
+                request.end = state.pos;
+                let response = endpoint.get_observations(request, options).await?;
+                let rows = response.features;
+                seek.step(&state, rows, None, far.as_ref())
+            }
+        };
+        PaginatedResponse::new(init, next)
+    }
+
+    /// What one station reported over a span of time, newest first. A busy airport station such as `KSEA` reports every five minutes, plus an hourly report at 53 minutes past, so a day there is about 300 observations.
     ///
     /// See <https://www.weather.gov/documentation/services-web-api#/default/station_observation_list>.
     pub async fn get_observations(

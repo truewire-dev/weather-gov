@@ -1,0 +1,7 @@
+{
+  "description": "The City of Seattle public forecast zone, outline included",
+  "request": {
+    "zone_type": "forecast",
+    "zone_id": "WAZ315"
+  }
+}

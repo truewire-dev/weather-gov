@@ -7,6 +7,7 @@ import { Offices } from './offices/index.js'
 import { Points } from './points/index.js'
 import { Products } from './products/index.js'
 import { Stations } from './stations/index.js'
+import { Zones } from './zones/index.js'
 
 /**
  * The United States National Weather Service API (`api.weather.gov`): forecasts, observations, active alerts and the offices and stations behind them. No credentials -- the service asks only that a caller identify itself in `User-Agent`.
@@ -14,6 +15,10 @@ import { Stations } from './stations/index.js'
  * @see https://www.weather.gov/documentation/services-web-api
  */
 export class Weather {
+  /** `[policy].rate`: requests per second the core's `HttpClient` paces to; `undefined` for none. */
+  static readonly RATE: number | undefined = undefined
+  /** `[policy].retry`: whether the core's `HttpClient` retries on its own. */
+  static readonly RETRY: boolean = false
   /** Watches, warnings and advisories in effect. */
   readonly alerts: Alerts
   /** Forecasts for one grid cell: the twice-daily narrative, the hourly series, and the raw gridded data both are rendered from. */
@@ -26,6 +31,8 @@ export class Weather {
   readonly products: Products
   /** Observation stations and what they have reported. */
   readonly stations: Stations
+  /** Forecast, county, fire-weather and marine zones: the areas forecasts, alerts and radio broadcasts are issued for. */
+  readonly zones: Zones
 
   constructor(readonly core: HttpEndpoint<DefaultMeta>) {
     this.alerts = new Alerts(core)
@@ -34,5 +41,6 @@ export class Weather {
     this.points = new Points(core)
     this.products = new Products(core)
     this.stations = new Stations(core)
+    this.zones = new Zones(core)
   }
 }

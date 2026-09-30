@@ -20,7 +20,7 @@ No account, no key, no quota. The service asks one thing of a caller: say who yo
 
 ```toml
 [dependencies]
-weather_gov = { package = "truewire-weather-gov", version = "0.2" }
+weather_gov = { package = "truewire-weather-gov", version = "0.3" }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 ```
 
@@ -114,7 +114,7 @@ The filter values disagree about capitalisation — `status` takes `actual`, `se
 
 ## Every measurement carries its unit
 
-This API never sends a bare number. A temperature is `QuantitativeValue { unit_code, value, quality_control }`, and `value` is `Option<f64>`: null wherever the measurement is missing rather than zero, which is common — an airport station reports `wind_gust` only when there were gusts.
+This API never sends a bare number. A temperature is `QuantitativeValue { unit_code, value, quality_control }`, and `value` is `Option<f64>`: null wherever the measurement is missing rather than zero, which is common — an airport station's `wind_gust` has a `value` only when there were gusts.
 
 ```rust
 use truewire_core::CallOptions;
@@ -141,17 +141,41 @@ async fn conditions(client: &Weather) -> truewire_core::Result<()> {
 }
 ```
 
-## What is missing here, and why
+## Walking a span of observations
 
-`stations.get_observations` declares a `window` pagination walk. The Python and TypeScript clients get a `get_observations_paged` variant from that declaration, with the truncation guard that makes the walk safe; the Rust backend does not render `window` walks yet and says so when it generates:
+`stations.get_observations` declares a `seek` pagination walk, and `get_observations_paged` renders it, as it does in the Python and TypeScript clients. The service caps a response at 500 observations, keeps the newest, and says nothing about the ones it withheld; a full page moves `end` back to the oldest observation it held and asks again. The service's `end` is exclusive, so that request does not return the oldest observation a second time, and the walk would drop it by its timestamp if it did.
 
+Await the walk for every row, or walk `rows()` (or `pages()`, which also carries each page's state) one page at a time. Both are a `futures::Stream`, so `.next()` needs `futures::StreamExt` in scope, and `futures` in your own `Cargo.toml`:
+
+```rust
+use futures::StreamExt; // `futures` in your Cargo.toml: `rows()` is a `Stream`
+use truewire_core::{chrono::Utc, CallOptions, TimestampIso};
+use weather_gov::{stations, Weather};
+
+async fn yesterday(client: &Weather) -> truewire_core::Result<()> {
+    let now = Utc::now();
+    let request = stations::get_observations::Request {
+        station_id: "KSEA".to_string(),
+        start: Some(TimestampIso(now - truewire_core::chrono::Duration::days(1))),
+        end: Some(TimestampIso(now)),
+        ..Default::default()
+    };
+    let walk = client.stations.get_observations_paged(request, CallOptions::default());
+
+    // Every observation in the span, newest first:
+    let all = walk.clone().await?;
+    println!("{} observations", all.len());
+
+    // Or one response at a time:
+    let mut pages = walk.rows();
+    while let Some(page) = pages.next().await {
+        println!("{} more", page?.len());
+    }
+    Ok(())
+}
 ```
-skipped stations.get_observations: a `window` walk has no Rust walker yet; call the method per page
-```
 
-So the endpoint is here and typed, and paging it is the caller's own loop. This is stated rather than hidden because it is exactly the kind of thing a generator should be honest about — the guard the other two clients get is real safety (the service caps a response at 500 observations and says nothing about the ones it withheld), and a Rust caller does not have it yet. It is [tracked upstream](https://github.com/truewire-dev/truewire) and in [`NOTES.md`](../../NOTES.md).
-
-Everything else generates: eleven endpoints across six groups, the same as the other two clients.
+Nineteen endpoints across seven groups, the same as the other two clients.
 
 ## Tests
 

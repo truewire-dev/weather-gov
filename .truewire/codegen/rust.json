@@ -5,6 +5,7 @@
     "alerts/get_alert.rs",
     "alerts/mod.rs",
     "client.rs",
+    "dispatch.rs",
     "forecast/get_forecast.rs",
     "forecast/get_grid_data.rs",
     "forecast/get_hourly_forecast.rs",
@@ -19,8 +20,17 @@
     "products/mod.rs",
     "stations/get_latest_observation.rs",
     "stations/get_observations.rs",
+    "stations/get_observations_for_zone.rs",
     "stations/list_stations.rs",
+    "stations/list_stations_for_gridpoint.rs",
+    "stations/list_stations_for_zone.rs",
     "stations/mod.rs",
-    "types/mod.rs"
+    "types/mod.rs",
+    "zones/get_forecast.rs",
+    "zones/get_zone.rs",
+    "zones/list_transmitters.rs",
+    "zones/list_zones.rs",
+    "zones/list_zones_by_type.rs",
+    "zones/mod.rs"
   ]
 }
