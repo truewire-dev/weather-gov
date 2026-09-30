@@ -2,15 +2,17 @@
 
 ## 0.3.0 (unreleased)
 
-- **`stations.get_observations_paged` walks a whole span of observations.** It takes a
-  `stations::get_observations::GetObservationsPagedRequest` and renders the endpoint's
-  `seek` walk, anchored to `end`: a full page of 500 moves `end` back to the oldest
-  observation it held and asks again. Await it for every observation newest first, or walk
-  `rows()` (or `pages()`, which also carries each page's state) one page at a time. The
-  README's "Walking a span of observations" has an example.
-- **`Weather::RATE` and `Weather::RETRY`** state the spec's `[policy]`: the requests per
-  second the core paces to, and whether it retries on its own. This spec declares no
-  policy, so they are `None` and `false`.
+- **`stations.get_observations_paged` walks a whole span of observations.** The endpoint
+  declares `seek` pagination anchored to `end` (ADR 0013): a full page moves `end` back to
+  the oldest observation it held and asks again, never past your own `start`. It takes a
+  `stations::get_observations::GetObservationsPagedRequest` (the same `Request`) and returns
+  a `PaginatedResponse`. Await it for every observation newest first, or walk `rows()` (or
+  `pages()`, which also carries each page's state) one page at a time. Both are a
+  `futures::Stream`, so `.next()` needs `futures::StreamExt` in scope. 0.2.0 had no paged
+  method, so `get_observations` returned only the newest 500.
+- **`Weather::RATE` and `Weather::RETRY`** state the client's `[policy]`: the requests per
+  second the core's `HttpClient` paces to, and whether it retries on its own. `truewire.toml`
+  declares no `[policy]`, so they are `None` and `false`.
 - **Breaking: eight types moved to `weather_gov::types`.** `ObservationCollection`,
   `StationCollection` and `AlertCollection` are each returned by more than one endpoint
   now, so they are shared schemas. Import them, and the types they carry, from
