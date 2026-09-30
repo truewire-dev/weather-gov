@@ -132,6 +132,66 @@ pub struct PresentWeather {
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
+/// One issued text product: a bulletin such as an area forecast discussion or a tornado warning. Lists carry the header fields only; fetching one product by id, or the latest of a type at a location, adds `productText`.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Product {
+    /// URL of this product on the service, `https://api.weather.gov/products/<id>`.
+    #[serde(rename = "@id")]
+    pub id: String,
+    /// Product id, a UUID. `products.get_product` takes it as `product_id`.
+    #[serde(rename = "id")]
+    pub id2: String,
+    /// WMO abbreviated heading the bulletin was sent under, such as `FXUS66`.
+    #[serde(rename = "wmoCollectiveId")]
+    pub wmo_collective_id: String,
+    /// Four-letter ICAO code of the issuing office, such as `KSEW`. The three-letter location the product endpoints take (`SEW`) is this without its leading letter for the continental offices.
+    #[serde(rename = "issuingOffice")]
+    pub issuing_office: String,
+    /// When the product was issued, to the minute. Not unique: the service issues about 160 products a minute across the country.
+    #[serde(rename = "issuanceTime")]
+    pub issuance_time: TimestampIso,
+    /// Three-letter product type, such as `AFD`. `products.list_product_types` names every code.
+    #[serde(rename = "productCode")]
+    pub product_code: String,
+    /// What the product type is, such as `Area Forecast Discussion`.
+    #[serde(rename = "productName")]
+    pub product_name: String,
+    /// The bulletin itself, as fixed-width plain text with its WMO header lines. Absent from lists.
+    #[serde(
+        rename = "productText",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub product_text: Option<String>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+/// Text product issuance locations, keyed by location id.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+pub struct ProductLocationCollection {
+    /// Location name by location id, such as `SEW` -> `Seattle/Tacoma, WA`. A map, not a list: the service sends one object keyed by id.
+    pub locations: HashMap<String, Option<String>>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+/// One kind of text product.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+pub struct ProductType {
+    /// Three-letter code, such as `AFD`.
+    #[serde(rename = "productCode")]
+    pub product_code: String,
+    /// What the code stands for, such as `Area Forecast Discussion`.
+    #[serde(rename = "productName")]
+    pub product_name: String,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
 /// A measurement and the unit it is in. The service never sends a bare number: every value arrives beside the WMO unit code it is expressed in, and `value` is null wherever the measurement is missing rather than zero.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct QuantitativeValue {
@@ -432,6 +492,28 @@ pub struct GridSeries {
     pub uom: Option<String>,
     /// The values, in time order.
     pub values: Vec<GridValue>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+/// Text products in a JSON-LD graph, newest first. Header fields only: no `productText`.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+pub struct ProductCollection {
+    /// The products, newest `issuanceTime` first.
+    #[serde(rename = "@graph")]
+    pub graph: Vec<Product>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+/// Product types, in a JSON-LD graph -- the third response vocabulary this API uses, after GeoJSON and schema.org.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+pub struct ProductTypeCollection {
+    /// The product types, ordered by code.
+    #[serde(rename = "@graph")]
+    pub graph: Vec<ProductType>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,

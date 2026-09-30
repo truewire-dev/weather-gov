@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Repoint the two examples that go stale on their own, before anything is captured.
+"""Repoint the examples that go stale on their own, before anything is captured.
 
 Most of this API is stable enough to re-record from a fixed request: the Seattle grid cell
-will still be the Seattle grid cell next week. Two examples are not:
+will still be the Seattle grid cell next week. These examples are not:
 
 - `stations.get_observations` names a six-hour window. The service keeps about a week of
   observations and then drops them, so last month's window records as an empty
@@ -12,6 +12,11 @@ will still be the Seattle grid cell next week. Two examples are not:
 - `alerts.get_alert` names one alert by identifier. Alerts expire, usually within hours,
   and the identifier is then gone. The replacement is read from whatever is severe and in
   effect right now -- the same query `alerts.get_active_alerts` records.
+- `products.list_products` names a six-hour window, and the service keeps about a week of
+  products there. It moves with the observation window.
+- `products.get_product` names one product by id. The service drops a product after a week
+  or two, so the id is repointed to Seattle's latest area forecast discussion -- the one
+  `products.get_latest_product` records.
 
 Run before `truewire capture`, not after a capture failed: only one of these fails loudly.
 
@@ -35,6 +40,11 @@ it runs before the client has anything current to record -- so it repeats the sa
 
 OBSERVATIONS = PROJECT / 'spec/endpoints/stations/get_observations/examples'
 ALERT = PROJECT / 'spec/endpoints/alerts/get_alert/examples/one.request.json'
+PRODUCTS = PROJECT / 'spec/endpoints/products/list_products/examples/afd_window.request.json'
+PRODUCT = PROJECT / 'spec/endpoints/products/get_product/examples/seattle_afd.request.json'
+
+LATEST_AFD = 'https://api.weather.gov/products/types/AFD/locations/SEW/latest'
+"""The same call `products.get_latest_product` records."""
 
 ACTIVE = 'https://api.weather.gov/alerts/active?status=actual&severity=Severe'
 """The same query `alerts.get_active_alerts` records, so the alert picked here is one that
@@ -85,14 +95,22 @@ def refresh_alert() -> None:
   rewrite(ALERT, {'id': alerts[0]['properties']['id']})
 
 
+def refresh_products() -> None:
+  """Move the product window to the observations' window, and the product id to Seattle's
+  latest area forecast discussion. Runs after `refresh_observations`, whose window it reads."""
+  window = json.loads((OBSERVATIONS / 'ksea_window.request.json').read_text())['request']
+  rewrite(PRODUCTS, {'start': window['start'], 'end': window['end']})
+  rewrite(PRODUCT, {'product_id': fetch(LATEST_AFD)['id']})
+
+
 def main() -> int:
   failed = []
-  for step in (refresh_observations, refresh_alert):
+  for step in (refresh_observations, refresh_alert, refresh_products):
     try:
       step()
     except (urllib.error.URLError, SystemExit, KeyError, IndexError) as error:
-      # One stale example does not stop the other from being repaired, and neither stops
-      # the nine examples that need no repair at all from recording.
+      # One stale example does not stop the others from being repaired, and none stops the
+      # examples that need no repair at all from recording.
       print(f'{step.__name__}: {error}', file=sys.stderr)
       failed.append(step.__name__)
   return 1 if failed else 0

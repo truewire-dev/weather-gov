@@ -182,7 +182,7 @@ GET /alerts/active: HTTP 400: query.zone[0]: Does not match the regex pattern
 
 ## What is covered
 
-Eleven endpoints, in six groups:
+Nineteen endpoints, in six groups:
 
 | Group | Endpoints |
 | --- | --- |
@@ -191,24 +191,25 @@ Eleven endpoints, in six groups:
 | `stations` | `list_stations`, `get_observations`, `get_latest_observation` |
 | `alerts` | `get_active_alerts`, `get_alert` |
 | `offices` | `get_office` |
-| `products` | `list_product_types` |
+| `products` | `list_product_types`, `list_products`, `get_product`, `list_products_by_type`, `list_products_by_type_and_location`, `get_latest_product`, `list_locations`, `list_locations_for_type`, `list_types_for_location` |
 
 Three response vocabularies, because the API uses three: GeoJSON for most of it, schema.org for the offices, JSON-LD for the product types. The spec describes each as it actually arrives.
 
-The same eleven endpoints in [TypeScript](packages/typescript/README.md) and [Rust](packages/rust/README.md), from this one spec. The three clients are equivalent, `stations.get_observations_paged` included.
+The same nineteen endpoints in [TypeScript](packages/typescript/README.md) and [Rust](packages/rust/README.md), from this one spec. The three clients are equivalent, `stations.get_observations_paged` included.
 
 ## Recordings
 
-Every endpoint carries the request half of at least one example — the exact parameters the tests and the recording script replay — and every one of them has a recorded response. All eleven, with no exceptions and no endpoint declaring a missing credential, because there are no credentials to miss.
+Every endpoint carries the request half of at least one example — the exact parameters the tests and the recording script replay — and every one of them has a recorded response. All nineteen, with no exceptions and no endpoint declaring a missing credential, because there are no credentials to miss.
 
 The response halves are recorded from the live API through this same generated client, so a recording is the wire body the client saw and the response types are proven against it, never written by hand.
 
-Two examples go stale on their own, and [`packages/python/test/refresh_examples.py`](packages/python/test/refresh_examples.py) repairs them before anything is captured:
+Some examples go stale on their own, and [`packages/python/test/refresh_examples.py`](packages/python/test/refresh_examples.py) repairs them before anything is captured:
 
 - The service keeps about a week of observations and then drops them, so an old window records as an empty `FeatureCollection` — a 200 with nothing in it, which records exactly as happily as a full one.
 - Alerts expire, usually within hours, and `alerts.get_alert` names one by identifier. The replacement is read from whatever is severe and in effect right now.
+- The service keeps text products for a week or two, so the window of `products.list_products` moves with the observations', and `products.get_product` is repointed to Seattle's latest area forecast discussion.
 
-The tests read what the refresh moves — the window, the identifier, the row count — from the examples rather than from constants, so a repair is not a failure.
+The tests read what the refresh moves — the window, the identifier, the product id, the row count — from the examples rather than from constants, so a repair is not a failure.
 
 - [`packages/python/test/recapture.sh`](packages/python/test/recapture.sh) re-records everything. Run it locally, or through the [Record workflow](.github/workflows/record.yml) (Actions, "Record", run workflow), which records on a runner, pushes to a `record/<run id>` branch and opens a pull request. It also runs weekly on its own, because a recording goes stale whether or not anyone is looking.
 - Tests replay the recordings through the client against `truewire mock`, which serves them over real HTTP; nothing in the tests touches the network.

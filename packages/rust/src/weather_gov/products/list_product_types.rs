@@ -6,35 +6,11 @@ use serde::{Deserialize, Serialize};
 use truewire_core::{decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result};
 
 use crate::meta::DefaultMeta;
-
-/// One kind of text product.
-#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
-pub struct ProductType {
-    /// Three-letter code, such as `AFD`.
-    #[serde(rename = "productCode")]
-    pub product_code: String,
-    /// What the code stands for, such as `Area Forecast Discussion`.
-    #[serde(rename = "productName")]
-    pub product_name: String,
-    /// Keys the spec does not document, kept as they came.
-    #[serde(flatten)]
-    pub extra: serde_json::Map<String, serde_json::Value>,
-}
+use crate::types::ProductTypeCollection;
 
 /// Takes nothing.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct Request {
-    /// Keys the spec does not document, kept as they came.
-    #[serde(flatten)]
-    pub extra: serde_json::Map<String, serde_json::Value>,
-}
-
-/// The product types, in a JSON-LD graph -- the third response vocabulary this API uses, after GeoJSON and schema.org.
-#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
-pub struct ProductTypeCollection {
-    /// The product types, ordered by code.
-    #[serde(rename = "@graph")]
-    pub graph: Vec<ProductType>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,

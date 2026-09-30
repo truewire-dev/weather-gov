@@ -13,6 +13,7 @@ came back full.
 
 import json
 from collections.abc import Callable
+from datetime import datetime
 from pathlib import Path
 
 import pytest
@@ -196,6 +197,98 @@ def product_types(result: Any) -> None:
     assert entry['productName']
 
 
+def product_example(endpoint: str, example_id: str) -> Any:
+  """The parameters a product recording was made with, which `refresh_examples.py` may have
+  moved."""
+  path = PROJECT / f'spec/endpoints/products/{endpoint}/examples/{example_id}.request.json'
+  return json.loads(path.read_text())['request']
+
+
+def moment(value: Any) -> datetime:
+  """A timestamp as the client hands it back, or as a request example writes it."""
+  return value if isinstance(value, datetime) else datetime.fromisoformat(value)
+
+
+def product_headers(result: Any, *, code: str, office: str | None = None) -> list[Any]:
+  """A product list: header fields only, all of one type, newest first. Returns the rows,
+  asserting there is at least one."""
+  products = result['@graph']
+  assert products, 'nothing of that type was held when this was recorded'
+  for product in products:
+    assert product['@id'].endswith('/products/' + product['id'])
+    assert product['productCode'] == code
+    assert product['productName']
+    assert 'productText' not in product, 'lists carry headers, not text'
+    if office is not None:
+      assert product['issuingOffice'] == office
+  issued = [moment(product['issuanceTime']) for product in products]
+  assert issued == sorted(issued, reverse=True), 'the service answers newest first'
+  return products
+
+
+def product_list(result: Any) -> None:
+  """A window of one product type, cut to the recorded `limit`, all inside the window."""
+  example = product_example('list_products', 'afd_window')
+  (code,) = example['type']
+  products = product_headers(result, code=code)
+  assert len(products) == example['limit'], 'the limit was honoured'
+  start, end = moment(example['start']), moment(example['end'])
+  # `end` is exclusive: measured, and the reason the endpoint declares no seek walk.
+  assert all(start <= moment(product['issuanceTime']) < end for product in products)
+
+
+def product_locations(result: Any) -> None:
+  """Every issuance location, most of them nameless: the null is the service's, not a gap."""
+  locations = result['locations']
+  assert len(locations) > 1000
+  assert locations['SEW'] == 'Seattle/Tacoma, WA'
+  assert None in locations.values()
+
+
+def one_product(result: Any) -> None:
+  """The product the id names, with the bulletin text lists leave out."""
+  example = product_example('get_product', 'seattle_afd')
+  assert result['id'] == example['product_id']
+  assert result['@id'].endswith('/products/' + example['product_id'])
+  assert (result['productCode'], result['issuingOffice']) == ('AFD', 'KSEW')
+  assert 'AFDSEW' in result['productText']
+  assert 'Area Forecast Discussion' in result['productText']
+
+
+def products_of_type(result: Any) -> None:
+  """Every product of the type in the path, from more than one office."""
+  code = product_example('list_products_by_type', 'admin_messages')['type_id']
+  products = product_headers(result, code=code)
+  assert len({product['issuingOffice'] for product in products}) > 1
+
+
+def type_locations(result: Any) -> None:
+  """The locations that issue area forecast discussions: every one named."""
+  locations = result['locations']
+  assert len(locations) > 100
+  assert locations['SEW'] == 'Seattle/Tacoma, WA'
+  assert all(isinstance(name, str) and name for name in locations.values())
+
+
+def location_types(result: Any) -> None:
+  """The types Seattle issues: the same vocabulary as `list_product_types`, fewer codes."""
+  codes = [entry['productCode'] for entry in result['@graph']]
+  assert 'AFD' in codes
+  assert codes == sorted(set(codes)), 'unique, ordered by code'
+  assert 10 < len(codes) < 300
+
+
+def type_location_products(result: Any) -> None:
+  """Seattle's area forecast discussions, and nobody else's."""
+  product_headers(result, code='AFD', office='KSEW')
+
+
+def latest_product(result: Any) -> None:
+  """The newest Seattle area forecast discussion, text included."""
+  assert (result['productCode'], result['issuingOffice']) == ('AFD', 'KSEW')
+  assert 'AFDSEW' in result['productText']
+
+
 PROVES: dict[str, Callable[[Any], None]] = {
   'points.get_point[seattle]': point,
   'forecast.get_forecast[seattle]': forecast,
@@ -209,6 +302,14 @@ PROVES: dict[str, Callable[[Any], None]] = {
   'alerts.get_alert[one]': one_alert,
   'offices.get_office[seattle]': office,
   'products.list_product_types[all]': product_types,
+  'products.list_products[afd_window]': product_list,
+  'products.list_locations[all]': product_locations,
+  'products.get_product[seattle_afd]': one_product,
+  'products.list_products_by_type[admin_messages]': products_of_type,
+  'products.list_locations_for_type[afd]': type_locations,
+  'products.list_types_for_location[seattle]': location_types,
+  'products.list_products_by_type_and_location[seattle_afd]': type_location_products,
+  'products.get_latest_product[seattle_afd]': latest_product,
 }
 """What each recording is here to prove. A recording nobody asserts anything about is a
 file that turns green whatever the API sends."""

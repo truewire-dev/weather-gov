@@ -23,6 +23,14 @@
     {"method": "GET", "path": "/points/{latitude},{longitude}/radio", "excluded": "XML-only response (application/ssml+xml); no JSON representation"},
     {"method": "GET", "path": "/points/{latitude},{longitude}/stations", "excluded": "deprecated in the OpenAPI"},
     {"method": "GET", "path": "/radio/{callSign}/broadcast", "excluded": "XML-only response (application/ssml+xml); no JSON representation"},
-    {"method": "GET", "path": "/products/types", "endpoint": "products.list_product_types"}
+    {"method": "GET", "path": "/products", "endpoint": "products.list_products"},
+    {"method": "GET", "path": "/products/locations", "endpoint": "products.list_locations"},
+    {"method": "GET", "path": "/products/types", "endpoint": "products.list_product_types"},
+    {"method": "GET", "path": "/products/{productId}", "endpoint": "products.get_product"},
+    {"method": "GET", "path": "/products/types/{typeId}", "endpoint": "products.list_products_by_type"},
+    {"method": "GET", "path": "/products/types/{typeId}/locations", "endpoint": "products.list_locations_for_type"},
+    {"method": "GET", "path": "/products/locations/{locationId}/types", "endpoint": "products.list_types_for_location"},
+    {"method": "GET", "path": "/products/types/{typeId}/locations/{locationId}", "endpoint": "products.list_products_by_type_and_location"},
+    {"method": "GET", "path": "/products/types/{typeId}/locations/{locationId}/latest", "endpoint": "products.get_latest_product"}
   ]
 }
