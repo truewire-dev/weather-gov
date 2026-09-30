@@ -8,7 +8,7 @@ use truewire_core::{
 };
 
 use crate::meta::DefaultMeta;
-use crate::types::ZoneCollection;
+use crate::types::{ZoneCollection, ZoneKind};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum RequestRegionItem {
@@ -38,26 +38,6 @@ pub enum RequestRegionItem {
     Pi,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub enum RequestTypeItem {
-    #[serde(rename = "land")]
-    Land,
-    #[serde(rename = "marine")]
-    Marine,
-    #[serde(rename = "forecast")]
-    Forecast,
-    #[serde(rename = "public")]
-    Public,
-    #[serde(rename = "coastal")]
-    Coastal,
-    #[serde(rename = "offshore")]
-    Offshore,
-    #[serde(rename = "fire")]
-    Fire,
-    #[serde(rename = "county")]
-    County,
-}
-
 /// Which zones. Every filter is optional. Give one value per array filter: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct Request {
@@ -72,7 +52,7 @@ pub struct Request {
     pub region: Option<Vec<RequestRegionItem>>,
     /// Zone types to narrow to. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses).
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
-    pub type_: Option<Vec<RequestTypeItem>>,
+    pub type_: Option<Vec<ZoneKind>>,
     /// A `latitude,longitude` pair, such as `47.6062,-122.3321`; returns the zones containing it.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub point: Option<String>,

@@ -203,6 +203,10 @@ export const Zone: Codec<Zone> = t.object({
   radarStation: t.optional(t.nullable(t.string)),
 })
 
+export type ZoneKind = 'land' | 'marine' | 'forecast' | 'public' | 'coastal' | 'offshore' | 'fire' | 'county'
+
+export const ZoneKind: Codec<ZoneKind> = t.literal('land', 'marine', 'forecast', 'public', 'coastal', 'offshore', 'fire', 'county')
+
 /** One watch, warning or advisory, in the Common Alerting Protocol vocabulary the service issues them in. */
 export interface Alert {
   /** Identifier of this alert, such as `urn:oid:2.49.0.1.840.0.<hash>.001.1`. This is what `alerts.get_alert` takes. */

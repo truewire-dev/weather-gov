@@ -229,7 +229,7 @@ describe('recorded examples replay through the generated client', () => {
   })
 
   it('zones.getZone keeps the whole feature, outline included', async () => {
-    const feature = await client.zones.getZone({ zone_type: 'forecast', zone_id: 'WAZ315' })
+    const feature = await client.zones.getZone({ zone_id: 'WAZ315', zone_type: 'forecast' })
     const zone = isZone(feature, true)
     expect([zone.id, zone.type, zone.name]).toEqual(['WAZ315', 'public', 'City of Seattle'])
     expect(zone.gridIdentifier).toBe('SEW')
@@ -238,7 +238,7 @@ describe('recorded examples replay through the generated client', () => {
   })
 
   it('zones.getForecast returns the payload: numbered periods of prose', async () => {
-    const forecast = await client.zones.getForecast({ zone_type: 'forecast', zone_id: 'WAZ315' })
+    const forecast = await client.zones.getForecast({ zone_id: 'WAZ315', zone_type: 'forecast' })
     expect('properties' in forecast).toBe(false)
     expect(forecast.zone.endsWith('/zones/forecast/WAZ315')).toBe(true)
     expect(forecast.periods.length).toBeGreaterThan(6)
@@ -252,7 +252,7 @@ describe('recorded examples replay through the generated client', () => {
   })
 
   it('zones.listTransmitters answers in JSON-LD, every one for the county asked', async () => {
-    const radio = await client.zones.listTransmitters({ zone_type: 'county', zone_id: 'WAC033' })
+    const radio = await client.zones.listTransmitters({ zone_id: 'WAC033', zone_type: 'county' })
     const graph = radio['@graph']
     expect(graph.length).toBeGreaterThan(0)
     for (const transmitter of graph) {

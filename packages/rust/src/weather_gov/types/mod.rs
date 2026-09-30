@@ -288,6 +288,26 @@ pub struct Zone {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum ZoneKind {
+    #[serde(rename = "land")]
+    Land,
+    #[serde(rename = "marine")]
+    Marine,
+    #[serde(rename = "forecast")]
+    Forecast,
+    #[serde(rename = "public")]
+    Public,
+    #[serde(rename = "coastal")]
+    Coastal,
+    #[serde(rename = "offshore")]
+    Offshore,
+    #[serde(rename = "fire")]
+    Fire,
+    #[serde(rename = "county")]
+    County,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum AlertStatus {
     Actual,
     Exercise,

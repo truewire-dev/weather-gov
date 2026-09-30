@@ -8,27 +8,7 @@ use truewire_core::{
 };
 
 use crate::meta::DefaultMeta;
-use crate::types::ZoneCollection;
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub enum RequestZoneType {
-    #[serde(rename = "land")]
-    Land,
-    #[serde(rename = "marine")]
-    Marine,
-    #[serde(rename = "forecast")]
-    Forecast,
-    #[serde(rename = "public")]
-    Public,
-    #[serde(rename = "coastal")]
-    Coastal,
-    #[serde(rename = "offshore")]
-    Offshore,
-    #[serde(rename = "fire")]
-    Fire,
-    #[serde(rename = "county")]
-    County,
-}
+use crate::types::{ZoneCollection, ZoneKind};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum RequestRegionItem {
@@ -62,7 +42,7 @@ pub enum RequestRegionItem {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Request {
     /// The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses).
-    pub zone_type: RequestZoneType,
+    pub zone_type: ZoneKind,
     /// Zone codes to narrow to, such as `WAZ315` or `WAC033`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<Vec<String>>,

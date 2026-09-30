@@ -14,21 +14,21 @@
       "type": "object",
       "description": "Which county.",
       "properties": {
+        "zone_id": {
+          "type": "string",
+          "description": "County code, such as `WAC033`."
+        },
         "zone_type": {
           "type": "string",
           "enum": [
             "county"
           ],
           "description": "The zone type. Only `county`: the OpenAPI lists every zone type, but the service refuses any other with a 404 naming `county` as the one value it takes."
-        },
-        "zone_id": {
-          "type": "string",
-          "description": "County code, such as `WAC033`."
         }
       },
       "required": [
-        "zone_type",
-        "zone_id"
+        "zone_id",
+        "zone_type"
       ]
     },
     "response": {

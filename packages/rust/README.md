@@ -20,7 +20,7 @@ No account, no key, no quota. The service asks one thing of a caller: say who yo
 
 ```toml
 [dependencies]
-weather_gov = { package = "truewire-weather-gov", version = "0.2" }
+weather_gov = { package = "truewire-weather-gov", version = "0.3" }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 ```
 

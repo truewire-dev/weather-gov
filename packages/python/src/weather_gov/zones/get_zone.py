@@ -2,18 +2,16 @@
 from truewire_core.types import TimestampIso
 from typing_extensions import Any, Literal, NotRequired, TypedDict, overload
 from weather_gov.core import Endpoint
-from weather_gov.schemas import ZoneFeature
+from weather_gov.schemas import ZoneFeature, ZoneKind
 
 
 class Request(TypedDict):
   """Which zone, and as of when."""
 
-  zone_type: Literal[
-    'land', 'marine', 'forecast', 'public', 'coastal', 'offshore', 'fire', 'county'
-  ]
-  """The zone type. Any of them finds a zone of another type too (`/zones/forecast/PZZ135` answers the coastal zone), but the code decides what comes back."""
   zone_id: str
   """Zone code, such as `WAZ315`. `points.get_point` returns the forecast, county and fire-weather zones of a place as URLs ending in one."""
+  zone_type: ZoneKind
+  """The zone type. Any of them finds a zone of another type too (`/zones/forecast/PZZ135` answers the coastal zone), but the code decides what comes back."""
   effective: NotRequired[TimestampIso]
   """Answer as the zone stood at this time rather than now. Before the zone took effect the service answers 404."""
 
@@ -24,47 +22,41 @@ class GetZone(Endpoint):
   @overload
   async def get_zone(
     self,
-    zone_type: Literal[
-      'land', 'marine', 'forecast', 'public', 'coastal', 'offshore', 'fire', 'county'
-    ],
-    *,
     zone_id: str,
+    *,
+    zone_type: ZoneKind,
     effective: TimestampIso | None = None,
     validate: Literal[False],
   ) -> Any: ...
   @overload
   async def get_zone(
     self,
-    zone_type: Literal[
-      'land', 'marine', 'forecast', 'public', 'coastal', 'offshore', 'fire', 'county'
-    ],
-    *,
     zone_id: str,
+    *,
+    zone_type: ZoneKind,
     effective: TimestampIso | None = None,
     validate: bool | None = None,
   ) -> ZoneFeature: ...
   async def get_zone(
     self,
-    zone_type: Literal[
-      'land', 'marine', 'forecast', 'public', 'coastal', 'offshore', 'fire', 'county'
-    ],
-    *,
     zone_id: str,
+    *,
+    zone_type: ZoneKind,
     effective: TimestampIso | None = None,
     validate: bool | None = None,
   ) -> ZoneFeature:
     """One zone, with its outline. The outline is most of what a zone is, so the client hands back the whole GeoJSON feature: `geometry` is the area, `properties` the rest.
 
     Args:
-      zone_type: The zone type. Any of them finds a zone of another type too (`/zones/forecast/PZZ135` answers the coastal zone), but the code decides what comes back.
       zone_id: Zone code, such as `WAZ315`. `points.get_point` returns the forecast, county and fire-weather zones of a place as URLs ending in one.
+      zone_type:
       effective: Answer as the zone stood at this time rather than now. Before the zone took effect the service answers 404.
       validate: Override this call's response validation; falls back to the client-level default when omitted. `False` returns the parsed body as it came, typed `Any`.
 
     References:
       - [Official docs](https://www.weather.gov/documentation/services-web-api#/default/zone)
     """
-    request: Request = Request(zone_type=zone_type, zone_id=zone_id)
+    request: Request = Request(zone_id=zone_id, zone_type=zone_type)
     if effective is not None:
       request['effective'] = effective
     return await self.request(

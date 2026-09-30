@@ -14,23 +14,13 @@
       "type": "object",
       "description": "Which zone, and as of when.",
       "properties": {
-        "zone_type": {
-          "type": "string",
-          "enum": [
-            "land",
-            "marine",
-            "forecast",
-            "public",
-            "coastal",
-            "offshore",
-            "fire",
-            "county"
-          ],
-          "description": "The zone type. Any of them finds a zone of another type too (`/zones/forecast/PZZ135` answers the coastal zone), but the code decides what comes back."
-        },
         "zone_id": {
           "type": "string",
           "description": "Zone code, such as `WAZ315`. `points.get_point` returns the forecast, county and fire-weather zones of a place as URLs ending in one."
+        },
+        "zone_type": {
+          "$ref": "ZoneKind",
+          "description": "The zone type. Any of them finds a zone of another type too (`/zones/forecast/PZZ135` answers the coastal zone), but the code decides what comes back."
         },
         "effective": {
           "type": "string",
@@ -39,8 +29,8 @@
         }
       },
       "required": [
-        "zone_type",
-        "zone_id"
+        "zone_id",
+        "zone_type"
       ]
     },
     "response": {

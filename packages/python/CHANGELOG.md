@@ -20,9 +20,10 @@ Generated with truewire 0.11.
 - **`ObservationCollection` and `StationCollection` are shared schemas.** Each is returned
   by more than one endpoint now, so they moved from `weather_gov.stations.get_observations`
   and `weather_gov.stations.list_stations` to `weather_gov.schemas`, with
-  `ObservationPagination` and `CollectionPagination`; the old imports of the two
-  collections still work. `Station` gains optional `distance` and `bearing`, which only
-  `stations.list_stations_for_gridpoint` sends.
+  `ObservationPagination` and `CollectionPagination`. The old paths still import at
+  runtime, but type checkers flag them (pyright reports `reportPrivateImportUsage`), so
+  import all four from `weather_gov.schemas`. `Station` gains optional `distance` and
+  `bearing`, which only `stations.list_stations_for_gridpoint` sends.
 
 ## 0.1.0
 

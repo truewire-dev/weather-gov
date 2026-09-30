@@ -2,15 +2,13 @@
 from truewire_core.types import TimestampIso
 from typing_extensions import Any, Literal, NotRequired, TypedDict, overload
 from weather_gov.core import Endpoint
-from weather_gov.schemas import ZoneCollection
+from weather_gov.schemas import ZoneCollection, ZoneKind
 
 
 class Request(TypedDict):
   """Which type, and which of its zones. Give one value per array filter: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last."""
 
-  zone_type: Literal[
-    'land', 'marine', 'forecast', 'public', 'coastal', 'offshore', 'fire', 'county'
-  ]
+  zone_type: ZoneKind
   """The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses)."""
   id: NotRequired[list[str]]
   """Zone codes to narrow to, such as `WAZ315` or `WAC033`."""
@@ -34,9 +32,7 @@ class ListZonesByType(Endpoint):
   @overload
   async def list_zones_by_type(
     self,
-    zone_type: Literal[
-      'land', 'marine', 'forecast', 'public', 'coastal', 'offshore', 'fire', 'county'
-    ],
+    zone_type: ZoneKind,
     *,
     id: list[str] | None = None,
     area: list[str] | None = None,
@@ -50,9 +46,7 @@ class ListZonesByType(Endpoint):
   @overload
   async def list_zones_by_type(
     self,
-    zone_type: Literal[
-      'land', 'marine', 'forecast', 'public', 'coastal', 'offshore', 'fire', 'county'
-    ],
+    zone_type: ZoneKind,
     *,
     id: list[str] | None = None,
     area: list[str] | None = None,
@@ -65,9 +59,7 @@ class ListZonesByType(Endpoint):
   ) -> ZoneCollection: ...
   async def list_zones_by_type(
     self,
-    zone_type: Literal[
-      'land', 'marine', 'forecast', 'public', 'coastal', 'offshore', 'fire', 'county'
-    ],
+    zone_type: ZoneKind,
     *,
     id: list[str] | None = None,
     area: list[str] | None = None,
@@ -81,7 +73,7 @@ class ListZonesByType(Endpoint):
     """The zones of one type, optionally narrowed by code, place, region or point. Each comes without its outline; `zones.get_zone` has it.
 
     Args:
-      zone_type: The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses).
+      zone_type:
       id: Zone codes to narrow to, such as `WAZ315` or `WAC033`.
       area: Two-letter state, territory or marine-area codes to narrow to, such as `WA` or `PZ`. Un-enumerated for the reason `alerts.get_active_alerts` gives for `area`.
       region: Regions to narrow to: a land region (`AR` Alaska, `CR` Central, `ER` Eastern, `PR` Pacific, `SR` Southern, `WR` Western) or a marine one (`AL` Alaska waters, `AT` Atlantic, `GL` Great Lakes, `GM` Gulf of Mexico, `PA` Eastern Pacific, `PI` Pacific Islands).

@@ -19,28 +19,18 @@
       "type": "object",
       "description": "Which zone.",
       "properties": {
-        "zone_type": {
-          "type": "string",
-          "enum": [
-            "land",
-            "marine",
-            "forecast",
-            "public",
-            "coastal",
-            "offshore",
-            "fire",
-            "county"
-          ],
-          "description": "The zone type. Only public zones have one, addressed as `forecast`, `public` or `land`; a county, fire or marine zone answers 404."
-        },
         "zone_id": {
           "type": "string",
           "description": "Public zone code, such as `WAZ315`."
+        },
+        "zone_type": {
+          "$ref": "ZoneKind",
+          "description": "The zone type. Only public zones have one, addressed as `forecast`, `public` or `land`; a county, fire or marine zone answers 404."
         }
       },
       "required": [
-        "zone_type",
-        "zone_id"
+        "zone_id",
+        "zone_type"
       ]
     },
     "response": {

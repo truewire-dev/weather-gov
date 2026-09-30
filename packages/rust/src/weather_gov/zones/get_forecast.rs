@@ -8,38 +8,7 @@ use truewire_core::{
 };
 
 use crate::meta::DefaultMeta;
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub enum RequestZoneType {
-    #[serde(rename = "land")]
-    Land,
-    #[serde(rename = "marine")]
-    Marine,
-    #[serde(rename = "forecast")]
-    Forecast,
-    #[serde(rename = "public")]
-    Public,
-    #[serde(rename = "coastal")]
-    Coastal,
-    #[serde(rename = "offshore")]
-    Offshore,
-    #[serde(rename = "fire")]
-    Fire,
-    #[serde(rename = "county")]
-    County,
-}
-
-/// Which zone.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct Request {
-    /// The zone type. Only public zones have one, addressed as `forecast`, `public` or `land`; a county, fire or marine zone answers 404.
-    pub zone_type: RequestZoneType,
-    /// Public zone code, such as `WAZ315`.
-    pub zone_id: String,
-    /// Keys the spec does not document, kept as they came.
-    #[serde(flatten)]
-    pub extra: serde_json::Map<String, serde_json::Value>,
-}
+use crate::types::ZoneKind;
 
 /// One period: a named half-day.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
@@ -51,6 +20,18 @@ pub struct ZoneForecastPeriod {
     /// The forecaster's text for the period.
     #[serde(rename = "detailedForecast")]
     pub detailed_forecast: String,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+/// Which zone.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Request {
+    /// Public zone code, such as `WAZ315`.
+    pub zone_id: String,
+    /// The zone type. Only public zones have one, addressed as `forecast`, `public` or `land`; a county, fire or marine zone answers 404.
+    pub zone_type: ZoneKind,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,

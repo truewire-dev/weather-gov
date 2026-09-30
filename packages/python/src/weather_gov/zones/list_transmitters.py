@@ -7,10 +7,10 @@ from weather_gov.core import Endpoint
 class Request(TypedDict):
   """Which county."""
 
-  zone_type: Literal['county']
-  """The zone type. Only `county`: the OpenAPI lists every zone type, but the service refuses any other with a 404 naming `county` as the one value it takes."""
   zone_id: str
   """County code, such as `WAC033`."""
+  zone_type: Literal['county']
+  """The zone type. Only `county`: the OpenAPI lists every zone type, but the service refuses any other with a 404 naming `county` as the one value it takes."""
 
 
 TransmitterKeywords = TypedDict(
@@ -61,38 +61,38 @@ class ListTransmitters(Endpoint):
   @overload
   async def list_transmitters(
     self,
-    zone_type: Literal['county'] = 'county',
-    *,
     zone_id: str,
+    *,
+    zone_type: Literal['county'] = 'county',
     validate: Literal[False],
   ) -> Any: ...
   @overload
   async def list_transmitters(
     self,
-    zone_type: Literal['county'] = 'county',
-    *,
     zone_id: str,
+    *,
+    zone_type: Literal['county'] = 'county',
     validate: bool | None = None,
   ) -> TransmitterCollection: ...
   async def list_transmitters(
     self,
-    zone_type: Literal['county'] = 'county',
-    *,
     zone_id: str,
+    *,
+    zone_type: Literal['county'] = 'county',
     validate: bool | None = None,
   ) -> TransmitterCollection:
     """The NOAA Weather Radio transmitters that broadcast for a county. JSON-LD, not GeoJSON: the transmitters come as a `@graph`.
 
     Args:
-      zone_type: The zone type. Only `county`: the OpenAPI lists every zone type, but the service refuses any other with a 404 naming `county` as the one value it takes.
       zone_id: County code, such as `WAC033`.
+      zone_type: The zone type. Only `county`: the OpenAPI lists every zone type, but the service refuses any other with a 404 naming `county` as the one value it takes.
       validate: Override this call's response validation; falls back to the client-level default when omitted. `False` returns the parsed body as it came, typed `Any`.
 
     References:
       - [Official docs](https://www.weather.gov/documentation/services-web-api#/default/transmitter_zone)
     """
     return await self.request(
-      Request(zone_type=zone_type, zone_id=zone_id),
+      Request(zone_id=zone_id, zone_type=zone_type),
       method='GET',
       path='/zones/{zone_type}/{zone_id}/radio',
       meta={},

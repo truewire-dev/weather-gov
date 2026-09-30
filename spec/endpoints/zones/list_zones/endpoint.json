@@ -56,18 +56,7 @@
           "type": "array",
           "description": "Zone types to narrow to. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses).",
           "items": {
-            "type": "string",
-            "enum": [
-              "land",
-              "marine",
-              "forecast",
-              "public",
-              "coastal",
-              "offshore",
-              "fire",
-              "county"
-            ],
-            "description": "One zone type."
+            "$ref": "ZoneKind"
           }
         },
         "point": {

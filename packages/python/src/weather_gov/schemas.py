@@ -146,6 +146,9 @@ class Zone(ZoneKeywords):
   """The radar that covers the zone."""
 
 
+ZoneKind = Literal['land', 'marine', 'forecast', 'public', 'coastal', 'offshore', 'fire', 'county']
+
+
 class Alert(TypedDict):
   """One watch, warning or advisory, in the Common Alerting Protocol vocabulary the service issues them in."""
 

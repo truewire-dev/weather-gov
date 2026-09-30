@@ -15,17 +15,7 @@
       "description": "Which type, and which of its zones. Give one value per array filter: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last.",
       "properties": {
         "zone_type": {
-          "type": "string",
-          "enum": [
-            "land",
-            "marine",
-            "forecast",
-            "public",
-            "coastal",
-            "offshore",
-            "fire",
-            "county"
-          ],
+          "$ref": "ZoneKind",
           "description": "The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses)."
         },
         "id": {

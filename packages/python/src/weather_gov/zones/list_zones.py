@@ -2,7 +2,7 @@
 from truewire_core.types import TimestampIso
 from typing_extensions import Any, Literal, NotRequired, TypedDict, overload
 from weather_gov.core import Endpoint
-from weather_gov.schemas import ZoneCollection
+from weather_gov.schemas import ZoneCollection, ZoneKind
 
 
 class Request(TypedDict):
@@ -16,9 +16,7 @@ class Request(TypedDict):
     list[Literal['AR', 'CR', 'ER', 'PR', 'SR', 'WR', 'AL', 'AT', 'GL', 'GM', 'PA', 'PI']]
   ]
   """Regions to narrow to: a land region (`AR` Alaska, `CR` Central, `ER` Eastern, `PR` Pacific, `SR` Southern, `WR` Western) or a marine one (`AL` Alaska waters, `AT` Atlantic, `GL` Great Lakes, `GM` Gulf of Mexico, `PA` Eastern Pacific, `PI` Pacific Islands)."""
-  type: NotRequired[
-    list[Literal['land', 'marine', 'forecast', 'public', 'coastal', 'offshore', 'fire', 'county']]
-  ]
+  type: NotRequired[list[ZoneKind]]
   """Zone types to narrow to. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses)."""
   point: NotRequired[str]
   """A `latitude,longitude` pair, such as `47.6062,-122.3321`; returns the zones containing it."""
@@ -39,10 +37,7 @@ class ListZones(Endpoint):
     area: list[str] | None = None,
     region: list[Literal['AR', 'CR', 'ER', 'PR', 'SR', 'WR', 'AL', 'AT', 'GL', 'GM', 'PA', 'PI']]
     | None = None,
-    type: list[
-      Literal['land', 'marine', 'forecast', 'public', 'coastal', 'offshore', 'fire', 'county']
-    ]
-    | None = None,
+    type: list[ZoneKind] | None = None,
     point: str | None = None,
     effective: TimestampIso | None = None,
     limit: int | None = None,
@@ -56,10 +51,7 @@ class ListZones(Endpoint):
     area: list[str] | None = None,
     region: list[Literal['AR', 'CR', 'ER', 'PR', 'SR', 'WR', 'AL', 'AT', 'GL', 'GM', 'PA', 'PI']]
     | None = None,
-    type: list[
-      Literal['land', 'marine', 'forecast', 'public', 'coastal', 'offshore', 'fire', 'county']
-    ]
-    | None = None,
+    type: list[ZoneKind] | None = None,
     point: str | None = None,
     effective: TimestampIso | None = None,
     limit: int | None = None,
@@ -72,10 +64,7 @@ class ListZones(Endpoint):
     area: list[str] | None = None,
     region: list[Literal['AR', 'CR', 'ER', 'PR', 'SR', 'WR', 'AL', 'AT', 'GL', 'GM', 'PA', 'PI']]
     | None = None,
-    type: list[
-      Literal['land', 'marine', 'forecast', 'public', 'coastal', 'offshore', 'fire', 'county']
-    ]
-    | None = None,
+    type: list[ZoneKind] | None = None,
     point: str | None = None,
     effective: TimestampIso | None = None,
     limit: int | None = None,

@@ -8,35 +8,15 @@ use truewire_core::{
 };
 
 use crate::meta::DefaultMeta;
-use crate::types::ZoneFeature;
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub enum RequestZoneType {
-    #[serde(rename = "land")]
-    Land,
-    #[serde(rename = "marine")]
-    Marine,
-    #[serde(rename = "forecast")]
-    Forecast,
-    #[serde(rename = "public")]
-    Public,
-    #[serde(rename = "coastal")]
-    Coastal,
-    #[serde(rename = "offshore")]
-    Offshore,
-    #[serde(rename = "fire")]
-    Fire,
-    #[serde(rename = "county")]
-    County,
-}
+use crate::types::{ZoneFeature, ZoneKind};
 
 /// Which zone, and as of when.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Request {
-    /// The zone type. Any of them finds a zone of another type too (`/zones/forecast/PZZ135` answers the coastal zone), but the code decides what comes back.
-    pub zone_type: RequestZoneType,
     /// Zone code, such as `WAZ315`. `points.get_point` returns the forecast, county and fire-weather zones of a place as URLs ending in one.
     pub zone_id: String,
+    /// The zone type. Any of them finds a zone of another type too (`/zones/forecast/PZZ135` answers the coastal zone), but the code decides what comes back.
+    pub zone_type: ZoneKind,
     /// Answer as the zone stood at this time rather than now. Before the zone took effect the service answers 404.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub effective: Option<TimestampIso>,

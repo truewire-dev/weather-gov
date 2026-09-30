@@ -4,15 +4,15 @@ import type { DefaultMeta } from '../meta.js'
 
 /** Which county. */
 export interface Request {
-  /** The zone type. Only `county`: the OpenAPI lists every zone type, but the service refuses any other with a 404 naming `county` as the one value it takes. */
-  zone_type: 'county'
   /** County code, such as `WAC033`. */
   zone_id: string
+  /** The zone type. Only `county`: the OpenAPI lists every zone type, but the service refuses any other with a 404 naming `county` as the one value it takes. */
+  zone_type: 'county'
 }
 
 export const Request: Codec<Request> = t.object({
-  zone_type: t.literal('county'),
   zone_id: t.string,
+  zone_type: t.literal('county'),
 })
 
 /** One NOAA Weather Radio transmitter. */

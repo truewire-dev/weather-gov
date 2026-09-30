@@ -383,7 +383,7 @@ async fn zones_list_zones_finds_one_zone_of_each_land_kind_at_a_point() {
 
 #[tokio::test]
 async fn zones_list_zones_honours_area_type_and_limit() {
-    use weather_gov::zones::list_zones::RequestTypeItem;
+    use weather_gov::types::ZoneKind;
     let mock = start_mock();
     let client = client(&mock);
     let page = client
@@ -391,7 +391,7 @@ async fn zones_list_zones_honours_area_type_and_limit() {
         .list_zones(
             weather_gov::zones::list_zones::Request {
                 area: Some(vec!["WA".to_string()]),
-                type_: Some(vec![RequestTypeItem::Fire]),
+                type_: Some(vec![ZoneKind::Fire]),
                 limit: Some(3),
                 ..Default::default()
             },
@@ -417,7 +417,7 @@ async fn zones_list_zones_honours_area_type_and_limit() {
 
 #[tokio::test]
 async fn zones_list_zones_by_type_takes_the_type_from_the_path() {
-    use weather_gov::zones::list_zones_by_type::RequestZoneType;
+    use weather_gov::types::ZoneKind;
     let mock = start_mock();
     let client = client(&mock);
     let page = client
@@ -425,7 +425,7 @@ async fn zones_list_zones_by_type_takes_the_type_from_the_path() {
         .list_zones_by_type(
             weather_gov::zones::list_zones_by_type::Request {
                 // A request with a required enum has no `Default`, so every field is spelled.
-                zone_type: RequestZoneType::County,
+                zone_type: ZoneKind::County,
                 id: None,
                 area: Some(vec!["WA".to_string()]),
                 region: None,
@@ -448,16 +448,17 @@ async fn zones_list_zones_by_type_takes_the_type_from_the_path() {
 
 #[tokio::test]
 async fn zones_get_zone_keeps_the_outline_and_get_forecast_unwraps() {
-    use weather_gov::zones::get_forecast::RequestZoneType as ForecastZoneType;
-    use weather_gov::zones::get_zone::RequestZoneType;
+    use weather_gov::types::ZoneKind;
     let mock = start_mock();
     let client = client(&mock);
+    // One zone type for every endpoint that takes one.
+    let kind = ZoneKind::Forecast;
     let feature = client
         .zones
         .get_zone(
             weather_gov::zones::get_zone::Request {
-                zone_type: RequestZoneType::Forecast,
                 zone_id: "WAZ315".to_string(),
+                zone_type: kind,
                 effective: None,
                 extra: Default::default(),
             },
@@ -480,8 +481,8 @@ async fn zones_get_zone_keeps_the_outline_and_get_forecast_unwraps() {
         .zones
         .get_forecast(
             weather_gov::zones::get_forecast::Request {
-                zone_type: ForecastZoneType::Forecast,
                 zone_id: "WAZ315".to_string(),
+                zone_type: kind,
                 extra: Default::default(),
             },
             CallOptions::default(),
