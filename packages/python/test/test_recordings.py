@@ -14,6 +14,7 @@ came back full.
 import json
 from collections.abc import Callable
 from datetime import datetime
+from decimal import Decimal
 from pathlib import Path
 
 import pytest
@@ -334,6 +335,139 @@ def gridpoint_stations(result: Any) -> None:
   assert distances == sorted(distances)
 
 
+def recorded_payload(endpoint: str, example_id: str) -> Any:
+  """The response half of another example, as it came off the wire."""
+  path = PROJECT / 'spec/endpoints' / endpoint.replace('.', '/') / 'examples'
+  return json.loads((path / f'{example_id}.response.json').read_text())['payload']
+
+
+def one_station(result: Any) -> None:
+  """One station, returned whole: the geometry is the only place its coordinates are."""
+  asked = example_request('stations.get_station', 'ksea')
+  assert result['type'] == 'Feature'
+  assert result['id'] == f'https://api.weather.gov/stations/{asked["station_id"]}'
+  is_point(result['geometry'])
+  longitude, latitude = result['geometry']['coordinates']
+  assert round(latitude) == 47 and round(longitude) == -122
+  properties = result['properties']
+  assert properties['stationIdentifier'] == asked['station_id']
+  assert properties['timeZone'] == 'America/Los_Angeles'
+  is_measurement(properties['elevation'], unit='wmoUnit:m')
+  # The county `zones.list_transmitters` records its transmitters for.
+  assert properties['county'].endswith('/zones/county/WAC033')
+
+
+def observation_at(result: Any) -> None:
+  """The observation at exactly the moment asked for, unwrapped like the latest one."""
+  asked = example_request('stations.get_observation', 'ksea_metar')
+  assert 'properties' not in result
+  assert result['stationId'] == asked['station_id']
+  assert result['timestamp'] == datetime.fromisoformat(asked['time'])
+  # The refresh picks a METAR on purpose: the raw report is the reason to fetch this one.
+  assert result['rawMessage'].startswith(f'{asked["station_id"]} ')
+  is_measurement(result['temperature'], unit='wmoUnit:degC')
+
+
+def tafs(result: Any) -> None:
+  """A week of forecasts for one airport, newest first, each covering a later span."""
+  asked = example_request('stations.list_tafs', 'ksea')
+  graph = result['@graph']
+  assert len(graph) > 10
+  issued = [taf['issueTime'] for taf in graph]
+  assert issued == sorted(issued, reverse=True)
+  for taf in graph:
+    assert taf['location'] == asked['station_id']
+    assert taf['id'].startswith(f'https://api.weather.gov/stations/{asked["station_id"]}/tafs/')
+    assert taf['issueTime'] <= taf['start'] < taf['end']
+  # Well-Known Text, latitude first: the reverse of the station's own GeoJSON coordinates.
+  longitude, latitude = recorded_payload('stations.get_station', 'ksea')['geometry']['coordinates']
+  first, second = graph[0]['geometry'].removeprefix('POINT(').removesuffix(')').split()
+  assert (float(first), float(second)) == (round(latitude, 2), round(longitude, 2))
+
+
+def active_briefing(result: Any) -> None:
+  """An office with a briefing out, and the PDF it points at."""
+  asked = example_request('offices.get_briefing', 'active')
+  briefing = result['briefing']
+  assert briefing is not None
+  assert briefing['officeId'] == asked['office_id']
+  assert briefing['startTime'] < briefing['endTime']
+  assert briefing['download'] == (
+    f'https://api.weather.gov/offices/{asked["office_id"]}/briefing/download/{briefing["id"]}'
+  )
+
+
+def no_briefing(result: Any) -> None:
+  """Most offices, most days: a 200 and an honest null, not an error."""
+  assert result['briefing'] is None
+
+
+def headlines(result: Any) -> None:
+  """An office's headlines, each a link whose HTML repeats its title."""
+  asked = example_request('offices.list_headlines', 'wakefield')
+  graph = result['@graph']
+  assert graph
+  for headline in graph:
+    assert headline['office'] == f'https://api.weather.gov/offices/{asked["office_id"]}'
+    assert headline['@id'] == f'{headline["office"]}/headlines/{headline["id"]}'
+    assert headline['title'] in headline['content']
+    assert headline['summary'] is None or isinstance(headline['summary'], str)
+
+
+def one_headline(result: Any) -> None:
+  """The headline asked for, the same one the office lists."""
+  asked = example_request('offices.get_headline', 'wakefield')
+  assert result['id'] == asked['headline_id']
+  listed = {
+    entry['id']: entry
+    for entry in recorded_payload('offices.list_headlines', 'wakefield')['@graph']
+  }
+  assert listed[result['id']]['title'] == result['title']
+  assert listed[result['id']]['link'] == result['link']
+
+
+def weather_stories(result: Any) -> None:
+  """An office's weather stories, each a graphic with its text."""
+  asked = example_request('offices.list_weather_stories', 'wakefield')
+  stories = result['stories']
+  assert stories
+  for story in stories:
+    assert story['officeId'] == asked['office_id']
+    assert story['title'] and story['description']
+    assert story['startTime'] < story['endTime']
+    assert story['download'] is None or story['download'].startswith(
+      f'https://api.weather.gov/offices/{asked["office_id"]}/weatherstories/download/'
+    )
+
+
+def radio_last_page(result: Any) -> None:
+  """The last page of every transmitter: short, with no next page, repeats and all."""
+  graph = result['@graph']
+  assert 0 < len(graph) < 500
+  assert 'pagination' not in result
+  calls = [transmitter['callSign'] for transmitter in graph]
+  # Each transmitter arrives many times over, as it does for a county.
+  assert len(set(calls)) < len(calls)
+  for transmitter in graph:
+    assert transmitter['@id'] == f'https://api.weather.gov/radio/{transmitter["callSign"]}'
+    assert len(transmitter['sameCodes']) == len(transmitter['counties'])
+    assert 162 < transmitter['transmitterFrequency'] < 163
+
+
+def one_transmitter(result: Any) -> None:
+  """One transmitter by call sign: the one `zones.list_transmitters` found for King County."""
+  asked = example_request('radio.get_transmitter', 'seattle')
+  assert result['callSign'] == asked['call_sign']
+  assert result['@id'] == f'https://api.weather.gov/radio/{asked["call_sign"]}'
+  county = next(
+    entry
+    for entry in recorded_payload('zones.list_transmitters', 'king_county')['@graph']
+    if entry['callSign'] == asked['call_sign']
+  )
+  assert result['counties'] == county['counties']
+  assert result['transmitterFrequency'] == Decimal(county['transmitterFrequency'])
+
+
 PROVES: dict[str, Callable[[Any], None]] = {
   'points.get_point[seattle]': point,
   'forecast.get_forecast[seattle]': forecast,
@@ -356,6 +490,16 @@ PROVES: dict[str, Callable[[Any], None]] = {
   'stations.get_observations_for_zone[seattle_capped]': zone_observations,
   'stations.list_stations_for_zone[seattle]': zone_stations,
   'stations.list_stations_for_gridpoint[seattle_nearest]': gridpoint_stations,
+  'stations.get_station[ksea]': one_station,
+  'stations.get_observation[ksea_metar]': observation_at,
+  'stations.list_tafs[ksea]': tafs,
+  'offices.get_briefing[active]': active_briefing,
+  'offices.get_briefing[seattle]': no_briefing,
+  'offices.list_headlines[wakefield]': headlines,
+  'offices.get_headline[wakefield]': one_headline,
+  'offices.list_weather_stories[wakefield]': weather_stories,
+  'radio.list_transmitters[last_page]': radio_last_page,
+  'radio.get_transmitter[seattle]': one_transmitter,
 }
 """What each recording is here to prove. A recording nobody asserts anything about is a
 file that turns green whatever the API sends."""
