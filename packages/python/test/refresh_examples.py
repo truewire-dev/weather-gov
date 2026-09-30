@@ -8,7 +8,8 @@ will still be the Seattle grid cell next week. These examples are not:
   observations and then drops them, so last month's window records as an empty
   `FeatureCollection` -- a 200 with nothing in it, which records exactly as happily as a
   full one and turns the recording into a file that proves nothing. Both observation
-  examples are repointed to the same window so the capped one stays a comparison.
+  examples are repointed to the same window so the capped one stays a comparison, and
+  `stations.get_observations_for_zone` moves with them, since it reads the same week.
 - `alerts.get_alert` names one alert by identifier. Alerts expire, usually within hours,
   and the identifier is then gone. The replacement is read from whatever is severe and in
   effect right now -- the same query `alerts.get_active_alerts` records.
@@ -39,7 +40,10 @@ CONTACT = 'hello@truewire.dev'
 it runs before the client has anything current to record -- so it repeats the same
 `User-Agent` policy the core implements."""
 
-OBSERVATIONS = PROJECT / 'spec/endpoints/stations/get_observations/examples'
+OBSERVATIONS = (
+  PROJECT / 'spec/endpoints/stations/get_observations/examples',
+  PROJECT / 'spec/endpoints/stations/get_observations_for_zone/examples',
+)
 ALERT = PROJECT / 'spec/endpoints/alerts/get_alert/examples/one.request.json'
 
 ALERT_WINDOW = PROJECT / 'spec/endpoints/alerts/list_alerts/examples/first_page.request.json'
@@ -89,9 +93,11 @@ def settled_window() -> dict:
 
 
 def refresh_observations() -> None:
-  """Move both observation windows to the same settled six hours."""
+  """Move every observation window to the same settled six hours."""
   window = settled_window()
-  for request in sorted(OBSERVATIONS.glob('*.request.json')):
+  for request in sorted(
+    path for examples in OBSERVATIONS for path in examples.glob('*.request.json')
+  ):
     rewrite(request, window)
 
 

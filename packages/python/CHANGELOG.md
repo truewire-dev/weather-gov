@@ -13,14 +13,27 @@ Generated with truewire 0.11.
 - **`start` and `end` are optional on the walk.** Leaving either out used to raise
   `ValueError`; now a walk without `end` starts from the newest observation, and one
   without `start` goes back as far as the service keeps.
+- **Eight more endpoints: zones, and the stations of a zone or grid cell.** A new `zones`
+  group (`list_zones`, `list_zones_by_type`, `get_zone`, `get_forecast` and
+  `list_transmitters`), and `stations.list_stations_for_zone`,
+  `stations.list_stations_for_gridpoint` and `stations.get_observations_for_zone`.
+- **`ObservationCollection` and `StationCollection` are shared schemas.** Each is returned
+  by more than one endpoint now, so they moved from `weather_gov.stations.get_observations`
+  and `weather_gov.stations.list_stations` to `weather_gov.schemas`, with
+  `ObservationPagination` and `CollectionPagination`. The old paths still import at
+  runtime, but type checkers flag them (pyright reports `reportPrivateImportUsage`), so
+  import all four from `weather_gov.schemas`. `Station` gains optional `distance` and
+  `bearing`, which only `stations.list_stations_for_gridpoint` sends.
 - **Seven more endpoints: the rest of the alerts API, and the glossary.**
   `alerts.list_alerts` (the last week, in effect or not, by `cursor`),
   `alerts.count_active_alerts`, `alerts.get_active_alerts_for_zone`, `_for_area` and
   `_for_region`, `alerts.list_alert_types`, and `glossary.list_terms`.
 - **`AlertCollection` is a shared schema.** The four endpoints that return alerts in effect
   and `alerts.list_alerts` all return it, so it moved from
-  `weather_gov.alerts.get_active_alerts` to `weather_gov.schemas`; the old import still
-  works. It gains an optional `pagination.next`, which only `alerts.list_alerts` sends.
+  `weather_gov.alerts.get_active_alerts` to `weather_gov.schemas`, with `AlertPagination`.
+  The old path still imports at runtime, but type checkers flag it, so import it from
+  `weather_gov.schemas`. It gains an optional `pagination.next`, which only
+  `alerts.list_alerts` sends.
 
 ## 0.1.0
 

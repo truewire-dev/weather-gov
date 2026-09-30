@@ -202,10 +202,147 @@ def product_types(result: Any) -> None:
     assert entry['productName']
 
 
+def example_request(endpoint: str, example_id: str) -> Any:
+  """The request half of an example, for a test that checks the answer against what was
+  asked rather than against a constant the refresh would move."""
+  path = PROJECT / 'spec/endpoints' / endpoint.replace('.', '/') / 'examples'
+  return json.loads((path / f'{example_id}.request.json').read_text())['request']
+
+
+def is_zone(feature: Any, *, geometry: bool) -> Any:
+  """A zone feature: its URL is its code, and a list leaves the outline out."""
+  zone = feature['properties']
+  assert feature['type'] == 'Feature'
+  assert feature['id'] == zone['@id'] and zone['@id'].endswith('/' + zone['id'])
+  assert zone['name']
+  assert zone['effectiveDate'] < zone['expirationDate']
+  if geometry:
+    assert feature['geometry']['type'] in ('Polygon', 'MultiPolygon')
+  else:
+    assert feature['geometry'] is None
+  return zone
+
+
+def zones_at_point(result: Any) -> None:
+  """A point lies in exactly one zone of each kind a land point has."""
+  zones = [is_zone(feature, geometry=False) for feature in result['features']]
+  assert sorted(zone['type'] for zone in zones) == ['county', 'fire', 'public']
+  assert {zone['id'] for zone in zones} >= {'WAZ315', 'WAC033'}
+  assert all(zone['state'] == 'WA' for zone in zones)
+
+
+def zones_filtered(result: Any) -> None:
+  """Every filter held: the area, the type and the limit, and the service's order by code."""
+  asked = example_request('zones.list_zones', 'washington_fire')
+  zones = [is_zone(feature, geometry=False) for feature in result['features']]
+  assert len(zones) == asked['limit']
+  assert all(zone['state'] == 'WA' and zone['type'] == 'fire' for zone in zones)
+  assert [zone['id'] for zone in zones] == sorted(zone['id'] for zone in zones)
+
+
+def zones_of_type(result: Any) -> None:
+  """The type comes from the path; county codes carry a `C` where public ones carry a `Z`."""
+  asked = example_request('zones.list_zones_by_type', 'washington_counties')
+  zones = [is_zone(feature, geometry=False) for feature in result['features']]
+  assert len(zones) == asked['limit']
+  for zone in zones:
+    assert zone['type'] == 'county' and zone['state'] == 'WA'
+    assert zone['id'].startswith('WAC')
+
+
+def zone(result: Any) -> None:
+  """One zone, whole: the outline is the point of fetching it alone."""
+  seattle = is_zone(result, geometry=True)
+  assert (seattle['id'], seattle['type'], seattle['name']) == (
+    'WAZ315',
+    'public',
+    'City of Seattle',
+  )
+  assert seattle['gridIdentifier'] == 'SEW'
+  assert seattle['forecastOffice'].endswith('/offices/SEW')
+  assert seattle['timeZone'] == ['America/Los_Angeles']
+  assert any(url.endswith('/stations/KSEA') for url in seattle['observationStations'])
+  # A polygon's rings close on themselves.
+  ring = result['geometry']['coordinates'][0]
+  assert ring[0] == ring[-1] and len(ring) > 3
+
+
+def zone_forecast(result: Any) -> None:
+  """The zone's own forecast, unwrapped: numbered periods of the forecaster's prose."""
+  assert 'properties' not in result
+  assert result['zone'].endswith('/zones/forecast/WAZ315')
+  periods = result['periods']
+  assert len(periods) > 6
+  assert [p['number'] for p in periods] == list(range(1, len(periods) + 1))
+  for period in periods:
+    assert period['name'] and period['detailedForecast']
+
+
+def transmitters(result: Any) -> None:
+  """Every transmitter broadcasts for the county asked about, repeats and all."""
+  graph = result['@graph']
+  assert graph
+  for transmitter in graph:
+    assert 'WAC033' in transmitter['counties']
+    assert len(transmitter['sameCodes']) == len(transmitter['counties'])
+    # NOAA Weather Radio broadcasts on seven channels, 162.400 to 162.550 MHz.
+    assert 162 < transmitter['transmitterFrequency'] < 163
+  assert 'KHB60' in {transmitter['callSign'] for transmitter in graph}
+
+
+def zone_observations(result: Any) -> None:
+  """Several stations, merged newest first, capped at the limit, inside the window."""
+  asked = example_request('stations.get_observations_for_zone', 'seattle_capped')
+  features = result['features']
+  assert len(features) == asked['limit']
+  timestamps = [f['properties']['timestamp'] for f in features]
+  assert timestamps == sorted(timestamps, reverse=True), 'the service answers newest first'
+  start = datetime.fromisoformat(asked['start'])
+  end = datetime.fromisoformat(asked['end'])
+  assert all(start <= stamp < end for stamp in timestamps)
+  assert len({f['properties']['stationId'] for f in features}) > 1
+  # Timestamps repeat across stations: why this endpoint declares no seek walk.
+  assert len(set(timestamps)) < len(timestamps)
+  for feature in features:
+    is_point(feature['geometry'])
+    is_measurement(feature['properties']['temperature'])
+
+
+def zone_stations(result: Any) -> None:
+  """The stations of a zone: the list the zone itself names, not the stations that name it
+  as their own forecast zone (four of Seattle's six name a neighbouring zone)."""
+  features = result['features']
+  assert features
+  for feature in features:
+    is_point(feature['geometry'])
+    assert feature['properties']['stationIdentifier']
+  urls = [feature['id'] for feature in features]
+  assert result['observationStations'] == urls
+  zone = json.loads(
+    (PROJECT / 'spec/endpoints/zones/get_zone/examples/seattle.response.json').read_text()
+  )['payload']['properties']
+  assert zone['id'] == example_request('stations.list_stations_for_zone', 'seattle')['zone_id']
+  assert sorted(urls) == sorted(zone['observationStations'])
+
+
+def gridpoint_stations(result: Any) -> None:
+  """Nearest first, each with the distance and bearing only this endpoint sends."""
+  asked = example_request('stations.list_stations_for_gridpoint', 'seattle_nearest')
+  features = result['features']
+  assert len(features) == asked['limit']
+  distances = []
+  for feature in features:
+    station = feature['properties']
+    is_measurement(station['distance'], unit='wmoUnit:m')
+    is_measurement(station['bearing'], unit='wmoUnit:degree_(angle)')
+    distances.append(station['distance']['value'])
+  assert distances == sorted(distances)
+
+
 def alert_list(result: Any) -> None:
   """One page of the last week's alerts, cut to the recorded `limit`, newest first, with the
   link to the next page the service always attaches."""
-  example = example_request('list_alerts', 'first_page')
+  example = example_request('alerts.list_alerts', 'first_page')
   features = result['features']
   assert len(features) == example['limit'], 'the limit was honoured'
   sent = [as_datetime(feature['properties']['sent']) for feature in features]
@@ -223,12 +360,6 @@ def active_alert_count(result: Any) -> None:
   assert sum(result['regions'].values()) == result['marine']
   assert set(result['regions']) <= {'AL', 'AT', 'GL', 'GM', 'PA', 'PI'}
   assert result['zones'] and result['areas']
-
-
-def example_request(endpoint: str, example_id: str) -> Any:
-  """The parameters a recording was made with, which `refresh_examples.py` may have moved."""
-  path = PROJECT / f'spec/endpoints/alerts/{endpoint}/examples/{example_id}.request.json'
-  return json.loads(path.read_text())['request']
 
 
 def ugc_codes(result: Any) -> list[list[str]]:
@@ -255,7 +386,7 @@ def zone_alerts(result: Any) -> None:
   ones issued for the forecast zones overlapping it (measured 2026-09-30, `AZC009`: six of
   seven listed the county), so each is held to the zone's state or marine area and at least
   one to the zone itself."""
-  zone = example_request('get_active_alerts_for_zone', 'in_effect')['zone_id']
+  zone = example_request('alerts.get_active_alerts_for_zone', 'in_effect')['zone_id']
   codes = ugc_codes(result)
   assert any(zone in alert for alert in codes)
   for alert in codes:
@@ -265,14 +396,14 @@ def zone_alerts(result: Any) -> None:
 def area_alerts(result: Any) -> None:
   """Every alert returned covers part of the area in the path; it may cover a neighbour
   too. The path variants take no filters, so drills and test messages come back as well."""
-  area = example_request('get_active_alerts_for_area', 'in_effect')['area']
+  area = example_request('alerts.get_active_alerts_for_area', 'in_effect')['area']
   for alert in ugc_codes(result):
     assert any(code.startswith(area) for code in alert)
 
 
 def region_alerts(result: Any) -> None:
   """Every alert returned covers one of the marine areas the region in the path groups."""
-  region = example_request('get_active_alerts_for_region', 'in_effect')['region']
+  region = example_request('alerts.get_active_alerts_for_region', 'in_effect')['region']
   for alert in ugc_codes(result):
     assert any(code.startswith(MARINE_REGIONS[region]) for code in alert)
 
@@ -314,6 +445,15 @@ PROVES: dict[str, Callable[[Any], None]] = {
   'offices.get_office[seattle]': office,
   'products.list_product_types[all]': product_types,
   'glossary.list_terms[all]': glossary,
+  'zones.list_zones[seattle]': zones_at_point,
+  'zones.list_zones[washington_fire]': zones_filtered,
+  'zones.list_zones_by_type[washington_counties]': zones_of_type,
+  'zones.get_zone[seattle]': zone,
+  'zones.get_forecast[seattle]': zone_forecast,
+  'zones.list_transmitters[king_county]': transmitters,
+  'stations.get_observations_for_zone[seattle_capped]': zone_observations,
+  'stations.list_stations_for_zone[seattle]': zone_stations,
+  'stations.list_stations_for_gridpoint[seattle_nearest]': gridpoint_stations,
 }
 """What each recording is here to prove. A recording nobody asserts anything about is a
 file that turns green whatever the API sends."""

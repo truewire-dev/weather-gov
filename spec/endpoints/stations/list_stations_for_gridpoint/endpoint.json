@@ -1,0 +1,50 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/gridpoint_stations",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/gridpoints/{office}/{grid_x},{grid_y}/stations",
+    "method": "GET",
+    "description": "The observation stations usable for a grid cell, nearest first. Each carries its `distance` and `bearing` from the cell.",
+    "request": {
+      "title": "ListStationsForGridpointRequest",
+      "type": "object",
+      "description": "Which grid cell, and how many stations.",
+      "properties": {
+        "office": {
+          "type": "string",
+          "description": "Three-letter forecast office code addressing the grid, such as `SEW`. `points.get_point` returns it as `gridId`."
+        },
+        "grid_x": {
+          "type": "integer",
+          "description": "Grid column, from `points.get_point`."
+        },
+        "grid_y": {
+          "type": "integer",
+          "description": "Grid row, from `points.get_point`."
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500,
+          "description": "Most stations to return, nearest kept. Range [1, 500]; outside it the service answers 400. Without it, every station (73 for SEW 125,68 on 2026-09-30)."
+        }
+      },
+      "required": [
+        "office",
+        "grid_x",
+        "grid_y"
+      ]
+    },
+    "response": {
+      "$ref": "StationCollection",
+      "description": "The stations, nearest first."
+    }
+  },
+  "notes": [
+    "No `pagination` block, for the reason `stations.list_stations` gives: the next page is a whole URL, and here not even this endpoint's (`/stations?id[0]=...&cursor=...`)."
+  ]
+}

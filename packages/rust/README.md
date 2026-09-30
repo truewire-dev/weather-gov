@@ -20,7 +20,7 @@ No account, no key, no quota. The service asks one thing of a caller: say who yo
 
 ```toml
 [dependencies]
-weather_gov = { package = "truewire-weather-gov", version = "0.2" }
+weather_gov = { package = "truewire-weather-gov", version = "0.3" }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 ```
 
@@ -175,7 +175,7 @@ async fn yesterday(client: &Weather) -> truewire_core::Result<()> {
 }
 ```
 
-Eighteen endpoints across seven groups, the same as the other two clients.
+Twenty-six endpoints across eight groups, the same as the other two clients.
 
 ## Tests
 
