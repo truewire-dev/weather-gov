@@ -1,0 +1,9 @@
+{
+  "description": "Two named zones in one filter, sent as id=WAZ315,WAC033: both come back",
+  "request": {
+    "id": [
+      "WAZ315",
+      "WAC033"
+    ]
+  }
+}

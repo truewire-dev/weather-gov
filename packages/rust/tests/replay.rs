@@ -175,8 +175,50 @@ async fn forecast_get_forecast_returns_fourteen_periods() {
     }
 }
 
+/// The `id` list of one recorded two-value example, as strings.
+fn recorded_ids(file: &str) -> Vec<String> {
+    let ids: Vec<String> = recorded(file)["id"]
+        .as_array()
+        .expect("a recorded `id` list")
+        .iter()
+        .map(|id| id.as_str().expect("a string id").to_string())
+        .collect();
+    assert_eq!(ids.len(), 2, "{file} records two values in one filter");
+    ids
+}
+
 #[tokio::test]
-async fn stations_list_stations_sends_a_repeated_query_key() {
+async fn stations_list_stations_sends_two_ids_as_one_comma_separated_item() {
+    let mock = start_mock();
+    let client = client(&mock);
+    // The service keeps only the last of a repeated key, so `?id=KSEA&id=KPDX` would answer
+    // with KPDX alone. The endpoint declares `match.query_arrays: "comma"`, so the mock
+    // refuses any form but `?id=KSEA,KPDX`.
+    let asked = recorded_ids("stations/list_stations/examples/two_ids.request.json");
+    let page = client
+        .stations
+        .list_stations(
+            weather_gov::stations::list_stations::Request {
+                id: Some(asked.clone()),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_stations");
+    let mut returned: Vec<_> = page
+        .features
+        .iter()
+        .map(|feature| feature.properties.station_identifier.clone())
+        .collect();
+    returned.sort();
+    let mut expected = asked;
+    expected.sort();
+    assert_eq!(returned, expected);
+}
+
+#[tokio::test]
+async fn stations_list_stations_sends_a_list_filter_as_text() {
     let mock = start_mock();
     let client = client(&mock);
     // `state: ["WA"]` has to reach the wire as `?state=WA`, not as one JSON string. The
@@ -379,6 +421,43 @@ async fn zones_list_zones_finds_one_zone_of_each_land_kind_at_a_point() {
     );
     assert!(zones.iter().any(|zone| zone.id2 == "WAZ315"));
     assert!(zones.iter().any(|zone| zone.id2 == "WAC033"));
+}
+
+#[tokio::test]
+async fn zones_list_zones_sends_two_ids_as_one_comma_separated_item() {
+    use weather_gov::types::ZoneType2;
+    let mock = start_mock();
+    let client = client(&mock);
+    let asked = recorded_ids("zones/list_zones/examples/two_ids.request.json");
+    let page = client
+        .zones
+        .list_zones(
+            weather_gov::zones::list_zones::Request {
+                id: Some(asked.clone()),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_zones");
+    let zones: Vec<_> = page.features.iter().map(|f| is_zone(f, false)).collect();
+    let mut returned: Vec<_> = zones.iter().map(|zone| zone.id2.clone()).collect();
+    returned.sort();
+    let mut expected = asked;
+    expected.sort();
+    assert_eq!(returned, expected);
+    let mut kinds: Vec<_> = zones
+        .iter()
+        .map(|zone| format!("{:?}", zone.type_2))
+        .collect();
+    kinds.sort();
+    assert_eq!(
+        kinds,
+        [
+            format!("{:?}", ZoneType2::County),
+            format!("{:?}", ZoneType2::Public)
+        ]
+    );
 }
 
 #[tokio::test]

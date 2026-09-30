@@ -3,9 +3,9 @@ import { type CallOptions, type Codec, type HttpEndpoint, type TimestampIso, t }
 import type { DefaultMeta } from '../meta.js'
 import { AlertFeature } from '../types/index.js'
 
-/** How to narrow the alerts. Every filter is optional; the array-valued ones are sent as repeated query keys and mean "any of". */
+/** How to narrow the alerts. Every filter is optional; the array-valued ones mean "any of" and travel as one comma-separated query item. */
 export interface Request {
-  /** Two-letter state, territory or marine-area codes to narrow to, such as `WA` or `PZ`. Sent as a repeated query key. Left un-enumerated deliberately: the service's own 400 lists only the marine half of what it accepts, and a guessed enum would reject the states. */
+  /** Two-letter state, territory or marine-area codes to narrow to, such as `WA` or `PZ`. Left un-enumerated deliberately: the service's own 400 lists only the marine half of what it accepts, and a guessed enum would reject the states. */
   area?: string[]
   /** Marine regions to narrow to. */
   region?: ('AL' | 'AT' | 'GL' | 'GM' | 'PA' | 'PI')[]

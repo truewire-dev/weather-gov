@@ -1,6 +1,9 @@
 {
   "docs": "https://www.weather.gov/documentation/services-web-api#/default/zone_list_type",
   "meta": {},
+  "match": {
+    "query_arrays": "comma"
+  },
   "spec": {
     "kind": "rpc",
     "transports": [
@@ -12,7 +15,7 @@
     "request": {
       "title": "ListZonesByTypeRequest",
       "type": "object",
-      "description": "Which type, and which of its zones. Give one value per array filter: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last.",
+      "description": "Which type, and which of its zones. An array filter means \"any of\" and travels as one comma-separated query item.",
       "properties": {
         "zone_type": {
           "$ref": "ZoneKind",
@@ -83,7 +86,7 @@
   "notes": [
     "The OpenAPI also lists a `type` query filter on this path. It is not declared: its name is the path's, and the path wins (measured 2026-09-30, `/zones/forecast?type=county` answers public zones).",
     "No `pagination` block, for the reason `zones.list_zones` gives.",
-    "The service reads an array filter comma-separated (the OpenAPI declares `explode: false`), and keeps only the last of repeated keys. Measured 2026-09-30: `/zones?id=WAZ315,WAC033` returns both zones, `id=WAZ315&id=WAC033` only `WAC033`. This client's core sends repeated keys, as it does for every other array filter in this API (TRU-495), so until the core joins them only the last value of each filter takes effect. The examples send one value per filter.",
+    "The service reads an array filter comma-separated (the OpenAPI declares `explode: false`), and keeps only the last of repeated keys. Measured 2026-09-30: `/zones?id=WAZ315,WAC033` returns both zones, `id=WAZ315&id=WAC033` only `WAC033`. The core joins every array filter with commas, and `match.query_arrays` tells `truewire mock` to expect that form, so a core that sent repeated keys would fail every recording with two values.",
     "The OpenAPI also lists `include_geometry`. It is not declared: measured 2026-09-30, `include_geometry=true` (and `=1`) still answers `geometry: null` on every zone, with and without other filters. `zones.get_zone` is where a zone's outline comes from."
   ]
 }

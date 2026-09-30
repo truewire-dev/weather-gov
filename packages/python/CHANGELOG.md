@@ -4,6 +4,11 @@
 
 Generated with truewire 0.11.
 
+- **Fixed: a list filter with more than one value kept only the last.** The service reads
+  `id=KSEA,KPDX` and keeps only the last of `id=KSEA&id=KPDX`, and the client sent the
+  second form, so `stations.list_stations(id=['KSEA', 'KPDX'])` answered with KPDX alone.
+  Every list filter now travels as one comma-separated item: `alerts.get_active_alerts`,
+  `stations.list_stations`, `zones.list_zones` and `zones.list_zones_by_type`.
 - **Breaking: `stations.get_observations_paged` walks the whole span.** The endpoint
   declares `seek` pagination anchored to `end` instead of `window` (ADR 0013). A full page
   now moves `end` back to the oldest observation it held and asks again, where it used to
