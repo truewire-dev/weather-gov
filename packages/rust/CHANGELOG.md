@@ -33,3 +33,13 @@
   `list_transmitters`), and `stations.list_stations_for_zone`,
   `stations.list_stations_for_gridpoint` and `stations.get_observations_for_zone`. Their
   requests take a zone type as one shared enum, `types::ZoneKind`.
+- **Nine more endpoints: one station, one observation, TAFs, office news, and radio.**
+  `stations.get_station`, `stations.get_observation` (the observation at an exact
+  timestamp) and `stations.list_tafs`; `offices.get_briefing`, `offices.list_headlines`,
+  `offices.get_headline` and `offices.list_weather_stories`; and a new `radio` group,
+  `list_transmitters` and `get_transmitter`. `types::OfficeHeadline` names its `@id` `id`
+  and the headline id `id2`, as `types::Zone` does.
+- **`Transmitter` and `TransmitterCollection` are in `weather_gov::types`**, not
+  `zones::list_transmitters`, since the `radio` endpoints return them too.
+  `TransmitterCollection` gains `pagination: Option<CollectionPagination>`, which only
+  `radio.list_transmitters` sends.

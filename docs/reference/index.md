@@ -1,6 +1,6 @@
 # Reference
 
-Seven groups, nineteen endpoints, every one recorded against the live API. Each signature is
+Eight groups, twenty-eight endpoints, every one recorded against the live API. Each signature is
 generated from the endpoint's schema, so the types in your editor are the reference: every
 field carries its description, and every method's docstring links the service's own page
 for the endpoint.
@@ -33,11 +33,16 @@ for the endpoint.
 | `list_stations_for_zone` | `GET /zones/forecast/{zone_id}/stations` | whole: the stations in a public zone |
 | `list_stations_for_gridpoint` | `GET /gridpoints/{office}/{grid_x},{grid_y}/stations` | whole: stations nearest a grid cell, with distance and bearing |
 | `get_observations_for_zone` | `GET /zones/forecast/{zone_id}/observations` | whole: every station of a zone, merged newest first |
+| `get_station` | `GET /stations/{station_id}` | whole: one station, with its location |
+| `get_observation` | `GET /stations/{station_id}/observations/{time}` | unwrapped: the observation at exactly `time` |
+| `list_tafs` | `GET /stations/{station_id}/tafs` | whole: an airport's terminal aerodrome forecasts, in JSON-LD |
 
 `get_observations` has a paged twin, `get_observations_paged`, which walks a whole span
 by moving `end` ([Walk a span of observations](../how-to/walk-observations.md)).
 `get_observations_for_zone` has none: its stations report on the same minutes and its
 `end` is exclusive, so a walk would skip rows. Walk each station instead.
+`get_observation` takes the exact `timestamp` of an observation the station reported: a
+moment between two answers 404.
 
 ## `alerts`
 
@@ -54,6 +59,10 @@ service spells them: `actual`, but `Severe`, `Immediate` and `Likely`.
 | Endpoint | Upstream | Returns |
 | --- | --- | --- |
 | `get_office` | `GET /offices/{office_id}` | whole: one office, in schema.org JSON-LD |
+| `get_briefing` | `GET /offices/{office_id}/briefing` | whole: the office's active briefing, or null |
+| `list_headlines` | `GET /offices/{office_id}/headlines` | whole: the office's news headlines, in JSON-LD |
+| `get_headline` | `GET /offices/{office_id}/headlines/{headline_id}` | whole: one headline |
+| `list_weather_stories` | `GET /offices/{office_id}/weatherstories` | whole: the office's active weather stories |
 
 ## `products`
 
@@ -73,6 +82,16 @@ service spells them: `actual`, but `Severe`, `Immediate` and `Likely`.
 
 Array filters take one value each until TRU-495: the service reads several only
 comma-separated.
+
+## `radio`
+
+| Endpoint | Upstream | Returns |
+| --- | --- | --- |
+| `list_transmitters` | `GET /radio` | whole: one page of every weather radio transmitter, in JSON-LD |
+| `get_transmitter` | `GET /radio/{call_sign}` | whole: one transmitter |
+
+`radio.list_transmitters` pages by a whole URL in `pagination.next`, so it has no paged
+twin: pass the `cursor` from that URL to fetch the next page yourself.
 
 ## In each language
 

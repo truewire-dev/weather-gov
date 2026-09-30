@@ -50,6 +50,8 @@ So the endpoint declares no pagination at all rather than declaring it wrong. `c
 
 `stations.get_observations` has the same `pagination.next`, and does not need it: the walk a caller actually means there is over time, which the declared `seek` walk expresses.
 
+`radio.list_transmitters` is the second endpoint with this shape, and the one where the gap costs most: `/radio` answers 500 rows a page, takes no `limit` (the service answers 400 to any parameter but `cursor`), and repeats each of its roughly 1,000 transmitters 64 times, so the whole list is about 131 pages that a caller walks by hand. Its cursor is base64 JSON naming the first row (`eyJpIjo1MDB9` is `{"i":500}`), which is also how `refresh_examples.py` finds the last page to record without walking the rest.
+
 ## 4. A plain `window` walk was one request
 
 **Resolved upstream in truewire 0.11**, which replaces `window` with `seek` (ADR 0013). The endpoint now declares a walk anchored to `end`, measured from its two recordings: capped at ten rows, the service keeps the ten newest of the six hours. A full page moves `end` back to the oldest observation it held and asks again, so a caller's span is walked in as many requests as it needs, and the truncation guard below is no longer needed: a full page is progress, not a fault. What follows is the finding as it stood under 0.10.
@@ -84,6 +86,6 @@ A real constraint, and not one this spec format carries: `pattern` on a request 
 
 ## 7. `meta` carries the envelope, because the core has to be told per call
 
-**Convention, not a gap.** Six of the nineteen endpoints declare `envelope.payload: "properties"`. A JSON-RPC API unwraps every response the same way, so its core can do so unconditionally; here it is per endpoint, and the core has to be told which is which on the call.
+**Convention, not a gap.** Seven of the twenty-eight endpoints declare `envelope.payload: "properties"`. A JSON-RPC API unwraps every response the same way, so its core can do so unconditionally; here it is per endpoint, and the core has to be told which is which on the call.
 
 `meta` is the mechanism the toolchain provides for exactly this (authoring rule 9), so each enveloped endpoint repeats the path as `meta.payload`. Two declarations of one fact can drift, so [`packages/python/test/test_spec.py`](packages/python/test/test_spec.py) compares them for every endpoint, in both directions, and fails if either exists without the other.
