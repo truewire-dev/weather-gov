@@ -80,7 +80,7 @@ export const ObservationPagination: Codec<ObservationPagination> = t.object({
 /** One news headline an office has posted: a title and a link, usually to a page or a PDF on the office's own site. */
 export interface OfficeHeadline {
   /** URL of the headline. */
-  '@id'?: string
+  '@id': string
   /** Headline id, such as `058e41fd34b935b395e9aaf0fe175dc9`. This is what `offices.get_headline` takes. */
   id: string
   /** URL of the office that posted it. */
@@ -102,7 +102,7 @@ export interface OfficeHeadline {
 }
 
 export const OfficeHeadline: Codec<OfficeHeadline> = t.object({
-  '@id': t.optional(t.string),
+  '@id': t.string,
   id: t.string,
   office: t.string,
   important: t.boolean,

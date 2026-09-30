@@ -95,8 +95,8 @@ pub struct ObservationPagination {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct OfficeHeadline {
     /// URL of the headline.
-    #[serde(rename = "@id", default, skip_serializing_if = "Option::is_none")]
-    pub id: Option<String>,
+    #[serde(rename = "@id")]
+    pub id: String,
     /// Headline id, such as `058e41fd34b935b395e9aaf0fe175dc9`. This is what `offices.get_headline` takes.
     #[serde(rename = "id")]
     pub id2: String,

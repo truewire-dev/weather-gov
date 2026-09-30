@@ -58,7 +58,7 @@ class ObservationPagination(TypedDict):
   """URL of the next page. Absent on the last one."""
 
 
-OfficeHeadlineKeywords = TypedDict('OfficeHeadlineKeywords', {'@id': NotRequired[str]})
+OfficeHeadlineKeywords = TypedDict('OfficeHeadlineKeywords', {'@id': str})
 """
 - `@id`: URL of the headline.
 """
