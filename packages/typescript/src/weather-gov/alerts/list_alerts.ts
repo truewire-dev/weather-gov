@@ -63,7 +63,7 @@ export class ListAlerts {
   constructor(readonly core: HttpEndpoint<DefaultMeta>) {}
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  listAlerts(request: Request, options: CallOptions & { validate: false }): Promise<unknown>
+  listAlerts(request: Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * Alerts issued over roughly the last seven days, whether or not they are still in effect, newest first, optionally narrowed. For only what is in effect now, use `alerts.get_active_alerts`.
    *

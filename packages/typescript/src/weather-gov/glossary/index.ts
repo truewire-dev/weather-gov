@@ -16,7 +16,7 @@ export class Glossary {
   }
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  listTerms(request: listTerms.Request, options: CallOptions & { validate: false }): Promise<unknown>
+  listTerms(request: listTerms.Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * The whole weather glossary: several thousand terms, each with its definition. One response, about 900 KB; the service offers no filter or paging.
    *

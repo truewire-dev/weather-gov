@@ -37,7 +37,7 @@ export class CountActiveAlerts {
   constructor(readonly core: HttpEndpoint<DefaultMeta>) {}
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  countActiveAlerts(request: Request, options: CallOptions & { validate: false }): Promise<unknown>
+  countActiveAlerts(request: Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * How many alerts are in effect right now, in total and broken down by land and marine, marine region, state or marine area, and zone.
    *

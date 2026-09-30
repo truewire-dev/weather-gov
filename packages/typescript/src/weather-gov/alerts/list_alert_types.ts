@@ -22,7 +22,7 @@ export class ListAlertTypes {
   constructor(readonly core: HttpEndpoint<DefaultMeta>) {}
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  listAlertTypes(request: Request, options: CallOptions & { validate: false }): Promise<unknown>
+  listAlertTypes(request: Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * Every event name the service issues alerts under, such as `Tornado Warning`. These are the values `event` takes on the alert endpoints.
    *

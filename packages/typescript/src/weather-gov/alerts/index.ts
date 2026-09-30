@@ -38,7 +38,7 @@ export class Alerts {
   }
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  countActiveAlerts(request: countActiveAlerts.Request, options: CallOptions & { validate: false }): Promise<unknown>
+  countActiveAlerts(request: countActiveAlerts.Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * How many alerts are in effect right now, in total and broken down by land and marine, marine region, state or marine area, and zone.
    *
@@ -50,7 +50,7 @@ export class Alerts {
   }
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  getActiveAlerts(request: getActiveAlerts.Request, options: CallOptions & { validate: false }): Promise<unknown>
+  getActiveAlerts(request: getActiveAlerts.Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * Every watch, warning and advisory in effect right now, optionally narrowed. Unnarrowed this is the whole country and runs to a few hundred alerts, so narrow by `area`, `zone` or `point` unless you want all of it.
    *
@@ -110,7 +110,7 @@ export class Alerts {
   }
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  listAlertTypes(request: listAlertTypes.Request, options: CallOptions & { validate: false }): Promise<unknown>
+  listAlertTypes(request: listAlertTypes.Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * Every event name the service issues alerts under, such as `Tornado Warning`. These are the values `event` takes on the alert endpoints.
    *
@@ -122,7 +122,7 @@ export class Alerts {
   }
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  listAlerts(request: listAlerts.Request, options: CallOptions & { validate: false }): Promise<unknown>
+  listAlerts(request: listAlerts.Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * Alerts issued over roughly the last seven days, whether or not they are still in effect, newest first, optionally narrowed. For only what is in effect now, use `alerts.get_active_alerts`.
    *
