@@ -3,7 +3,7 @@ import { type CallOptions, type Codec, type HttpEndpoint, type TimestampIso, t }
 import type { DefaultMeta } from '../meta.js'
 import { ProductCollection } from '../types/index.js'
 
-/** Which products. Every filter is optional; the array-valued ones mean "any of". */
+/** Which products. Every filter is optional. Give one value per array filter: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last. */
 export interface Request {
   /** Issuance locations to narrow to, such as `SEW`. */
   location?: string[]

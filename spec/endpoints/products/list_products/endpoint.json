@@ -12,7 +12,7 @@
     "request": {
       "title": "ListProductsRequest",
       "type": "object",
-      "description": "Which products. Every filter is optional; the array-valued ones mean \"any of\".",
+      "description": "Which products. Every filter is optional. Give one value per array filter: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last.",
       "properties": {
         "location": {
           "type": "array",
@@ -72,6 +72,6 @@
   },
   "notes": [
     "No `pagination` block, deliberately. The service truncates a span to its newest `limit` products and hands back no cursor, so the only walk is a `seek` that moves `end` to the oldest `issuanceTime` of each full page. Measured 2026-09-30 with `type=AFD`: `end=2026-09-29T05:59:00Z` returned nothing issued at 05:59, and `start=05:52&end=05:59` returned the 05:52 rows and not the 05:59 ones, so `end` is exclusive and `start` inclusive. `issuanceTime` has minute resolution and is not unique (the unfiltered first page held 5000 products over 31 minutes, about 160 a minute). A walk that moved an exclusive `end` to a shared minute would skip that minute's unread products, so no walk is declared rather than a lossy one.",
-    "Every array filter is sent comma-separated by the API's own documentation (`explode: false`). Measured 2026-09-30: `type=AFD&type=TOR` returns only TOR products, while `type=AFD,TOR` returns both."
+    "The service reads an array filter comma-separated (the OpenAPI declares `explode: false`), and keeps only the last of repeated keys. Measured 2026-09-30: `type=AFD&type=TOR` returns only TOR products, `type=AFD,TOR` returns both. This client's core sends repeated keys, as it does for every other array filter in this API, so until the core joins them only the last value of each filter takes effect. The example sends one value per filter."
   ]
 }

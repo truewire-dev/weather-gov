@@ -6,7 +6,7 @@ from weather_gov.schemas import ProductCollection
 
 
 class Request(TypedDict):
-  """Which products. Every filter is optional; the array-valued ones mean "any of"."""
+  """Which products. Every filter is optional. Give one value per array filter: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last."""
 
   location: NotRequired[list[str]]
   """Issuance locations to narrow to, such as `SEW`."""
