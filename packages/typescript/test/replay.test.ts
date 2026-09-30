@@ -13,7 +13,12 @@ import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { beforeAll, describe, expect, inject, it } from 'vitest'
 import { Weather } from '../src/weather-gov/core/index.js'
-import type { QuantitativeValue, ZoneFeature } from '../src/weather-gov/types/index.js'
+import type {
+  PointGeometry,
+  PolygonGeometry,
+  QuantitativeValue,
+  ZoneFeature,
+} from '../src/weather-gov/types/index.js'
 import { projectRoot } from './setup.js'
 
 const CONTACT = 'tests@truewire.dev'
@@ -31,12 +36,25 @@ const ALERT = recorded<{ id: string }>('alerts/get_alert/examples/one.request.js
 const ZONE_WINDOW = recorded<{ zone_id: string; start: string; end: string; limit: number }>(
   'stations/get_observations_for_zone/examples/seattle_capped.request.json',
 )
+const ZONE_STATIONS = recorded<{ zone_id: string }>(
+  'stations/list_stations_for_zone/examples/seattle.request.json',
+)
 
 /** A `QuantitativeValue`: a unit, and a number or an honest null. */
 function isMeasurement(value: QuantitativeValue, unit?: string): void {
   expect(value.unitCode.startsWith('wmoUnit:')).toBe(true)
   expect(value.value === null || typeof value.value === 'number').toBe(true)
   if (unit !== undefined) expect(value.unitCode).toBe(unit)
+}
+
+/** A GeoJSON point: longitude first, and both inside the globe. */
+function isPoint(geometry: PointGeometry | undefined): void {
+  expect(geometry?.type).toBe('Point')
+  const [longitude, latitude] = geometry!.coordinates
+  expect(longitude).toBeGreaterThanOrEqual(-180)
+  expect(longitude).toBeLessThanOrEqual(180)
+  expect(latitude).toBeGreaterThanOrEqual(-90)
+  expect(latitude).toBeLessThanOrEqual(90)
 }
 
 /** A zone feature: its URL is its code, and a list leaves the outline out. */
@@ -224,6 +242,7 @@ describe('recorded examples replay through the generated client', () => {
     expect(zones).toHaveLength(5)
     for (const zone of zones) {
       expect(zone.type).toBe('county')
+      expect(zone.state).toBe('WA')
       expect(zone.id.startsWith('WAC')).toBe(true)
     }
   })
@@ -233,8 +252,14 @@ describe('recorded examples replay through the generated client', () => {
     const zone = isZone(feature, true)
     expect([zone.id, zone.type, zone.name]).toEqual(['WAZ315', 'public', 'City of Seattle'])
     expect(zone.gridIdentifier).toBe('SEW')
+    expect(zone.forecastOffice!.endsWith('/offices/SEW')).toBe(true)
     expect(zone.timeZone).toEqual(['America/Los_Angeles'])
     expect(zone.observationStations!.some(url => url.endsWith('/stations/KSEA'))).toBe(true)
+    // A polygon's rings close on themselves.
+    expect(feature.geometry?.type).toBe('Polygon')
+    const ring = (feature.geometry as PolygonGeometry).coordinates[0]!
+    expect(ring.length).toBeGreaterThan(3)
+    expect(ring.at(-1)).toEqual(ring[0])
   })
 
   it('zones.getForecast returns the payload: numbered periods of prose', async () => {
@@ -259,7 +284,8 @@ describe('recorded examples replay through the generated client', () => {
       expect(transmitter.counties).toContain('WAC033')
       expect(transmitter.sameCodes!.length).toBe(transmitter.counties.length)
       // A decimal string on the wire, kept as one: 162.400 to 162.550 MHz.
-      expect(transmitter.transmitterFrequency.startsWith('162.')).toBe(true)
+      expect(Number(transmitter.transmitterFrequency)).toBeGreaterThan(162)
+      expect(Number(transmitter.transmitterFrequency)).toBeLessThan(163)
     }
     expect(graph.map(transmitter => transmitter.callSign)).toContain('KHB60')
   })
@@ -281,10 +307,19 @@ describe('recorded examples replay through the generated client', () => {
     expect(new Set(page.features.map(f => f.properties.stationId)).size).toBeGreaterThan(1)
     // Timestamps repeat across stations: why this endpoint declares no seek walk.
     expect(new Set(times).size).toBeLessThan(times.length)
+    for (const feature of page.features) {
+      isPoint(feature.geometry)
+      isMeasurement(feature.properties.temperature)
+    }
   })
 
   it('stations.listStationsForZone lists the stations the zone names', async () => {
-    const page = await client.stations.listStationsForZone({ zone_id: 'WAZ315' })
+    const page = await client.stations.listStationsForZone({ zone_id: ZONE_STATIONS.zone_id })
+    expect(page.features.length).toBeGreaterThan(0)
+    for (const feature of page.features) {
+      isPoint(feature.geometry)
+      expect(feature.properties.stationIdentifier).toBeTruthy()
+    }
     const urls = page.features.map(feature => feature.id)
     expect(page.observationStations).toEqual(urls)
     const zone = (
@@ -293,8 +328,9 @@ describe('recorded examples replay through the generated client', () => {
           path.join(projectRoot, 'spec/endpoints/zones/get_zone/examples/seattle.response.json'),
           'utf8',
         ),
-      ) as { payload: { properties: { observationStations: string[] } } }
+      ) as { payload: { properties: { id: string; observationStations: string[] } } }
     ).payload.properties
+    expect(zone.id).toBe(ZONE_STATIONS.zone_id)
     expect([...urls].sort()).toEqual([...zone.observationStations].sort())
   })
 
