@@ -13,7 +13,7 @@ import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { beforeAll, describe, expect, inject, it } from 'vitest'
 import { Weather } from '../src/weather-gov/core/index.js'
-import type { QuantitativeValue } from '../src/weather-gov/types/index.js'
+import type { Product, QuantitativeValue } from '../src/weather-gov/types/index.js'
 import { projectRoot } from './setup.js'
 
 const CONTACT = 'tests@truewire.dev'
@@ -28,6 +28,27 @@ const WINDOW = recorded<{ station_id: string; start: string; end: string; limit:
   'stations/get_observations/examples/ksea_window.request.json',
 )
 const ALERT = recorded<{ id: string }>('alerts/get_alert/examples/one.request.json')
+const PRODUCTS = recorded<{ type: string[]; start: string; end: string; limit: number }>(
+  'products/list_products/examples/afd_window.request.json',
+)
+const PRODUCT = recorded<{ product_id: string }>('products/get_product/examples/seattle_afd.request.json')
+const PRODUCT_TYPE = recorded<{ type_id: string }>(
+  'products/list_products_by_type/examples/admin_messages.request.json',
+)
+
+/** A product list: header fields only, all of one type, newest first. */
+function isProductList(products: Product[], code: string, office?: string): void {
+  expect(products.length).toBeGreaterThan(0)
+  for (const product of products) {
+    expect(product['@id'].endsWith(`/products/${product.id}`)).toBe(true)
+    expect(product.productCode).toBe(code)
+    expect(product.productName).toBeTruthy()
+    expect(product.productText).toBeUndefined()
+    if (office !== undefined) expect(product.issuingOffice).toBe(office)
+  }
+  const issued = products.map(product => product.issuanceTime.getTime())
+  expect([...issued].sort((a, b) => b - a)).toEqual(issued)
+}
 
 /** A `QuantitativeValue`: a unit, and a number or an honest null. */
 function isMeasurement(value: QuantitativeValue, unit?: string): void {
@@ -174,5 +195,72 @@ describe('recorded examples replay through the generated client', () => {
     const codes = new Set(types['@graph'].map(entry => entry.productCode))
     expect(codes.has('AFD')).toBe(true)
     expect(codes.has('TOR')).toBe(true)
+  })
+
+  it('products.listProducts honours the type, the limit and a window whose end is exclusive', async () => {
+    const page = await client.products.listProducts({
+      type: PRODUCTS.type,
+      start: new Date(PRODUCTS.start),
+      end: new Date(PRODUCTS.end),
+      limit: PRODUCTS.limit,
+    })
+    const products = page['@graph']
+    isProductList(products, PRODUCTS.type[0]!)
+    expect(products).toHaveLength(PRODUCTS.limit)
+    const [start, end] = [Date.parse(PRODUCTS.start), Date.parse(PRODUCTS.end)]
+    for (const product of products) {
+      expect(product.issuanceTime.getTime()).toBeGreaterThanOrEqual(start)
+      expect(product.issuanceTime.getTime()).toBeLessThan(end)
+    }
+  })
+
+  it('products.listLocations keeps the nulls the service sends for nameless ids', async () => {
+    const { locations } = await client.products.listLocations({})
+    expect(Object.keys(locations).length).toBeGreaterThan(1000)
+    expect(locations.SEW).toBe('Seattle/Tacoma, WA')
+    expect(Object.values(locations)).toContain(null)
+  })
+
+  it('products.getProduct returns the product the id names, with its text', async () => {
+    const product = await client.products.getProduct({ product_id: PRODUCT.product_id })
+    expect(product.id).toBe(PRODUCT.product_id)
+    expect(product.productCode).toBe('AFD')
+    expect(product.issuingOffice).toBe('KSEW')
+    expect(product.productText).toContain('AFDSEW')
+    expect(product.productText).toContain('Area Forecast Discussion')
+  })
+
+  it('products.listProductsByType returns one type from more than one office', async () => {
+    const page = await client.products.listProductsByType({ type_id: PRODUCT_TYPE.type_id })
+    isProductList(page['@graph'], PRODUCT_TYPE.type_id)
+    expect(new Set(page['@graph'].map(product => product.issuingOffice)).size).toBeGreaterThan(1)
+  })
+
+  it('products.listLocationsForType names every location that issues the type', async () => {
+    const { locations } = await client.products.listLocationsForType({ type_id: 'AFD' })
+    expect(Object.keys(locations).length).toBeGreaterThan(100)
+    expect(locations.SEW).toBe('Seattle/Tacoma, WA')
+    for (const name of Object.values(locations)) expect(name).toBeTruthy()
+  })
+
+  it('products.listTypesForLocation answers in the product-type vocabulary', async () => {
+    const types = await client.products.listTypesForLocation({ location_id: 'SEW' })
+    const codes = types['@graph'].map(entry => entry.productCode)
+    expect(codes).toContain('AFD')
+    expect([...new Set(codes)].sort()).toEqual(codes)
+    expect(codes.length).toBeGreaterThan(10)
+    expect(codes.length).toBeLessThan(300)
+  })
+
+  it('products.listProductsByTypeAndLocation returns only that office', async () => {
+    const page = await client.products.listProductsByTypeAndLocation({ type_id: 'AFD', location_id: 'SEW' })
+    isProductList(page['@graph'], 'AFD', 'KSEW')
+  })
+
+  it('products.getLatestProduct returns the newest one, with its text', async () => {
+    const product = await client.products.getLatestProduct({ type_id: 'AFD', location_id: 'SEW' })
+    expect(product.productCode).toBe('AFD')
+    expect(product.issuingOffice).toBe('KSEW')
+    expect(product.productText).toContain('AFDSEW')
   })
 })
