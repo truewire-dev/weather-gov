@@ -341,3 +341,279 @@ async fn offices_and_products_answer_in_their_own_vocabularies() {
     assert!(types.graph.len() > 300);
     assert!(types.graph.iter().any(|entry| entry.product_code == "AFD"));
 }
+
+/// A zone feature: its URL is its code, and a list leaves the outline out.
+fn is_zone(feature: &weather_gov::types::ZoneFeature, geometry: bool) -> &weather_gov::types::Zone {
+    let zone = &feature.properties;
+    // `@id` renders as `id` and the zone code as `id2`: generator naming, not the wire's.
+    assert_eq!(feature.id, zone.id);
+    assert!(zone.id.ends_with(&format!("/{}", zone.id2)), "{}", zone.id);
+    assert!(!zone.name.is_empty());
+    assert!(zone.effective_date < zone.expiration_date);
+    assert_eq!(feature.geometry.is_some(), geometry);
+    zone
+}
+
+#[tokio::test]
+async fn zones_list_zones_finds_one_zone_of_each_land_kind_at_a_point() {
+    use weather_gov::types::ZoneType2;
+    let mock = start_mock();
+    let client = client(&mock);
+    let page = client
+        .zones
+        .list_zones(
+            weather_gov::zones::list_zones::Request {
+                point: Some("47.6062,-122.3321".to_string()),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_zones");
+    let zones: Vec<_> = page.features.iter().map(|f| is_zone(f, false)).collect();
+    let mut kinds: Vec<_> = zones.iter().map(|zone| zone.type_2).collect();
+    kinds.sort_by_key(|kind| format!("{kind:?}"));
+    assert_eq!(
+        kinds,
+        [ZoneType2::County, ZoneType2::Fire, ZoneType2::Public]
+    );
+    assert!(zones.iter().any(|zone| zone.id2 == "WAZ315"));
+    assert!(zones.iter().any(|zone| zone.id2 == "WAC033"));
+}
+
+#[tokio::test]
+async fn zones_list_zones_honours_area_type_and_limit() {
+    use weather_gov::zones::list_zones::RequestTypeItem;
+    let mock = start_mock();
+    let client = client(&mock);
+    let page = client
+        .zones
+        .list_zones(
+            weather_gov::zones::list_zones::Request {
+                area: Some(vec!["WA".to_string()]),
+                type_: Some(vec![RequestTypeItem::Fire]),
+                limit: Some(3),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_zones");
+    assert_eq!(page.features.len(), 3);
+    let ids: Vec<_> = page
+        .features
+        .iter()
+        .map(|f| {
+            let zone = is_zone(f, false);
+            assert_eq!(zone.type_2, weather_gov::types::ZoneType2::Fire);
+            assert_eq!(zone.state, Some(Some("WA".to_string())));
+            zone.id2.clone()
+        })
+        .collect();
+    let mut sorted = ids.clone();
+    sorted.sort();
+    assert_eq!(ids, sorted, "the service orders zones by code");
+}
+
+#[tokio::test]
+async fn zones_list_zones_by_type_takes_the_type_from_the_path() {
+    use weather_gov::zones::list_zones_by_type::RequestZoneType;
+    let mock = start_mock();
+    let client = client(&mock);
+    let page = client
+        .zones
+        .list_zones_by_type(
+            weather_gov::zones::list_zones_by_type::Request {
+                // A request with a required enum has no `Default`, so every field is spelled.
+                zone_type: RequestZoneType::County,
+                id: None,
+                area: Some(vec!["WA".to_string()]),
+                region: None,
+                point: None,
+                effective: None,
+                limit: Some(5),
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_zones_by_type");
+    assert_eq!(page.features.len(), 5);
+    for feature in &page.features {
+        let zone = is_zone(feature, false);
+        assert_eq!(zone.type_2, weather_gov::types::ZoneType2::County);
+        assert!(zone.id2.starts_with("WAC"));
+    }
+}
+
+#[tokio::test]
+async fn zones_get_zone_keeps_the_outline_and_get_forecast_unwraps() {
+    use weather_gov::zones::get_forecast::RequestZoneType as ForecastZoneType;
+    use weather_gov::zones::get_zone::RequestZoneType;
+    let mock = start_mock();
+    let client = client(&mock);
+    let feature = client
+        .zones
+        .get_zone(
+            weather_gov::zones::get_zone::Request {
+                zone_type: RequestZoneType::Forecast,
+                zone_id: "WAZ315".to_string(),
+                effective: None,
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_zone");
+    let zone = is_zone(&feature, true);
+    assert_eq!(zone.id2, "WAZ315");
+    assert_eq!(zone.name, "City of Seattle");
+    assert_eq!(zone.grid_identifier.as_deref(), Some("SEW"));
+    assert!(zone
+        .observation_stations
+        .as_ref()
+        .expect("stations")
+        .iter()
+        .any(|url| url.ends_with("/stations/KSEA")));
+
+    let forecast = client
+        .zones
+        .get_forecast(
+            weather_gov::zones::get_forecast::Request {
+                zone_type: ForecastZoneType::Forecast,
+                zone_id: "WAZ315".to_string(),
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_forecast");
+    // The declared envelope, working: the forecast, not the GeoJSON feature around it.
+    assert!(forecast.zone.ends_with("/zones/forecast/WAZ315"));
+    assert!(forecast.periods.len() > 6);
+    for (index, period) in forecast.periods.iter().enumerate() {
+        assert_eq!(period.number, index as i64 + 1);
+        assert!(!period.name.is_empty() && !period.detailed_forecast.is_empty());
+    }
+}
+
+#[tokio::test]
+async fn zones_list_transmitters_answers_in_json_ld_for_the_county_asked() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let radio = client
+        .zones
+        .list_transmitters(
+            // `zone_type` takes one value, `county`, so Rust fills it in and has no field.
+            weather_gov::zones::list_transmitters::Request {
+                zone_id: "WAC033".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_transmitters");
+    assert!(!radio.graph.is_empty());
+    for transmitter in &radio.graph {
+        assert!(transmitter.counties.iter().any(|county| county == "WAC033"));
+        // A decimal string on the wire, kept as one: 162.400 to 162.550 MHz.
+        assert!(transmitter
+            .transmitter_frequency
+            .as_str()
+            .starts_with("162."));
+    }
+    assert!(radio.graph.iter().any(|t| t.call_sign == "KHB60"));
+}
+
+#[tokio::test]
+async fn stations_get_observations_for_zone_merges_stations_newest_first() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let window =
+        recorded("stations/get_observations_for_zone/examples/seattle_capped.request.json");
+    let start = timestamp(&window["start"]);
+    let end = timestamp(&window["end"]);
+    let limit = window["limit"].as_i64().expect("a limit");
+    let page = client
+        .stations
+        .get_observations_for_zone(
+            weather_gov::stations::get_observations_for_zone::Request {
+                zone_id: window["zone_id"].as_str().expect("a zone").to_string(),
+                start: Some(start),
+                end: Some(end),
+                limit: Some(limit),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_observations_for_zone");
+    assert_eq!(page.features.len() as i64, limit);
+    let timestamps: Vec<_> = page
+        .features
+        .iter()
+        .map(|feature| feature.properties.timestamp)
+        .collect();
+    let mut sorted = timestamps.clone();
+    sorted.sort();
+    sorted.reverse();
+    assert_eq!(timestamps, sorted, "the service answers newest first");
+    assert!(timestamps
+        .iter()
+        .all(|stamp| start <= *stamp && *stamp < end));
+    let mut unique = timestamps.clone();
+    unique.dedup();
+    // Timestamps repeat across stations: why this endpoint declares no seek walk.
+    assert!(unique.len() < timestamps.len());
+}
+
+#[tokio::test]
+async fn stations_for_a_zone_and_a_grid_cell() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let zone = client
+        .stations
+        .list_stations_for_zone(
+            weather_gov::stations::list_stations_for_zone::Request {
+                zone_id: "WAZ315".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_stations_for_zone");
+    let urls: Vec<_> = zone.features.iter().map(|f| f.id.clone()).collect();
+    assert_eq!(zone.observation_stations.as_ref(), Some(&urls));
+    assert!(zone
+        .features
+        .iter()
+        .any(|f| f.properties.station_identifier == "KSEA"));
+
+    let grid = client
+        .stations
+        .list_stations_for_gridpoint(
+            weather_gov::stations::list_stations_for_gridpoint::Request {
+                office: "SEW".to_string(),
+                grid_x: 125,
+                grid_y: 68,
+                limit: Some(5),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_stations_for_gridpoint");
+    assert_eq!(grid.features.len(), 5);
+    let mut distances = Vec::new();
+    for feature in &grid.features {
+        let distance = feature.properties.distance.as_ref().expect("a distance");
+        is_measurement(distance, Some("wmoUnit:m"));
+        let bearing = feature.properties.bearing.as_ref().expect("a bearing");
+        is_measurement(bearing, Some("wmoUnit:degree_(angle)"));
+        distances.push(distance.value.expect("a measured distance"));
+    }
+    assert!(
+        distances.windows(2).all(|pair| pair[0] <= pair[1]),
+        "nearest first"
+    );
+}
