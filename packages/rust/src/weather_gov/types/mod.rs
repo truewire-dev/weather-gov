@@ -37,6 +37,17 @@ pub struct AlertReference {
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
+/// Where the next page is. A whole URL, not a bare cursor -- which is why no endpoint returning this declares a pagination strategy.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+pub struct CollectionPagination {
+    /// URL of the next page, cursor already in the query string. Absent on the last page.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub next: Option<String>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
 /// One value of a gridded series, and the interval it holds over.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct GridValue {
@@ -64,6 +75,17 @@ pub struct MultiPolygonGeometry {
     pub type_: MultiPolygonGeometryType,
     /// One entry per polygon, each shaped like `PolygonGeometry.coordinates`.
     pub coordinates: Vec<Vec<Vec<(f64, f64)>>>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+/// Where the next page is, as a whole URL. The declared walk moves the time window instead and never reads this.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+pub struct ObservationPagination {
+    /// URL of the next page. Absent on the last one.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub next: Option<String>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -153,6 +175,113 @@ pub struct QuantitativeValue {
     /// Lower end, where the value is a range rather than a point.
     #[serde(rename = "minValue", default, skip_serializing_if = "Option::is_none")]
     pub min_value: Option<f64>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum ZoneType {
+    #[serde(rename = "wx:Zone")]
+    WxZone,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum ZoneType2 {
+    #[serde(rename = "land")]
+    Land,
+    #[serde(rename = "marine")]
+    Marine,
+    #[serde(rename = "forecast")]
+    Forecast,
+    #[serde(rename = "public")]
+    Public,
+    #[serde(rename = "coastal")]
+    Coastal,
+    #[serde(rename = "offshore")]
+    Offshore,
+    #[serde(rename = "fire")]
+    Fire,
+    #[serde(rename = "county")]
+    County,
+}
+
+/// One zone: a public forecast, county, fire-weather or marine area.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Zone {
+    /// Canonical URL of the zone.
+    #[serde(rename = "@id")]
+    pub id: String,
+    /// Always `wx:Zone`.
+    #[serde(rename = "@type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<ZoneType>,
+    /// Zone code: two letters of state or marine area, `Z` or `C`, three digits.
+    #[serde(rename = "id")]
+    pub id2: String,
+    /// The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses).
+    #[serde(rename = "type")]
+    pub type_2: ZoneType2,
+    /// Name of the zone, such as `City of Seattle`.
+    pub name: String,
+    /// When this version of the zone took effect.
+    #[serde(rename = "effectiveDate")]
+    pub effective_date: TimestampIso,
+    /// When it expires; `2200-01-01` for every zone in effect on 2026-09-30.
+    #[serde(rename = "expirationDate")]
+    pub expiration_date: TimestampIso,
+    /// State or territory the zone is in.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(with = "truewire_core::validation::double_option")]
+    pub state: Option<Option<String>>,
+    /// URL of the office that forecasts for the zone.
+    #[serde(
+        rename = "forecastOffice",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub forecast_office: Option<String>,
+    /// Three-letter code of the office's forecast grid, such as `SEW`.
+    #[serde(
+        rename = "gridIdentifier",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub grid_identifier: Option<String>,
+    /// AWIPS identifier of the forecasting office.
+    #[serde(
+        rename = "awipsLocationIdentifier",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub awips_location_identifier: Option<String>,
+    /// Offices whose warning area covers the zone. Deprecated upstream; use `forecastOffice`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub cwa: Option<Vec<String>>,
+    /// URLs of the same offices. Deprecated upstream; use `forecastOffice`.
+    #[serde(
+        rename = "forecastOffices",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub forecast_offices: Option<Vec<String>>,
+    /// IANA time zones the zone is in; two for a zone that straddles a boundary.
+    #[serde(rename = "timeZone", default, skip_serializing_if = "Option::is_none")]
+    pub time_zone: Option<Vec<String>>,
+    /// URLs of the observation stations in the zone. Empty for most county, fire and marine zones.
+    #[serde(
+        rename = "observationStations",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub observation_stations: Option<Vec<String>>,
+    /// The radar that covers the zone.
+    #[serde(
+        rename = "radarStation",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    #[serde(with = "truewire_core::validation::double_option")]
+    pub radar_station: Option<Option<String>>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -474,10 +603,60 @@ pub struct Station {
         skip_serializing_if = "Option::is_none"
     )]
     pub sub_provider: Option<String>,
+    /// How far the station is from the grid cell asked about. Only `stations.list_stations_for_gridpoint` sends it.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub distance: Option<QuantitativeValue>,
+    /// Direction from the grid cell to the station, in degrees clockwise from true north. Only `stations.list_stations_for_gridpoint` sends it.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub bearing: Option<QuantitativeValue>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum ZoneFeatureType {
+    Feature,
+}
+
+#[allow(clippy::large_enum_variant)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ZoneFeatureGeometry {
+    /// A single area.
+    PolygonGeometry(PolygonGeometry),
+    /// Several disjoint areas, such as islands.
+    MultiPolygonGeometry(MultiPolygonGeometry),
+}
+
+/// One zone, in the GeoJSON feature the API wraps it in.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct ZoneFeature {
+    /// Canonical URL of the zone.
+    pub id: String,
+    /// Always `Feature`.
+    #[serde(rename = "type")]
+    pub type_: ZoneFeatureType,
+    /// The area a zone covers.
+    pub geometry: Option<ZoneFeatureGeometry>,
+    /// The zone itself.
+    pub properties: Zone,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[allow(clippy::large_enum_variant)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ZoneGeometryValue {
+    /// A single area.
+    PolygonGeometry(PolygonGeometry),
+    /// Several disjoint areas, such as islands.
+    MultiPolygonGeometry(MultiPolygonGeometry),
+}
+
+pub type ZoneGeometry = Option<ZoneGeometryValue>;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum AlertFeatureType {
@@ -711,6 +890,24 @@ pub struct StationFeature {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum ZoneCollectionType {
+    FeatureCollection,
+}
+
+/// Zones, as a GeoJSON feature collection, ordered by code.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct ZoneCollection {
+    /// Always `FeatureCollection`.
+    #[serde(rename = "type")]
+    pub type_: ZoneCollectionType,
+    /// The zones.
+    pub features: Vec<ZoneFeature>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ObservationFeatureType {
     Feature,
 }
@@ -728,6 +925,53 @@ pub struct ObservationFeature {
     pub geometry: Option<PointGeometry>,
     /// The observation itself.
     pub properties: Observation,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum StationCollectionType {
+    FeatureCollection,
+}
+
+/// Stations, as a GeoJSON feature collection.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct StationCollection {
+    /// Always `FeatureCollection`.
+    #[serde(rename = "type")]
+    pub type_: StationCollectionType,
+    /// The stations.
+    pub features: Vec<StationFeature>,
+    /// The same stations as bare URLs, in the same order.
+    #[serde(
+        rename = "observationStations",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub observation_stations: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pagination: Option<CollectionPagination>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum ObservationCollectionType {
+    FeatureCollection,
+}
+
+/// Observations over a span, as a GeoJSON feature collection, newest first.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct ObservationCollection {
+    /// Always `FeatureCollection`.
+    #[serde(rename = "type")]
+    pub type_: ObservationCollectionType,
+    /// The observations, newest first.
+    pub features: Vec<ObservationFeature>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pagination: Option<ObservationPagination>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,

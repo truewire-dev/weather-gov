@@ -11,7 +11,7 @@
 #
 # The request half of each example (`examples/<id>.request.json`) is the source of truth:
 # this script replays exactly those, so re-recording keeps the same ids and descriptions
-# and only the responses move. Two of them go stale on their own and are repaired first --
+# and only the responses move. Some of them go stale on their own and are repaired first --
 # see `refresh_examples.py`.
 #
 # One example failing does not stop the rest. A live API will always have one endpoint

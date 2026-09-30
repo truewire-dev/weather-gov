@@ -451,6 +451,14 @@
       "subProvider": {
         "type": "string",
         "description": "Operator within the network."
+      },
+      "distance": {
+        "$ref": "QuantitativeValue",
+        "description": "How far the station is from the grid cell asked about. Only `stations.list_stations_for_gridpoint` sends it."
+      },
+      "bearing": {
+        "$ref": "QuantitativeValue",
+        "description": "Direction from the grid cell to the station, in degrees clockwise from true north. Only `stations.list_stations_for_gridpoint` sends it."
       }
     },
     "required": [
@@ -996,6 +1004,292 @@
     },
     "required": [
       "values"
+    ]
+  },
+  "ObservationCollection": {
+    "title": "ObservationCollection",
+    "type": "object",
+    "description": "Observations over a span, as a GeoJSON feature collection, newest first.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "FeatureCollection"
+        ],
+        "description": "Always `FeatureCollection`."
+      },
+      "features": {
+        "type": "array",
+        "description": "The observations, newest first.",
+        "items": {
+          "$ref": "ObservationFeature",
+          "description": "One observation."
+        }
+      },
+      "pagination": {
+        "title": "ObservationPagination",
+        "type": "object",
+        "description": "Where the next page is, as a whole URL. The declared walk moves the time window instead and never reads this.",
+        "properties": {
+          "next": {
+            "type": "string",
+            "description": "URL of the next page. Absent on the last one."
+          }
+        }
+      }
+    },
+    "required": [
+      "type",
+      "features"
+    ]
+  },
+  "StationCollection": {
+    "title": "StationCollection",
+    "type": "object",
+    "description": "Stations, as a GeoJSON feature collection.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "FeatureCollection"
+        ],
+        "description": "Always `FeatureCollection`."
+      },
+      "features": {
+        "type": "array",
+        "description": "The stations.",
+        "items": {
+          "$ref": "StationFeature",
+          "description": "One station."
+        }
+      },
+      "observationStations": {
+        "type": "array",
+        "description": "The same stations as bare URLs, in the same order.",
+        "items": {
+          "type": "string",
+          "description": "URL of one station."
+        }
+      },
+      "pagination": {
+        "title": "CollectionPagination",
+        "type": "object",
+        "description": "Where the next page is. A whole URL, not a bare cursor -- which is why no endpoint returning this declares a pagination strategy.",
+        "properties": {
+          "next": {
+            "type": "string",
+            "description": "URL of the next page, cursor already in the query string. Absent on the last page."
+          }
+        }
+      }
+    },
+    "required": [
+      "type",
+      "features"
+    ]
+  },
+  "ZoneGeometry": {
+    "title": "ZoneGeometry",
+    "anyOf": [
+      {
+        "$ref": "PolygonGeometry",
+        "description": "A single area."
+      },
+      {
+        "$ref": "MultiPolygonGeometry",
+        "description": "Several disjoint areas, such as islands."
+      },
+      {
+        "type": "null",
+        "description": "No outline: every zone in a zone list comes without one."
+      }
+    ],
+    "description": "The area a zone covers."
+  },
+  "Zone": {
+    "title": "Zone",
+    "type": "object",
+    "description": "One zone: a public forecast, county, fire-weather or marine area.",
+    "properties": {
+      "@id": {
+        "type": "string",
+        "description": "Canonical URL of the zone."
+      },
+      "@type": {
+        "type": "string",
+        "enum": [
+          "wx:Zone"
+        ],
+        "description": "Always `wx:Zone`."
+      },
+      "id": {
+        "type": "string",
+        "description": "Zone code: two letters of state or marine area, `Z` or `C`, three digits."
+      },
+      "type": {
+        "type": "string",
+        "enum": [
+          "land",
+          "marine",
+          "forecast",
+          "public",
+          "coastal",
+          "offshore",
+          "fire",
+          "county"
+        ],
+        "description": "The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses)."
+      },
+      "name": {
+        "type": "string",
+        "description": "Name of the zone, such as `City of Seattle`."
+      },
+      "effectiveDate": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When this version of the zone took effect."
+      },
+      "expirationDate": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When it expires; `2200-01-01` for every zone in effect on 2026-09-30."
+      },
+      "state": {
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "Two-letter state or territory code."
+          },
+          {
+            "type": "null",
+            "description": "No state: a marine zone."
+          }
+        ],
+        "description": "State or territory the zone is in."
+      },
+      "forecastOffice": {
+        "type": "string",
+        "description": "URL of the office that forecasts for the zone."
+      },
+      "gridIdentifier": {
+        "type": "string",
+        "description": "Three-letter code of the office's forecast grid, such as `SEW`."
+      },
+      "awipsLocationIdentifier": {
+        "type": "string",
+        "description": "AWIPS identifier of the forecasting office."
+      },
+      "cwa": {
+        "type": "array",
+        "description": "Offices whose warning area covers the zone. Deprecated upstream; use `forecastOffice`.",
+        "items": {
+          "type": "string",
+          "description": "One three-letter office code."
+        }
+      },
+      "forecastOffices": {
+        "type": "array",
+        "description": "URLs of the same offices. Deprecated upstream; use `forecastOffice`.",
+        "items": {
+          "type": "string",
+          "description": "One office URL."
+        }
+      },
+      "timeZone": {
+        "type": "array",
+        "description": "IANA time zones the zone is in; two for a zone that straddles a boundary.",
+        "items": {
+          "type": "string",
+          "description": "One IANA time zone, such as `America/Los_Angeles`."
+        }
+      },
+      "observationStations": {
+        "type": "array",
+        "description": "URLs of the observation stations in the zone. Empty for most county, fire and marine zones.",
+        "items": {
+          "type": "string",
+          "description": "One station URL."
+        }
+      },
+      "radarStation": {
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "Radar station code, such as `ATX`."
+          },
+          {
+            "type": "null",
+            "description": "None assigned."
+          }
+        ],
+        "description": "The radar that covers the zone."
+      }
+    },
+    "required": [
+      "@id",
+      "id",
+      "type",
+      "name",
+      "effectiveDate",
+      "expirationDate"
+    ]
+  },
+  "ZoneFeature": {
+    "title": "ZoneFeature",
+    "type": "object",
+    "description": "One zone, in the GeoJSON feature the API wraps it in.",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Canonical URL of the zone."
+      },
+      "type": {
+        "type": "string",
+        "enum": [
+          "Feature"
+        ],
+        "description": "Always `Feature`."
+      },
+      "geometry": {
+        "$ref": "ZoneGeometry",
+        "description": "The zone's outline; null in lists."
+      },
+      "properties": {
+        "$ref": "Zone",
+        "description": "The zone itself."
+      }
+    },
+    "required": [
+      "id",
+      "type",
+      "geometry",
+      "properties"
+    ]
+  },
+  "ZoneCollection": {
+    "title": "ZoneCollection",
+    "type": "object",
+    "description": "Zones, as a GeoJSON feature collection, ordered by code.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "FeatureCollection"
+        ],
+        "description": "Always `FeatureCollection`."
+      },
+      "features": {
+        "type": "array",
+        "description": "The zones.",
+        "items": {
+          "$ref": "ZoneFeature",
+          "description": "One zone."
+        }
+      }
+    },
+    "required": [
+      "type",
+      "features"
     ]
   }
 }

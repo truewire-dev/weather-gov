@@ -23,6 +23,14 @@
     {"method": "GET", "path": "/points/{latitude},{longitude}/radio", "excluded": "XML-only response (application/ssml+xml); no JSON representation"},
     {"method": "GET", "path": "/points/{latitude},{longitude}/stations", "excluded": "deprecated in the OpenAPI"},
     {"method": "GET", "path": "/radio/{callSign}/broadcast", "excluded": "XML-only response (application/ssml+xml); no JSON representation"},
-    {"method": "GET", "path": "/products/types", "endpoint": "products.list_product_types"}
+    {"method": "GET", "path": "/products/types", "endpoint": "products.list_product_types"},
+    {"method": "GET", "path": "/zones", "endpoint": "zones.list_zones"},
+    {"method": "GET", "path": "/zones/{type}", "endpoint": "zones.list_zones_by_type"},
+    {"method": "GET", "path": "/zones/{type}/{zoneId}", "endpoint": "zones.get_zone"},
+    {"method": "GET", "path": "/zones/{type}/{zoneId}/forecast", "endpoint": "zones.get_forecast"},
+    {"method": "GET", "path": "/zones/{type}/{zoneId}/radio", "endpoint": "zones.list_transmitters"},
+    {"method": "GET", "path": "/zones/forecast/{zoneId}/observations", "endpoint": "stations.get_observations_for_zone"},
+    {"method": "GET", "path": "/zones/forecast/{zoneId}/stations", "endpoint": "stations.list_stations_for_zone"},
+    {"method": "GET", "path": "/gridpoints/{wfo}/{x},{y}/stations", "endpoint": "stations.list_stations_for_gridpoint"}
   ]
 }

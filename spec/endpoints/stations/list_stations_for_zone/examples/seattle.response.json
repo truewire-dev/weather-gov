@@ -1,0 +1,228 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": [
+      "https://geojson.org/geojson-ld/geojson-context.jsonld",
+      {
+        "@version": "1.1",
+        "wx": "https://api.weather.gov/ontology#",
+        "s": "https://schema.org/",
+        "geo": "http://www.opengis.net/ont/geosparql#",
+        "unit": "http://codes.wmo.int/common/unit/",
+        "@vocab": "https://api.weather.gov/ontology#",
+        "geometry": {
+          "@id": "s:GeoCoordinates",
+          "@type": "geo:wktLiteral"
+        },
+        "city": "s:addressLocality",
+        "state": "s:addressRegion",
+        "distance": {
+          "@id": "s:Distance",
+          "@type": "s:QuantitativeValue"
+        },
+        "bearing": {
+          "@type": "s:QuantitativeValue"
+        },
+        "value": {
+          "@id": "s:value"
+        },
+        "unitCode": {
+          "@id": "s:unitCode",
+          "@type": "@id"
+        },
+        "forecastOffice": {
+          "@type": "@id"
+        },
+        "forecastGridData": {
+          "@type": "@id"
+        },
+        "publicZone": {
+          "@type": "@id"
+        },
+        "county": {
+          "@type": "@id"
+        },
+        "observationStations": {
+          "@container": "@list",
+          "@type": "@id"
+        }
+      }
+    ],
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "id": "https://api.weather.gov/stations/KBFI",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -122.3147,
+            47.54548
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/KBFI",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 6.096
+          },
+          "stationIdentifier": "KBFI",
+          "name": "Boeing Field - King County International Airport",
+          "timeZone": "America/Los_Angeles",
+          "provider": "ASOS-HFM",
+          "subProvider": "",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ315",
+          "county": "https://api.weather.gov/zones/county/WAC033",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ654"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/KPAE",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -122.28305,
+            47.92331
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/KPAE",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 157.8864
+          },
+          "stationIdentifier": "KPAE",
+          "name": "Everett Snohomish County",
+          "timeZone": "America/Los_Angeles",
+          "provider": "ASOS-HFM",
+          "subProvider": "",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ313",
+          "county": "https://api.weather.gov/zones/county/WAC061",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ653"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/KPWT",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -122.75,
+            47.5
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/KPWT",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 134.112
+          },
+          "stationIdentifier": "KPWT",
+          "name": "Bremerton, Bremerton National Airport",
+          "timeZone": "America/Los_Angeles",
+          "provider": "ASOS-HFM",
+          "subProvider": "",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ323",
+          "county": "https://api.weather.gov/zones/county/WAC035",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ654"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/KRNT",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -122.21437,
+            47.49509
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/KRNT",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 7.0104
+          },
+          "stationIdentifier": "KRNT",
+          "name": "Renton Municipal Airport",
+          "timeZone": "America/Los_Angeles",
+          "provider": "ASOS-HFM",
+          "subProvider": "",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ316",
+          "county": "https://api.weather.gov/zones/county/WAC033",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ657"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/KSEA",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -122.31361,
+            47.44472
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/KSEA",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 130.1496
+          },
+          "stationIdentifier": "KSEA",
+          "name": "Seattle, Seattle-Tacoma International Airport",
+          "timeZone": "America/Los_Angeles",
+          "provider": "ASOS-HFM",
+          "subProvider": "",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ316",
+          "county": "https://api.weather.gov/zones/county/WAC033",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ654"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/SEAW1",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -122.25111,
+            47.68528
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/SEAW1",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 8.8392
+          },
+          "stationIdentifier": "SEAW1",
+          "name": "SEATTLE WEATHER FORECAST OFFICE",
+          "timeZone": "America/Los_Angeles",
+          "provider": "HADS",
+          "subProvider": "",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ315",
+          "county": "https://api.weather.gov/zones/county/WAC033",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ657"
+        }
+      }
+    ],
+    "observationStations": [
+      "https://api.weather.gov/stations/KBFI",
+      "https://api.weather.gov/stations/KPAE",
+      "https://api.weather.gov/stations/KPWT",
+      "https://api.weather.gov/stations/KRNT",
+      "https://api.weather.gov/stations/KSEA",
+      "https://api.weather.gov/stations/SEAW1"
+    ],
+    "pagination": {
+      "next": "https://api.weather.gov/stations?id%5B0%5D=KBFI&id%5B1%5D=KPAE&id%5B2%5D=KPWT&id%5B3%5D=KRNT&id%5B4%5D=KSEA&id%5B5%5D=SEAW1&cursor=eyJzIjo1MDB9"
+    }
+  }
+}

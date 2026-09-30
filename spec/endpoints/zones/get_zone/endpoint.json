@@ -1,0 +1,51 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/zone",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/zones/{zone_type}/{zone_id}",
+    "method": "GET",
+    "description": "One zone, with its outline. The outline is most of what a zone is, so the client hands back the whole GeoJSON feature: `geometry` is the area, `properties` the rest.",
+    "request": {
+      "title": "GetZoneRequest",
+      "type": "object",
+      "description": "Which zone, and as of when.",
+      "properties": {
+        "zone_type": {
+          "type": "string",
+          "enum": [
+            "land",
+            "marine",
+            "forecast",
+            "public",
+            "coastal",
+            "offshore",
+            "fire",
+            "county"
+          ],
+          "description": "The zone type. Any of them finds a zone of another type too (`/zones/forecast/PZZ135` answers the coastal zone), but the code decides what comes back."
+        },
+        "zone_id": {
+          "type": "string",
+          "description": "Zone code, such as `WAZ315`. `points.get_point` returns the forecast, county and fire-weather zones of a place as URLs ending in one."
+        },
+        "effective": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Answer as the zone stood at this time rather than now. Before the zone took effect the service answers 404."
+        }
+      },
+      "required": [
+        "zone_type",
+        "zone_id"
+      ]
+    },
+    "response": {
+      "$ref": "ZoneFeature",
+      "description": "The zone."
+    }
+  }
+}

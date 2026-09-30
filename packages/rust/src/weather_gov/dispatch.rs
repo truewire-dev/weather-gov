@@ -69,9 +69,58 @@ impl Weather {
                 let response = self.stations.get_observations(request, options).await?;
                 dump(&response)
             }
+            "stations.get_observations_for_zone" => {
+                let request = decode(request)?;
+                let response = self
+                    .stations
+                    .get_observations_for_zone(request, options)
+                    .await?;
+                dump(&response)
+            }
             "stations.list_stations" => {
                 let request = decode(request)?;
                 let response = self.stations.list_stations(request, options).await?;
+                dump(&response)
+            }
+            "stations.list_stations_for_gridpoint" => {
+                let request = decode(request)?;
+                let response = self
+                    .stations
+                    .list_stations_for_gridpoint(request, options)
+                    .await?;
+                dump(&response)
+            }
+            "stations.list_stations_for_zone" => {
+                let request = decode(request)?;
+                let response = self
+                    .stations
+                    .list_stations_for_zone(request, options)
+                    .await?;
+                dump(&response)
+            }
+            "zones.get_forecast" => {
+                let request = decode(request)?;
+                let response = self.zones.get_forecast(request, options).await?;
+                dump(&response)
+            }
+            "zones.get_zone" => {
+                let request = decode(request)?;
+                let response = self.zones.get_zone(request, options).await?;
+                dump(&response)
+            }
+            "zones.list_transmitters" => {
+                let request = decode(request)?;
+                let response = self.zones.list_transmitters(request, options).await?;
+                dump(&response)
+            }
+            "zones.list_zones" => {
+                let request = decode(request)?;
+                let response = self.zones.list_zones(request, options).await?;
+                dump(&response)
+            }
+            "zones.list_zones_by_type" => {
+                let request = decode(request)?;
+                let response = self.zones.list_zones_by_type(request, options).await?;
                 dump(&response)
             }
             _ => Err(Error::logic(format!("no rpc endpoint {function}"))),
@@ -131,9 +180,47 @@ impl Weather {
                 let request = decode(request)?;
                 self.stations.get_observations_raw(request, options).await
             }
+            "stations.get_observations_for_zone" => {
+                let request = decode(request)?;
+                self.stations
+                    .get_observations_for_zone_raw(request, options)
+                    .await
+            }
             "stations.list_stations" => {
                 let request = decode(request)?;
                 self.stations.list_stations_raw(request, options).await
+            }
+            "stations.list_stations_for_gridpoint" => {
+                let request = decode(request)?;
+                self.stations
+                    .list_stations_for_gridpoint_raw(request, options)
+                    .await
+            }
+            "stations.list_stations_for_zone" => {
+                let request = decode(request)?;
+                self.stations
+                    .list_stations_for_zone_raw(request, options)
+                    .await
+            }
+            "zones.get_forecast" => {
+                let request = decode(request)?;
+                self.zones.get_forecast_raw(request, options).await
+            }
+            "zones.get_zone" => {
+                let request = decode(request)?;
+                self.zones.get_zone_raw(request, options).await
+            }
+            "zones.list_transmitters" => {
+                let request = decode(request)?;
+                self.zones.list_transmitters_raw(request, options).await
+            }
+            "zones.list_zones" => {
+                let request = decode(request)?;
+                self.zones.list_zones_raw(request, options).await
+            }
+            "zones.list_zones_by_type" => {
+                let request = decode(request)?;
+                self.zones.list_zones_by_type_raw(request, options).await
             }
             _ => Err(Error::logic(format!("no rpc endpoint {function}"))),
         }

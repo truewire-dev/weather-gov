@@ -41,41 +41,8 @@
       ]
     },
     "response": {
-      "title": "ObservationCollection",
-      "type": "object",
-      "description": "The observations in the span, as a GeoJSON feature collection, newest first.",
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": [
-            "FeatureCollection"
-          ],
-          "description": "Always `FeatureCollection`."
-        },
-        "features": {
-          "type": "array",
-          "description": "The observations, newest first.",
-          "items": {
-            "$ref": "ObservationFeature",
-            "description": "One observation."
-          }
-        },
-        "pagination": {
-          "title": "ObservationPagination",
-          "type": "object",
-          "description": "Where the next page is, as a whole URL. The declared walk moves the time window instead and never reads this.",
-          "properties": {
-            "next": {
-              "type": "string",
-              "description": "URL of the next page. Absent on the last one."
-            }
-          }
-        }
-      },
-      "required": [
-        "type",
-        "features"
-      ]
+      "$ref": "ObservationCollection",
+      "description": "The observations in the span, newest first."
     }
   },
   "pagination": {

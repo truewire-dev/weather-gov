@@ -1,0 +1,9 @@
+{
+  "description": "The five stations nearest the downtown Seattle grid cell",
+  "request": {
+    "office": "SEW",
+    "grid_x": 125,
+    "grid_y": 68,
+    "limit": 5
+  }
+}
