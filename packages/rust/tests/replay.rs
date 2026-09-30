@@ -446,9 +446,18 @@ async fn zones_list_zones_sends_two_ids_as_one_comma_separated_item() {
     let mut expected = asked;
     expected.sort();
     assert_eq!(returned, expected);
-    let mut kinds: Vec<_> = zones.iter().map(|zone| format!("{:?}", zone.type_2)).collect();
+    let mut kinds: Vec<_> = zones
+        .iter()
+        .map(|zone| format!("{:?}", zone.type_2))
+        .collect();
     kinds.sort();
-    assert_eq!(kinds, [format!("{:?}", ZoneType2::County), format!("{:?}", ZoneType2::Public)]);
+    assert_eq!(
+        kinds,
+        [
+            format!("{:?}", ZoneType2::County),
+            format!("{:?}", ZoneType2::Public)
+        ]
+    );
 }
 
 #[tokio::test]
