@@ -7,6 +7,8 @@ reach the wire. The mock server is the wire.
 
 import json
 from pathlib import Path
+from urllib.error import HTTPError
+from urllib.request import urlopen
 
 import pytest
 from truewire_core.exceptions import ApiError, BadRequest
@@ -85,11 +87,23 @@ class TestOnTheWire:
   """Through the mock server, so the URL the client builds is the URL that is matched."""
 
   @pytest.mark.asyncio
-  async def test_a_repeated_filter_travels_as_repeated_keys(self, client):
-    """`state=['WA']` has to reach the wire as `?state=WA`, not as `?state=%5B'WA'%5D`.
-    The mock matches the recorded query exactly, so a wrong rendering 422s here."""
-    page = await client.stations.list_stations(state=['WA'], limit=20)
-    assert len(page['features']) == 20
+  async def test_a_list_filter_travels_as_one_comma_separated_item(self, client):
+    """`id=['KSEA', 'KPDX']` has to reach the wire as `?id=KSEA,KPDX`. The service keeps
+    only the last of a repeated key, so `?id=KSEA&id=KPDX` would answer with KPDX alone.
+    The endpoint declares `match.query_arrays: "comma"`, so the mock 422s any other form."""
+    page = await client.stations.list_stations(id=['KSEA', 'KPDX'])
+    returned = sorted(f['properties']['stationIdentifier'] for f in page['features'])
+    assert returned == ['KPDX', 'KSEA']
+
+  def test_the_mock_refuses_repeated_keys_for_the_same_call(self, mock_servers):
+    """The control for the test above: the recording it replays does not also match the
+    repeated form, so that test fails if the core goes back to sending it."""
+    base = mock_servers.http_base_url
+    with urlopen(f'{base}/stations?id=KSEA,KPDX') as response:
+      assert response.status == 200
+    with pytest.raises(HTTPError) as refused:
+      urlopen(f'{base}/stations?id=KSEA&id=KPDX')
+    assert refused.value.code == 422
 
   @pytest.mark.asyncio
   async def test_a_colon_in_a_path_is_not_percent_encoded(self, client):

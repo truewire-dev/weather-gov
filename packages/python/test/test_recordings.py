@@ -112,6 +112,17 @@ def stations(result: Any) -> None:
   assert result['pagination']['next'].startswith('https://api.weather.gov/stations?')
 
 
+def stations_by_id(result: Any) -> None:
+  """Two identifiers in one filter, and both stations back. The service reads `id=KSEA,KPDX`
+  and keeps only the last of a repeated key, so a client sending `id=KSEA&id=KPDX` would get
+  KPDX alone. The mock expects the comma form (`match.query_arrays`), so this also fails if
+  the core stops joining."""
+  asked = example_request('stations.list_stations', 'two_ids')
+  assert len(asked['id']) == 2
+  returned = [feature['properties']['stationIdentifier'] for feature in result['features']]
+  assert sorted(returned) == sorted(asked['id'])
+
+
 def latest_observation(result: Any) -> None:
   """Current conditions at an airport station, every measurement beside its unit."""
   assert result['stationId'] == 'KSEA'
@@ -235,6 +246,16 @@ def zones_filtered(result: Any) -> None:
   assert [zone['id'] for zone in zones] == sorted(zone['id'] for zone in zones)
 
 
+def zones_by_id(result: Any) -> None:
+  """Two zone codes in one filter, and both zones back, of two different types: the filter
+  is "any of", sent as one comma-separated item (see `stations_by_id`)."""
+  asked = example_request('zones.list_zones', 'two_ids')
+  assert len(asked['id']) == 2
+  zones = [is_zone(feature, geometry=False) for feature in result['features']]
+  assert sorted(zone['id'] for zone in zones) == sorted(asked['id'])
+  assert {zone['type'] for zone in zones} == {'public', 'county'}
+
+
 def zones_of_type(result: Any) -> None:
   """The type comes from the path; county codes carry a `C` where public ones carry a `Z`."""
   asked = example_request('zones.list_zones_by_type', 'washington_counties')
@@ -339,6 +360,7 @@ PROVES: dict[str, Callable[[Any], None]] = {
   'forecast.get_forecast[seattle]': forecast,
   'forecast.get_hourly_forecast[seattle]': hourly_forecast,
   'forecast.get_grid_data[seattle]': grid_data,
+  'stations.list_stations[two_ids]': stations_by_id,
   'stations.list_stations[washington]': stations,
   'stations.get_latest_observation[ksea]': latest_observation,
   'stations.get_observations[ksea_window]': observations,
@@ -348,6 +370,7 @@ PROVES: dict[str, Callable[[Any], None]] = {
   'offices.get_office[seattle]': office,
   'products.list_product_types[all]': product_types,
   'zones.list_zones[seattle]': zones_at_point,
+  'zones.list_zones[two_ids]': zones_by_id,
   'zones.list_zones[washington_fire]': zones_filtered,
   'zones.list_zones_by_type[washington_counties]': zones_of_type,
   'zones.get_zone[seattle]': zone,

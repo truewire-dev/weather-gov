@@ -5,6 +5,10 @@ is the one convention this project invented: the core learns which responses to 
 from `meta.payload`, and the spec states the same thing in `envelope.payload` so
 `truewire check` validates recordings against the whole wire frame. Two declarations of
 one fact can drift, so they are compared here.
+
+The same goes for the query form: the core joins every list filter with commas, and each
+endpoint that takes one says so in `match.query_arrays`, which is what `truewire mock`
+matches recordings by.
 """
 
 import json
@@ -55,3 +59,24 @@ def test_every_endpoint_has_a_recording(path: Path):
   for request in requests:
     response = request.with_name(request.name.replace('.request.', '.response.'))
     assert response.exists(), f'{request.name} was recorded without its response half'
+
+
+def list_filters(doc: dict) -> list[str]:
+  properties = (doc['spec'].get('request') or {}).get('properties') or {}
+  return sorted(name for name, schema in properties.items() if schema.get('type') == 'array')
+
+
+@pytest.mark.parametrize('path', ENDPOINTS, ids=endpoint_id)
+def test_a_list_filter_is_declared_comma_separated(path: Path):
+  """The service reads `?id=KSEA,KPDX` and keeps only the last of `?id=KSEA&id=KPDX`, and
+  the core sends the first. An endpoint with a list filter that did not declare it would
+  have the mock expect repeated keys, so a two-value recording could never replay there."""
+  doc = json.loads(path.read_text())
+  declared = (doc.get('match') or {}).get('query_arrays', 'repeat')
+  assert declared == ('comma' if list_filters(doc) else 'repeat'), endpoint_id(path)
+
+
+def test_some_endpoints_take_list_filters():
+  """A guard on the guard, as above."""
+  with_lists = [path for path in ENDPOINTS if list_filters(json.loads(path.read_text()))]
+  assert len(with_lists) == 4

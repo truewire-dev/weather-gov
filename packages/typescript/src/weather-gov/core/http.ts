@@ -156,8 +156,9 @@ export class Transport implements HttpEndpoint<DefaultMeta> {
  *
  * Two details this API forces:
  *
- * - A list-valued filter (`state`, `severity`) travels as repeated keys, which is what the
- *   service reads and what `truewire mock` matches.
+ * - A list-valued filter (`state`, `severity`) travels as one comma-separated item
+ *   (`?state=WA,OR`). The service keeps only the last of a repeated key, so
+ *   `?state=WA&state=OR` would answer for Oregon alone. An empty list sends nothing.
  * - A path value is percent-encoded, with `:` left alone. It is a legal path character
  *   (RFC 3986 `pchar`), an alert id is `urn:oid:...`, and the service publishes that id
  *   inside the URL it hands back -- so encoding it would send a URL the API never printed.
@@ -176,11 +177,16 @@ function fill(
       path = path.replace(`{${name}}`, encodePathValue(String(value)))
       continue
     }
-    for (const item of Array.isArray(value) ? value : [value]) {
-      query.append(name, typeof item === 'object' ? JSON.stringify(item) : String(item))
-    }
+    const items = Array.isArray(value) ? value : [value]
+    if (items.length === 0) continue
+    query.append(name, items.map(queryText).join(','))
   }
   return { path, query }
+}
+
+/** One query value as text: an object as JSON, anything else as `String()` spells it. */
+function queryText(item: unknown): string {
+  return typeof item === 'object' ? JSON.stringify(item) : String(item)
 }
 
 /** `encodeURIComponent`, but keeping the `:` that an alert identifier is built from. */

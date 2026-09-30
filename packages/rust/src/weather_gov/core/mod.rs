@@ -108,15 +108,16 @@ impl HttpEndpoint<DefaultMeta> for Core {
                     path = path.replace(&placeholder, &encode_path_value(&plain(&value)));
                     continue;
                 }
-                // A list-valued filter (`state`, `severity`) travels as repeated keys,
-                // which is what the service reads and what `truewire mock` matches. The
-                // runtime's `query_from` would send the array as one JSON string.
+                // A list-valued filter (`state`, `severity`) travels as one comma-separated
+                // item (`?state=WA,OR`). The service keeps only the last of a repeated key,
+                // so `?state=WA&state=OR` would answer for Oregon alone. The runtime's
+                // `query_from` would send the array as one JSON string.
                 match value {
                     Value::Null => {}
+                    Value::Array(items) if items.is_empty() => {}
                     Value::Array(items) => {
-                        for item in items {
-                            query.push((name.clone(), Some(plain(&item))));
-                        }
+                        let joined = items.iter().map(plain).collect::<Vec<_>>().join(",");
+                        query.push((name, Some(joined)));
                     }
                     other => query.push((name, Some(plain(&other)))),
                 }

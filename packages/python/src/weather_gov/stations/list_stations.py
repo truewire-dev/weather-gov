@@ -8,9 +8,9 @@ class Request(TypedDict):
   """Which stations, and how many."""
 
   id: NotRequired[list[str]]
-  """Station identifiers to return, such as `KSEA`. Sent as a repeated query key, one per identifier."""
+  """Station identifiers to return, such as `KSEA`. Several travel as one comma-separated query item."""
   state: NotRequired[list[str]]
-  """Two-letter state or marine-area codes to narrow to. Sent as a repeated query key."""
+  """Two-letter state or marine-area codes to narrow to. Several travel as one comma-separated query item."""
   limit: NotRequired[int]
   """Stations per page. Range [1, 500]."""
   cursor: NotRequired[str]
@@ -52,8 +52,8 @@ class ListStations(Endpoint):
     """The observation stations the service knows about, optionally narrowed to a state or to named identifiers. Use it to find the station code `stations.get_observations` takes.
 
     Args:
-      id: Station identifiers to return, such as `KSEA`. Sent as a repeated query key, one per identifier.
-      state: Two-letter state or marine-area codes to narrow to. Sent as a repeated query key.
+      id: Station identifiers to return, such as `KSEA`. Several travel as one comma-separated query item.
+      state: Two-letter state or marine-area codes to narrow to. Several travel as one comma-separated query item.
       limit: Stations per page. Range [1, 500].
       cursor: Page cursor. The service does not hand this back on its own -- see the note -- so it is here for a caller who has one, not for a walk the client drives.
       validate: Override this call's response validation; falls back to the client-level default when omitted. `False` returns the parsed body as it came, typed `Any`.

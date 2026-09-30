@@ -141,7 +141,18 @@ describe('recorded examples replay through the generated client', () => {
     }
   })
 
-  it('stations.listStations sends a repeated query key, not a stringified array', async () => {
+  it('stations.listStations sends two ids as one comma-separated item, and both come back', async () => {
+    // The service keeps only the last of a repeated key, so `?id=KSEA&id=KPDX` would answer
+    // with KPDX alone. The endpoint declares `match.query_arrays: "comma"`, so the mock 422s
+    // any form but `?id=KSEA,KPDX`.
+    const asked = recorded<{ id: string[] }>('stations/list_stations/examples/two_ids.request.json')
+    expect(asked.id).toHaveLength(2)
+    const page = await client.stations.listStations({ id: asked.id })
+    const returned = page.features.map(feature => feature.properties.stationIdentifier)
+    expect(returned.sort()).toEqual([...asked.id].sort())
+  })
+
+  it('stations.listStations sends a list filter as text, not a stringified array', async () => {
     const page = await client.stations.listStations({ state: ['WA'], limit: 20 })
     expect(page.type).toBe('FeatureCollection')
     expect(page.features).toHaveLength(20)
@@ -249,6 +260,15 @@ describe('recorded examples replay through the generated client', () => {
     }
     const ids = zones.map(zone => zone.id)
     expect([...ids].sort()).toEqual(ids)
+  })
+
+  it('zones.listZones sends two ids as one comma-separated item, and both come back', async () => {
+    const asked = recorded<{ id: string[] }>('zones/list_zones/examples/two_ids.request.json')
+    expect(asked.id).toHaveLength(2)
+    const page = await client.zones.listZones({ id: asked.id })
+    const zones = page.features.map(feature => isZone(feature, false))
+    expect(zones.map(zone => zone.id).sort()).toEqual([...asked.id].sort())
+    expect(new Set(zones.map(zone => zone.type))).toEqual(new Set(['public', 'county']))
   })
 
   it('zones.listZonesByType takes the type from the path', async () => {
