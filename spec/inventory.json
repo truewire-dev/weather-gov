@@ -39,6 +39,6 @@
     {"method": "GET", "path": "/radar/stations/{stationId}", "endpoint": "radar.get_station"},
     {"method": "GET", "path": "/radar/stations/{stationId}/alarms", "endpoint": "radar.list_station_alarms"},
     {"method": "GET", "path": "/radar/queues/{host}", "endpoint": "radar.get_queue"},
-    {"method": "GET", "path": "/radar/profilers/{stationId}", "excluded": "404 for all four profilers /radar/stations lists (TLKA2, ROCO2, AWPA2, HWPA2) and eleven other profiler ids; no JSON body to serve"}
+    {"method": "GET", "path": "/radar/profilers/{stationId}", "endpoint": "radar.get_profiler"}
   ]
 }

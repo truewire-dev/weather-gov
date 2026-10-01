@@ -77,6 +77,9 @@ pub struct Request {
     /// Only products that arrived in this ISO 8601 interval: `start/end`, `start/duration` or `duration/end`, either end may be `NOW`, such as `2026-09-30T23:00:00Z/PT10M`. The answer starts at the interval's start, so a `limit` keeps the oldest. Without it, about the last two minutes. The service keeps about a week.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub arrived: Option<String>,
+    /// Only products the radar created in this ISO 8601 interval, in the same forms as `arrived`. Every request with it answered 503 on 2026-10-01 (`An upstream data source is temporarily unavailable`).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub created: Option<String>,
     /// Only products published in this ISO 8601 interval, in the same forms as `arrived`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub published: Option<String>,

@@ -17,6 +17,7 @@
     "products/__init__.py",
     "products/list_product_types.py",
     "radar/__init__.py",
+    "radar/get_profiler.py",
     "radar/get_queue.py",
     "radar/get_server.py",
     "radar/get_station.py",

@@ -17,6 +17,7 @@
     "points/index.ts",
     "products/index.ts",
     "products/list_product_types.ts",
+    "radar/get_profiler.ts",
     "radar/get_queue.ts",
     "radar/get_server.ts",
     "radar/get_station.ts",

@@ -32,6 +32,10 @@
           "type": "string",
           "description": "Only products that arrived in this ISO 8601 interval: `start/end`, `start/duration` or `duration/end`, either end may be `NOW`, such as `2026-09-30T23:00:00Z/PT10M`. The answer starts at the interval's start, so a `limit` keeps the oldest. Without it, about the last two minutes. The service keeps about a week."
         },
+        "created": {
+          "type": "string",
+          "description": "Only products the radar created in this ISO 8601 interval, in the same forms as `arrived`. Every request with it answered 503 on 2026-10-01 (`An upstream data source is temporarily unavailable`)."
+        },
         "published": {
           "type": "string",
           "description": "Only products published in this ISO 8601 interval, in the same forms as `arrived`."
@@ -147,7 +151,7 @@
   },
   "notes": [
     "No `pagination` block. A walk would move the start of `arrived`, but `arrived` is one `start/end` string, not two parameters, and a `seek` block names its bounds as parameters. Products also share arrival times, so a walk keyed on them would need whole-row deduplication.",
-    "The documented `created` filter is left out: every request with it answered 503 on 2026-10-01 (`An upstream data source is temporarily unavailable`), across four intervals and both hosts.",
+    "The documented `created` filter is in the request but has no example: every request with it answered 503 on 2026-10-01 (`An upstream data source is temporarily unavailable`), across four intervals and both hosts, and twice more later that day (`NOW/PT10M` on `rds`, `PT10M/NOW` on `tds`; correlationIds 8689f21 and 3f3fa5f7). The client sends it unchanged, so it works once the upstream source does.",
     "The service keeps about a week (a window on 2026-09-20 answered an empty `@graph` on 2026-10-01), so `refresh_examples.py` moves the example's window to about a day ago before every re-recording."
   ]
 }
