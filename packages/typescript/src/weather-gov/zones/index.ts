@@ -65,7 +65,7 @@ export class Zones {
   }
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  listZones(request: listZones.Request, options: CallOptions & { validate: false }): Promise<unknown>
+  listZones(request: listZones.Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * The zones the service knows about, of every type, optionally narrowed by code, place, region, type or point. Each comes without its outline; `zones.get_zone` has it.
    *

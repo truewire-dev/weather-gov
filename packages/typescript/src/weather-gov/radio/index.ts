@@ -32,7 +32,7 @@ export class Radio {
   }
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  listTransmitters(request: listTransmitters.Request, options: CallOptions & { validate: false }): Promise<unknown>
+  listTransmitters(request: listTransmitters.Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * Every NOAA Weather Radio transmitter, a page at a time. JSON-LD, not GeoJSON: the transmitters come as a `@graph`.
    *
