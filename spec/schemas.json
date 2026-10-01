@@ -1297,29 +1297,6 @@
     ],
     "description": "The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses)."
   },
-  "RadarPingGroup": {
-    "title": "RadarPingGroup",
-    "description": "Whether each target in one group answered the server's last ping, by target name. The service sends an empty group as `[]`, not `{}`.",
-    "anyOf": [
-      {
-        "type": "object",
-        "description": "Target name to whether it answered.",
-        "additionalProperties": {
-          "type": "boolean",
-          "description": "Whether this target answered."
-        }
-      },
-      {
-        "type": "array",
-        "maxItems": 0,
-        "description": "An empty group: `[]`, never with entries.",
-        "items": {
-          "type": "boolean",
-          "description": "Never present: the array is always empty."
-        }
-      }
-    ]
-  },
   "RadarServer": {
     "title": "RadarServer",
     "type": "object",
@@ -1383,32 +1360,30 @@
         "description": "Which hosts the server could reach at its last ping round.",
         "properties": {
           "targets": {
-            "title": "RadarPingTargets",
             "type": "object",
-            "description": "Ping results, grouped by kind of target. A group the server does not ping is absent.",
-            "properties": {
-              "client": {
-                "$ref": "RadarPingGroup",
-                "description": "Downstream data clients, such as `ncep` or `unidata`."
-              },
-              "ldm": {
-                "$ref": "RadarPingGroup",
-                "description": "Other LDM servers, by server name."
-              },
-              "radar": {
-                "$ref": "RadarPingGroup",
-                "description": "Radar stations, by station identifier (`KATX`)."
-              },
-              "server": {
-                "$ref": "RadarPingGroup",
-                "description": "Other servers of the network, by server name."
-              },
-              "misc": {
-                "$ref": "RadarPingGroup",
-                "description": "Network interfaces and routers, such as `eth0` or `rocRouter`."
-              }
-            },
-            "required": []
+            "description": "Ping results by group of targets: `client` (downstream data clients, such as `ncep`), `ldm` and `server` (other servers, by name), `radar` (radar stations, by identifier) and `misc` (interfaces and routers, such as `eth0`). A group the server does not ping is absent.",
+            "additionalProperties": {
+              "description": "Whether each target in the group answered, by target name. The service sends an empty group as `[]`, not `{}`.",
+              "anyOf": [
+                {
+                  "type": "object",
+                  "description": "Target name to whether it answered.",
+                  "additionalProperties": {
+                    "type": "boolean",
+                    "description": "Whether this target answered."
+                  }
+                },
+                {
+                  "type": "array",
+                  "maxItems": 0,
+                  "description": "An empty group: `[]`, never with entries.",
+                  "items": {
+                    "type": "boolean",
+                    "description": "Never present: the array is always empty."
+                  }
+                }
+              ]
+            }
           },
           "timestamp": {
             "type": "string",
@@ -1620,24 +1595,6 @@
       "active"
     ]
   },
-  "RadarReading": {
-    "title": "RadarReading",
-    "description": "One reading of a radar's maintenance report: a measurement with its unit, or a bare status string or number.",
-    "anyOf": [
-      {
-        "$ref": "QuantitativeValue",
-        "description": "A measurement, such as `transmitterPeakPower`."
-      },
-      {
-        "type": "string",
-        "description": "A status, such as `OK`, or a time the report states as text."
-      },
-      {
-        "type": "number",
-        "description": "A bare count or ratio, such as `linearity`."
-      }
-    ]
-  },
   "RadarReport": {
     "title": "RadarReport",
     "type": "object",
@@ -1668,8 +1625,21 @@
             "type": "object",
             "description": "Reading name to reading.",
             "additionalProperties": {
-              "$ref": "RadarReading",
-              "description": "One reading."
+              "description": "One reading: a measurement with its unit, or a bare status string or number.",
+              "anyOf": [
+                {
+                  "$ref": "QuantitativeValue",
+                  "description": "A measurement, such as `transmitterPeakPower`."
+                },
+                {
+                  "type": "string",
+                  "description": "A status, such as `OK`, or a time the report states as text, such as `performanceCheckTime`."
+                },
+                {
+                  "type": "number",
+                  "description": "A bare count or ratio, such as `linearity`."
+                }
+              ]
             }
           },
           {
@@ -1677,7 +1647,7 @@
             "maxItems": 0,
             "description": "No readings: `[]`, never with entries.",
             "items": {
-              "$ref": "RadarReading",
+              "type": "string",
               "description": "Never present: the array is always empty."
             }
           }
