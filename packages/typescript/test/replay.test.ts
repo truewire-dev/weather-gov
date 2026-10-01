@@ -11,12 +11,15 @@
  */
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
+import { DateIso } from '@truewire/core'
 import { beforeAll, describe, expect, inject, it } from 'vitest'
 import { Weather } from '../src/weather-gov/core/index.js'
 import type {
+  AdvisoryPolygon,
   PointGeometry,
   PolygonGeometry,
   QuantitativeValue,
+  SigmetFeature,
   ZoneFeature,
 } from '../src/weather-gov/types/index.js'
 import { projectRoot } from './setup.js'
@@ -39,6 +42,74 @@ const ZONE_WINDOW = recorded<{ zone_id: string; start: string; end: string; limi
 const ZONE_STATIONS = recorded<{ zone_id: string }>(
   'stations/list_stations_for_zone/examples/seattle.request.json',
 )
+const CWA = recorded<{ cwsu_id: 'ZFW'; date: string; sequence: number }>(
+  'aviation/get_cwa/examples/latest.request.json',
+)
+const SIGMET = recorded<{ atsu: string; date: string; time: string }>(
+  'aviation/get_sigmet/examples/anchorage_latest.request.json',
+)
+const SIGMETS_ON_DATE = recorded<{ atsu: string; date: string }>(
+  'aviation/list_sigmets_for_atsu_on_date/examples/anchorage.request.json',
+)
+
+/** The ids a recorded collection holds, for a test that checks one recording against another. */
+function recordedIds(file: string): string[] {
+  const full = path.join(projectRoot, 'spec/endpoints', file)
+  const payload = (JSON.parse(readFileSync(full, 'utf8')) as {
+    payload: { features: { properties: { id: string } }[] }
+  }).payload
+  return payload.features.map(feature => feature.properties.id)
+}
+
+type Box = { latitude: [number, number]; longitude: [number, number] }
+/** Fort Worth Center's airspace, generously: north Texas and its neighbours. */
+const FORT_WORTH: Box = { latitude: [25, 40], longitude: [-112, -88] }
+/** Alaska, with the Aleutians past the antimeridian: the service does not wrap -190 to 170. */
+const ALASKA: Box = { latitude: [45, 75], longitude: [-200, -125] }
+/** The eastern third of the contiguous US, where the `E` convective SIGMETs are issued. */
+const EAST: Box = { latitude: [20, 50], longitude: [-100, -60] }
+
+/**
+ * An aviation outline: a closed polygon, latitude first -- the reverse of every other
+ * geometry in this API, which the box around the issuing unit's airspace proves.
+ */
+function isAdvisoryArea(geometry: AdvisoryPolygon | null, box: Box): void {
+  expect(geometry?.type).toBe('Polygon')
+  for (const ring of geometry!.coordinates) {
+    expect(ring.length).toBeGreaterThan(3)
+    expect(ring[ring.length - 1]).toEqual(ring[0])
+    for (const [latitude, longitude] of ring) {
+      expect(latitude).toBeGreaterThan(box.latitude[0])
+      expect(latitude).toBeLessThan(box.latitude[1])
+      expect(longitude).toBeGreaterThan(box.longitude[0])
+      expect(longitude).toBeLessThan(box.longitude[1])
+    }
+  }
+}
+
+function isNewestFirst(features: { properties: { issueTime: Date } }[]): void {
+  const issued = features.map(feature => feature.properties.issueTime.getTime())
+  expect([...issued].sort((a, b) => b - a)).toEqual(issued)
+}
+
+/** `YYYY-MM-DD` and `HHMM` of an instant, in UTC: how a SIGMET's URL names it. */
+function utcDay(date: Date): string {
+  return date.toISOString().slice(0, 10)
+}
+function utcMinute(date: Date): string {
+  return date.toISOString().slice(11, 16).replace(':', '')
+}
+
+/** A message from `atsu`, named by its UTC issue date and minute: the URL `getSigmet` takes. */
+function isSigmetOf(feature: SigmetFeature, atsu: string): SigmetFeature['properties'] {
+  const sigmet = feature.properties
+  expect(sigmet.atsu).toBe(atsu)
+  const issued = sigmet.issueTime
+  expect(sigmet.id.endsWith(`/sigmets/${atsu}/${utcDay(issued)}/${utcMinute(issued)}`)).toBe(true)
+  expect(sigmet.start.getTime()).toBeLessThanOrEqual(sigmet.end.getTime())
+  if (feature.geometry !== null) isAdvisoryArea(feature.geometry, ALASKA)
+  return sigmet
+}
 
 /** A `QuantitativeValue`: a unit, and a number or an honest null. */
 function isMeasurement(value: QuantitativeValue, unit?: string): void {
@@ -367,5 +438,80 @@ describe('recorded examples replay through the generated client', () => {
       return feature.properties.distance!.value as number
     })
     expect([...distances].sort((a, b) => a - b)).toEqual(distances)
+  })
+  it('aviation.getCwsu is an organization, like an office, without its zones', async () => {
+    const unit = await client.aviation.getCwsu({ cwsu_id: 'ZSE' })
+    expect(unit.id).toBe('ZSE')
+    expect(unit.name).toBe('Seattle, WA')
+    expect(unit.address?.addressRegion).toBe('WA')
+    expect(unit.nwsRegion).toBe('wr')
+    expect('responsibleForecastZones' in unit).toBe(false)
+  })
+
+  it('aviation.listCwas answers the week newest first, each named by date and sequence', async () => {
+    const page = await client.aviation.listCwas({ cwsu_id: 'ZFW' })
+    expect(page.features.length).toBeGreaterThan(0)
+    isNewestFirst(page.features)
+    for (const feature of page.features) {
+      const advisory = feature.properties
+      expect(advisory.cwsu).toBe('ZFW')
+      expect(advisory.sequence).toBeGreaterThanOrEqual(101)
+      expect(advisory.start.getTime()).toBeLessThanOrEqual(advisory.end.getTime())
+      const suffix = `/cwsus/ZFW/cwas/${utcDay(advisory.issueTime)}/${advisory.sequence}`
+      expect(advisory.id.endsWith(suffix)).toBe(true)
+      if (feature.geometry !== null) isAdvisoryArea(feature.geometry, FORT_WORTH)
+    }
+  })
+
+  it('aviation.getCwa returns the advisory the list holds, area included', async () => {
+    const feature = await client.aviation.getCwa({ ...CWA, date: DateIso.of(CWA.date) })
+    const advisory = feature.properties
+    expect([advisory.cwsu, advisory.sequence]).toEqual([CWA.cwsu_id, CWA.sequence])
+    expect(utcDay(advisory.issueTime)).toBe(CWA.date)
+    expect(advisory.text).toBeTruthy()
+    isAdvisoryArea(feature.geometry, FORT_WORTH)
+    expect(recordedIds('aviation/list_cwas/examples/fort_worth.response.json')).toContain(advisory.id)
+  })
+
+  it('aviation.listSigmets by sequence alone reaches back through the week', async () => {
+    const page = await client.aviation.listSigmets({ sequence: '1E' })
+    expect(page.features.length).toBeGreaterThan(0)
+    isNewestFirst(page.features)
+    expect(new Set(page.features.map(f => f.properties.sequence))).toEqual(new Set(['1E']))
+    expect(new Set(page.features.map(f => utcDay(f.properties.issueTime))).size).toBeGreaterThan(1)
+    for (const feature of page.features) {
+      expect(feature.properties.atsu).toBe('KKCI')
+      if (feature.geometry !== null) isAdvisoryArea(feature.geometry, EAST)
+    }
+  })
+
+  it('aviation.listSigmetsForAtsu answers one unit, newest first, over several days', async () => {
+    const page = await client.aviation.listSigmetsForAtsu({ atsu: 'ANC' })
+    expect(page.features.length).toBeGreaterThan(0)
+    isNewestFirst(page.features)
+    for (const feature of page.features) isSigmetOf(feature, 'ANC')
+    expect(new Set(page.features.map(f => utcDay(f.properties.issueTime))).size).toBeGreaterThan(1)
+  })
+
+  it('aviation.listSigmetsForAtsuOnDate answers that day only, all in the week', async () => {
+    const page = await client.aviation.listSigmetsForAtsuOnDate({
+      atsu: SIGMETS_ON_DATE.atsu,
+      date: DateIso.of(SIGMETS_ON_DATE.date),
+    })
+    expect(page.features.length).toBeGreaterThan(0)
+    isNewestFirst(page.features)
+    const week = recordedIds('aviation/list_sigmets_for_atsu/examples/anchorage.response.json')
+    for (const feature of page.features) {
+      const sigmet = isSigmetOf(feature, SIGMETS_ON_DATE.atsu)
+      expect(utcDay(sigmet.issueTime)).toBe(SIGMETS_ON_DATE.date)
+      expect(week).toContain(sigmet.id)
+    }
+  })
+
+  it('aviation.getSigmet returns the message the unit, date and minute name', async () => {
+    const feature = await client.aviation.getSigmet({ ...SIGMET, date: DateIso.of(SIGMET.date) })
+    const sigmet = isSigmetOf(feature, SIGMET.atsu)
+    expect([utcDay(sigmet.issueTime), utcMinute(sigmet.issueTime)]).toEqual([SIGMET.date, SIGMET.time])
+    expect(feature.geometry).not.toBeNull()
   })
 })

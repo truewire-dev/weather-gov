@@ -334,6 +334,141 @@ def gridpoint_stations(result: Any) -> None:
   assert distances == sorted(distances)
 
 
+def recorded_payload(endpoint: str, example_id: str) -> Any:
+  """The response half of an example, for a test that checks one recording against another
+  recorded in the same run."""
+  path = PROJECT / 'spec/endpoints' / endpoint.replace('.', '/') / 'examples'
+  return json.loads((path / f'{example_id}.response.json').read_text())['payload']
+
+
+def is_advisory_area(
+  geometry: Any, *, latitude: tuple[float, float], longitude: tuple[float, float]
+) -> None:
+  """An aviation outline: a closed polygon, latitude first -- the reverse of every other
+  geometry in this API, which the box around the issuing unit's airspace proves."""
+  assert geometry['type'] == 'Polygon'
+  for ring in geometry['coordinates']:
+    assert ring[0] == ring[-1] and len(ring) > 3
+    for lat, lon in ring:
+      assert latitude[0] < lat < latitude[1]
+      assert longitude[0] < lon < longitude[1]
+
+
+FORT_WORTH = {'latitude': (25.0, 40.0), 'longitude': (-112.0, -88.0)}
+"""Fort Worth Center's airspace, generously: north Texas and its neighbours."""
+ALASKA = {'latitude': (45.0, 75.0), 'longitude': (-200.0, -125.0)}
+"""Alaska, with the Aleutians past the antimeridian: the service does not wrap -190 to 170."""
+EAST = {'latitude': (20.0, 50.0), 'longitude': (-100.0, -60.0)}
+"""The eastern third of the contiguous US and its coastal waters, where the `E` convective
+SIGMETs are issued."""
+
+
+def is_newest_first(features: Any) -> None:
+  issued = [feature['properties']['issueTime'] for feature in features]
+  assert issued == sorted(issued, reverse=True), 'the service answers newest first'
+
+
+def cwsu(result: Any) -> None:
+  """A weather unit is an organization, like an office, without an office's zones."""
+  asked = example_request('aviation.get_cwsu', 'seattle')
+  assert result['id'] == asked['cwsu_id'] == 'ZSE'
+  assert result['name'] == 'Seattle, WA'
+  assert result['address']['addressRegion'] == 'WA'
+  assert result['nwsRegion'] == 'wr'
+  assert 'responsibleForecastZones' not in result
+
+
+def cwas(result: Any) -> None:
+  """The unit's week of advisories, newest first, each named by its date and sequence."""
+  asked = example_request('aviation.list_cwas', 'fort_worth')
+  features = result['features']
+  assert features
+  is_newest_first(features)
+  for feature in features:
+    advisory = feature['properties']
+    assert advisory['cwsu'] == asked['cwsu_id']
+    assert advisory['sequence'] >= 101
+    assert advisory['start'] <= advisory['end']
+    issued = advisory['issueTime'].date().isoformat()
+    assert advisory['id'].endswith(
+      f'/cwsus/{asked["cwsu_id"]}/cwas/{issued}/{advisory["sequence"]}'
+    )
+    if feature['geometry'] is not None:
+      is_advisory_area(feature['geometry'], **FORT_WORTH)
+
+
+def cwa(result: Any) -> None:
+  """The advisory the date and sequence name, whole, and the same one the list holds."""
+  asked = example_request('aviation.get_cwa', 'latest')
+  advisory = result['properties']
+  assert (advisory['cwsu'], advisory['sequence']) == (asked['cwsu_id'], asked['sequence'])
+  assert advisory['issueTime'].date().isoformat() == asked['date']
+  assert advisory['text'] and advisory['observedProperty']
+  is_advisory_area(result['geometry'], **FORT_WORTH)
+  listed = recorded_payload('aviation.list_cwas', 'fort_worth')['features']
+  assert asked['cwsu_id'] == example_request('aviation.list_cwas', 'fort_worth')['cwsu_id']
+  assert advisory['id'] in {feature['properties']['id'] for feature in listed}
+
+
+def sigmets_by_sequence(result: Any) -> None:
+  """A sequence filter alone reaches back through the whole week: one series, many days."""
+  asked = example_request('aviation.list_sigmets', 'convective_1e')
+  features = result['features']
+  assert features
+  is_newest_first(features)
+  assert {feature['properties']['sequence'] for feature in features} == {asked['sequence']}
+  assert len({feature['properties']['issueTime'].date() for feature in features}) > 1
+  for feature in features:
+    assert feature['properties']['atsu'] == 'KKCI'
+    if feature['geometry'] is not None:
+      is_advisory_area(feature['geometry'], **EAST)
+
+
+def is_sigmet_of(feature: Any, atsu: str) -> Any:
+  """A message from `atsu`, named by its UTC issue date and minute: the URL `get_sigmet` takes."""
+  sigmet = feature['properties']
+  issued = sigmet['issueTime']
+  assert sigmet['atsu'] == atsu
+  assert sigmet['id'].endswith(f'/sigmets/{atsu}/{issued:%Y-%m-%d}/{issued:%H%M}')
+  assert sigmet['start'] <= sigmet['end']
+  if feature['geometry'] is not None:
+    is_advisory_area(feature['geometry'], **ALASKA)
+  return sigmet
+
+
+def sigmets_for_atsu(result: Any) -> None:
+  """One unit's week, newest first."""
+  asked = example_request('aviation.list_sigmets_for_atsu', 'anchorage')
+  features = result['features']
+  assert features
+  is_newest_first(features)
+  for feature in features:
+    is_sigmet_of(feature, asked['atsu'])
+  assert len({feature['properties']['issueTime'].date() for feature in features}) > 1
+
+
+def sigmets_on_date(result: Any) -> None:
+  """One unit's day: only that date, and every one of them also in the unit's week."""
+  asked = example_request('aviation.list_sigmets_for_atsu_on_date', 'anchorage')
+  features = result['features']
+  assert features
+  is_newest_first(features)
+  week = recorded_payload('aviation.list_sigmets_for_atsu', 'anchorage')['features']
+  for feature in features:
+    sigmet = is_sigmet_of(feature, asked['atsu'])
+    assert sigmet['issueTime'].date().isoformat() == asked['date']
+    assert sigmet['id'] in {other['properties']['id'] for other in week}
+
+
+def sigmet(result: Any) -> None:
+  """The message the unit, date and minute name, with its area."""
+  asked = example_request('aviation.get_sigmet', 'anchorage_latest')
+  message = is_sigmet_of(result, asked['atsu'])
+  issued = message['issueTime']
+  assert (issued.date().isoformat(), f'{issued:%H%M}') == (asked['date'], asked['time'])
+  assert result['geometry'] is not None
+
+
 PROVES: dict[str, Callable[[Any], None]] = {
   'points.get_point[seattle]': point,
   'forecast.get_forecast[seattle]': forecast,
@@ -356,6 +491,13 @@ PROVES: dict[str, Callable[[Any], None]] = {
   'stations.get_observations_for_zone[seattle_capped]': zone_observations,
   'stations.list_stations_for_zone[seattle]': zone_stations,
   'stations.list_stations_for_gridpoint[seattle_nearest]': gridpoint_stations,
+  'aviation.get_cwsu[seattle]': cwsu,
+  'aviation.list_cwas[fort_worth]': cwas,
+  'aviation.get_cwa[latest]': cwa,
+  'aviation.list_sigmets[convective_1e]': sigmets_by_sequence,
+  'aviation.list_sigmets_for_atsu[anchorage]': sigmets_for_atsu,
+  'aviation.list_sigmets_for_atsu_on_date[anchorage]': sigmets_on_date,
+  'aviation.get_sigmet[anchorage_latest]': sigmet,
 }
 """What each recording is here to prove. A recording nobody asserts anything about is a
 file that turns green whatever the API sends."""

@@ -1341,7 +1341,7 @@
       {
         "title": "longitude",
         "type": "number",
-        "description": "Longitude, decimal degrees east of the prime meridian."
+        "description": "Longitude, decimal degrees east of the prime meridian. Not wrapped at the antimeridian: an area across it runs past -180 (measured 2026-09-30, -190.7 on an Anchorage AIRMET over the Aleutians)."
       }
     ]
   },
