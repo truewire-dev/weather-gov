@@ -1,0 +1,34 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/cwas",
+  "meta": {},
+  "notes": [
+    "No `pagination` block: the service answers everything it matched in one response, with no page link or cursor (measured 2026-09-30, 82 advisories from `ZAB` in one body)."
+  ],
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/aviation/cwsus/{cwsu_id}/cwas",
+    "method": "GET",
+    "description": "The Center Weather Advisories one unit has issued in about the last week, newest first.",
+    "request": {
+      "title": "ListCwasRequest",
+      "type": "object",
+      "description": "Which unit.",
+      "properties": {
+        "cwsu_id": {
+          "$ref": "CwsuId",
+          "description": "The unit, such as `ZSE` for Seattle Center."
+        }
+      },
+      "required": [
+        "cwsu_id"
+      ]
+    },
+    "response": {
+      "$ref": "CenterWeatherAdvisoryCollection",
+      "description": "The advisories."
+    }
+  }
+}

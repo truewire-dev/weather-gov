@@ -7,6 +7,27 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use truewire_core::{serde_json, TimestampIso};
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum AdvisoryPolygonType {
+    Polygon,
+}
+
+/// The area an aviation advisory covers. Shaped like a GeoJSON `Polygon`, but each position is latitude first (`AdvisoryPosition`), so a GeoJSON library draws it transposed.
+#[allow(clippy::type_complexity)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct AdvisoryPolygon {
+    /// Always `Polygon`.
+    #[serde(rename = "type")]
+    pub type_: AdvisoryPolygonType,
+    /// Linear rings; the first is the outer boundary. Each ring repeats its first position as its last.
+    pub coordinates: Vec<Vec<(f64, f64)>>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+pub type AdvisoryPosition = (f64, f64);
+
 /// The areas covered, as codes rather than prose.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct AlertGeocode {
@@ -37,6 +58,80 @@ pub struct AlertReference {
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum CenterWeatherAdvisoryCwsu {
+    #[serde(rename = "ZAB")]
+    Zab,
+    #[serde(rename = "ZAN")]
+    Zan,
+    #[serde(rename = "ZAU")]
+    Zau,
+    #[serde(rename = "ZBW")]
+    Zbw,
+    #[serde(rename = "ZDC")]
+    Zdc,
+    #[serde(rename = "ZDV")]
+    Zdv,
+    #[serde(rename = "ZFA")]
+    Zfa,
+    #[serde(rename = "ZFW")]
+    Zfw,
+    #[serde(rename = "ZHU")]
+    Zhu,
+    #[serde(rename = "ZID")]
+    Zid,
+    #[serde(rename = "ZJX")]
+    Zjx,
+    #[serde(rename = "ZKC")]
+    Zkc,
+    #[serde(rename = "ZLA")]
+    Zla,
+    #[serde(rename = "ZLC")]
+    Zlc,
+    #[serde(rename = "ZMA")]
+    Zma,
+    #[serde(rename = "ZME")]
+    Zme,
+    #[serde(rename = "ZMP")]
+    Zmp,
+    #[serde(rename = "ZNY")]
+    Zny,
+    #[serde(rename = "ZOA")]
+    Zoa,
+    #[serde(rename = "ZOB")]
+    Zob,
+    #[serde(rename = "ZSE")]
+    Zse,
+    #[serde(rename = "ZTL")]
+    Ztl,
+}
+
+/// A Center Weather Advisory: a short-fused warning of weather hazardous to aircraft inside one en-route center's airspace.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct CenterWeatherAdvisory {
+    /// Canonical URL of the advisory, ending in its issue date and sequence number: the arguments `aviation.get_cwa` takes.
+    pub id: String,
+    /// When the advisory was issued.
+    #[serde(rename = "issueTime")]
+    pub issue_time: TimestampIso,
+    /// Three-letter code of a Center Weather Service Unit: the NWS meteorologists posted at one FAA air route traffic control center, and named after it (`ZSE` is Seattle Center).
+    pub cwsu: CenterWeatherAdvisoryCwsu,
+    /// Sequence number within the day: the hundreds digit numbers a hazard and the rest counts the advisories about it (`101`, `102`, then `201` for a second hazard). Not always unique: measured 2026-09-30, `ZAB` issued two `206`s that day.
+    pub sequence: i64,
+    /// Start of the period the advisory is valid for.
+    pub start: TimestampIso,
+    /// End of the period the advisory is valid for.
+    pub end: TimestampIso,
+    /// What the advisory was issued for, as a code URL; null on a few.
+    #[serde(rename = "observedProperty")]
+    pub observed_property: Option<String>,
+    /// The advisory itself, in the abbreviated plain language of aviation weather (`AREA TS MOV LTL TOPS TO FL280`).
+    pub text: String,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
 /// Where the next page is. A whole URL, not a bare cursor -- which is why no endpoint returning this declares a pagination strategy.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct CollectionPagination {
@@ -46,6 +141,54 @@ pub struct CollectionPagination {
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum CwsuId {
+    #[serde(rename = "ZAB")]
+    Zab,
+    #[serde(rename = "ZAN")]
+    Zan,
+    #[serde(rename = "ZAU")]
+    Zau,
+    #[serde(rename = "ZBW")]
+    Zbw,
+    #[serde(rename = "ZDC")]
+    Zdc,
+    #[serde(rename = "ZDV")]
+    Zdv,
+    #[serde(rename = "ZFA")]
+    Zfa,
+    #[serde(rename = "ZFW")]
+    Zfw,
+    #[serde(rename = "ZHU")]
+    Zhu,
+    #[serde(rename = "ZID")]
+    Zid,
+    #[serde(rename = "ZJX")]
+    Zjx,
+    #[serde(rename = "ZKC")]
+    Zkc,
+    #[serde(rename = "ZLA")]
+    Zla,
+    #[serde(rename = "ZLC")]
+    Zlc,
+    #[serde(rename = "ZMA")]
+    Zma,
+    #[serde(rename = "ZME")]
+    Zme,
+    #[serde(rename = "ZMP")]
+    Zmp,
+    #[serde(rename = "ZNY")]
+    Zny,
+    #[serde(rename = "ZOA")]
+    Zoa,
+    #[serde(rename = "ZOB")]
+    Zob,
+    #[serde(rename = "ZSE")]
+    Zse,
+    #[serde(rename = "ZTL")]
+    Ztl,
 }
 
 /// One value of a gridded series, and the interval it holds over.
@@ -175,6 +318,31 @@ pub struct QuantitativeValue {
     /// Lower end, where the value is a range rather than a point.
     #[serde(rename = "minValue", default, skip_serializing_if = "Option::is_none")]
     pub min_value: Option<f64>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+/// A SIGMET or AIRMET: a warning to aircraft in flight of significant weather (convection, turbulence, icing, obscured mountains) over an area, issued by an air traffic services unit.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Sigmet {
+    /// URL of the message, ending in its issuing unit, UTC issue date and `HHMM` issue time: the arguments `aviation.get_sigmet` takes. Not unique: every message a unit issues in the same minute shares it.
+    pub id: String,
+    /// When the message was issued.
+    #[serde(rename = "issueTime")]
+    pub issue_time: TimestampIso,
+    /// Flight information region the message covers; null on some.
+    pub fir: Option<String>,
+    /// The air traffic services unit that issued it, such as `KKCI` (the Aviation Weather Center) or `ANC` (Anchorage).
+    pub atsu: String,
+    /// Sequence identifier; null on some.
+    pub sequence: Option<String>,
+    /// The hazard, as a WMO code URL; null on more than half.
+    pub phenomenon: Option<String>,
+    /// Start of the period the message is valid for.
+    pub start: TimestampIso,
+    /// End of the period the message is valid for.
+    pub end: TimestampIso,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -472,6 +640,26 @@ pub enum AlertGeometryValue {
 pub type AlertGeometry = Option<AlertGeometryValue>;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum CenterWeatherAdvisoryFeatureType {
+    Feature,
+}
+
+/// One Center Weather Advisory, in the GeoJSON feature the API wraps it in. The feature has no `id` of its own; the advisory's URL is `properties.id`.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct CenterWeatherAdvisoryFeature {
+    /// Always `Feature`.
+    #[serde(rename = "type")]
+    pub type_: CenterWeatherAdvisoryFeatureType,
+    /// The area the advisory covers, latitude first; null on some.
+    pub geometry: Option<AdvisoryPolygon>,
+    /// The advisory itself.
+    pub properties: CenterWeatherAdvisory,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum CloudLayerAmount {
     #[serde(rename = "OVC")]
     Ovc,
@@ -581,6 +769,26 @@ pub struct GridSeries {
     pub uom: Option<String>,
     /// The values, in time order.
     pub values: Vec<GridValue>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum SigmetFeatureType {
+    Feature,
+}
+
+/// One SIGMET or AIRMET, in the GeoJSON feature the API wraps it in. The feature has no `id` of its own; the message's URL is `properties.id`.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct SigmetFeature {
+    /// Always `Feature`.
+    #[serde(rename = "type")]
+    pub type_: SigmetFeatureType,
+    /// The area the message covers, latitude first; null on some.
+    pub geometry: Option<AdvisoryPolygon>,
+    /// The message itself.
+    pub properties: Sigmet,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -707,6 +915,24 @@ pub struct AlertFeature {
     pub geometry: Option<Option<AlertFeatureGeometry>>,
     /// The alert itself.
     pub properties: Alert,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum CenterWeatherAdvisoryCollectionType {
+    FeatureCollection,
+}
+
+/// Center Weather Advisories, as a GeoJSON feature collection, newest first. The service keeps about a week of them and answers all of them at once: there is no paging.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct CenterWeatherAdvisoryCollection {
+    /// Always `FeatureCollection`.
+    #[serde(rename = "type")]
+    pub type_: CenterWeatherAdvisoryCollectionType,
+    /// The advisories; empty when the unit issued none this week.
+    pub features: Vec<CenterWeatherAdvisoryFeature>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -881,6 +1107,24 @@ pub struct Observation {
     /// Reported cloud layers, lowest first.
     #[serde(rename = "cloudLayers")]
     pub cloud_layers: Vec<CloudLayer>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum SigmetCollectionType {
+    FeatureCollection,
+}
+
+/// SIGMETs and AIRMETs, as a GeoJSON feature collection, newest first. The service keeps about a week of them and answers everything that matched at once: there is no paging.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct SigmetCollection {
+    /// Always `FeatureCollection`.
+    #[serde(rename = "type")]
+    pub type_: SigmetCollectionType,
+    /// The messages.
+    pub features: Vec<SigmetFeature>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
