@@ -83,7 +83,7 @@ export class Aviation {
   }
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  listSigmets(request: listSigmets.Request, options: CallOptions & { validate: false }): Promise<unknown>
+  listSigmets(request: listSigmets.Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * SIGMETs and AIRMETs from every unit, newest first, from about the last week. Unfiltered this is a large response (1.5 MB measured); narrow it by `date`, `start` or `sequence`, or ask one unit through `aviation.list_sigmets_for_atsu`.
    *
