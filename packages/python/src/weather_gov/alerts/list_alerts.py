@@ -39,7 +39,7 @@ class Request(TypedDict):
   limit: NotRequired[int]
   """Most alerts to return. Range [1, 500]; defaults to 500."""
   cursor: NotRequired[str]
-  """Opaque page cursor: the `cursor` query item of a previous response's `pagination.next` URL."""
+  """Opaque page cursor. Use a standard URL parser to percent-decode the `cursor` query value from the previous response's `pagination.next` URL, and resend the original filters and limit. Stop on an empty page or absent next cursor; a short non-empty page can still have a next page."""
 
 
 class ListAlerts(Endpoint):
@@ -128,7 +128,7 @@ class ListAlerts(Endpoint):
       severity: Severities to include. Capitalised, unlike `status`.
       certainty: Certainties to include. Capitalised, unlike `status`.
       limit: Most alerts to return. Range [1, 500]; defaults to 500.
-      cursor: Opaque page cursor: the `cursor` query item of a previous response's `pagination.next` URL.
+      cursor: Opaque page cursor. Use a standard URL parser to percent-decode the `cursor` query value from the previous response's `pagination.next` URL, and resend the original filters and limit. Stop on an empty page or absent next cursor; a short non-empty page can still have a next page.
       validate: Override this call's response validation; falls back to the client-level default when omitted. `False` returns the parsed body as it came, typed `Any`.
 
     References:

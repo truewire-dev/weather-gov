@@ -1,0 +1,6 @@
+{
+  "description": "Live alert with an explicit null description, captured 2026-10-01",
+  "request": {
+    "id": "urn:oid:2.49.0.1.840.0.c396fd7d61c68538b1fcddd4d56a4a656d4924e6.001.1"
+  }
+}

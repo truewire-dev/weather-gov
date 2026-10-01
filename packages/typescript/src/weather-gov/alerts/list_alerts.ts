@@ -35,7 +35,7 @@ export interface Request {
   certainty?: ('Observed' | 'Likely' | 'Possible' | 'Unlikely' | 'Unknown')[]
   /** Most alerts to return. Range [1, 500]; defaults to 500. */
   limit?: number
-  /** Opaque page cursor: the `cursor` query item of a previous response's `pagination.next` URL. */
+  /** Opaque page cursor. Use a standard URL parser to percent-decode the `cursor` query value from the previous response's `pagination.next` URL, and resend the original filters and limit. Stop on an empty page or absent next cursor; a short non-empty page can still have a next page. */
   cursor?: string
 }
 

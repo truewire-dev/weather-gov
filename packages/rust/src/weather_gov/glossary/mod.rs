@@ -30,7 +30,7 @@ impl Glossary {
         &self,
         request: list_terms::Request,
         options: CallOptions,
-    ) -> Result<list_terms::Glossary> {
+    ) -> Result<list_terms::GlossaryResponse> {
         self.list_terms.list_terms(request, options).await
     }
 

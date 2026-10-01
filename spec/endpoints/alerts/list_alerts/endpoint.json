@@ -166,7 +166,7 @@
         },
         "cursor": {
           "type": "string",
-          "description": "Opaque page cursor: the `cursor` query item of a previous response's `pagination.next` URL."
+          "description": "Opaque page cursor. Use a standard URL parser to percent-decode the `cursor` query value from the previous response's `pagination.next` URL, and resend the original filters and limit. Stop on an empty page or absent next cursor; a short non-empty page can still have a next page."
         }
       },
       "required": []
@@ -177,7 +177,7 @@
     }
   },
   "notes": [
-    "No `pagination` block. The service pages this endpoint by `cursor`, but hands the next page back as a whole URL (`pagination.next`) rather than as the bare cursor, the shape `stations.list_stations` documents: `token` reads a cursor from a response path and cannot take one out of a URL. The URL is also there on the last page (measured 2026-09-30: `start=2026-09-29T00:00:00Z`, `end=2026-09-29T06:00:00Z` returns 213 alerts under the default limit of 500, with a `next` link), so it cannot end a walk either. `limit` and `cursor` are ordinary parameters; a caller pages by reading `cursor` out of `pagination.next` and stopping on an empty page.",
+    "No `pagination` block: `pagination.next` is a whole URL, and the token strategy cannot extract its query value. Use a standard URL parser (Python: parse_qs(urlsplit(next_url).query); TypeScript: new URL(nextUrl).searchParams; Rust: Url::query_pairs) to percent-decode the cursor exactly once. Resend every original filter and limit with that cursor: the next URL can omit them. Stop on an empty page or absent next cursor, never merely a short non-empty page. Python review measured 100 rows, then 76 with a next link, then empty.",
     "A `seek` walk over `start`/`end` is plausible but undeclared. The window bounds `sent` and the service answers newest first by it (measured 2026-09-30: all 177 actual alerts of 00:00 to 06:00Z on 2026-09-29 were sent inside the window, in descending order), but `sent` repeats (two alerts at 05:57Z in the first five rows), so the walk would need `unique: false`, and its anchor has not been measured.",
     "The deprecated `active` flag is left out; the OpenAPI marks it deprecated and points at `alerts.get_active_alerts`.",
     "Enumerations are the ones `alerts.get_active_alerts` copied from the service's 400 replies; `message_type` and `region_type` are the OpenAPI's."

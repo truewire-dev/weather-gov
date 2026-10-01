@@ -24,7 +24,7 @@ pub struct AlertGeocode {
 /// Present on `alerts.list_alerts` only: where the next page is.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct AlertPagination {
-    /// URL of the next page, carrying the `cursor` to send. The service includes it even on the last page, so its presence does not mean there is more.
+    /// URL containing the next cursor, which must be percent-decoded with a URL parser. Resend the original filters and limit. Stop on an empty page or absent next cursor, not on a short non-empty page.
     pub next: String,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
@@ -452,15 +452,16 @@ pub struct Alert {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[serde(with = "truewire_core::validation::double_option")]
     pub headline: Option<Option<String>>,
-    /// The full text of the alert.
-    pub description: String,
+    /// The full text of the alert. Null when the issuing system supplies no value.
+    pub description: Option<String>,
     /// What the public is being told to do.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[serde(with = "truewire_core::validation::double_option")]
     pub instruction: Option<Option<String>>,
-    /// The recommended action.
+    /// The recommended action. Null when the issuing system supplies no value.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub response: Option<AlertResponse>,
+    #[serde(with = "truewire_core::validation::double_option")]
+    pub response: Option<Option<AlertResponse>>,
     /// Free-form parameters the issuing system attached: `NWSheadline`, `VTEC`, `AWIPSidentifier` and others. Every value is a list, even when it holds one item.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub parameters: Option<HashMap<String, Vec<String>>>,

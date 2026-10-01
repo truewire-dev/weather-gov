@@ -1,0 +1,74 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": [
+      "https://geojson.org/geojson-ld/geojson-context.jsonld",
+      {
+        "@version": "1.1",
+        "wx": "https://api.weather.gov/ontology#",
+        "@vocab": "https://api.weather.gov/ontology#"
+      }
+    ],
+    "id": "https://api.weather.gov/alerts/2753453604474378",
+    "type": "Feature",
+    "geometry": null,
+    "properties": {
+      "@id": "https://api.weather.gov/alerts/2753453604474378",
+      "@type": "wx:Alert",
+      "id": "2753453604474378",
+      "areaDesc": "Fillmore, MN",
+      "geocode": {
+        "SAME": [
+          "027045"
+        ]
+      },
+      "affectedZones": [],
+      "references": [],
+      "sent": "2026-09-28T14:44:21-05:00",
+      "effective": "2026-09-28T14:44:21-05:00",
+      "onset": null,
+      "expires": "2026-09-28T15:44:21-05:00",
+      "ends": null,
+      "status": "Actual",
+      "messageType": "Alert",
+      "category": "Safety",
+      "severity": "Severe",
+      "certainty": "Observed",
+      "urgency": "Immediate",
+      "event": "Civil Emergency Message",
+      "sender": "201308_Fillmore_County__MN_FILLMORE_COUNTY_MN",
+      "senderName": "201308,Fillmore County, MN,FILLMORE COUNTY MN",
+      "headline": "SHELTER IN PLACE LIFTED",
+      "description": "SHELTER IN PLACE ADVISORY HAS BEEN LIFTED FOR SPRING VALLEY AREA",
+      "instruction": "RESUME NORMAL ACTIVITIES",
+      "response": null,
+      "note": null,
+      "parameters": {
+        "BLOCKCHANNEL": [
+          "CAPEXCH"
+        ],
+        "EAS-ORG": [
+          "CIV"
+        ],
+        "CMAMtext": [
+          "SHELTER IN PLACE ADVISORY HAS BEEN LIFTED FOR SPRING VALLEY AREA"
+        ],
+        "WEAHandling": [
+          "Imminent Threat"
+        ],
+        "timezone": [
+          "CST"
+        ]
+      },
+      "scope": "Public",
+      "code": "IPAWSv1.0",
+      "language": "en-US",
+      "web": null,
+      "eventCode": {
+        "SAME": [
+          "CEM"
+        ]
+      }
+    }
+  }
+}

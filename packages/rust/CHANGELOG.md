@@ -2,6 +2,16 @@
 
 ## 0.3.0 (unreleased)
 
+- **Breaking: `Weather` gains public `glossary` and `zones` fields.** Struct literals
+  must initialize both; exhaustive destructuring must name them or include `..`.
+  Prefer `Weather::new` or `Weather::with_options` for construction.
+- **Breaking: the unreleased glossary response is now `GlossaryResponse`.** Import it
+  from `weather_gov::glossary::list_terms::GlossaryResponse`; `glossary::Glossary`
+  remains the endpoint group. Python and TypeScript use the same response rename.
+- **Alert nullability:** `Alert.description` is now `Option<String>` but remains
+  required on the wire. `Alert.response` is `Option<Option<AlertResponse>>`, preserving
+  omission versus explicit null and validating non-null CAP action values.
+
 - **`stations.get_observations_paged` walks a whole span of observations.** The endpoint
   declares `seek` pagination anchored to `end` (ADR 0013): a full page moves `end` back to
   the oldest observation it held and asks again, never past your own `start`. It takes a

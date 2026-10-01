@@ -353,6 +353,33 @@ def alert_list(result: Any) -> None:
   assert 'cursor=' in result['pagination']['next']
 
 
+def alert_second_page(result: Any) -> None:
+  """The decoded cursor advances within the same filtered window."""
+  alert_list(result)
+  first = json.loads(
+    (PROJECT / 'spec/endpoints/alerts/list_alerts/examples/first_page.response.json').read_text()
+  )['payload']['features']
+  assert {row['id'] for row in first}.isdisjoint(row['id'] for row in result['features'])
+  assert max(as_datetime(row['properties']['sent']) for row in result['features']) <= min(
+    as_datetime(row['properties']['sent']) for row in first
+  )
+
+
+def null_description(result: Any) -> None:
+  """A real upstream null, not a mutation of a non-null recording."""
+  assert result['type'] == 'Feature'
+  assert result['properties']['id'] == example_request('alerts.get_alert', 'null_description')['id']
+  assert result['properties']['description'] is None
+
+
+def null_response(result: Any) -> None:
+  """A Civil Emergency Message has no CAP action recommendation."""
+  assert result['type'] == 'Feature'
+  assert result['properties']['id'] == example_request('alerts.get_alert', 'null_response')['id']
+  assert result['properties']['event'] == 'Civil Emergency Message'
+  assert result['properties']['response'] is None
+
+
 def active_alert_count(result: Any) -> None:
   """Counts that add up: land plus marine is the total, and the marine regions split the
   marine count between them."""
@@ -437,6 +464,9 @@ PROVES: dict[str, Callable[[Any], None]] = {
   'alerts.get_active_alerts[severe]': active_alerts,
   'alerts.get_alert[one]': one_alert,
   'alerts.list_alerts[first_page]': alert_list,
+  'alerts.list_alerts[second_page]': alert_second_page,
+  'alerts.get_alert[null_description]': null_description,
+  'alerts.get_alert[null_response]': null_response,
   'alerts.count_active_alerts[now]': active_alert_count,
   'alerts.get_active_alerts_for_zone[in_effect]': zone_alerts,
   'alerts.get_active_alerts_for_area[in_effect]': area_alerts,

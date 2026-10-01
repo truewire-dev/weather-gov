@@ -21,12 +21,12 @@ export interface Request {}
 export const Request: Codec<Request> = t.object({})
 
 /** The glossary. */
-export interface Glossary {
+export interface GlossaryResponse {
   /** Terms, roughly alphabetical. */
   glossary: GlossaryTerm[]
 }
 
-export const Glossary: Codec<Glossary> = t.object({
+export const GlossaryResponse: Codec<GlossaryResponse> = t.object({
   glossary: t.array(GlossaryTerm),
 })
 
@@ -41,14 +41,14 @@ export class ListTerms {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/glossary
    */
-  listTerms(request?: Request, options?: CallOptions): Promise<Glossary>
-  async listTerms(request?: Request, options?: CallOptions): Promise<Glossary> {
+  listTerms(request?: Request, options?: CallOptions): Promise<GlossaryResponse>
+  async listTerms(request?: Request, options?: CallOptions): Promise<GlossaryResponse> {
     return this.core.request({
       method: 'GET',
       path: '/glossary',
       request: request ?? {},
       requestCodec: Request,
-      responseCodec: Glossary,
+      responseCodec: GlossaryResponse,
       meta: {},
       ...options,
     })

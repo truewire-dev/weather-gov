@@ -22,8 +22,8 @@ export class Glossary {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/glossary
    */
-  listTerms(request?: listTerms.Request, options?: CallOptions): Promise<listTerms.Glossary>
-  listTerms(request?: listTerms.Request, options?: CallOptions): Promise<listTerms.Glossary> {
+  listTerms(request?: listTerms.Request, options?: CallOptions): Promise<listTerms.GlossaryResponse>
+  listTerms(request?: listTerms.Request, options?: CallOptions): Promise<listTerms.GlossaryResponse> {
     return this.listTerms_.listTerms(request, options)
   }
 }

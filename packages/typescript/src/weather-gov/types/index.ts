@@ -17,7 +17,7 @@ export const AlertGeocode: Codec<AlertGeocode> = t.object({
 
 /** Present on `alerts.list_alerts` only: where the next page is. */
 export interface AlertPagination {
-  /** URL of the next page, carrying the `cursor` to send. The service includes it even on the last page, so its presence does not mean there is more. */
+  /** URL containing the next cursor, which must be percent-decoded with a URL parser. Resend the original filters and limit. Stop on an empty page or absent next cursor, not on a short non-empty page. */
   next: string
 }
 
@@ -258,12 +258,12 @@ export interface Alert {
   senderName: string
   /** One-line summary with the times spelled out. */
   headline?: string | null
-  /** The full text of the alert. */
-  description: string
+  /** The full text of the alert. Null when the issuing system supplies no value. */
+  description: string | null
   /** What the public is being told to do. */
   instruction?: string | null
-  /** The recommended action. */
-  response?: 'Shelter' | 'Evacuate' | 'Prepare' | 'Execute' | 'Avoid' | 'Monitor' | 'AllClear' | 'Assess' | 'None'
+  /** The recommended action. Null when the issuing system supplies no value. */
+  response?: 'Shelter' | 'Evacuate' | 'Prepare' | 'Execute' | 'Avoid' | 'Monitor' | 'AllClear' | 'Assess' | 'None' | null
   /** Free-form parameters the issuing system attached: `NWSheadline`, `VTEC`, `AWIPSidentifier` and others. Every value is a list, even when it holds one item. */
   parameters?: Record<string, string[]>
 }
@@ -289,9 +289,9 @@ export const Alert: Codec<Alert> = t.object({
   sender: t.optional(t.string),
   senderName: t.string,
   headline: t.optional(t.nullable(t.string)),
-  description: t.string,
+  description: t.nullable(t.string),
   instruction: t.optional(t.nullable(t.string)),
-  response: t.optional(t.literal('Shelter', 'Evacuate', 'Prepare', 'Execute', 'Avoid', 'Monitor', 'AllClear', 'Assess', 'None')),
+  response: t.optional(t.nullable(t.literal('Shelter', 'Evacuate', 'Prepare', 'Execute', 'Avoid', 'Monitor', 'AllClear', 'Assess', 'None'))),
   parameters: t.optional(t.record(t.array(t.string))),
 })
 

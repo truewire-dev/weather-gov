@@ -714,8 +714,15 @@
         "description": "One-line summary with the times spelled out."
       },
       "description": {
-        "type": "string",
-        "description": "The full text of the alert."
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "description": "The full text of the alert. Null when the issuing system supplies no value."
       },
       "instruction": {
         "anyOf": [
@@ -731,19 +738,26 @@
         "description": "What the public is being told to do."
       },
       "response": {
-        "type": "string",
-        "enum": [
-          "Shelter",
-          "Evacuate",
-          "Prepare",
-          "Execute",
-          "Avoid",
-          "Monitor",
-          "AllClear",
-          "Assess",
-          "None"
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "Shelter",
+              "Evacuate",
+              "Prepare",
+              "Execute",
+              "Avoid",
+              "Monitor",
+              "AllClear",
+              "Assess",
+              "None"
+            ]
+          },
+          {
+            "type": "null"
+          }
         ],
-        "description": "The recommended action."
+        "description": "The recommended action. Null when the issuing system supplies no value."
       },
       "parameters": {
         "type": "object",
@@ -841,7 +855,7 @@
         "properties": {
           "next": {
             "type": "string",
-            "description": "URL of the next page, carrying the `cursor` to send. The service includes it even on the last page, so its presence does not mean there is more."
+            "description": "URL containing the next cursor, which must be percent-decoded with a URL parser. Resend the original filters and limit. Stop on an empty page or absent next cursor, not on a short non-empty page."
           }
         },
         "required": [

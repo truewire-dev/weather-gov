@@ -39,7 +39,7 @@ pub struct Weather {
 
 impl Weather {
     /// `[policy].rate`: requests per second the core's `HttpClient` paces to; `None` for none.
-    pub const RATE: Option<f64> = None;
+    pub const RATE: ::core::option::Option<f64> = None;
     /// `[policy].retry`: whether the core's `HttpClient` retries on its own.
     pub const RETRY: bool = false;
 

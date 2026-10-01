@@ -29,7 +29,7 @@ pub struct Request {
 
 /// The glossary.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
-pub struct Glossary {
+pub struct GlossaryResponse {
     /// Terms, roughly alphabetical.
     pub glossary: Vec<GlossaryTerm>,
     /// Keys the spec does not document, kept as they came.
@@ -51,7 +51,11 @@ impl ListTerms {
     /// The whole weather glossary: several thousand terms, each with its definition. One response, about 900 KB; the service offers no filter or paging.
     ///
     /// See <https://www.weather.gov/documentation/services-web-api#/default/glossary>.
-    pub async fn list_terms(&self, request: Request, options: CallOptions) -> Result<Glossary> {
+    pub async fn list_terms(
+        &self,
+        request: Request,
+        options: CallOptions,
+    ) -> Result<GlossaryResponse> {
         let raw = self.list_terms_raw(request, options).await?;
         decode(raw)
     }

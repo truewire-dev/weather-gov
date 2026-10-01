@@ -16,7 +16,7 @@ class Request(TypedDict):
   """Takes nothing."""
 
 
-class Glossary(TypedDict):
+class GlossaryResponse(TypedDict):
   """The glossary."""
 
   glossary: list[GlossaryTerm]
@@ -29,8 +29,8 @@ class ListTerms(Endpoint):
   @overload
   async def list_terms(self, *, validate: Literal[False]) -> Any: ...
   @overload
-  async def list_terms(self, *, validate: bool | None = None) -> Glossary: ...
-  async def list_terms(self, *, validate: bool | None = None) -> Glossary:
+  async def list_terms(self, *, validate: bool | None = None) -> GlossaryResponse: ...
+  async def list_terms(self, *, validate: bool | None = None) -> GlossaryResponse:
     """The whole weather glossary: several thousand terms, each with its definition. One response, about 900 KB; the service offers no filter or paging.
 
     Args:
@@ -46,5 +46,5 @@ class ListTerms(Endpoint):
       meta={},
       validate=validate,
       request_type=Request,
-      response_type=Glossary,
+      response_type=GlossaryResponse,
     )

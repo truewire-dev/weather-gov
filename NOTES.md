@@ -48,6 +48,14 @@ Truewire's `token` strategy reads a cursor value out of a response path and send
 
 So the endpoint declares no pagination at all rather than declaring it wrong. `cursor` stays a request parameter for a caller who has one, `pagination.next` stays in the response schema so it is visible, and both say why in their descriptions. This shape is common enough — it is how most `Link`-header and `next`-URL APIs page — that it is the most useful thing this project found.
 
+`alerts.list_alerts` has the same URL cursor gap. Parse `pagination.next` with a
+standard URL parser and percent-decode its `cursor` query value exactly once. Keep
+all original filters and `limit` when resending it, since the next URL can omit
+those parameters. Stop on an empty page or absent next cursor, never just because
+a non-empty page is short: live Python review saw 100 rows, then 76 with a next
+link, then empty. [Walk alerts](docs/how-to/walk-alerts.md) gives a runnable loop.
+No unsupported pagination block is declared.
+
 `stations.get_observations` has the same `pagination.next`, and does not need it: the walk a caller actually means there is over time, which the declared `seek` walk expresses.
 
 ## 4. A plain `window` walk was one request

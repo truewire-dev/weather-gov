@@ -17,7 +17,7 @@
       "required": []
     },
     "response": {
-      "title": "Glossary",
+      "title": "GlossaryResponse",
       "type": "object",
       "description": "The glossary.",
       "properties": {
