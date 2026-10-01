@@ -36,7 +36,7 @@ export class ListZones {
   constructor(readonly core: HttpEndpoint<DefaultMeta>) {}
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  listZones(request: Request, options: CallOptions & { validate: false }): Promise<unknown>
+  listZones(request: Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * The zones the service knows about, of every type, optionally narrowed by code, place, region, type or point. Each comes without its outline; `zones.get_zone` has it.
    *

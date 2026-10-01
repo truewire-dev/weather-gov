@@ -25,7 +25,7 @@ CONTACT=${CONTACT:-hello@truewire.dev}
 failed=''
 recorded=0
 
-# Repaired before anything is captured rather than after a capture failed, because neither
+# Repaired before anything is captured rather than after a capture failed, because none
 # of these fails loudly: an expired observation window records as an empty
 # `FeatureCollection` with a 200, which is a green recording of nothing.
 if ! "$PYTHON" packages/python/test/refresh_examples.py; then

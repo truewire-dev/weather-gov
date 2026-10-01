@@ -1,0 +1,39 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/alerts_active_region",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/alerts/active/region/{region}",
+    "method": "GET",
+    "description": "The alerts in effect for one marine region. The same as `alerts.get_active_alerts` narrowed by `region`, with the region in the path. Takes no other filter, so drills and test messages come back too; `alerts.get_active_alerts` with `status: [\"actual\"]` leaves them out.",
+    "request": {
+      "title": "GetActiveAlertsForRegionRequest",
+      "type": "object",
+      "description": "Which marine region.",
+      "properties": {
+        "region": {
+          "type": "string",
+          "enum": [
+            "AL",
+            "AT",
+            "GL",
+            "GM",
+            "PA",
+            "PI"
+          ],
+          "description": "Marine region: `AL` Alaska, `AT` Atlantic, `GL` Great Lakes, `GM` Gulf of Mexico, `PA` Pacific, `PI` Pacific Islands."
+        }
+      },
+      "required": [
+        "region"
+      ]
+    },
+    "response": {
+      "$ref": "AlertCollection",
+      "description": "The alerts in effect for the region, as a GeoJSON feature collection. Empty when there are none."
+    }
+  }
+}

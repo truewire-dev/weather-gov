@@ -1,0 +1,90 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": [
+      "https://geojson.org/geojson-ld/geojson-context.jsonld",
+      {
+        "@version": "1.1",
+        "wx": "https://api.weather.gov/ontology#",
+        "@vocab": "https://api.weather.gov/ontology#"
+      }
+    ],
+    "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.c396fd7d61c68538b1fcddd4d56a4a656d4924e6.001.1",
+    "type": "Feature",
+    "geometry": null,
+    "properties": {
+      "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.c396fd7d61c68538b1fcddd4d56a4a656d4924e6.001.1",
+      "@type": "wx:Alert",
+      "id": "urn:oid:2.49.0.1.840.0.c396fd7d61c68538b1fcddd4d56a4a656d4924e6.001.1",
+      "areaDesc": "Coastal waters from Pt. St. George to Cape Mendocino CA out 10 nm",
+      "geocode": {
+        "SAME": [
+          "057450"
+        ],
+        "UGC": [
+          "PZZ450"
+        ]
+      },
+      "affectedZones": [
+        "https://api.weather.gov/zones/forecast/PZZ450"
+      ],
+      "references": [],
+      "sent": "2026-10-01T08:59:00-07:00",
+      "effective": "2026-10-01T08:59:00-07:00",
+      "onset": "2026-10-01T08:59:00-07:00",
+      "expires": "2026-10-01T10:00:00-07:00",
+      "ends": "2026-10-01T09:00:00-07:00",
+      "status": "Actual",
+      "messageType": "Alert",
+      "category": "Met",
+      "severity": "Minor",
+      "certainty": "Likely",
+      "urgency": "Expected",
+      "event": "Small Craft Advisory",
+      "sender": "w-nws.webmaster@noaa.gov",
+      "senderName": "NWS Eureka CA",
+      "headline": "Small Craft Advisory issued October 1 at 8:59AM PDT until October 1 at 9:00AM PDT by NWS Eureka CA",
+      "description": null,
+      "instruction": null,
+      "response": "Avoid",
+      "note": null,
+      "parameters": {
+        "AWIPSidentifier": [
+          "MWWEKA"
+        ],
+        "WMOidentifier": [
+          "WHUS76 KEKA 011559"
+        ],
+        "NWSheadline": [
+          "SMALL CRAFT ADVISORY WILL EXPIRE AT 9 AM PDT THIS MORNING"
+        ],
+        "BLOCKCHANNEL": [
+          "EAS",
+          "NWEM",
+          "CMAS"
+        ],
+        "VTEC": [
+          "/O.EXP.KEKA.SC.Y.0087.000000T0000Z-261001T1600Z/"
+        ],
+        "eventEndingTime": [
+          "2026-10-01T09:00:00-07:00"
+        ],
+        "expiredReferences": [
+          "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.09994cdde42dfda2cc699713fd4f3ed958ea4e92.003.1,2026-10-01T02:24:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.0d0b283a909269699cd2ba77011f32d3762f382f.003.1,2026-09-30T21:08:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.bce6e6b1452baeff90950f2ab8353f58e852dd0c.003.1,2026-09-30T14:53:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.50988b88ba230520cbaf64aaf4b385b72cc89f5c.003.1,2026-09-30T09:17:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.794a84aefec4e5781a7296958005df3af8cfc34f.003.1,2026-09-30T05:51:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.491350ad6b7f4f2470a237c0374dc0869d7f63c0.004.1,2026-09-30T03:03:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.e1fb7cbd9ba2953bd8156282137784324ddfceb3.004.1,2026-09-29T20:57:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.984ef038af1a63de517542705cd8aeab16e04de4.004.1,2026-09-29T15:10:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.b4a2eaca97fe7e1ff8f63e9e4b2d627a6c6575c6.004.1,2026-09-29T09:29:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.52aa1b4e7257f797dcfcf5f48d96aa0ea672f7c5.004.1,2026-09-29T02:51:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.0b932272f5d7fe59699feee455641dd4fd8dd3a9.004.1,2026-09-28T21:27:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.a9c26e4fb04e9fdc58f81211e0aecf96a5b1eaee.004.1,2026-09-28T21:03:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.b602b8fa4b46f59e14ebcd619f5890cac7d33b62.004.1,2026-09-28T15:05:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.c7f6e438907651b851c885496a98badd643ce859.004.1,2026-09-28T08:34:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.067f5872fc810b90814e40e41f51fb21a4e67da7.004.1,2026-09-28T02:44:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.bfde4ac838c4bdb329e25356ba14999e78695e77.004.1,2026-09-27T20:53:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.767168457c9367f25af2fb95ca30a6ea39a171ea.004.1,2026-09-27T14:19:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.aac40a81b24b1c92c95ab0a4c007f9401d1586d5.004.1,2026-09-27T09:07:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.ba820fb134e63173f28de1d3b9aae9be6de508c1.001.2,2026-09-27T02:46:00-07:00"
+        ]
+      },
+      "scope": "Public",
+      "code": "IPAWSv1.0",
+      "language": "en-US",
+      "web": "http://www.weather.gov",
+      "eventCode": {
+        "SAME": [
+          "NWS"
+        ],
+        "NationalWeatherService": [
+          "SCY"
+        ]
+      }
+    }
+  }
+}

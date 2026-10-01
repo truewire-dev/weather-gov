@@ -14,6 +14,13 @@ class AlertGeocode(TypedDict):
   """UGC (Universal Geographic Code) zone codes."""
 
 
+class AlertPagination(TypedDict):
+  """Present on `alerts.list_alerts` only: where the next page is."""
+
+  next: str
+  """URL containing the next cursor, which must be percent-decoded with a URL parser. Resend the original filters and limit. Stop on an empty page or absent next cursor, not on a short non-empty page."""
+
+
 class AlertReference(TypedDict):
   """An earlier alert this one updates, corrects or cancels."""
 
@@ -206,16 +213,17 @@ class Alert(TypedDict):
   """The issuing office, such as `NWS Seattle WA`."""
   headline: NotRequired[str | None]
   """One-line summary with the times spelled out."""
-  description: str
-  """The full text of the alert."""
+  description: str | None
+  """The full text of the alert. Null when the issuing system supplies no value."""
   instruction: NotRequired[str | None]
   """What the public is being told to do."""
   response: NotRequired[
     Literal[
       'Shelter', 'Evacuate', 'Prepare', 'Execute', 'Avoid', 'Monitor', 'AllClear', 'Assess', 'None'
     ]
+    | None
   ]
-  """The recommended action."""
+  """The recommended action. Null when the issuing system supplies no value."""
   parameters: NotRequired[dict[str, list[str]]]
   """Free-form parameters the issuing system attached: `NWSheadline`, `VTEC`, `AWIPSidentifier` and others. Every value is a list, even when it holds one item."""
 
@@ -430,6 +438,20 @@ class ZoneCollection(TypedDict):
   """Always `FeatureCollection`."""
   features: list[ZoneFeature]
   """The zones."""
+
+
+class AlertCollection(TypedDict):
+  """Alerts as a GeoJSON feature collection."""
+
+  type: Literal['FeatureCollection']
+  """Always `FeatureCollection`."""
+  features: list[AlertFeature]
+  """The alerts."""
+  title: NotRequired[str]
+  """Human-readable title of the collection."""
+  updated: NotRequired[TimestampIso]
+  """When the collection was assembled."""
+  pagination: NotRequired[AlertPagination]
 
 
 class ObservationFeature(TypedDict):

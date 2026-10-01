@@ -1,0 +1,74 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/alerts_active_count",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/alerts/active/count",
+    "method": "GET",
+    "description": "How many alerts are in effect right now, in total and broken down by land and marine, marine region, state or marine area, and zone.",
+    "request": {
+      "title": "CountActiveAlertsRequest",
+      "type": "object",
+      "description": "Takes nothing.",
+      "properties": {},
+      "required": []
+    },
+    "response": {
+      "title": "ActiveAlertCount",
+      "type": "object",
+      "description": "Counts of the alerts in effect. Only keys with at least one alert appear in the three maps.",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Alerts in effect."
+        },
+        "land": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Alerts affecting land zones."
+        },
+        "marine": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Alerts affecting marine zones."
+        },
+        "regions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "description": "Alerts by marine region code, such as `GL`."
+        },
+        "areas": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "description": "Alerts by state, territory or marine-area code, such as `TX` or `PZ`."
+        },
+        "zones": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "description": "Alerts by zone or county code, such as `AZC009`."
+        }
+      },
+      "required": [
+        "total",
+        "land",
+        "marine",
+        "regions",
+        "areas",
+        "zones"
+      ]
+    }
+  }
+}

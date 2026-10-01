@@ -79,7 +79,7 @@ async def last_week(client: Weather) -> None:
 
 ## Everything else
 
-Nineteen endpoints across seven groups, three response vocabularies (GeoJSON, schema.org,
+Twenty-six endpoints across eight groups, three response vocabularies (GeoJSON, schema.org,
 JSON-LD) described as they actually arrive, and TypeScript and Rust clients from the same
 spec.
 

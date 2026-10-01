@@ -36,6 +36,11 @@ def is_measurement(value: Any, *, unit: str | None = None) -> None:
     assert value['unitCode'] == unit
 
 
+def as_datetime(value: Any) -> datetime:
+  """A timestamp as the client hands it back, or as a request example writes it."""
+  return value if isinstance(value, datetime) else datetime.fromisoformat(value)
+
+
 def is_point(geometry: Any) -> None:
   longitude, latitude = geometry['coordinates']
   assert geometry['type'] == 'Point'
@@ -334,6 +339,119 @@ def gridpoint_stations(result: Any) -> None:
   assert distances == sorted(distances)
 
 
+def alert_list(result: Any) -> None:
+  """One page of the last week's alerts, cut to the recorded `limit`, newest first, with the
+  link to the next page the service always attaches."""
+  example = example_request('alerts.list_alerts', 'first_page')
+  features = result['features']
+  assert len(features) == example['limit'], 'the limit was honoured'
+  sent = [as_datetime(feature['properties']['sent']) for feature in features]
+  assert sent == sorted(sent, reverse=True), 'the service answers newest first by `sent`'
+  start, end = as_datetime(example['start']), as_datetime(example['end'])
+  assert all(start <= moment <= end for moment in sent), 'the window was honoured'
+  assert all(feature['properties']['status'] == 'Actual' for feature in features)
+  assert 'cursor=' in result['pagination']['next']
+
+
+def alert_second_page(result: Any) -> None:
+  """The decoded cursor advances within the same filtered window."""
+  alert_list(result)
+  first = json.loads(
+    (PROJECT / 'spec/endpoints/alerts/list_alerts/examples/first_page.response.json').read_text()
+  )['payload']['features']
+  assert {row['id'] for row in first}.isdisjoint(row['id'] for row in result['features'])
+  assert max(as_datetime(row['properties']['sent']) for row in result['features']) <= min(
+    as_datetime(row['properties']['sent']) for row in first
+  )
+
+
+def null_description(result: Any) -> None:
+  """A real upstream null, not a mutation of a non-null recording."""
+  assert result['type'] == 'Feature'
+  assert result['properties']['id'] == example_request('alerts.get_alert', 'null_description')['id']
+  assert result['properties']['description'] is None
+
+
+def null_response(result: Any) -> None:
+  """A Civil Emergency Message has no CAP action recommendation."""
+  assert result['type'] == 'Feature'
+  assert result['properties']['id'] == example_request('alerts.get_alert', 'null_response')['id']
+  assert result['properties']['event'] == 'Civil Emergency Message'
+  assert result['properties']['response'] is None
+
+
+def active_alert_count(result: Any) -> None:
+  """Counts that add up: land plus marine is the total, and the marine regions split the
+  marine count between them."""
+  assert result['total'] == result['land'] + result['marine']
+  assert sum(result['regions'].values()) == result['marine']
+  assert set(result['regions']) <= {'AL', 'AT', 'GL', 'GM', 'PA', 'PI'}
+  assert result['zones'] and result['areas']
+
+
+def ugc_codes(result: Any) -> list[list[str]]:
+  """Each alert's zone and county codes, asserting there is at least one alert."""
+  features = result['features']
+  assert result['type'] == 'FeatureCollection'
+  assert features, 'nothing was in effect there when this was recorded'
+  return [feature['properties']['geocode']['UGC'] for feature in features]
+
+
+MARINE_REGIONS = {
+  'AL': ('PK',),
+  'AT': ('AM', 'AN'),
+  'GL': ('LC', 'LE', 'LH', 'LM', 'LO', 'LS', 'SL'),
+  'GM': ('GM',),
+  'PA': ('PZ',),
+  'PI': ('PH', 'PM', 'PS'),
+}
+"""The marine areas each region groups, from the OpenAPI's `MarineRegionCode`."""
+
+
+def zone_alerts(result: Any) -> None:
+  """Alerts for the zone in the path. Not every one names it: a county's alerts include
+  ones issued for the forecast zones overlapping it (measured 2026-09-30, `AZC009`: six of
+  seven listed the county), so each is held to the zone's state or marine area and at least
+  one to the zone itself."""
+  zone = example_request('alerts.get_active_alerts_for_zone', 'in_effect')['zone_id']
+  codes = ugc_codes(result)
+  assert any(zone in alert for alert in codes)
+  for alert in codes:
+    assert any(code.startswith(zone[:2]) for code in alert)
+
+
+def area_alerts(result: Any) -> None:
+  """Every alert returned covers part of the area in the path; it may cover a neighbour
+  too. The path variants take no filters, so drills and test messages come back as well."""
+  area = example_request('alerts.get_active_alerts_for_area', 'in_effect')['area']
+  for alert in ugc_codes(result):
+    assert any(code.startswith(area) for code in alert)
+
+
+def region_alerts(result: Any) -> None:
+  """Every alert returned covers one of the marine areas the region in the path groups."""
+  region = example_request('alerts.get_active_alerts_for_region', 'in_effect')['region']
+  for alert in ugc_codes(result):
+    assert any(code.startswith(MARINE_REGIONS[region]) for code in alert)
+
+
+def alert_types(result: Any) -> None:
+  """The event names the `event` filter takes, each once."""
+  types = result['eventTypes']
+  assert len(types) > 100
+  assert len(set(types)) == len(types)
+  assert {'Tornado Warning', 'Severe Thunderstorm Warning', 'Winter Storm Watch'} <= set(types)
+
+
+def glossary(result: Any) -> None:
+  """The whole glossary in one response."""
+  terms = result['glossary']
+  assert len(terms) > 3000
+  assert any(entry['term'] == '1-2-3 Rule' for entry in terms)
+  for entry in terms:
+    assert entry['term'] and entry['definition']
+
+
 PROVES: dict[str, Callable[[Any], None]] = {
   'points.get_point[seattle]': point,
   'forecast.get_forecast[seattle]': forecast,
@@ -345,8 +463,18 @@ PROVES: dict[str, Callable[[Any], None]] = {
   'stations.get_observations[ksea_capped]': capped_observations,
   'alerts.get_active_alerts[severe]': active_alerts,
   'alerts.get_alert[one]': one_alert,
+  'alerts.list_alerts[first_page]': alert_list,
+  'alerts.list_alerts[second_page]': alert_second_page,
+  'alerts.get_alert[null_description]': null_description,
+  'alerts.get_alert[null_response]': null_response,
+  'alerts.count_active_alerts[now]': active_alert_count,
+  'alerts.get_active_alerts_for_zone[in_effect]': zone_alerts,
+  'alerts.get_active_alerts_for_area[in_effect]': area_alerts,
+  'alerts.get_active_alerts_for_region[in_effect]': region_alerts,
+  'alerts.list_alert_types[all]': alert_types,
   'offices.get_office[seattle]': office,
   'products.list_product_types[all]': product_types,
+  'glossary.list_terms[all]': glossary,
   'zones.list_zones[seattle]': zones_at_point,
   'zones.list_zones[washington_fire]': zones_filtered,
   'zones.list_zones_by_type[washington_counties]': zones_of_type,

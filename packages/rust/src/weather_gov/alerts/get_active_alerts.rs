@@ -3,12 +3,10 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-use truewire_core::{
-    decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso,
-};
+use truewire_core::{decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result};
 
 use crate::meta::DefaultMeta;
-use crate::types::AlertFeature;
+use crate::types::AlertCollection;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum RequestRegionItem {
@@ -97,30 +95,6 @@ pub struct Request {
     /// Event names to include, such as `Red Flag Warning`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub event: Option<Vec<String>>,
-    /// Keys the spec does not document, kept as they came.
-    #[serde(flatten)]
-    pub extra: serde_json::Map<String, serde_json::Value>,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub enum AlertCollectionType {
-    FeatureCollection,
-}
-
-/// The alerts in effect, as a GeoJSON feature collection.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct AlertCollection {
-    /// Always `FeatureCollection`.
-    #[serde(rename = "type")]
-    pub type_: AlertCollectionType,
-    /// The alerts.
-    pub features: Vec<AlertFeature>,
-    /// Human-readable title of the collection.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub title: Option<String>,
-    /// When the collection was assembled.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub updated: Option<TimestampIso>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,

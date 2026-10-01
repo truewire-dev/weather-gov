@@ -21,6 +21,16 @@ pub struct AlertGeocode {
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
+/// Present on `alerts.list_alerts` only: where the next page is.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+pub struct AlertPagination {
+    /// URL containing the next cursor, which must be percent-decoded with a URL parser. Resend the original filters and limit. Stop on an empty page or absent next cursor, not on a short non-empty page.
+    pub next: String,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
 /// An earlier alert this one updates, corrects or cancels.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct AlertReference {
@@ -442,15 +452,16 @@ pub struct Alert {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[serde(with = "truewire_core::validation::double_option")]
     pub headline: Option<Option<String>>,
-    /// The full text of the alert.
-    pub description: String,
+    /// The full text of the alert. Null when the issuing system supplies no value.
+    pub description: Option<String>,
     /// What the public is being told to do.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[serde(with = "truewire_core::validation::double_option")]
     pub instruction: Option<Option<String>>,
-    /// The recommended action.
+    /// The recommended action. Null when the issuing system supplies no value.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub response: Option<AlertResponse>,
+    #[serde(with = "truewire_core::validation::double_option")]
+    pub response: Option<Option<AlertResponse>>,
     /// Free-form parameters the issuing system attached: `NWSheadline`, `VTEC`, `AWIPSidentifier` and others. Every value is a list, even when it holds one item.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub parameters: Option<HashMap<String, Vec<String>>>,
@@ -922,6 +933,32 @@ pub struct ZoneCollection {
     pub type_: ZoneCollectionType,
     /// The zones.
     pub features: Vec<ZoneFeature>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum AlertCollectionType {
+    FeatureCollection,
+}
+
+/// Alerts as a GeoJSON feature collection.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct AlertCollection {
+    /// Always `FeatureCollection`.
+    #[serde(rename = "type")]
+    pub type_: AlertCollectionType,
+    /// The alerts.
+    pub features: Vec<AlertFeature>,
+    /// Human-readable title of the collection.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
+    /// When the collection was assembled.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub updated: Option<TimestampIso>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pagination: Option<AlertPagination>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,

@@ -1,6 +1,6 @@
 # Reference
 
-Seven groups, nineteen endpoints, every one recorded against the live API. Each signature is
+Eight groups, twenty-six endpoints, every one recorded against the live API. Each signature is
 generated from the endpoint's schema, so the types in your editor are the reference: every
 field carries its description, and every method's docstring links the service's own page
 for the endpoint.
@@ -44,6 +44,12 @@ by moving `end` ([Walk a span of observations](../how-to/walk-observations.md)).
 | Endpoint | Upstream | Returns |
 | --- | --- | --- |
 | `get_active_alerts` | `GET /alerts/active` | whole: a feature collection of alerts |
+| `get_active_alerts_for_zone` | `GET /alerts/active/zone/{zone_id}` | whole: the same, for one zone |
+| `get_active_alerts_for_area` | `GET /alerts/active/area/{area}` | whole: the same, for one state or marine area |
+| `get_active_alerts_for_region` | `GET /alerts/active/region/{region}` | whole: the same, for one marine region |
+| `count_active_alerts` | `GET /alerts/active/count` | whole: counts by land, marine, region, area and zone |
+| `list_alerts` | `GET /alerts` | whole: the last week of alerts, in effect or not, by `cursor` |
+| `list_alert_types` | `GET /alerts/types` | whole: every event name alerts are issued under |
 | `get_alert` | `GET /alerts/{id}` | whole: one alert, with its polygon when it has one |
 
 `status`, `region`, `severity`, `urgency` and `certainty` are enumerations spelled as the
@@ -73,6 +79,12 @@ service spells them: `actual`, but `Severe`, `Immediate` and `Likely`.
 
 Array filters take one value each until TRU-495: the service reads several only
 comma-separated.
+
+## `glossary`
+
+| Endpoint | Upstream | Returns |
+| --- | --- | --- |
+| `list_terms` | `GET /glossary` | whole: every term with its definition, in JSON-LD, about 900 KB |
 
 ## In each language
 

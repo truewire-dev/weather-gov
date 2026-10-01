@@ -122,39 +122,8 @@
       "required": []
     },
     "response": {
-      "title": "AlertCollection",
-      "type": "object",
-      "description": "The alerts in effect, as a GeoJSON feature collection.",
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": [
-            "FeatureCollection"
-          ],
-          "description": "Always `FeatureCollection`."
-        },
-        "features": {
-          "type": "array",
-          "description": "The alerts.",
-          "items": {
-            "$ref": "AlertFeature",
-            "description": "One alert."
-          }
-        },
-        "title": {
-          "type": "string",
-          "description": "Human-readable title of the collection."
-        },
-        "updated": {
-          "type": "string",
-          "format": "date-time",
-          "description": "When the collection was assembled."
-        }
-      },
-      "required": [
-        "type",
-        "features"
-      ]
+      "$ref": "AlertCollection",
+      "description": "The alerts in effect, as a GeoJSON feature collection."
     }
   },
   "notes": [

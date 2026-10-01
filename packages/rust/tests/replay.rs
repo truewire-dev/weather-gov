@@ -618,3 +618,205 @@ async fn stations_for_a_zone_and_a_grid_cell() {
         "nearest first"
     );
 }
+
+#[tokio::test]
+async fn alerts_list_alerts_honours_the_limit_and_the_window_newest_first() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let window = recorded("alerts/list_alerts/examples/first_page.request.json");
+    let (start, end) = (timestamp(&window["start"]), timestamp(&window["end"]));
+    let limit = window["limit"].as_i64().expect("a limit");
+    let page = client
+        .alerts
+        .list_alerts(
+            weather_gov::alerts::list_alerts::Request {
+                start: Some(start),
+                end: Some(end),
+                status: Some(vec![
+                    weather_gov::alerts::list_alerts::RequestStatusItem::Actual,
+                ]),
+                limit: Some(limit),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_alerts");
+    assert_eq!(page.features.len() as i64, limit, "the limit was honoured");
+    let sent: Vec<_> = page.features.iter().map(|f| f.properties.sent).collect();
+    let mut sorted = sent.clone();
+    sorted.sort();
+    sorted.reverse();
+    assert_eq!(sent, sorted, "the service answers newest first by `sent`");
+    assert!(sent.iter().all(|moment| start <= *moment && *moment <= end));
+    assert!(page
+        .features
+        .iter()
+        .all(|f| f.properties.status == weather_gov::types::AlertStatus::Actual));
+    let next = page.pagination.expect("a pagination block").next;
+    assert!(next.contains("cursor="), "{next}");
+}
+
+#[tokio::test]
+async fn alerts_count_active_alerts_adds_up() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let count = client
+        .alerts
+        .count_active_alerts(
+            weather_gov::alerts::count_active_alerts::Request::default(),
+            CallOptions::default(),
+        )
+        .await
+        .expect("count_active_alerts");
+    assert_eq!(count.total, count.land + count.marine);
+    assert_eq!(count.regions.values().sum::<i64>(), count.marine);
+    assert!(count
+        .regions
+        .keys()
+        .all(|region| MARINE_REGIONS.iter().any(|(code, _)| code == region)));
+    assert!(!count.zones.is_empty() && !count.areas.is_empty());
+}
+
+/// The marine areas each region groups, from the OpenAPI's `MarineRegionCode`.
+const MARINE_REGIONS: [(&str, &[&str]); 6] = [
+    ("AL", &["PK"]),
+    ("AT", &["AM", "AN"]),
+    ("GL", &["LC", "LE", "LH", "LM", "LO", "LS", "SL"]),
+    ("GM", &["GM"]),
+    ("PA", &["PZ"]),
+    ("PI", &["PH", "PM", "PS"]),
+];
+
+/// Each alert's zone and county codes, after checking there is at least one alert.
+fn ugc_codes(page: &weather_gov::types::AlertCollection) -> Vec<Vec<String>> {
+    assert_eq!(
+        page.type_,
+        weather_gov::types::AlertCollectionType::FeatureCollection
+    );
+    assert!(
+        !page.features.is_empty(),
+        "nothing was in effect there when this was recorded"
+    );
+    page.features
+        .iter()
+        .map(|feature| {
+            feature
+                .properties
+                .geocode
+                .as_ref()
+                .and_then(|geocode| geocode.ugc.clone())
+                .expect("every alert carries its UGC codes")
+        })
+        .collect()
+}
+
+#[tokio::test]
+async fn alerts_for_a_zone_area_and_region_cover_the_place_in_the_path() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let zone = recorded("alerts/get_active_alerts_for_zone/examples/in_effect.request.json")
+        ["zone_id"]
+        .as_str()
+        .expect("a zone")
+        .to_string();
+    let page = client
+        .alerts
+        .get_active_alerts_for_zone(
+            weather_gov::alerts::get_active_alerts_for_zone::Request {
+                zone_id: zone.clone(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_active_alerts_for_zone");
+    let codes = ugc_codes(&page);
+    assert!(codes.iter().any(|alert| alert.contains(&zone)));
+    assert!(codes
+        .iter()
+        .all(|alert| alert.iter().any(|code| code.starts_with(&zone[..2]))));
+
+    let area = recorded("alerts/get_active_alerts_for_area/examples/in_effect.request.json")
+        ["area"]
+        .as_str()
+        .expect("an area")
+        .to_string();
+    let page = client
+        .alerts
+        .get_active_alerts_for_area(
+            weather_gov::alerts::get_active_alerts_for_area::Request {
+                area: area.clone(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_active_alerts_for_area");
+    assert!(ugc_codes(&page)
+        .iter()
+        .all(|alert| alert.iter().any(|code| code.starts_with(&area))));
+
+    let region = recorded("alerts/get_active_alerts_for_region/examples/in_effect.request.json")
+        ["region"]
+        .clone();
+    let code = region.as_str().expect("a region");
+    let (_, areas) = MARINE_REGIONS
+        .iter()
+        .find(|(region, _)| *region == code)
+        .unwrap_or_else(|| panic!("not a marine region: {code}"));
+    let page = client
+        .alerts
+        .get_active_alerts_for_region(
+            weather_gov::alerts::get_active_alerts_for_region::Request {
+                region: truewire_core::serde_json::from_value(region).expect("a region"),
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_active_alerts_for_region");
+    assert!(ugc_codes(&page)
+        .iter()
+        .all(|alert| alert.iter().any(|code| areas.contains(&&code[..2]))));
+}
+
+#[tokio::test]
+async fn alert_types_and_the_glossary_decode_whole() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let types = client
+        .alerts
+        .list_alert_types(
+            weather_gov::alerts::list_alert_types::Request::default(),
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_alert_types")
+        .event_types;
+    let unique: std::collections::HashSet<_> = types.iter().collect();
+    assert!(types.len() > 100);
+    assert_eq!(unique.len(), types.len());
+    for name in [
+        "Tornado Warning",
+        "Severe Thunderstorm Warning",
+        "Winter Storm Watch",
+    ] {
+        assert!(types.iter().any(|t| t == name), "{name}");
+    }
+
+    let terms = client
+        .glossary
+        .list_terms(
+            weather_gov::glossary::list_terms::Request::default(),
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_terms")
+        .glossary;
+    assert!(terms.len() > 3000);
+    assert!(terms.iter().any(|entry| entry.term == "1-2-3 Rule"));
+    assert!(terms
+        .iter()
+        .all(|entry| !entry.term.is_empty() && !entry.definition.is_empty()));
+}

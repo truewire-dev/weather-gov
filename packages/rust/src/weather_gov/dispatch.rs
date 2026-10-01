@@ -7,7 +7,7 @@ use truewire_core::{decode, dump, serde_json, CallOptions, Error, Result};
 use crate::Weather;
 
 impl Weather {
-    /// Call the `rpc` endpoint `function` names (`alerts.get_active_alerts`) with a wire request: decoded into its `Request`, sent, and the typed response dumped back to a wire value.
+    /// Call the `rpc` endpoint `function` names (`alerts.count_active_alerts`) with a wire request: decoded into its `Request`, sent, and the typed response dumped back to a wire value.
     #[doc(hidden)]
     pub async fn call(
         &self,
@@ -16,14 +16,53 @@ impl Weather {
         options: CallOptions,
     ) -> Result<serde_json::Value> {
         match function {
+            "alerts.count_active_alerts" => {
+                let request = decode(request)?;
+                let response = self.alerts.count_active_alerts(request, options).await?;
+                dump(&response)
+            }
             "alerts.get_active_alerts" => {
                 let request = decode(request)?;
                 let response = self.alerts.get_active_alerts(request, options).await?;
                 dump(&response)
             }
+            "alerts.get_active_alerts_for_area" => {
+                let request = decode(request)?;
+                let response = self
+                    .alerts
+                    .get_active_alerts_for_area(request, options)
+                    .await?;
+                dump(&response)
+            }
+            "alerts.get_active_alerts_for_region" => {
+                let request = decode(request)?;
+                let response = self
+                    .alerts
+                    .get_active_alerts_for_region(request, options)
+                    .await?;
+                dump(&response)
+            }
+            "alerts.get_active_alerts_for_zone" => {
+                let request = decode(request)?;
+                let response = self
+                    .alerts
+                    .get_active_alerts_for_zone(request, options)
+                    .await?;
+                dump(&response)
+            }
             "alerts.get_alert" => {
                 let request = decode(request)?;
                 let response = self.alerts.get_alert(request, options).await?;
+                dump(&response)
+            }
+            "alerts.list_alert_types" => {
+                let request = decode(request)?;
+                let response = self.alerts.list_alert_types(request, options).await?;
+                dump(&response)
+            }
+            "alerts.list_alerts" => {
+                let request = decode(request)?;
+                let response = self.alerts.list_alerts(request, options).await?;
                 dump(&response)
             }
             "forecast.get_forecast" => {
@@ -39,6 +78,11 @@ impl Weather {
             "forecast.get_hourly_forecast" => {
                 let request = decode(request)?;
                 let response = self.forecast.get_hourly_forecast(request, options).await?;
+                dump(&response)
+            }
+            "glossary.list_terms" => {
+                let request = decode(request)?;
+                let response = self.glossary.list_terms(request, options).await?;
                 dump(&response)
             }
             "offices.get_office" => {
@@ -136,13 +180,43 @@ impl Weather {
         options: CallOptions,
     ) -> Result<serde_json::Value> {
         match function {
+            "alerts.count_active_alerts" => {
+                let request = decode(request)?;
+                self.alerts.count_active_alerts_raw(request, options).await
+            }
             "alerts.get_active_alerts" => {
                 let request = decode(request)?;
                 self.alerts.get_active_alerts_raw(request, options).await
             }
+            "alerts.get_active_alerts_for_area" => {
+                let request = decode(request)?;
+                self.alerts
+                    .get_active_alerts_for_area_raw(request, options)
+                    .await
+            }
+            "alerts.get_active_alerts_for_region" => {
+                let request = decode(request)?;
+                self.alerts
+                    .get_active_alerts_for_region_raw(request, options)
+                    .await
+            }
+            "alerts.get_active_alerts_for_zone" => {
+                let request = decode(request)?;
+                self.alerts
+                    .get_active_alerts_for_zone_raw(request, options)
+                    .await
+            }
             "alerts.get_alert" => {
                 let request = decode(request)?;
                 self.alerts.get_alert_raw(request, options).await
+            }
+            "alerts.list_alert_types" => {
+                let request = decode(request)?;
+                self.alerts.list_alert_types_raw(request, options).await
+            }
+            "alerts.list_alerts" => {
+                let request = decode(request)?;
+                self.alerts.list_alerts_raw(request, options).await
             }
             "forecast.get_forecast" => {
                 let request = decode(request)?;
@@ -157,6 +231,10 @@ impl Weather {
                 self.forecast
                     .get_hourly_forecast_raw(request, options)
                     .await
+            }
+            "glossary.list_terms" => {
+                let request = decode(request)?;
+                self.glossary.list_terms_raw(request, options).await
             }
             "offices.get_office" => {
                 let request = decode(request)?;

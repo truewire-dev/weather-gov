@@ -1,0 +1,34 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/alerts_active_zone",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/alerts/active/zone/{zone_id}",
+    "method": "GET",
+    "description": "The alerts in effect for one forecast zone or county. The same as `alerts.get_active_alerts` narrowed by `zone`, with the zone in the path. Takes no other filter, so drills and test messages come back too; `alerts.get_active_alerts` with `status: [\"actual\"]` leaves them out.",
+    "request": {
+      "title": "GetActiveAlertsForZoneRequest",
+      "type": "object",
+      "description": "Which zone.",
+      "properties": {
+        "zone_id": {
+          "type": "string",
+          "description": "Forecast zone (`WAZ315`) or county (`AZC009`) code: two letters of state or marine area, `Z` or `C`, three digits."
+        }
+      },
+      "required": [
+        "zone_id"
+      ]
+    },
+    "response": {
+      "$ref": "AlertCollection",
+      "description": "The alerts in effect for the zone, as a GeoJSON feature collection. Empty when there are none."
+    }
+  },
+  "notes": [
+    "`zone_id` is a plain string for the reason `alerts.get_active_alerts` gives for `zone`: the service constrains it with a regex, not an enumeration."
+  ]
+}
