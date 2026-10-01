@@ -1348,7 +1348,7 @@
       },
       "reportingHost": {
         "type": "string",
-        "description": "Monitoring host that reported it, such as `rdss`."
+        "description": "Monitoring host that reported it, such as `rdss` or `tdss`."
       },
       "ingestHost": {
         "type": "string",
@@ -1616,7 +1616,7 @@
       },
       "reportingHost": {
         "type": "string",
-        "description": "Monitoring host that collected it, such as `rdss`."
+        "description": "Monitoring host that collected it, such as `rdss` or `tdss`."
       },
       "properties": {
         "description": "The readings, by name. Their set depends on the kind of radar and is not documented, so they are a map rather than fields; a TDWR sends `[]`.",
@@ -1771,7 +1771,7 @@
             "anyOf": [
               {
                 "type": "string",
-                "description": "Monitoring host that reported the latency, such as `rdss`."
+                "description": "Monitoring host that reported the latency, such as `rdss` or `tdss`."
               },
               {
                 "type": "null",
@@ -1818,7 +1818,7 @@
               },
               "reportingHost": {
                 "type": "string",
-                "description": "Monitoring host that reported it, such as `rdss`."
+                "description": "Monitoring host that reported it, such as `rdss` or `tdss`."
               },
               "properties": {
                 "title": "RadarRdaStatus",

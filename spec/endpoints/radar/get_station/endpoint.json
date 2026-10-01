@@ -20,7 +20,7 @@
         },
         "reportingHost": {
           "type": "string",
-          "description": "Monitoring host to report status and latency from. `rdss` is the only one the service knew on 2026-10-01."
+          "description": "Monitoring host to report status and latency from: `rdss` or `tdss` on 2026-10-01. Without it, the service picks one."
         },
         "host": {
           "type": "string",

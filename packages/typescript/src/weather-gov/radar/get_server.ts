@@ -7,7 +7,7 @@ import { RadarServer } from '../types/index.js'
 export interface Request {
   /** Server name, such as `ldm1`. `radar.list_servers` returns it as `id`. */
   server_id: string
-  /** Monitoring host to report from. `rdss` is the only one the service knew on 2026-10-01; any other value answers 404. */
+  /** Monitoring host to report from: `rdss` or `tdss` on 2026-10-01. Without it, the service picks one; any other value answers 404. */
   reportingHost?: string
 }
 

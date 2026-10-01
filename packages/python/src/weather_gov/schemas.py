@@ -425,7 +425,7 @@ class RadarReport(TypedDict):
   timestamp: NotRequired[TimestampIso | None]
   """When the report was made."""
   reportingHost: str
-  """Monitoring host that collected it, such as `rdss`."""
+  """Monitoring host that collected it, such as `rdss` or `tdss`."""
   properties: dict[str, QuantitativeValue | str | float] | list[str]
   """The readings, by name. Their set depends on the kind of radar and is not documented, so they are a map rather than fields; a TDWR sends `[]`."""
 
@@ -579,7 +579,7 @@ class RadarRda(TypedDict):
   timestamp: TimestampIso
   """When the status was reported."""
   reportingHost: str
-  """Monitoring host that reported it, such as `rdss`."""
+  """Monitoring host that reported it, such as `rdss` or `tdss`."""
   properties: RadarRdaStatus
 
 
@@ -612,7 +612,7 @@ class RadarServer(RadarServerKeywords):
   collectionTime: TimestampIso
   """When this health report was collected."""
   reportingHost: str
-  """Monitoring host that reported it, such as `rdss`."""
+  """Monitoring host that reported it, such as `rdss` or `tdss`."""
   ingestHost: NotRequired[str]
   """Host the server ingests from, such as `dns`."""
   ping: RadarServerPing

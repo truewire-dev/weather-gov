@@ -8,7 +8,7 @@ class Request(TypedDict):
   """Which servers. The filter is optional."""
 
   reportingHost: NotRequired[str]
-  """Monitoring host to report from. `rdss` is the only one the service knew on 2026-10-01; any other value answers an empty list."""
+  """Monitoring host to report from: `rdss` or `tdss` on 2026-10-01, the two the service knew. Without it, the service picks one; any other value answers an empty `@graph`."""
 
 
 RadarServerCollectionKeywords = TypedDict(
@@ -49,7 +49,7 @@ class ListServers(Endpoint):
     """The servers of the radar data distribution network -- the LDM servers that ingest NEXRAD data and the hosts that serve it on -- each with its health. JSON-LD: the servers come as a `@graph`.
 
     Args:
-      reporting_host: Monitoring host to report from. `rdss` is the only one the service knew on 2026-10-01; any other value answers an empty list.
+      reporting_host: Monitoring host to report from: `rdss` or `tdss` on 2026-10-01, the two the service knew. Without it, the service picks one; any other value answers an empty `@graph`.
       validate: Override this call's response validation; falls back to the client-level default when omitted. `False` returns the parsed body as it came, typed `Any`.
 
     References:

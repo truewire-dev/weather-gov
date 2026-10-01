@@ -13,7 +13,7 @@ use crate::types::RadarStationFeature;
 pub struct Request {
     /// Station identifier, such as `KATX`. `radar.list_stations` returns it as `properties.id`.
     pub station_id: String,
-    /// Monitoring host to report status and latency from. `rdss` is the only one the service knew on 2026-10-01.
+    /// Monitoring host to report status and latency from: `rdss` or `tdss` on 2026-10-01. Without it, the service picks one.
     #[serde(
         rename = "reportingHost",
         default,

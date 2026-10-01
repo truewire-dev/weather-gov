@@ -13,7 +13,7 @@ use crate::types::RadarServer;
 pub struct Request {
     /// Server name, such as `ldm1`. `radar.list_servers` returns it as `id`.
     pub server_id: String,
-    /// Monitoring host to report from. `rdss` is the only one the service knew on 2026-10-01; any other value answers 404.
+    /// Monitoring host to report from: `rdss` or `tdss` on 2026-10-01. Without it, the service picks one; any other value answers 404.
     #[serde(
         rename = "reportingHost",
         default,

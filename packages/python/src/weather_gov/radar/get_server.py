@@ -10,7 +10,7 @@ class Request(TypedDict):
   server_id: str
   """Server name, such as `ldm1`. `radar.list_servers` returns it as `id`."""
   reportingHost: NotRequired[str]
-  """Monitoring host to report from. `rdss` is the only one the service knew on 2026-10-01; any other value answers 404."""
+  """Monitoring host to report from: `rdss` or `tdss` on 2026-10-01. Without it, the service picks one; any other value answers 404."""
 
 
 class GetServer(Endpoint):
@@ -43,7 +43,7 @@ class GetServer(Endpoint):
 
     Args:
       server_id: Server name, such as `ldm1`. `radar.list_servers` returns it as `id`.
-      reporting_host: Monitoring host to report from. `rdss` is the only one the service knew on 2026-10-01; any other value answers 404.
+      reporting_host: Monitoring host to report from: `rdss` or `tdss` on 2026-10-01. Without it, the service picks one; any other value answers 404.
       validate: Override this call's response validation; falls back to the client-level default when omitted. `False` returns the parsed body as it came, typed `Any`.
 
     References:

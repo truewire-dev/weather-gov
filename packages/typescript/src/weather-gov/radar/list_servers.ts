@@ -5,7 +5,7 @@ import { RadarServer } from '../types/index.js'
 
 /** Which servers. The filter is optional. */
 export interface Request {
-  /** Monitoring host to report from. `rdss` is the only one the service knew on 2026-10-01; any other value answers an empty list. */
+  /** Monitoring host to report from: `rdss` or `tdss` on 2026-10-01, the two the service knew. Without it, the service picks one; any other value answers an empty `@graph`. */
   reportingHost?: string
 }
 

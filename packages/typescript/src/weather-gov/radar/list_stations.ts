@@ -7,7 +7,7 @@ import { RadarStationFeature } from '../types/index.js'
 export interface Request {
   /** Kinds of radar to narrow to: `WSR-88D`, `TDWR` or `Profiler`, matched case-sensitively (`tdwr` answers an empty list). Undocumented, so not enumerated. */
   stationType?: string[]
-  /** Monitoring host to report status and latency from. `rdss` is the only one the service knew on 2026-10-01; any other value answers 503. */
+  /** Monitoring host to report status and latency from: `rdss` or `tdss` on 2026-10-01. Without it, the service picks one; any other value answers 503. */
   reportingHost?: string
   /** LDM host to measure `latency` at, such as `ldm1`. Without it, `ldm4` on 2026-10-01; a host the service does not know answers 503. */
   host?: string

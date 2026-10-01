@@ -582,7 +582,7 @@ export const RadarRdaStatus: Codec<RadarRdaStatus> = t.object({
 export interface RadarReport {
   /** When the report was made. */
   timestamp?: TimestampIso | null
-  /** Monitoring host that collected it, such as `rdss`. */
+  /** Monitoring host that collected it, such as `rdss` or `tdss`. */
   reportingHost: string
   /** The readings, by name. Their set depends on the kind of radar and is not documented, so they are a map rather than fields; a TDWR sends `[]`. */
   properties: Record<string, QuantitativeValue | string | number> | string[]
@@ -809,7 +809,7 @@ export const Observation: Codec<Observation> = t.object({
 export interface RadarRda {
   /** When the status was reported. */
   timestamp: TimestampIso
-  /** Monitoring host that reported it, such as `rdss`. */
+  /** Monitoring host that reported it, such as `rdss` or `tdss`. */
   reportingHost: string
   properties: RadarRdaStatus
 }
@@ -842,7 +842,7 @@ export interface RadarServer {
   radarNetworkUp?: boolean
   /** When this health report was collected. */
   collectionTime: TimestampIso
-  /** Monitoring host that reported it, such as `rdss`. */
+  /** Monitoring host that reported it, such as `rdss` or `tdss`. */
   reportingHost: string
   /** Host the server ingests from, such as `dns`. */
   ingestHost?: string

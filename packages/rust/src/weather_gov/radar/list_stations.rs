@@ -18,7 +18,7 @@ pub struct Request {
         skip_serializing_if = "Option::is_none"
     )]
     pub station_type: Option<Vec<String>>,
-    /// Monitoring host to report status and latency from. `rdss` is the only one the service knew on 2026-10-01; any other value answers 503.
+    /// Monitoring host to report status and latency from: `rdss` or `tdss` on 2026-10-01. Without it, the service picks one; any other value answers 503.
     #[serde(
         rename = "reportingHost",
         default,

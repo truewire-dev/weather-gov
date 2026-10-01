@@ -915,7 +915,7 @@ pub struct RadarReport {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[serde(with = "truewire_core::validation::double_option")]
     pub timestamp: Option<Option<TimestampIso>>,
-    /// Monitoring host that collected it, such as `rdss`.
+    /// Monitoring host that collected it, such as `rdss` or `tdss`.
     #[serde(rename = "reportingHost")]
     pub reporting_host: String,
     /// The readings, by name. Their set depends on the kind of radar and is not documented, so they are a map rather than fields; a TDWR sends `[]`.
@@ -1247,7 +1247,7 @@ pub struct Observation {
 pub struct RadarRda {
     /// When the status was reported.
     pub timestamp: TimestampIso,
-    /// Monitoring host that reported it, such as `rdss`.
+    /// Monitoring host that reported it, such as `rdss` or `tdss`.
     #[serde(rename = "reportingHost")]
     pub reporting_host: String,
     pub properties: RadarRdaStatus,
@@ -1299,7 +1299,7 @@ pub struct RadarServer {
     /// When this health report was collected.
     #[serde(rename = "collectionTime")]
     pub collection_time: TimestampIso,
-    /// Monitoring host that reported it, such as `rdss`.
+    /// Monitoring host that reported it, such as `rdss` or `tdss`.
     #[serde(rename = "reportingHost")]
     pub reporting_host: String,
     /// Host the server ingests from, such as `dns`.

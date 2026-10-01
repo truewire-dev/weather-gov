@@ -10,7 +10,7 @@ class Request(TypedDict):
   stationType: NotRequired[list[str]]
   """Kinds of radar to narrow to: `WSR-88D`, `TDWR` or `Profiler`, matched case-sensitively (`tdwr` answers an empty list). Undocumented, so not enumerated."""
   reportingHost: NotRequired[str]
-  """Monitoring host to report status and latency from. `rdss` is the only one the service knew on 2026-10-01; any other value answers 503."""
+  """Monitoring host to report status and latency from: `rdss` or `tdss` on 2026-10-01. Without it, the service picks one; any other value answers 503."""
   host: NotRequired[str]
   """LDM host to measure `latency` at, such as `ldm1`. Without it, `ldm4` on 2026-10-01; a host the service does not know answers 503."""
 
@@ -57,7 +57,7 @@ class ListStations(Endpoint):
 
     Args:
       station_type: Kinds of radar to narrow to: `WSR-88D`, `TDWR` or `Profiler`, matched case-sensitively (`tdwr` answers an empty list). Undocumented, so not enumerated.
-      reporting_host: Monitoring host to report status and latency from. `rdss` is the only one the service knew on 2026-10-01; any other value answers 503.
+      reporting_host: Monitoring host to report status and latency from: `rdss` or `tdss` on 2026-10-01. Without it, the service picks one; any other value answers 503.
       host: LDM host to measure `latency` at, such as `ldm1`. Without it, `ldm4` on 2026-10-01; a host the service does not know answers 503.
       validate: Override this call's response validation; falls back to the client-level default when omitted. `False` returns the parsed body as it came, typed `Any`.
 
