@@ -102,7 +102,30 @@ meeting every target-shape clause by this endpoint review.
 - No successful `truewire/verify` status was confirmed. The status lookup was
   rate-limited, and the inspected verifier currently targets only the typed
   repository. A weather-gov verification lane is being added separately.
-- Python, TypeScript and Rust review verdicts are pending. The Lead must rerun
+- Python and Rust review verdicts are pending; TypeScript requests changes as
+  recorded below. The Lead must rerun
   any affected acceptance checks and verify the final head before merging.
 
 No implementation files were changed during this review.
+
+## TypeScript follow-up, 2026-10-01
+
+The [TypeScript review](https://github.com/truewire-dev/weather-gov/pull/17#pullrequestreview-5373611856)
+requests changes at `afe2e7c`. The Lead independently reproduced its strict
+compile regression with the existing source-runtime installation: exit 2,
+TS2578 at lines 9 and 19 of `optional-request.ts` in the
+[review reproduction](https://github.com/truewire-dev/weather-gov/tree/8e6d9a7/reviews/TRU-604).
+
+Both the aviation router and `ListSigmets` leaf advertise a decoded
+`SigmetCollection` for `listSigmets(undefined, { validate: false })`. The raw
+overload accepts `Request` but omits `undefined`, so overload resolution falls
+through to the validated signature. Raw timestamps are strings, despite the
+advertised Date methods. The explicit-empty raw and validated controls pass.
+The reviewer's runtime TypeError demonstration was not repeated by the Lead.
+
+This is another occurrence of the existing optional-request generator defect.
+After that fix lands, the Clients engineer must regenerate TypeScript and place
+the two negative type assertions and their controls in
+`packages/typescript/test/typing_aviation.ts`, included in the package typecheck.
+Do not hand-edit the generated overloads. A renewed TypeScript verdict on the
+corrected head is required. The dependency-pin and verifier blockers remain.
