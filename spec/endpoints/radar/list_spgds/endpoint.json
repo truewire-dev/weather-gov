@@ -1,0 +1,329 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/radar_spgds",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/radar/spgds",
+    "method": "GET",
+    "description": "Status reports from the SPG data servers, which feed radar data to the Supplemental Product Generators at airport TDWR sites. JSON-LD: the reports come as a `@graph`.",
+    "request": {
+      "title": "ListSpgdsRequest",
+      "type": "object",
+      "description": "Which reports. Without `published`, the latest two from each server.",
+      "properties": {
+        "published": {
+          "type": "string",
+          "description": "Only reports made in this ISO 8601 interval: `start/end`, `start/duration` or `duration/end`, either end may be `NOW`, such as `2026-09-30T12:00:00Z/PT1M`. The service keeps about a week; each server reports about every 15 seconds, so an hour is about 1,000 reports and 4 MB."
+        }
+      },
+      "required": []
+    },
+    "response": {
+      "title": "SpgdsCollection",
+      "type": "object",
+      "description": "The reports, as a JSON-LD graph.",
+      "properties": {
+        "@graph": {
+          "type": "array",
+          "description": "The reports, newest first. Empty when nothing was published in the interval.",
+          "items": {
+            "title": "RadarSpgds",
+            "type": "object",
+            "description": "One status report from one SPG data server.",
+            "properties": {
+              "@type": {
+                "type": "string",
+                "enum": [
+                  "wx:RadarSPGDS"
+                ],
+                "description": "Always `wx:RadarSPGDS`."
+              },
+              "id": {
+                "type": "string",
+                "description": "Server name, such as `spgds1`."
+              },
+              "timestamp": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the report was made."
+              },
+              "dataflow": {
+                "title": "SpgdsDataflow",
+                "type": "object",
+                "description": "Whether data is flowing through the server.",
+                "properties": {
+                  "state": {
+                    "type": "string",
+                    "description": "State code: `1` on a healthy server. Undocumented, so not enumerated."
+                  },
+                  "stateSince": {
+                    "type": "string",
+                    "format": "epoch-seconds",
+                    "description": "When the state began, in Unix seconds sent as a string."
+                  },
+                  "stateValid": {
+                    "type": "string",
+                    "format": "epoch-seconds",
+                    "description": "When the state was last confirmed, in Unix seconds sent as a string."
+                  }
+                },
+                "required": [
+                  "state",
+                  "stateSince",
+                  "stateValid"
+                ]
+              },
+              "connectQ": {
+                "title": "SpgdsConnectQueue",
+                "type": "object",
+                "description": "State of the connection queue.",
+                "properties": {
+                  "state": {
+                    "type": "string",
+                    "description": "State code: `1` on a healthy server. Undocumented, so not enumerated."
+                  },
+                  "stateSince": {
+                    "type": "string",
+                    "format": "epoch-seconds",
+                    "description": "When the state began, in Unix seconds sent as a string."
+                  },
+                  "stateValid": {
+                    "type": "string",
+                    "format": "epoch-seconds",
+                    "description": "When the state was last confirmed, in Unix seconds sent as a string."
+                  }
+                },
+                "required": [
+                  "state",
+                  "stateSince",
+                  "stateValid"
+                ]
+              },
+              "appRunning": {
+                "title": "SpgdsApplication",
+                "type": "object",
+                "description": "Whether the server application is running.",
+                "properties": {
+                  "state": {
+                    "type": "string",
+                    "description": "State code: `1` on a healthy server. Undocumented, so not enumerated."
+                  },
+                  "stateSince": {
+                    "type": "string",
+                    "format": "epoch-seconds",
+                    "description": "When the state began, in Unix seconds sent as a string."
+                  },
+                  "stateValid": {
+                    "type": "string",
+                    "format": "epoch-seconds",
+                    "description": "When the state was last confirmed, in Unix seconds sent as a string."
+                  }
+                },
+                "required": [
+                  "state",
+                  "stateSince",
+                  "stateValid"
+                ]
+              },
+              "ldm": {
+                "title": "SpgdsLdm",
+                "type": "object",
+                "description": "The server's LDM connections.",
+                "properties": {
+                  "conns": {
+                    "type": "string",
+                    "format": "integer-string",
+                    "description": "Open LDM connections, sent as a string."
+                  },
+                  "connsValid": {
+                    "type": "string",
+                    "format": "epoch-seconds",
+                    "description": "When the count was last confirmed, in Unix seconds sent as a string."
+                  }
+                },
+                "required": [
+                  "conns",
+                  "connsValid"
+                ]
+              },
+              "secondHD": {
+                "title": "SpgdsSecondDisk",
+                "type": "object",
+                "description": "The server's second disk.",
+                "properties": {
+                  "state": {
+                    "type": "string",
+                    "description": "State code: `1` on a healthy disk. Undocumented, so not enumerated."
+                  },
+                  "stateSince": {
+                    "type": "string",
+                    "format": "epoch-seconds",
+                    "description": "When the state began, in Unix seconds sent as a string."
+                  },
+                  "stateValid": {
+                    "type": "string",
+                    "format": "epoch-seconds",
+                    "description": "When the state was last confirmed, in Unix seconds sent as a string."
+                  },
+                  "pctUsed": {
+                    "type": "string",
+                    "format": "integer-string",
+                    "description": "Disk used, in percent, sent as a string."
+                  },
+                  "pctUsedValid": {
+                    "type": "string",
+                    "format": "epoch-seconds",
+                    "description": "When the usage was last confirmed, in Unix seconds sent as a string."
+                  }
+                },
+                "required": [
+                  "state",
+                  "stateSince",
+                  "stateValid",
+                  "pctUsed",
+                  "pctUsedValid"
+                ]
+              },
+              "spgdsUpSince": {
+                "title": "SpgdsUptime",
+                "type": "object",
+                "description": "How long the server has been up.",
+                "properties": {
+                  "upSince": {
+                    "type": "string",
+                    "format": "epoch-seconds",
+                    "description": "When it came up, in Unix seconds sent as a string."
+                  },
+                  "upSinceValid": {
+                    "type": "string",
+                    "format": "epoch-seconds",
+                    "description": "When that was last confirmed, in Unix seconds sent as a string."
+                  }
+                },
+                "required": [
+                  "upSince",
+                  "upSinceValid"
+                ]
+              },
+              "throughput": {
+                "title": "SpgdsThroughput",
+                "type": "object",
+                "description": "Data rates through the server.",
+                "properties": {
+                  "in": {
+                    "type": "string",
+                    "format": "decimal-string",
+                    "description": "Inbound rate, sent as a decimal string. The unit is undocumented."
+                  },
+                  "inDateTime": {
+                    "type": "string",
+                    "format": "epoch-seconds",
+                    "description": "When the inbound rate was measured, in Unix seconds sent as a string."
+                  },
+                  "inValid": {
+                    "type": "string",
+                    "format": "epoch-seconds",
+                    "description": "When it was last confirmed, in Unix seconds sent as a string."
+                  },
+                  "out": {
+                    "type": "string",
+                    "format": "decimal-string",
+                    "description": "Outbound rate, sent as a decimal string. The unit is undocumented."
+                  },
+                  "outDateTime": {
+                    "type": "string",
+                    "format": "epoch-seconds",
+                    "description": "When the outbound rate was measured, in Unix seconds sent as a string."
+                  },
+                  "outValid": {
+                    "type": "string",
+                    "format": "epoch-seconds",
+                    "description": "When it was last confirmed, in Unix seconds sent as a string."
+                  }
+                },
+                "required": [
+                  "in",
+                  "inDateTime",
+                  "inValid",
+                  "out",
+                  "outDateTime",
+                  "outValid"
+                ]
+              },
+              "spg": {
+                "type": "object",
+                "description": "Each Supplemental Product Generator the server feeds, by site identifier (`TATL`, `TBOS`): 46 per server on 2026-10-01.",
+                "additionalProperties": {
+                  "title": "SpgSite",
+                  "type": "object",
+                  "description": "The feeds to one SPG site.",
+                  "properties": {
+                    "swimDataState": {
+                      "type": "string",
+                      "description": "State of the SWIM data feed: `1` up, `0` down. Undocumented, so not enumerated."
+                    },
+                    "swimDataStateSince": {
+                      "type": "string",
+                      "format": "epoch-seconds",
+                      "description": "When that state began, in Unix seconds sent as a string."
+                    },
+                    "swimDataStateValid": {
+                      "type": "string",
+                      "format": "epoch-seconds",
+                      "description": "When it was last confirmed, in Unix seconds sent as a string."
+                    },
+                    "ldmPingState": {
+                      "type": "string",
+                      "description": "Whether the site answers an LDM ping: `1` yes, `0` no. Undocumented, so not enumerated."
+                    },
+                    "ldmPingStateSince": {
+                      "type": "string",
+                      "format": "epoch-seconds",
+                      "description": "When that state began, in Unix seconds sent as a string."
+                    },
+                    "ldmPingStateValid": {
+                      "type": "string",
+                      "format": "epoch-seconds",
+                      "description": "When it was last confirmed, in Unix seconds sent as a string."
+                    }
+                  },
+                  "required": [
+                    "swimDataState",
+                    "swimDataStateSince",
+                    "swimDataStateValid",
+                    "ldmPingState",
+                    "ldmPingStateSince",
+                    "ldmPingStateValid"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "@type",
+              "id",
+              "timestamp",
+              "dataflow",
+              "connectQ",
+              "appRunning",
+              "ldm",
+              "secondHD",
+              "spgdsUpSince",
+              "throughput",
+              "spg"
+            ]
+          }
+        }
+      },
+      "required": [
+        "@graph"
+      ]
+    }
+  },
+  "notes": [
+    "Every time and count in a report except `timestamp` is a numeral string: Unix seconds (`\"1787640004\"`) or an integer or decimal (`\"46\"`, `\"6491703.0\"`). The schema declares each one's format so the clients parse them, rather than leaving the string.",
+    "The example records one minute, moved by `refresh_examples.py` to a minute about a day old, since the service keeps about a week of reports (a window on 2026-09-20 answered an empty `@graph` on 2026-10-01)."
+  ]
+}

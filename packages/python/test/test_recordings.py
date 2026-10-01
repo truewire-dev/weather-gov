@@ -12,8 +12,10 @@ came back full.
 """
 
 import json
+import re
 from collections.abc import Callable
-from datetime import datetime
+from datetime import datetime, timedelta
+from decimal import Decimal
 from pathlib import Path
 
 import pytest
@@ -334,6 +336,147 @@ def gridpoint_stations(result: Any) -> None:
   assert distances == sorted(distances)
 
 
+def is_interval(interval: str) -> tuple[datetime, timedelta]:
+  """The start and length of a `start/duration` ISO 8601 interval, the form the radar
+  examples ask in: `2026-09-30T23:00:00Z/PT10M`."""
+  start, duration = interval.split('/')
+  match = re.fullmatch(r'PT(?:(\d+)H)?(?:(\d+)M)?', duration)
+  assert match, f'{duration} is not an hours-and-minutes duration'
+  hours, minutes = (int(part or 0) for part in match.groups())
+  length = timedelta(hours=hours, minutes=minutes)
+  return datetime.fromisoformat(start.replace('Z', '+00:00')), length
+
+
+def is_ping_group(group: Any) -> None:
+  """A ping group: target name to whether it answered, or `[]` when there are none."""
+  if isinstance(group, dict):
+    assert all(isinstance(answered, bool) for answered in group.values())
+  else:
+    assert group == []
+
+
+def radar_servers(result: Any) -> None:
+  """The LDM ingest servers and the two distribution hosts, each with its health. The
+  `command` block and the service flags come only with the LDM servers."""
+  servers = {server['id']: server for server in result['@graph']}
+  assert {'ldm1', 'rds', 'tds'} <= set(servers)
+  for name, server in servers.items():
+    assert server['@id'].endswith('/radar/servers/' + name)
+    assert isinstance(server['collectionTime'], datetime)
+    for group in server['ping']['targets'].values():
+      is_ping_group(group)
+    if server['type'] == 'ldm':
+      assert isinstance(server['active'], bool)
+      assert isinstance(server['command']['lastExecutedTime'], datetime)
+    else:
+      assert 'command' not in server and 'active' not in server
+  # The service's empty map is `[]`: the reason the ping groups are a union at all.
+  assert any(
+    group == [] for server in servers.values() for group in server['ping']['targets'].values()
+  )
+  # The distribution hosts ping no radars, and say so with an empty group.
+  assert servers['rds']['ping']['targets']['radar'] == []
+
+
+def radar_server(result: Any) -> None:
+  """One LDM server: its queue spans oldest to newest, and its uptime is a boot time."""
+  asked = example_request('radar.get_server', 'ldm1')
+  assert result['id'] == asked['server_id'] and result['type'] == 'ldm'
+  ldm = result['ldm']
+  assert ldm['count'] > 0 and ldm['storageSize'] > 0
+  assert ldm['oldestProduct'] <= ldm['latestProduct']
+  assert result['hardware']['uptime'] < result['collectionTime']
+  assert result['network']['eth0']['interface'] == 'eth0'
+  assert isinstance(result['ping']['targets']['radar']['KATX'], bool)
+
+
+def spgds(result: Any) -> None:
+  """One minute of SPG data server reports. Every time in a report but `timestamp` is Unix
+  seconds sent as a string; the declared formats turn each into a real `datetime`, and the
+  counts into numbers."""
+  start, length = is_interval(example_request('radar.list_spgds', 'one_minute')['published'])
+  reports = result['@graph']
+  assert reports
+  for report in reports:
+    assert start <= report['timestamp'] <= start + length
+    for block in (report['dataflow'], report['connectQ'], report['appRunning']):
+      assert isinstance(block['stateSince'], datetime)
+      assert block['stateSince'] <= block['stateValid']
+    assert isinstance(report['ldm']['conns'], int)
+    assert 0 <= report['secondHD']['pctUsed'] <= 100
+    assert isinstance(report['throughput']['in'], Decimal)
+    assert report['spgdsUpSince']['upSince'] < report['timestamp']
+    assert report['spg']
+    for site in report['spg'].values():
+      assert isinstance(site['ldmPingStateSince'], datetime)
+  timestamps = [report['timestamp'] for report in reports]
+  assert timestamps == sorted(timestamps, reverse=True)
+
+
+def radar_profilers(result: Any) -> None:
+  """The wind profilers: radars with a place but no Level II feed, so no status and every
+  latency field null."""
+  asked = example_request('radar.list_stations', 'profilers')
+  features = result['features']
+  assert features
+  for feature in features:
+    radar = feature['properties']
+    assert radar['stationType'] in asked['stationType']
+    assert feature['id'] == radar['@id']
+    is_point(feature['geometry'])
+    assert radar['rda'] is None
+    assert all(value is None for value in radar['latency'].values())
+    assert 'performance' not in radar and 'adaptation' not in radar
+
+
+def radar_station(result: Any) -> None:
+  """One NEXRAD radar, whole: the feature, its latency in seconds, and the maintenance
+  reports only this endpoint sends."""
+  asked = example_request('radar.get_station', 'seattle')
+  radar = result['properties']
+  assert radar['id'] == asked['station_id'] and radar['stationType'] == 'WSR-88D'
+  assert result['id'] == radar['@id']
+  is_point(result['geometry'])
+  assert radar['latency']['current']['unitCode'] == 'nwsUnit:s'
+  assert isinstance(radar['latency']['levelTwoLastReceivedTime'], datetime)
+  assert radar['rda']['properties']['volumeCoveragePattern']
+  for report in (radar['performance'], radar['adaptation']):
+    readings = report['properties']
+    assert isinstance(readings, dict) and readings
+    measured = [r for r in readings.values() if isinstance(r, dict)]
+    assert measured and all('unitCode' in r for r in measured)
+  assert radar['performance']['properties']['transmitterPeakPower']['unitCode'] == 'wmoUnit:kW'
+
+
+def radar_alarms(result: Any) -> None:
+  """A radar's alarm log, newest first, every entry about the radar asked for."""
+  asked = example_request('radar.list_station_alarms', 'seattle')
+  alarms = result['@graph']
+  assert alarms
+  assert result['@id'].endswith(f'/radar/stations/{asked["station_id"]}/alarms')
+  for alarm in alarms:
+    assert alarm['stationId'] == asked['station_id']
+    assert alarm['message'] and alarm['status']
+  timestamps = [alarm['timestamp'] for alarm in alarms]
+  assert timestamps == sorted(timestamps, reverse=True)
+
+
+def radar_queue(result: Any) -> None:
+  """The first products into one host's queue from the start of the window: the `limit` keeps
+  the oldest, which is why the answer starts at the window's start."""
+  asked = example_request('radar.get_queue', 'seattle_capped')
+  start, length = is_interval(asked['arrived'])
+  products = result['@graph']
+  assert len(products) == asked['limit']
+  arrivals = [product['arrivalTime'] for product in products]
+  assert arrivals == sorted(arrivals)
+  for product in products:
+    assert product['host'] == asked['host'] and product['stationId'] == asked['station']
+    assert start <= product['arrivalTime'] < start + length
+    assert product['creationTime'] <= product['arrivalTime']
+    assert product['size'] > 0
+
+
 PROVES: dict[str, Callable[[Any], None]] = {
   'points.get_point[seattle]': point,
   'forecast.get_forecast[seattle]': forecast,
@@ -356,6 +499,13 @@ PROVES: dict[str, Callable[[Any], None]] = {
   'stations.get_observations_for_zone[seattle_capped]': zone_observations,
   'stations.list_stations_for_zone[seattle]': zone_stations,
   'stations.list_stations_for_gridpoint[seattle_nearest]': gridpoint_stations,
+  'radar.list_servers[all]': radar_servers,
+  'radar.get_server[ldm1]': radar_server,
+  'radar.list_spgds[one_minute]': spgds,
+  'radar.list_stations[profilers]': radar_profilers,
+  'radar.get_station[seattle]': radar_station,
+  'radar.list_station_alarms[seattle]': radar_alarms,
+  'radar.get_queue[seattle_capped]': radar_queue,
 }
 """What each recording is here to prove. A recording nobody asserts anything about is a
 file that turns green whatever the API sends."""

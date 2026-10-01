@@ -1,0 +1,71 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": {
+      "@version": "1.1"
+    },
+    "@id": "https://api.weather.gov/radar/queues/rds",
+    "@graph": [
+      {
+        "@type": "wx:RadarQueue",
+        "host": "rds",
+        "arrivalTime": "2026-09-30T23:00:03+00:00",
+        "creationTime": "2026-09-30T23:00:03+00:00",
+        "stationId": "KATX",
+        "type": "intermediate",
+        "feed": "NEXRAD2",
+        "resolutionVersion": 6,
+        "sequenceNumber": "265-034",
+        "size": 35742
+      },
+      {
+        "@type": "wx:RadarQueue",
+        "host": "rds",
+        "arrivalTime": "2026-09-30T23:00:07+00:00",
+        "creationTime": "2026-09-30T23:00:07+00:00",
+        "stationId": "KATX",
+        "type": "intermediate",
+        "feed": "NEXRAD2",
+        "resolutionVersion": 6,
+        "sequenceNumber": "265-035",
+        "size": 39859
+      },
+      {
+        "@type": "wx:RadarQueue",
+        "host": "rds",
+        "arrivalTime": "2026-09-30T23:00:11+00:00",
+        "creationTime": "2026-09-30T23:00:11+00:00",
+        "stationId": "KATX",
+        "type": "intermediate",
+        "feed": "NEXRAD2",
+        "resolutionVersion": 6,
+        "sequenceNumber": "265-036",
+        "size": 48792
+      },
+      {
+        "@type": "wx:RadarQueue",
+        "host": "rds",
+        "arrivalTime": "2026-09-30T23:00:15+00:00",
+        "creationTime": "2026-09-30T23:00:15+00:00",
+        "stationId": "KATX",
+        "type": "intermediate",
+        "feed": "NEXRAD2",
+        "resolutionVersion": 6,
+        "sequenceNumber": "265-037",
+        "size": 50727
+      },
+      {
+        "@type": "wx:RadarQueue",
+        "host": "rds",
+        "arrivalTime": "2026-09-30T23:00:24+00:00",
+        "creationTime": "2026-09-30T23:00:24+00:00",
+        "stationId": "KATX",
+        "type": "intermediate",
+        "feed": "NEXRAD2",
+        "resolutionVersion": 6,
+        "sequenceNumber": "265-038",
+        "size": 118789
+      }
+    ]
+  }
+}

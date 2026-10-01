@@ -1,0 +1,9 @@
+{
+  "description": "The first five Seattle products to reach rds in a ten-minute window",
+  "request": {
+    "host": "rds",
+    "station": "KATX",
+    "arrived": "2026-09-30T23:00:00Z/PT10M",
+    "limit": 5
+  }
+}

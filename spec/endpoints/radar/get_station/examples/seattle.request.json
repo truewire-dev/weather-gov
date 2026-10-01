@@ -1,0 +1,6 @@
+{
+  "description": "The Seattle NEXRAD radar on Camano Island",
+  "request": {
+    "station_id": "KATX"
+  }
+}

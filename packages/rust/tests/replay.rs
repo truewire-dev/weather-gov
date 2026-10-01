@@ -16,7 +16,10 @@ use std::process::{Child, Command, Stdio};
 use truewire_core::serde_json::Value;
 use truewire_core::CallOptions;
 use weather_gov::core::CoreOptions;
-use weather_gov::types::QuantitativeValue;
+use weather_gov::types::{
+    QuantitativeValue, RadarReportProperties, RadarReportPropertiesMapValue,
+    RadarServerPingTargetsValue,
+};
 use weather_gov::Weather;
 
 const CONTACT: &str = "tests@truewire.dev";
@@ -617,4 +620,282 @@ async fn stations_for_a_zone_and_a_grid_cell() {
         distances.windows(2).all(|pair| pair[0] <= pair[1]),
         "nearest first"
     );
+}
+
+/// The start and end of a `start/duration` ISO 8601 interval, such as
+/// `2026-09-30T23:00:00Z/PT10M`, as the radar examples ask.
+fn interval(
+    value: &str,
+) -> (
+    truewire_core::chrono::DateTime<truewire_core::chrono::Utc>,
+    truewire_core::chrono::DateTime<truewire_core::chrono::Utc>,
+) {
+    let (start, duration) = value.split_once('/').expect("a start/duration interval");
+    let start = *timestamp(&Value::String(start.to_string()));
+    let duration = duration.strip_prefix("PT").expect("a time duration");
+    let (hours, minutes) = match duration.split_once('H') {
+        Some((hours, rest)) => (hours.parse::<i64>().expect("hours"), rest),
+        None => (0, duration),
+    };
+    let minutes = minutes
+        .strip_suffix('M')
+        .map_or(0, |m| m.parse::<i64>().expect("minutes"));
+    let length = truewire_core::chrono::Duration::minutes(hours * 60 + minutes);
+    (start, start + length)
+}
+
+/// A ping group: target name to whether it answered, or `[]` when there are none.
+fn is_empty_ping_group(group: &RadarServerPingTargetsValue) -> bool {
+    match group {
+        RadarServerPingTargetsValue::Map(_) => false,
+        RadarServerPingTargetsValue::BooleanList(list) => {
+            assert!(list.is_empty(), "a ping group list is always empty");
+            true
+        }
+    }
+}
+
+#[tokio::test]
+async fn radar_servers_and_one_server() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let page = client
+        .radar
+        .list_servers(
+            weather_gov::radar::list_servers::Request::default(),
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_servers");
+    let names: Vec<_> = page
+        .graph
+        .iter()
+        .map(|server| server.id2.as_str())
+        .collect();
+    for name in ["ldm1", "rds", "tds"] {
+        assert!(names.contains(&name), "{name} in {names:?}");
+    }
+    let mut empty_groups = 0;
+    for server in &page.graph {
+        assert!(server
+            .id
+            .ends_with(&format!("/radar/servers/{}", server.id2)));
+        empty_groups += server
+            .ping
+            .targets
+            .values()
+            .filter(|group| is_empty_ping_group(group))
+            .count();
+        if server.type_2 == "ldm" {
+            assert!(server.active.is_some() && server.command.is_some());
+        } else {
+            assert!(server.active.is_none() && server.command.is_none());
+        }
+    }
+    // The service's empty map is `[]`: the reason the ping groups are a union at all.
+    assert!(empty_groups > 0);
+    let rds = page.graph.iter().find(|s| s.id2 == "rds").expect("rds");
+    assert!(is_empty_ping_group(&rds.ping.targets["radar"]));
+
+    let server = client
+        .radar
+        .get_server(
+            weather_gov::radar::get_server::Request {
+                server_id: "ldm1".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_server");
+    assert_eq!(server.id2, "ldm1");
+    assert_eq!(server.type_2, "ldm");
+    assert!(server.ldm.count > 0);
+    assert!(server.ldm.oldest_product <= server.ldm.latest_product);
+    assert!(server.hardware.uptime < server.collection_time);
+    assert_eq!(server.network.eth0.interface, "eth0");
+    match &server.ping.targets["radar"] {
+        RadarServerPingTargetsValue::Map(radars) => assert!(radars.contains_key("KATX")),
+        RadarServerPingTargetsValue::BooleanList(_) => panic!("an LDM server pings the radars"),
+    }
+}
+
+#[tokio::test]
+async fn radar_spgds_parses_the_numeral_strings() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let asked = recorded("radar/list_spgds/examples/one_minute.request.json");
+    let published = asked["published"].as_str().expect("an interval");
+    let (start, end) = interval(published);
+    let page = client
+        .radar
+        .list_spgds(
+            weather_gov::radar::list_spgds::Request {
+                published: Some(published.to_string()),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_spgds");
+    assert!(!page.graph.is_empty());
+    for report in &page.graph {
+        assert!(start <= *report.timestamp && *report.timestamp <= end);
+        // Unix seconds sent as strings, parsed into real times by the declared format.
+        for (since, valid) in [
+            (&report.dataflow.state_since, &report.dataflow.state_valid),
+            (&report.connect_q.state_since, &report.connect_q.state_valid),
+            (
+                &report.app_running.state_since,
+                &report.app_running.state_valid,
+            ),
+        ] {
+            assert!(since.0 <= valid.0);
+        }
+        let used: i64 = report
+            .second_hd
+            .pct_used
+            .0
+            .to_string()
+            .parse()
+            .expect("a count");
+        assert!((0..=100).contains(&used));
+        assert!(
+            report
+                .throughput
+                .in_
+                .as_str()
+                .parse::<f64>()
+                .expect("a rate")
+                >= 0.0
+        );
+        assert!(*report.spgds_up_since.up_since < *report.timestamp);
+        assert!(!report.spg.is_empty());
+    }
+    let times: Vec<_> = page.graph.iter().map(|report| *report.timestamp).collect();
+    assert!(
+        times.windows(2).all(|pair| pair[0] >= pair[1]),
+        "newest first"
+    );
+}
+
+#[tokio::test]
+async fn radar_stations_profilers_and_one_radar() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let page = client
+        .radar
+        .list_stations(
+            weather_gov::radar::list_stations::Request {
+                station_type: Some(vec!["Profiler".to_string()]),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_stations");
+    assert!(!page.features.is_empty());
+    for feature in &page.features {
+        let radar = &feature.properties;
+        assert_eq!(radar.station_type, "Profiler");
+        assert_eq!(feature.id, radar.id);
+        assert!(radar.rda.is_none());
+        assert!(radar.latency.current.is_none() && radar.latency.host.is_none());
+        assert!(radar.performance.is_none() && radar.adaptation.is_none());
+    }
+
+    let feature = client
+        .radar
+        .get_station(
+            weather_gov::radar::get_station::Request {
+                station_id: "KATX".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_station");
+    let radar = &feature.properties;
+    assert_eq!(radar.id2, "KATX");
+    assert_eq!(radar.station_type, "WSR-88D");
+    assert_eq!(feature.id, radar.id);
+    let latency = radar.latency.current.as_ref().expect("a latency");
+    assert_eq!(latency.unit_code, "nwsUnit:s");
+    let rda = radar.rda.as_ref().expect("an RDA status");
+    assert!(!rda.properties.volume_coverage_pattern.is_empty());
+    for report in [&radar.performance, &radar.adaptation] {
+        let report = report.as_ref().and_then(Option::as_ref).expect("a report");
+        match &report.properties {
+            RadarReportProperties::Map(readings) => assert!(readings
+                .values()
+                .any(|r| matches!(r, RadarReportPropertiesMapValue::QuantitativeValue(_)))),
+            RadarReportProperties::StringList(_) => panic!("a WSR-88D sends its readings"),
+        }
+    }
+}
+
+#[tokio::test]
+async fn radar_alarms_and_queue() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let log = client
+        .radar
+        .list_station_alarms(
+            weather_gov::radar::list_station_alarms::Request {
+                station_id: "KATX".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_station_alarms");
+    assert!(!log.graph.is_empty());
+    assert!(log
+        .id
+        .as_deref()
+        .is_some_and(|id| id.ends_with("/radar/stations/KATX/alarms")));
+    assert!(log.graph.iter().all(|alarm| alarm.station_id == "KATX"));
+    let times: Vec<_> = log.graph.iter().map(|alarm| *alarm.timestamp).collect();
+    assert!(
+        times.windows(2).all(|pair| pair[0] >= pair[1]),
+        "newest first"
+    );
+
+    let asked = recorded("radar/get_queue/examples/seattle_capped.request.json");
+    let arrived = asked["arrived"].as_str().expect("an interval");
+    let station = asked["station"].as_str().expect("a station");
+    let limit = asked["limit"].as_i64().expect("a limit");
+    assert_eq!(asked["host"], "rds");
+    let (start, end) = interval(arrived);
+    // A required enum field leaves the request with no `Default`, so every field is named.
+    let queue = client
+        .radar
+        .get_queue(
+            weather_gov::radar::get_queue::Request {
+                host: weather_gov::radar::get_queue::RequestHost::Rds,
+                limit: Some(limit),
+                arrived: Some(arrived.to_string()),
+                published: None,
+                station: Some(station.to_string()),
+                type_: None,
+                feed: None,
+                resolution: None,
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_queue");
+    assert_eq!(queue.graph.len() as i64, limit);
+    let arrivals: Vec<_> = queue.graph.iter().map(|p| *p.arrival_time).collect();
+    assert!(
+        arrivals.windows(2).all(|pair| pair[0] <= pair[1]),
+        "oldest first"
+    );
+    for product in &queue.graph {
+        assert_eq!(product.station_id, station);
+        assert!(start <= *product.arrival_time && *product.arrival_time < end);
+        assert!(product.creation_time <= product.arrival_time);
+        assert!(product.size > 0);
+    }
 }

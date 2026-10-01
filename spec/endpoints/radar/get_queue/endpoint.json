@@ -1,0 +1,153 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/radar_queue",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/radar/queues/{host}",
+    "method": "GET",
+    "description": "The Level II products that passed through one distribution host's LDM queue, oldest first from the start of the interval. JSON-LD: the products come as a `@graph`.",
+    "request": {
+      "title": "GetRadarQueueRequest",
+      "type": "object",
+      "description": "Which host, and which products. Every filter is optional.",
+      "properties": {
+        "host": {
+          "type": "string",
+          "enum": [
+            "rds",
+            "tds"
+          ],
+          "description": "Distribution host: `rds` or `tds`."
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50000,
+          "description": "Most products to return, 1 to 50,000. Without it, 500."
+        },
+        "arrived": {
+          "type": "string",
+          "description": "Only products that arrived in this ISO 8601 interval: `start/end`, `start/duration` or `duration/end`, either end may be `NOW`, such as `2026-09-30T23:00:00Z/PT10M`. The answer starts at the interval's start, so a `limit` keeps the oldest. Without it, about the last two minutes. The service keeps about a week."
+        },
+        "published": {
+          "type": "string",
+          "description": "Only products published in this ISO 8601 interval, in the same forms as `arrived`."
+        },
+        "station": {
+          "type": "string",
+          "description": "Only this radar's products, such as `KATX`. An unknown one answers an empty `@graph`."
+        },
+        "type": {
+          "type": "string",
+          "description": "Only this kind of product. Undocumented; `start`, `intermediate`, `end` and `model` on 2026-10-01, which are the parts of a Level II volume."
+        },
+        "feed": {
+          "type": "string",
+          "description": "Only products from this feed, such as `NEXRAD2`."
+        },
+        "resolution": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Only products of this resolution version, such as `6` or `8`."
+        }
+      },
+      "required": [
+        "host"
+      ]
+    },
+    "response": {
+      "title": "RadarQueue",
+      "type": "object",
+      "description": "The products, as a JSON-LD graph.",
+      "properties": {
+        "@id": {
+          "type": "string",
+          "description": "URL of this queue."
+        },
+        "@graph": {
+          "type": "array",
+          "description": "The products, by arrival.",
+          "items": {
+            "title": "RadarQueueProduct",
+            "type": "object",
+            "description": "One Level II product in the queue.",
+            "properties": {
+              "@type": {
+                "type": "string",
+                "enum": [
+                  "wx:RadarQueue"
+                ],
+                "description": "Always `wx:RadarQueue`."
+              },
+              "host": {
+                "type": "string",
+                "enum": [
+                  "rds",
+                  "tds"
+                ],
+                "description": "The distribution host."
+              },
+              "arrivalTime": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the product arrived at the host."
+              },
+              "creationTime": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the radar created it."
+              },
+              "stationId": {
+                "type": "string",
+                "description": "The radar, such as `KATX`."
+              },
+              "type": {
+                "type": "string",
+                "description": "Part of the Level II volume this is: `start`, `intermediate`, `end` or `model` on 2026-10-01. Undocumented, so not enumerated."
+              },
+              "feed": {
+                "type": "string",
+                "description": "Feed it came on, such as `NEXRAD2`."
+              },
+              "resolutionVersion": {
+                "type": "integer",
+                "description": "Resolution version, such as `6`."
+              },
+              "sequenceNumber": {
+                "type": "string",
+                "description": "Volume and chunk sequence, such as `490-050`."
+              },
+              "size": {
+                "type": "integer",
+                "description": "Size of the product, in bytes."
+              }
+            },
+            "required": [
+              "@type",
+              "host",
+              "arrivalTime",
+              "creationTime",
+              "stationId",
+              "type",
+              "feed",
+              "resolutionVersion",
+              "sequenceNumber",
+              "size"
+            ]
+          }
+        }
+      },
+      "required": [
+        "@graph"
+      ]
+    }
+  },
+  "notes": [
+    "No `pagination` block. A walk would move the start of `arrived`, but `arrived` is one `start/end` string, not two parameters, and a `seek` block names its bounds as parameters. Products also share arrival times, so a walk keyed on them would need whole-row deduplication.",
+    "The documented `created` filter is left out: every request with it answered 503 on 2026-10-01 (`An upstream data source is temporarily unavailable`), across four intervals and both hosts.",
+    "The service keeps about a week (a window on 2026-09-20 answered an empty `@graph` on 2026-10-01), so `refresh_examples.py` moves the example's window to about a day ago before every re-recording."
+  ]
+}
