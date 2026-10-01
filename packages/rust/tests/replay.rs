@@ -618,3 +618,273 @@ async fn stations_for_a_zone_and_a_grid_cell() {
         "nearest first"
     );
 }
+
+/// A recorded calendar date, read through the type's own `Deserialize`.
+fn date(value: &Value) -> truewire_core::DateIso {
+    truewire_core::serde_json::from_value(value.clone()).expect("a YYYY-MM-DD date")
+}
+
+/// The ids a recorded collection holds, for a test that checks one recording against another.
+fn recorded_ids(file: &str) -> Vec<String> {
+    let path = project_root().join("spec/endpoints").join(file);
+    let text = std::fs::read_to_string(&path)
+        .unwrap_or_else(|e| panic!("could not read {}: {e}", path.display()));
+    let value: Value = truewire_core::serde_json::from_str(&text).expect("valid json");
+    value["payload"]["features"]
+        .as_array()
+        .expect("features")
+        .iter()
+        .map(|feature| {
+            feature["properties"]["id"]
+                .as_str()
+                .expect("an id")
+                .to_string()
+        })
+        .collect()
+}
+
+/// A latitude and a longitude range, exclusive.
+type Area = ((f64, f64), (f64, f64));
+/// Fort Worth Center's airspace, generously: north Texas and its neighbours.
+const FORT_WORTH: Area = ((25.0, 40.0), (-112.0, -88.0));
+/// Alaska, with the Aleutians past the antimeridian: the service does not wrap -190 to 170.
+const ALASKA: Area = ((45.0, 75.0), (-200.0, -125.0));
+/// The eastern third of the contiguous US, where the `E` convective SIGMETs are issued.
+const EAST: Area = ((20.0, 50.0), (-100.0, -60.0));
+
+/// An aviation outline: a closed polygon, latitude first -- the reverse of every other
+/// geometry in this API, which the box around the issuing unit's airspace proves.
+fn is_advisory_area(geometry: &weather_gov::types::AdvisoryPolygon, area: Area) {
+    let ((south, north), (west, east)) = area;
+    for ring in &geometry.coordinates {
+        assert!(ring.len() > 3);
+        assert_eq!(ring.first(), ring.last());
+        for &(latitude, longitude) in ring {
+            assert!(south < latitude && latitude < north, "{latitude}");
+            assert!(west < longitude && longitude < east, "{longitude}");
+        }
+    }
+}
+
+fn is_newest_first(issued: &[truewire_core::types::TimestampIso]) {
+    let mut sorted = issued.to_vec();
+    sorted.sort();
+    sorted.reverse();
+    assert_eq!(sorted, issued, "the service answers newest first");
+}
+
+/// A message from `atsu`, named by its UTC issue date and minute: the URL `get_sigmet` takes.
+fn is_sigmet_of<'a>(
+    feature: &'a weather_gov::types::SigmetFeature,
+    atsu: &str,
+) -> &'a weather_gov::types::Sigmet {
+    let sigmet = &feature.properties;
+    assert_eq!(sigmet.atsu, atsu);
+    let named = sigmet.issue_time.format("%Y-%m-%d/%H%M");
+    assert!(
+        sigmet.id.ends_with(&format!("/sigmets/{atsu}/{named}")),
+        "{}",
+        sigmet.id
+    );
+    assert!(sigmet.start <= sigmet.end);
+    if let Some(geometry) = &feature.geometry {
+        is_advisory_area(geometry, ALASKA);
+    }
+    sigmet
+}
+
+#[tokio::test]
+async fn aviation_get_cwsu_is_an_organization_without_an_offices_zones() {
+    use weather_gov::types::CwsuId;
+    let mock = start_mock();
+    let client = client(&mock);
+    let unit = client
+        .aviation
+        .get_cwsu(
+            weather_gov::aviation::get_cwsu::Request {
+                cwsu_id: CwsuId::Zse,
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_cwsu");
+    assert_eq!(unit.id, CwsuId::Zse);
+    assert_eq!(unit.name, "Seattle, WA");
+    let address = unit.address.as_ref().expect("an address");
+    assert_eq!(address.address_region.as_deref(), Some("WA"));
+    assert_eq!(unit.nws_region.as_deref(), Some("wr"));
+    assert!(!unit.extra.contains_key("responsibleForecastZones"));
+}
+
+#[tokio::test]
+async fn aviation_cwas_list_the_week_and_get_cwa_finds_one_of_them() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let page = client
+        .aviation
+        .list_cwas(
+            weather_gov::aviation::list_cwas::Request {
+                cwsu_id: weather_gov::types::CwsuId::Zfw,
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_cwas");
+    assert!(!page.features.is_empty());
+    let issued: Vec<_> = page
+        .features
+        .iter()
+        .map(|f| f.properties.issue_time)
+        .collect();
+    is_newest_first(&issued);
+    for feature in &page.features {
+        let advisory = &feature.properties;
+        assert!(advisory.sequence >= 101);
+        assert!(advisory.start <= advisory.end);
+        let day = advisory.issue_time.format("%Y-%m-%d");
+        let suffix = format!("/cwsus/ZFW/cwas/{day}/{}", advisory.sequence);
+        assert!(advisory.id.ends_with(&suffix), "{}", advisory.id);
+        if let Some(geometry) = &feature.geometry {
+            is_advisory_area(geometry, FORT_WORTH);
+        }
+    }
+
+    let asked = recorded("aviation/get_cwa/examples/latest.request.json");
+    let feature = client
+        .aviation
+        .get_cwa(
+            weather_gov::aviation::get_cwa::Request {
+                cwsu_id: truewire_core::serde_json::from_value(asked["cwsu_id"].clone())
+                    .expect("a CWSU"),
+                date: date(&asked["date"]),
+                sequence: asked["sequence"].as_i64().expect("a sequence"),
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_cwa");
+    let advisory = &feature.properties;
+    assert_eq!(Some(advisory.sequence), asked["sequence"].as_i64());
+    assert_eq!(
+        advisory.issue_time.format("%Y-%m-%d").to_string(),
+        asked["date"].as_str().expect("a date")
+    );
+    assert!(!advisory.text.is_empty());
+    is_advisory_area(feature.geometry.as_ref().expect("an outline"), FORT_WORTH);
+    assert!(
+        recorded_ids("aviation/list_cwas/examples/fort_worth.response.json").contains(&advisory.id)
+    );
+}
+
+#[tokio::test]
+async fn aviation_list_sigmets_by_sequence_reaches_back_through_the_week() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let page = client
+        .aviation
+        .list_sigmets(
+            weather_gov::aviation::list_sigmets::Request {
+                sequence: Some("1E".to_string()),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_sigmets");
+    assert!(!page.features.is_empty());
+    let issued: Vec<_> = page
+        .features
+        .iter()
+        .map(|f| f.properties.issue_time)
+        .collect();
+    is_newest_first(&issued);
+    let days: std::collections::HashSet<_> = issued.iter().map(|t| t.date_naive()).collect();
+    assert!(days.len() > 1);
+    for feature in &page.features {
+        assert_eq!(feature.properties.sequence.as_deref(), Some("1E"));
+        assert_eq!(feature.properties.atsu, "KKCI");
+        if let Some(geometry) = &feature.geometry {
+            is_advisory_area(geometry, EAST);
+        }
+    }
+}
+
+#[tokio::test]
+async fn aviation_sigmets_of_one_unit_narrow_to_a_day_and_a_minute() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let week = client
+        .aviation
+        .list_sigmets_for_atsu(
+            weather_gov::aviation::list_sigmets_for_atsu::Request {
+                atsu: "ANC".to_string(),
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_sigmets_for_atsu");
+    assert!(!week.features.is_empty());
+    let issued: Vec<_> = week
+        .features
+        .iter()
+        .map(|f| f.properties.issue_time)
+        .collect();
+    is_newest_first(&issued);
+    for feature in &week.features {
+        is_sigmet_of(feature, "ANC");
+    }
+    let days: std::collections::HashSet<_> = issued.iter().map(|t| t.date_naive()).collect();
+    assert!(days.len() > 1);
+
+    let on_date =
+        recorded("aviation/list_sigmets_for_atsu_on_date/examples/anchorage.request.json");
+    let atsu = on_date["atsu"].as_str().expect("a unit");
+    let day = on_date["date"].as_str().expect("a date");
+    let page = client
+        .aviation
+        .list_sigmets_for_atsu_on_date(
+            weather_gov::aviation::list_sigmets_for_atsu_on_date::Request {
+                atsu: atsu.to_string(),
+                date: date(&on_date["date"]),
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_sigmets_for_atsu_on_date");
+    assert!(!page.features.is_empty());
+    let recorded_week =
+        recorded_ids("aviation/list_sigmets_for_atsu/examples/anchorage.response.json");
+    for feature in &page.features {
+        let sigmet = is_sigmet_of(feature, atsu);
+        assert_eq!(sigmet.issue_time.format("%Y-%m-%d").to_string(), day);
+        assert!(recorded_week.contains(&sigmet.id));
+    }
+
+    let asked = recorded("aviation/get_sigmet/examples/anchorage_latest.request.json");
+    let feature = client
+        .aviation
+        .get_sigmet(
+            weather_gov::aviation::get_sigmet::Request {
+                atsu: asked["atsu"].as_str().expect("a unit").to_string(),
+                date: date(&asked["date"]),
+                time: asked["time"].as_str().expect("a time").to_string(),
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_sigmet");
+    let sigmet = is_sigmet_of(&feature, asked["atsu"].as_str().expect("a unit"));
+    let named = format!(
+        "{}/{}",
+        asked["date"].as_str().expect("a date"),
+        asked["time"].as_str().expect("a time")
+    );
+    assert_eq!(sigmet.issue_time.format("%Y-%m-%d/%H%M").to_string(), named);
+    assert!(feature.geometry.is_some());
+}
