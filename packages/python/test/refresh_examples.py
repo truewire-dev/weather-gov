@@ -2,7 +2,7 @@
 """Repoint the examples that go stale on their own, before anything is captured.
 
 Most of this API is stable enough to re-record from a fixed request: the Seattle grid cell
-will still be the Seattle grid cell next week. Two kinds are not:
+will still be the Seattle grid cell next week. Three kinds are not:
 
 - `stations.get_observations` names a six-hour window. The service keeps about a week of
   observations and then drops them, so last month's window records as an empty
@@ -10,6 +10,9 @@ will still be the Seattle grid cell next week. Two kinds are not:
   full one and turns the recording into a file that proves nothing. Both observation
   examples are repointed to the same window so the capped one stays a comparison, and
   `stations.get_observations_for_zone` moves with them, since it reads the same week.
+- `radar.list_spgds` and `radar.get_queue` name an interval (`published`, `arrived`), and
+  the service keeps about a week of either: a window older than that records an empty
+  `@graph`. Both move to the same hour of yesterday, which has long since settled.
 - `alerts.get_alert` names one alert by identifier. Alerts expire, usually within hours,
   and the identifier is then gone. The replacement is read from whatever is severe and in
   effect right now -- the same query `alerts.get_active_alerts` records.
@@ -39,6 +42,12 @@ OBSERVATIONS = (
   PROJECT / 'spec/endpoints/stations/get_observations_for_zone/examples',
 )
 ALERT = PROJECT / 'spec/endpoints/alerts/get_alert/examples/one.request.json'
+RADAR = PROJECT / 'spec/endpoints/radar'
+RADAR_WINDOWS = {
+  RADAR / 'list_spgds/examples/one_minute.request.json': ('published', 'PT1M'),
+  RADAR / 'get_queue/examples/seattle_capped.request.json': ('arrived', 'PT10M'),
+}
+"""Each radar example with an interval, the parameter holding it, and how long it stays."""
 
 ACTIVE = 'https://api.weather.gov/alerts/active?status=actual&severity=Severe'
 """The same query `alerts.get_active_alerts` records, so the alert picked here is one that
@@ -79,6 +88,13 @@ def refresh_observations() -> None:
     rewrite(request, {'start': start.strftime(stamp), 'end': end.strftime(stamp)})
 
 
+def refresh_radar_windows() -> None:
+  """Move each radar interval to start on the hour, a day ago, keeping its length."""
+  start = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0) - timedelta(days=1)
+  for request, (parameter, duration) in RADAR_WINDOWS.items():
+    rewrite(request, {parameter: f'{start:%Y-%m-%dT%H:%M:%SZ}/{duration}'})
+
+
 def refresh_alert() -> None:
   """Point the single-alert example at one that is in effect now."""
   alerts = fetch(ACTIVE)['features']
@@ -93,12 +109,12 @@ def refresh_alert() -> None:
 
 def main() -> int:
   failed = []
-  for step in (refresh_observations, refresh_alert):
+  for step in (refresh_observations, refresh_radar_windows, refresh_alert):
     try:
       step()
     except (urllib.error.URLError, SystemExit, KeyError, IndexError) as error:
       # One stale example does not stop the other from being repaired, and neither stops
-      # the nine examples that need no repair at all from recording.
+      # the examples that need no repair at all from recording.
       print(f'{step.__name__}: {error}', file=sys.stderr)
       failed.append(step.__name__)
   return 1 if failed else 0
