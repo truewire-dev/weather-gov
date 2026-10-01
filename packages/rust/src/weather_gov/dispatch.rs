@@ -56,6 +56,41 @@ impl Weather {
                 let response = self.products.list_product_types(request, options).await?;
                 dump(&response)
             }
+            "radar.get_queue" => {
+                let request = decode(request)?;
+                let response = self.radar.get_queue(request, options).await?;
+                dump(&response)
+            }
+            "radar.get_server" => {
+                let request = decode(request)?;
+                let response = self.radar.get_server(request, options).await?;
+                dump(&response)
+            }
+            "radar.get_station" => {
+                let request = decode(request)?;
+                let response = self.radar.get_station(request, options).await?;
+                dump(&response)
+            }
+            "radar.list_servers" => {
+                let request = decode(request)?;
+                let response = self.radar.list_servers(request, options).await?;
+                dump(&response)
+            }
+            "radar.list_spgds" => {
+                let request = decode(request)?;
+                let response = self.radar.list_spgds(request, options).await?;
+                dump(&response)
+            }
+            "radar.list_station_alarms" => {
+                let request = decode(request)?;
+                let response = self.radar.list_station_alarms(request, options).await?;
+                dump(&response)
+            }
+            "radar.list_stations" => {
+                let request = decode(request)?;
+                let response = self.radar.list_stations(request, options).await?;
+                dump(&response)
+            }
             "stations.get_latest_observation" => {
                 let request = decode(request)?;
                 let response = self
@@ -169,6 +204,34 @@ impl Weather {
             "products.list_product_types" => {
                 let request = decode(request)?;
                 self.products.list_product_types_raw(request, options).await
+            }
+            "radar.get_queue" => {
+                let request = decode(request)?;
+                self.radar.get_queue_raw(request, options).await
+            }
+            "radar.get_server" => {
+                let request = decode(request)?;
+                self.radar.get_server_raw(request, options).await
+            }
+            "radar.get_station" => {
+                let request = decode(request)?;
+                self.radar.get_station_raw(request, options).await
+            }
+            "radar.list_servers" => {
+                let request = decode(request)?;
+                self.radar.list_servers_raw(request, options).await
+            }
+            "radar.list_spgds" => {
+                let request = decode(request)?;
+                self.radar.list_spgds_raw(request, options).await
+            }
+            "radar.list_station_alarms" => {
+                let request = decode(request)?;
+                self.radar.list_station_alarms_raw(request, options).await
+            }
+            "radar.list_stations" => {
+                let request = decode(request)?;
+                self.radar.list_stations_raw(request, options).await
             }
             "stations.get_latest_observation" => {
                 let request = decode(request)?;

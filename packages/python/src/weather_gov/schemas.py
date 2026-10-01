@@ -106,6 +106,97 @@ class QuantitativeValue(TypedDict):
   """Lower end, where the value is a range rather than a point."""
 
 
+class RadarNetworkInterface(TypedDict):
+  """Packet counters of one network interface."""
+
+  interface: str
+  """Interface name, such as `eth0`."""
+  active: bool
+  """Whether the interface is up."""
+  transNoError: NotRequired[int]
+  """Packets sent without error."""
+  transError: NotRequired[int]
+  """Packets that failed to send."""
+  transDropped: NotRequired[int]
+  """Outgoing packets dropped."""
+  transOverrun: NotRequired[int]
+  """Outgoing overruns."""
+  recvNoError: NotRequired[int]
+  """Packets received without error."""
+  recvError: NotRequired[int]
+  """Packets received with an error."""
+  recvDropped: NotRequired[int]
+  """Incoming packets dropped."""
+  recvOverrun: NotRequired[int]
+  """Incoming overruns."""
+
+
+class RadarServerCommand(TypedDict):
+  """The last command the server ran and received. Only `ldm` servers send it."""
+
+  lastExecuted: NotRequired[str]
+  """Last command run, such as `LDM Start`."""
+  lastExecutedTime: NotRequired[TimestampIso]
+  """When it ran."""
+  lastNexradDataTime: NotRequired[TimestampIso]
+  """When the server last received NEXRAD data."""
+  lastReceived: NotRequired[str]
+  """Last command received."""
+  lastReceivedTime: NotRequired[TimestampIso]
+  """When it was received."""
+  timestamp: NotRequired[TimestampIso]
+  """When this block was collected."""
+
+
+class RadarServerHardware(TypedDict):
+  """Host load and resources."""
+
+  timestamp: NotRequired[TimestampIso]
+  """When this block was collected."""
+  cpuIdle: NotRequired[float]
+  """Idle CPU, in percent."""
+  ioUtilization: NotRequired[float]
+  """Disk I/O utilisation, in percent."""
+  disk: NotRequired[float]
+  """Disk used, in percent."""
+  load1: NotRequired[float]
+  """One-minute load average."""
+  load5: NotRequired[float]
+  """Five-minute load average."""
+  load15: NotRequired[float]
+  """Fifteen-minute load average."""
+  memory: NotRequired[float]
+  """Memory used, in percent."""
+  uptime: NotRequired[TimestampIso]
+  """When the host last booted: a time, despite the name, not a duration."""
+
+
+class RadarServerLdm(TypedDict):
+  """The server's LDM product queue."""
+
+  timestamp: NotRequired[TimestampIso]
+  """When this block was collected."""
+  latestProduct: NotRequired[TimestampIso]
+  """Arrival of the newest product in the queue."""
+  oldestProduct: NotRequired[TimestampIso]
+  """Arrival of the oldest product still in the queue."""
+  storageSize: NotRequired[int]
+  """Size of the queue, in bytes."""
+  count: NotRequired[int]
+  """Products in the queue."""
+  active: NotRequired[bool]
+  """Whether LDM is running."""
+
+
+class RadarServerPing(TypedDict):
+  """Which hosts the server could reach at its last ping round."""
+
+  targets: dict[str, dict[str, bool] | list[bool]]
+  """Ping results by group of targets: `client` (downstream data clients, such as `ncep`), `ldm` and `server` (other servers, by name), `radar` (radar stations, by identifier) and `misc` (interfaces and routers, such as `eth0`). A group the server does not ping is absent."""
+  timestamp: TimestampIso
+  """When the ping round ran."""
+
+
 ZoneKeywords = TypedDict('ZoneKeywords', {'@id': str, '@type': NotRequired[Literal['wx:Zone']]})
 """
   - `@id`: Canonical URL of the zone.
@@ -278,6 +369,78 @@ class GridSeries(TypedDict):
   """The values, in time order."""
 
 
+class RadarLatency(TypedDict):
+  """How far behind real time the radar's Level II data reaches the LDM host named by `host`. Every field is null for a radar with no Level II feed, such as a profiler."""
+
+  current: QuantitativeValue | None
+  """Latency of the latest data."""
+  average: QuantitativeValue | None
+  """Average latency."""
+  max: QuantitativeValue | None
+  """Highest recent latency."""
+  levelTwoLastReceivedTime: TimestampIso | None
+  """When the host last received Level II data."""
+  maxLatencyTime: TimestampIso | None
+  """When the highest latency was seen."""
+  reportingHost: str | None
+  """Monitoring host that reported the latency."""
+  host: str | None
+  """LDM host the latency is measured at."""
+
+
+class RadarRdaStatus(TypedDict):
+  """The status fields. A TDWR sends fewer of them than a WSR-88D."""
+
+  resolutionVersion: NotRequired[int | None]
+  """Level II resolution version."""
+  nl2Path: str
+  """Level II data path, such as `Default`."""
+  volumeCoveragePattern: str
+  """Scan strategy in use, such as `R35` (clear air) or `R212` (precipitation)."""
+  controlStatus: str
+  """Who controls the radar, such as `RPG (Remote) Only`."""
+  buildNumber: float
+  """Software build, such as `24.1`."""
+  alarmSummary: str
+  """Classes of active alarm, `|`-separated, such as `Transmitter|Communication`, or `No Alarms`."""
+  mode: str
+  """Operating mode, such as `Operational` or `Maintenance`."""
+  generatorState: NotRequired[str]
+  """Power source state, such as `Utility PWR Available`. WSR-88D only."""
+  superResolutionStatus: NotRequired[str]
+  """Whether super-resolution scanning is on. WSR-88D only."""
+  operabilityStatus: str
+  """Whether the radar needs maintenance, such as `RDA - On-Line`."""
+  status: str
+  """RDA state, such as `Operate` or `Standby`."""
+  averageTransmitterPower: NotRequired[QuantitativeValue]
+  """Average transmitter power. WSR-88D only."""
+  reflectivityCalibrationCorrection: NotRequired[QuantitativeValue]
+  """Reflectivity calibration correction. WSR-88D only."""
+
+
+class RadarReport(TypedDict):
+  """A periodic engineering report from the radar: its performance check or its adaptation (calibration) data."""
+
+  timestamp: NotRequired[TimestampIso | None]
+  """When the report was made."""
+  reportingHost: str
+  """Monitoring host that collected it, such as `rdss`."""
+  properties: dict[str, QuantitativeValue | str | float] | list[str]
+  """The readings, by name. Their set depends on the kind of radar and is not documented, so they are a map rather than fields; a TDWR sends `[]`."""
+
+
+class RadarServerNetwork(TypedDict):
+  """Traffic counters of the server's two network interfaces."""
+
+  timestamp: NotRequired[TimestampIso]
+  """When this block was collected."""
+  eth0: NotRequired[RadarNetworkInterface]
+  """The first interface."""
+  eth1: NotRequired[RadarNetworkInterface]
+  """The second interface."""
+
+
 class Station(TypedDict):
   """One observation station."""
 
@@ -410,6 +573,55 @@ class Observation(TypedDict):
   """Reported cloud layers, lowest first."""
 
 
+class RadarRda(TypedDict):
+  """Status of the Radar Data Acquisition unit: the radar itself."""
+
+  timestamp: TimestampIso
+  """When the status was reported."""
+  reportingHost: str
+  """Monitoring host that reported it, such as `rdss`."""
+  properties: RadarRdaStatus
+
+
+RadarServerKeywords = TypedDict(
+  'RadarServerKeywords', {'@id': str, '@type': NotRequired[Literal['wx:RadarServer']]}
+)
+"""
+  - `@id`: URL of this server.
+  - `@type`: Always `wx:RadarServer`.
+"""
+
+
+class RadarServer(RadarServerKeywords):
+  """One server of the radar data distribution network, and its health at `collectionTime`."""
+
+  id: str
+  """Server name, such as `ldm1` or `rds`. `radar.get_server` takes it."""
+  type: str
+  """Role of the server. Undocumented; `ldm` (an LDM ingest server) and `distribution` (`rds`, `tds`) on 2026-10-01."""
+  active: NotRequired[bool]
+  """Whether the server is in service. Only `ldm` servers send it."""
+  primary: NotRequired[bool]
+  """Whether the server is the primary of its pair. Only `ldm` servers send it."""
+  aggregate: NotRequired[bool]
+  """Whether the server aggregates the others' feeds. Only `ldm` servers send it."""
+  locked: NotRequired[bool]
+  """Whether the server is locked against changes. Only `ldm` servers send it."""
+  radarNetworkUp: NotRequired[bool]
+  """Whether the server sees the radar network as up. Only `ldm` servers send it."""
+  collectionTime: TimestampIso
+  """When this health report was collected."""
+  reportingHost: str
+  """Monitoring host that reported it, such as `rdss`."""
+  ingestHost: NotRequired[str]
+  """Host the server ingests from, such as `dns`."""
+  ping: RadarServerPing
+  command: NotRequired[RadarServerCommand]
+  hardware: NotRequired[RadarServerHardware]
+  ldm: NotRequired[RadarServerLdm]
+  network: NotRequired[RadarServerNetwork]
+
+
 class StationFeature(TypedDict):
   """One station, in the GeoJSON feature the API wraps it in."""
 
@@ -445,6 +657,37 @@ class ObservationFeature(TypedDict):
   """The observation itself."""
 
 
+RadarStationKeywords = TypedDict(
+  'RadarStationKeywords', {'@id': str, '@type': NotRequired[Literal['wx:RadarStation']]}
+)
+"""
+  - `@id`: URL of this radar.
+  - `@type`: Always `wx:RadarStation`.
+"""
+
+
+class RadarStation(RadarStationKeywords):
+  """One radar: what kind it is, how far behind its data runs, and how its hardware is doing."""
+
+  id: str
+  """Station identifier, such as `KATX`. `radar.get_station` takes it."""
+  name: str
+  """Where the radar is, such as `Seattle`."""
+  stationType: str
+  """Kind of radar. Undocumented; `WSR-88D` (NEXRAD), `TDWR` (terminal Doppler) and `Profiler` on 2026-10-01. `radar.list_stations` filters on it."""
+  elevation: NotRequired[QuantitativeValue]
+  """Height of the radar above sea level."""
+  timeZone: NotRequired[str]
+  """Time zone, such as `GMT`."""
+  latency: RadarLatency
+  rda: RadarRda | None
+  """Status of the radar itself."""
+  performance: NotRequired[RadarReport | None]
+  """The latest performance check. Only `radar.get_station` sends it."""
+  adaptation: NotRequired[RadarReport | None]
+  """The radar's adaptation (calibration) data. Only `radar.get_station` sends it."""
+
+
 class StationCollection(TypedDict):
   """Stations, as a GeoJSON feature collection."""
 
@@ -465,3 +708,16 @@ class ObservationCollection(TypedDict):
   features: list[ObservationFeature]
   """The observations, newest first."""
   pagination: NotRequired[ObservationPagination]
+
+
+class RadarStationFeature(TypedDict):
+  """One radar, in the GeoJSON feature the API wraps it in."""
+
+  id: str
+  """URL of this radar."""
+  type: Literal['Feature']
+  """Always `Feature`."""
+  geometry: PointGeometry
+  """Where the radar is."""
+  properties: RadarStation
+  """The radar itself."""
