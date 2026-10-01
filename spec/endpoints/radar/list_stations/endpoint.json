@@ -1,0 +1,68 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/radar_stations",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/radar/stations",
+    "method": "GET",
+    "description": "Every radar the service tracks -- NEXRAD (WSR-88D), terminal Doppler (TDWR) and wind profilers -- each with its data latency and status.",
+    "request": {
+      "title": "ListRadarStationsRequest",
+      "type": "object",
+      "description": "Which radars. Every filter is optional. Give one value to `stationType`: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last.",
+      "properties": {
+        "stationType": {
+          "type": "array",
+          "description": "Kinds of radar to narrow to: `WSR-88D`, `TDWR` or `Profiler`, matched case-sensitively (`tdwr` answers an empty list). Undocumented, so not enumerated.",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9-]+$",
+            "description": "One kind of radar."
+          }
+        },
+        "reportingHost": {
+          "type": "string",
+          "description": "Monitoring host to report status and latency from. `rdss` is the only one the service knew on 2026-10-01; any other value answers 503."
+        },
+        "host": {
+          "type": "string",
+          "description": "LDM host to measure `latency` at, such as `ldm1`. Without it, `ldm4` on 2026-10-01; a host the service does not know answers 503."
+        }
+      },
+      "required": []
+    },
+    "response": {
+      "title": "RadarStationCollection",
+      "type": "object",
+      "description": "The radars, as a GeoJSON feature collection.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "FeatureCollection"
+          ],
+          "description": "Always `FeatureCollection`."
+        },
+        "features": {
+          "type": "array",
+          "description": "The radars.",
+          "items": {
+            "$ref": "RadarStationFeature",
+            "description": "One radar. A list leaves `performance` and `adaptation` out; `radar.get_station` has them."
+          }
+        }
+      },
+      "required": [
+        "type",
+        "features"
+      ]
+    }
+  },
+  "notes": [
+    "Every radar, about 500 KB: 208 on 2026-10-01 (159 WSR-88D, 45 TDWR, 4 profilers). The service does not page the list.",
+    "The example narrows to the four profilers, the smallest kind and the one whose `rda` and `latency` are all null. The other kinds were validated against this schema live on 2026-10-01, every one of the 208 through `radar.get_station`."
+  ]
+}

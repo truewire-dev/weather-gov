@@ -31,6 +31,14 @@
     {"method": "GET", "path": "/zones/{type}/{zoneId}/radio", "endpoint": "zones.list_transmitters"},
     {"method": "GET", "path": "/zones/forecast/{zoneId}/observations", "endpoint": "stations.get_observations_for_zone"},
     {"method": "GET", "path": "/zones/forecast/{zoneId}/stations", "endpoint": "stations.list_stations_for_zone"},
-    {"method": "GET", "path": "/gridpoints/{wfo}/{x},{y}/stations", "endpoint": "stations.list_stations_for_gridpoint"}
+    {"method": "GET", "path": "/gridpoints/{wfo}/{x},{y}/stations", "endpoint": "stations.list_stations_for_gridpoint"},
+    {"method": "GET", "path": "/radar/servers", "endpoint": "radar.list_servers"},
+    {"method": "GET", "path": "/radar/servers/{id}", "endpoint": "radar.get_server"},
+    {"method": "GET", "path": "/radar/spgds", "endpoint": "radar.list_spgds"},
+    {"method": "GET", "path": "/radar/stations", "endpoint": "radar.list_stations"},
+    {"method": "GET", "path": "/radar/stations/{stationId}", "endpoint": "radar.get_station"},
+    {"method": "GET", "path": "/radar/stations/{stationId}/alarms", "endpoint": "radar.list_station_alarms"},
+    {"method": "GET", "path": "/radar/queues/{host}", "endpoint": "radar.get_queue"},
+    {"method": "GET", "path": "/radar/profilers/{stationId}", "excluded": "404 for all four profilers /radar/stations lists (TLKA2, ROCO2, AWPA2, HWPA2) and eleven other profiler ids; no JSON body to serve"}
   ]
 }

@@ -1,0 +1,39 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/radar_station",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/radar/stations/{station_id}",
+    "method": "GET",
+    "description": "One radar: where it is, its data latency, the status of the radar itself, and its latest performance and calibration reports.",
+    "request": {
+      "title": "GetRadarStationRequest",
+      "type": "object",
+      "description": "Which radar.",
+      "properties": {
+        "station_id": {
+          "type": "string",
+          "description": "Station identifier, such as `KATX`. `radar.list_stations` returns it as `properties.id`."
+        },
+        "reportingHost": {
+          "type": "string",
+          "description": "Monitoring host to report status and latency from. `rdss` is the only one the service knew on 2026-10-01."
+        },
+        "host": {
+          "type": "string",
+          "description": "LDM host to measure `latency` at, such as `ldm1`. Without it, `ldm4` on 2026-10-01; a host the service does not know answers a `latency` of nulls."
+        }
+      },
+      "required": [
+        "station_id"
+      ]
+    },
+    "response": {
+      "$ref": "RadarStationFeature",
+      "description": "The radar, in the GeoJSON feature the API wraps it in. Returned whole: the geometry is the only place the radar's coordinates are."
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/radar_servers",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/radar/servers",
+    "method": "GET",
+    "description": "The servers of the radar data distribution network -- the LDM servers that ingest NEXRAD data and the hosts that serve it on -- each with its health. JSON-LD: the servers come as a `@graph`.",
+    "request": {
+      "title": "ListRadarServersRequest",
+      "type": "object",
+      "description": "Which servers. The filter is optional.",
+      "properties": {
+        "reportingHost": {
+          "type": "string",
+          "description": "Monitoring host to report from. `rdss` is the only one the service knew on 2026-10-01; any other value answers an empty list."
+        }
+      },
+      "required": []
+    },
+    "response": {
+      "title": "RadarServerCollection",
+      "type": "object",
+      "description": "The servers, as a JSON-LD graph.",
+      "properties": {
+        "@graph": {
+          "type": "array",
+          "description": "The servers.",
+          "items": {
+            "$ref": "RadarServer",
+            "description": "One server."
+          }
+        }
+      },
+      "required": [
+        "@graph"
+      ]
+    }
+  },
+  "notes": [
+    "Every server, about 50 KB: six on 2026-10-01 (`ldm1`-`ldm4`, `rds`, `tds`). The service does not page the list.",
+    "The OpenAPI document gives the response no schema at all; this one is read off the live responses of 2026-10-01. An empty ping group arrives as `[]` rather than `{}` (`client` on the LDM servers, `radar` on `rds` and `tds`), which `RadarPingGroup` states."
+  ]
+}

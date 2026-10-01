@@ -1,0 +1,35 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/radar_server",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/radar/servers/{server_id}",
+    "method": "GET",
+    "description": "One server of the radar data distribution network, and its health.",
+    "request": {
+      "title": "GetRadarServerRequest",
+      "type": "object",
+      "description": "Which server.",
+      "properties": {
+        "server_id": {
+          "type": "string",
+          "description": "Server name, such as `ldm1`. `radar.list_servers` returns it as `id`."
+        },
+        "reportingHost": {
+          "type": "string",
+          "description": "Monitoring host to report from. `rdss` is the only one the service knew on 2026-10-01; any other value answers 404."
+        }
+      },
+      "required": [
+        "server_id"
+      ]
+    },
+    "response": {
+      "$ref": "RadarServer",
+      "description": "The server. The same record `radar.list_servers` lists, with no wrapper."
+    }
+  }
+}
