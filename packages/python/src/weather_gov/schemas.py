@@ -113,78 +113,78 @@ class RadarNetworkInterface(TypedDict):
   """Interface name, such as `eth0`."""
   active: bool
   """Whether the interface is up."""
-  transNoError: NotRequired[int]
+  transNoError: int
   """Packets sent without error."""
-  transError: NotRequired[int]
+  transError: int
   """Packets that failed to send."""
-  transDropped: NotRequired[int]
+  transDropped: int
   """Outgoing packets dropped."""
-  transOverrun: NotRequired[int]
+  transOverrun: int
   """Outgoing overruns."""
-  recvNoError: NotRequired[int]
+  recvNoError: int
   """Packets received without error."""
-  recvError: NotRequired[int]
+  recvError: int
   """Packets received with an error."""
-  recvDropped: NotRequired[int]
+  recvDropped: int
   """Incoming packets dropped."""
-  recvOverrun: NotRequired[int]
+  recvOverrun: int
   """Incoming overruns."""
 
 
 class RadarServerCommand(TypedDict):
   """The last command the server ran and received. Only `ldm` servers send it."""
 
-  lastExecuted: NotRequired[str]
+  lastExecuted: str
   """Last command run, such as `LDM Start`."""
-  lastExecutedTime: NotRequired[TimestampIso]
+  lastExecutedTime: TimestampIso
   """When it ran."""
-  lastNexradDataTime: NotRequired[TimestampIso]
+  lastNexradDataTime: TimestampIso
   """When the server last received NEXRAD data."""
-  lastReceived: NotRequired[str]
+  lastReceived: str
   """Last command received."""
-  lastReceivedTime: NotRequired[TimestampIso]
+  lastReceivedTime: TimestampIso
   """When it was received."""
-  timestamp: NotRequired[TimestampIso]
+  timestamp: TimestampIso
   """When this block was collected."""
 
 
 class RadarServerHardware(TypedDict):
   """Host load and resources."""
 
-  timestamp: NotRequired[TimestampIso]
+  timestamp: TimestampIso
   """When this block was collected."""
-  cpuIdle: NotRequired[float]
+  cpuIdle: float
   """Idle CPU, in percent."""
-  ioUtilization: NotRequired[float]
+  ioUtilization: float
   """Disk I/O utilisation, in percent."""
-  disk: NotRequired[float]
+  disk: float
   """Disk used, in percent."""
-  load1: NotRequired[float]
+  load1: float
   """One-minute load average."""
-  load5: NotRequired[float]
+  load5: float
   """Five-minute load average."""
-  load15: NotRequired[float]
+  load15: float
   """Fifteen-minute load average."""
-  memory: NotRequired[float]
+  memory: float
   """Memory used, in percent."""
-  uptime: NotRequired[TimestampIso]
+  uptime: TimestampIso
   """When the host last booted: a time, despite the name, not a duration."""
 
 
 class RadarServerLdm(TypedDict):
   """The server's LDM product queue."""
 
-  timestamp: NotRequired[TimestampIso]
+  timestamp: TimestampIso
   """When this block was collected."""
-  latestProduct: NotRequired[TimestampIso]
+  latestProduct: TimestampIso
   """Arrival of the newest product in the queue."""
-  oldestProduct: NotRequired[TimestampIso]
+  oldestProduct: TimestampIso
   """Arrival of the oldest product still in the queue."""
-  storageSize: NotRequired[int]
+  storageSize: int
   """Size of the queue, in bytes."""
-  count: NotRequired[int]
+  count: int
   """Products in the queue."""
-  active: NotRequired[bool]
+  active: bool
   """Whether LDM is running."""
 
 
@@ -433,11 +433,11 @@ class RadarReport(TypedDict):
 class RadarServerNetwork(TypedDict):
   """Traffic counters of the server's two network interfaces."""
 
-  timestamp: NotRequired[TimestampIso]
+  timestamp: TimestampIso
   """When this block was collected."""
-  eth0: NotRequired[RadarNetworkInterface]
+  eth0: RadarNetworkInterface
   """The first interface."""
-  eth1: NotRequired[RadarNetworkInterface]
+  eth1: RadarNetworkInterface
   """The second interface."""
 
 
@@ -584,7 +584,7 @@ class RadarRda(TypedDict):
 
 
 RadarServerKeywords = TypedDict(
-  'RadarServerKeywords', {'@id': str, '@type': NotRequired[Literal['wx:RadarServer']]}
+  'RadarServerKeywords', {'@id': str, '@type': Literal['wx:RadarServer']}
 )
 """
   - `@id`: URL of this server.
@@ -613,13 +613,13 @@ class RadarServer(RadarServerKeywords):
   """When this health report was collected."""
   reportingHost: str
   """Monitoring host that reported it, such as `rdss` or `tdss`."""
-  ingestHost: NotRequired[str]
+  ingestHost: str
   """Host the server ingests from, such as `dns`."""
   ping: RadarServerPing
   command: NotRequired[RadarServerCommand]
-  hardware: NotRequired[RadarServerHardware]
-  ldm: NotRequired[RadarServerLdm]
-  network: NotRequired[RadarServerNetwork]
+  hardware: RadarServerHardware
+  ldm: RadarServerLdm
+  network: RadarServerNetwork
 
 
 class StationFeature(TypedDict):

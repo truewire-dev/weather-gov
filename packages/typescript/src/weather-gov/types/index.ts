@@ -155,118 +155,118 @@ export interface RadarNetworkInterface {
   /** Whether the interface is up. */
   active: boolean
   /** Packets sent without error. */
-  transNoError?: number
+  transNoError: number
   /** Packets that failed to send. */
-  transError?: number
+  transError: number
   /** Outgoing packets dropped. */
-  transDropped?: number
+  transDropped: number
   /** Outgoing overruns. */
-  transOverrun?: number
+  transOverrun: number
   /** Packets received without error. */
-  recvNoError?: number
+  recvNoError: number
   /** Packets received with an error. */
-  recvError?: number
+  recvError: number
   /** Incoming packets dropped. */
-  recvDropped?: number
+  recvDropped: number
   /** Incoming overruns. */
-  recvOverrun?: number
+  recvOverrun: number
 }
 
 export const RadarNetworkInterface: Codec<RadarNetworkInterface> = t.object({
   interface: t.string,
   active: t.boolean,
-  transNoError: t.optional(t.integer),
-  transError: t.optional(t.integer),
-  transDropped: t.optional(t.integer),
-  transOverrun: t.optional(t.integer),
-  recvNoError: t.optional(t.integer),
-  recvError: t.optional(t.integer),
-  recvDropped: t.optional(t.integer),
-  recvOverrun: t.optional(t.integer),
+  transNoError: t.integer,
+  transError: t.integer,
+  transDropped: t.integer,
+  transOverrun: t.integer,
+  recvNoError: t.integer,
+  recvError: t.integer,
+  recvDropped: t.integer,
+  recvOverrun: t.integer,
 })
 
 /** The last command the server ran and received. Only `ldm` servers send it. */
 export interface RadarServerCommand {
   /** Last command run, such as `LDM Start`. */
-  lastExecuted?: string
+  lastExecuted: string
   /** When it ran. */
-  lastExecutedTime?: TimestampIso
+  lastExecutedTime: TimestampIso
   /** When the server last received NEXRAD data. */
-  lastNexradDataTime?: TimestampIso
+  lastNexradDataTime: TimestampIso
   /** Last command received. */
-  lastReceived?: string
+  lastReceived: string
   /** When it was received. */
-  lastReceivedTime?: TimestampIso
+  lastReceivedTime: TimestampIso
   /** When this block was collected. */
-  timestamp?: TimestampIso
+  timestamp: TimestampIso
 }
 
 export const RadarServerCommand: Codec<RadarServerCommand> = t.object({
-  lastExecuted: t.optional(t.string),
-  lastExecutedTime: t.optional(t.dateTime),
-  lastNexradDataTime: t.optional(t.dateTime),
-  lastReceived: t.optional(t.string),
-  lastReceivedTime: t.optional(t.dateTime),
-  timestamp: t.optional(t.dateTime),
+  lastExecuted: t.string,
+  lastExecutedTime: t.dateTime,
+  lastNexradDataTime: t.dateTime,
+  lastReceived: t.string,
+  lastReceivedTime: t.dateTime,
+  timestamp: t.dateTime,
 })
 
 /** Host load and resources. */
 export interface RadarServerHardware {
   /** When this block was collected. */
-  timestamp?: TimestampIso
+  timestamp: TimestampIso
   /** Idle CPU, in percent. */
-  cpuIdle?: number
+  cpuIdle: number
   /** Disk I/O utilisation, in percent. */
-  ioUtilization?: number
+  ioUtilization: number
   /** Disk used, in percent. */
-  disk?: number
+  disk: number
   /** One-minute load average. */
-  load1?: number
+  load1: number
   /** Five-minute load average. */
-  load5?: number
+  load5: number
   /** Fifteen-minute load average. */
-  load15?: number
+  load15: number
   /** Memory used, in percent. */
-  memory?: number
+  memory: number
   /** When the host last booted: a time, despite the name, not a duration. */
-  uptime?: TimestampIso
+  uptime: TimestampIso
 }
 
 export const RadarServerHardware: Codec<RadarServerHardware> = t.object({
-  timestamp: t.optional(t.dateTime),
-  cpuIdle: t.optional(t.number),
-  ioUtilization: t.optional(t.number),
-  disk: t.optional(t.number),
-  load1: t.optional(t.number),
-  load5: t.optional(t.number),
-  load15: t.optional(t.number),
-  memory: t.optional(t.number),
-  uptime: t.optional(t.dateTime),
+  timestamp: t.dateTime,
+  cpuIdle: t.number,
+  ioUtilization: t.number,
+  disk: t.number,
+  load1: t.number,
+  load5: t.number,
+  load15: t.number,
+  memory: t.number,
+  uptime: t.dateTime,
 })
 
 /** The server's LDM product queue. */
 export interface RadarServerLdm {
   /** When this block was collected. */
-  timestamp?: TimestampIso
+  timestamp: TimestampIso
   /** Arrival of the newest product in the queue. */
-  latestProduct?: TimestampIso
+  latestProduct: TimestampIso
   /** Arrival of the oldest product still in the queue. */
-  oldestProduct?: TimestampIso
+  oldestProduct: TimestampIso
   /** Size of the queue, in bytes. */
-  storageSize?: number
+  storageSize: number
   /** Products in the queue. */
-  count?: number
+  count: number
   /** Whether LDM is running. */
-  active?: boolean
+  active: boolean
 }
 
 export const RadarServerLdm: Codec<RadarServerLdm> = t.object({
-  timestamp: t.optional(t.dateTime),
-  latestProduct: t.optional(t.dateTime),
-  oldestProduct: t.optional(t.dateTime),
-  storageSize: t.optional(t.integer),
-  count: t.optional(t.integer),
-  active: t.optional(t.boolean),
+  timestamp: t.dateTime,
+  latestProduct: t.dateTime,
+  oldestProduct: t.dateTime,
+  storageSize: t.integer,
+  count: t.integer,
+  active: t.boolean,
 })
 
 /** Which hosts the server could reach at its last ping round. */
@@ -597,17 +597,17 @@ export const RadarReport: Codec<RadarReport> = t.object({
 /** Traffic counters of the server's two network interfaces. */
 export interface RadarServerNetwork {
   /** When this block was collected. */
-  timestamp?: TimestampIso
+  timestamp: TimestampIso
   /** The first interface. */
-  eth0?: RadarNetworkInterface
+  eth0: RadarNetworkInterface
   /** The second interface. */
-  eth1?: RadarNetworkInterface
+  eth1: RadarNetworkInterface
 }
 
 export const RadarServerNetwork: Codec<RadarServerNetwork> = t.object({
-  timestamp: t.optional(t.dateTime),
-  eth0: t.optional(RadarNetworkInterface),
-  eth1: t.optional(RadarNetworkInterface),
+  timestamp: t.dateTime,
+  eth0: RadarNetworkInterface,
+  eth1: RadarNetworkInterface,
 })
 
 /** One observation station. */
@@ -825,7 +825,7 @@ export interface RadarServer {
   /** URL of this server. */
   '@id': string
   /** Always `wx:RadarServer`. */
-  '@type'?: 'wx:RadarServer'
+  '@type': 'wx:RadarServer'
   /** Server name, such as `ldm1` or `rds`. `radar.get_server` takes it. */
   id: string
   /** Role of the server. Undocumented; `ldm` (an LDM ingest server) and `distribution` (`rds`, `tds`) on 2026-10-01. */
@@ -845,17 +845,17 @@ export interface RadarServer {
   /** Monitoring host that reported it, such as `rdss` or `tdss`. */
   reportingHost: string
   /** Host the server ingests from, such as `dns`. */
-  ingestHost?: string
+  ingestHost: string
   ping: RadarServerPing
   command?: RadarServerCommand
-  hardware?: RadarServerHardware
-  ldm?: RadarServerLdm
-  network?: RadarServerNetwork
+  hardware: RadarServerHardware
+  ldm: RadarServerLdm
+  network: RadarServerNetwork
 }
 
 export const RadarServer: Codec<RadarServer> = t.object({
   '@id': t.string,
-  '@type': t.optional(t.literal('wx:RadarServer')),
+  '@type': t.literal('wx:RadarServer'),
   id: t.string,
   type: t.string,
   active: t.optional(t.boolean),
@@ -865,12 +865,12 @@ export const RadarServer: Codec<RadarServer> = t.object({
   radarNetworkUp: t.optional(t.boolean),
   collectionTime: t.dateTime,
   reportingHost: t.string,
-  ingestHost: t.optional(t.string),
+  ingestHost: t.string,
   ping: RadarServerPing,
   command: t.optional(RadarServerCommand),
-  hardware: t.optional(RadarServerHardware),
-  ldm: t.optional(RadarServerLdm),
-  network: t.optional(RadarServerNetwork),
+  hardware: RadarServerHardware,
+  ldm: RadarServerLdm,
+  network: RadarServerNetwork,
 })
 
 /** One station, in the GeoJSON feature the API wraps it in. */

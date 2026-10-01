@@ -188,180 +188,105 @@ pub struct RadarNetworkInterface {
     /// Whether the interface is up.
     pub active: bool,
     /// Packets sent without error.
-    #[serde(
-        rename = "transNoError",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub trans_no_error: Option<i64>,
+    #[serde(rename = "transNoError")]
+    pub trans_no_error: i64,
     /// Packets that failed to send.
-    #[serde(
-        rename = "transError",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub trans_error: Option<i64>,
+    #[serde(rename = "transError")]
+    pub trans_error: i64,
     /// Outgoing packets dropped.
-    #[serde(
-        rename = "transDropped",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub trans_dropped: Option<i64>,
+    #[serde(rename = "transDropped")]
+    pub trans_dropped: i64,
     /// Outgoing overruns.
-    #[serde(
-        rename = "transOverrun",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub trans_overrun: Option<i64>,
+    #[serde(rename = "transOverrun")]
+    pub trans_overrun: i64,
     /// Packets received without error.
-    #[serde(
-        rename = "recvNoError",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub recv_no_error: Option<i64>,
+    #[serde(rename = "recvNoError")]
+    pub recv_no_error: i64,
     /// Packets received with an error.
-    #[serde(rename = "recvError", default, skip_serializing_if = "Option::is_none")]
-    pub recv_error: Option<i64>,
+    #[serde(rename = "recvError")]
+    pub recv_error: i64,
     /// Incoming packets dropped.
-    #[serde(
-        rename = "recvDropped",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub recv_dropped: Option<i64>,
+    #[serde(rename = "recvDropped")]
+    pub recv_dropped: i64,
     /// Incoming overruns.
-    #[serde(
-        rename = "recvOverrun",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub recv_overrun: Option<i64>,
+    #[serde(rename = "recvOverrun")]
+    pub recv_overrun: i64,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
 /// The last command the server ran and received. Only `ldm` servers send it.
-#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct RadarServerCommand {
     /// Last command run, such as `LDM Start`.
-    #[serde(
-        rename = "lastExecuted",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub last_executed: Option<String>,
+    #[serde(rename = "lastExecuted")]
+    pub last_executed: String,
     /// When it ran.
-    #[serde(
-        rename = "lastExecutedTime",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub last_executed_time: Option<TimestampIso>,
+    #[serde(rename = "lastExecutedTime")]
+    pub last_executed_time: TimestampIso,
     /// When the server last received NEXRAD data.
-    #[serde(
-        rename = "lastNexradDataTime",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub last_nexrad_data_time: Option<TimestampIso>,
+    #[serde(rename = "lastNexradDataTime")]
+    pub last_nexrad_data_time: TimestampIso,
     /// Last command received.
-    #[serde(
-        rename = "lastReceived",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub last_received: Option<String>,
+    #[serde(rename = "lastReceived")]
+    pub last_received: String,
     /// When it was received.
-    #[serde(
-        rename = "lastReceivedTime",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub last_received_time: Option<TimestampIso>,
+    #[serde(rename = "lastReceivedTime")]
+    pub last_received_time: TimestampIso,
     /// When this block was collected.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub timestamp: Option<TimestampIso>,
+    pub timestamp: TimestampIso,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
 /// Host load and resources.
-#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct RadarServerHardware {
     /// When this block was collected.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub timestamp: Option<TimestampIso>,
+    pub timestamp: TimestampIso,
     /// Idle CPU, in percent.
-    #[serde(rename = "cpuIdle", default, skip_serializing_if = "Option::is_none")]
-    pub cpu_idle: Option<f64>,
+    #[serde(rename = "cpuIdle")]
+    pub cpu_idle: f64,
     /// Disk I/O utilisation, in percent.
-    #[serde(
-        rename = "ioUtilization",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub io_utilization: Option<f64>,
+    #[serde(rename = "ioUtilization")]
+    pub io_utilization: f64,
     /// Disk used, in percent.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub disk: Option<f64>,
+    pub disk: f64,
     /// One-minute load average.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub load1: Option<f64>,
+    pub load1: f64,
     /// Five-minute load average.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub load5: Option<f64>,
+    pub load5: f64,
     /// Fifteen-minute load average.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub load15: Option<f64>,
+    pub load15: f64,
     /// Memory used, in percent.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub memory: Option<f64>,
+    pub memory: f64,
     /// When the host last booted: a time, despite the name, not a duration.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub uptime: Option<TimestampIso>,
+    pub uptime: TimestampIso,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
 /// The server's LDM product queue.
-#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct RadarServerLdm {
     /// When this block was collected.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub timestamp: Option<TimestampIso>,
+    pub timestamp: TimestampIso,
     /// Arrival of the newest product in the queue.
-    #[serde(
-        rename = "latestProduct",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub latest_product: Option<TimestampIso>,
+    #[serde(rename = "latestProduct")]
+    pub latest_product: TimestampIso,
     /// Arrival of the oldest product still in the queue.
-    #[serde(
-        rename = "oldestProduct",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub oldest_product: Option<TimestampIso>,
+    #[serde(rename = "oldestProduct")]
+    pub oldest_product: TimestampIso,
     /// Size of the queue, in bytes.
-    #[serde(
-        rename = "storageSize",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub storage_size: Option<i64>,
+    #[serde(rename = "storageSize")]
+    pub storage_size: i64,
     /// Products in the queue.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub count: Option<i64>,
+    pub count: i64,
     /// Whether LDM is running.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub active: Option<bool>,
+    pub active: bool,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -926,17 +851,14 @@ pub struct RadarReport {
 }
 
 /// Traffic counters of the server's two network interfaces.
-#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct RadarServerNetwork {
     /// When this block was collected.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub timestamp: Option<TimestampIso>,
+    pub timestamp: TimestampIso,
     /// The first interface.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub eth0: Option<RadarNetworkInterface>,
+    pub eth0: RadarNetworkInterface,
     /// The second interface.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub eth1: Option<RadarNetworkInterface>,
+    pub eth1: RadarNetworkInterface,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -1269,8 +1191,8 @@ pub struct RadarServer {
     #[serde(rename = "@id")]
     pub id: String,
     /// Always `wx:RadarServer`.
-    #[serde(rename = "@type", default, skip_serializing_if = "Option::is_none")]
-    pub type_: Option<RadarServerType>,
+    #[serde(rename = "@type")]
+    pub type_: RadarServerType,
     /// Server name, such as `ldm1` or `rds`. `radar.get_server` takes it.
     #[serde(rename = "id")]
     pub id2: String,
@@ -1303,21 +1225,14 @@ pub struct RadarServer {
     #[serde(rename = "reportingHost")]
     pub reporting_host: String,
     /// Host the server ingests from, such as `dns`.
-    #[serde(
-        rename = "ingestHost",
-        default,
-        skip_serializing_if = "Option::is_none"
-    )]
-    pub ingest_host: Option<String>,
+    #[serde(rename = "ingestHost")]
+    pub ingest_host: String,
     pub ping: RadarServerPing,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub command: Option<RadarServerCommand>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub hardware: Option<RadarServerHardware>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub ldm: Option<RadarServerLdm>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub network: Option<RadarServerNetwork>,
+    pub hardware: RadarServerHardware,
+    pub ldm: RadarServerLdm,
+    pub network: RadarServerNetwork,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
