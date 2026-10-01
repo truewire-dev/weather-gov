@@ -47,6 +47,8 @@ export interface Request {
   limit?: number
   /** Only products that arrived in this ISO 8601 interval: `start/end`, `start/duration` or `duration/end`, either end may be `NOW`, such as `2026-09-30T23:00:00Z/PT10M`. The answer starts at the interval's start, so a `limit` keeps the oldest. Without it, about the last two minutes. The service keeps about a week. */
   arrived?: string
+  /** Only products the radar created in this ISO 8601 interval, in the same forms as `arrived`. Every request with it answered 503 on 2026-10-01 (`An upstream data source is temporarily unavailable`). */
+  created?: string
   /** Only products published in this ISO 8601 interval, in the same forms as `arrived`. */
   published?: string
   /** Only this radar's products, such as `KATX`. An unknown one answers an empty `@graph`. */
@@ -63,6 +65,7 @@ export const Request: Codec<Request> = t.object({
   host: t.literal('rds', 'tds'),
   limit: t.optional(t.integer),
   arrived: t.optional(t.string),
+  created: t.optional(t.string),
   published: t.optional(t.string),
   station: t.optional(t.string),
   type: t.optional(t.string),

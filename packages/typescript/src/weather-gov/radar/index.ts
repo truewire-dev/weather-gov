@@ -2,6 +2,7 @@
 import type { CallOptions, HttpEndpoint } from '@truewire/core'
 import type { DefaultMeta } from '../meta.js'
 import type { RadarServer, RadarStationFeature } from '../types/index.js'
+import * as getProfiler from './get_profiler.js'
 import * as getQueue from './get_queue.js'
 import * as getServer from './get_server.js'
 import * as getStation from './get_station.js'
@@ -16,6 +17,7 @@ import * as listStations from './list_stations.js'
  * @see https://www.weather.gov/documentation/services-web-api#/default/radar_stations
  */
 export class Radar {
+  private readonly getProfiler_: getProfiler.GetProfiler
   private readonly getQueue_: getQueue.GetQueue
   private readonly getServer_: getServer.GetServer
   private readonly getStation_: getStation.GetStation
@@ -25,6 +27,7 @@ export class Radar {
   private readonly listStations_: listStations.ListStations
 
   constructor(readonly core: HttpEndpoint<DefaultMeta>) {
+    this.getProfiler_ = new getProfiler.GetProfiler(core)
     this.getQueue_ = new getQueue.GetQueue(core)
     this.getServer_ = new getServer.GetServer(core)
     this.getStation_ = new getStation.GetStation(core)
@@ -32,6 +35,18 @@ export class Radar {
     this.listSpgds_ = new listSpgds.ListSpgds(core)
     this.listStationAlarms_ = new listStationAlarms.ListStationAlarms(core)
     this.listStations_ = new listStations.ListStations(core)
+  }
+
+  /** With `validate: false`: the parsed body as it came, typed `unknown`. */
+  getProfiler(request: getProfiler.Request, options: CallOptions & { validate: false }): Promise<unknown>
+  /**
+   * Metadata about one radar wind profiler, as JSON-LD. Unverified: every profiler answered 404 on 2026-10-01, so the response is not described.
+   *
+   * @see https://www.weather.gov/documentation/services-web-api#/default/radar_profiler
+   */
+  getProfiler(request: getProfiler.Request, options?: CallOptions): Promise<getProfiler.RadarProfiler>
+  getProfiler(request: getProfiler.Request, options?: CallOptions): Promise<getProfiler.RadarProfiler> {
+    return this.getProfiler_.getProfiler(request, options)
   }
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */

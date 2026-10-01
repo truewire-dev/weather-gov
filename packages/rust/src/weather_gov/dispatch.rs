@@ -56,6 +56,11 @@ impl Weather {
                 let response = self.products.list_product_types(request, options).await?;
                 dump(&response)
             }
+            "radar.get_profiler" => {
+                let request = decode(request)?;
+                let response = self.radar.get_profiler(request, options).await?;
+                dump(&response)
+            }
             "radar.get_queue" => {
                 let request = decode(request)?;
                 let response = self.radar.get_queue(request, options).await?;
@@ -204,6 +209,10 @@ impl Weather {
             "products.list_product_types" => {
                 let request = decode(request)?;
                 self.products.list_product_types_raw(request, options).await
+            }
+            "radar.get_profiler" => {
+                let request = decode(request)?;
+                self.radar.get_profiler_raw(request, options).await
             }
             "radar.get_queue" => {
                 let request = decode(request)?;

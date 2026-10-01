@@ -18,6 +18,7 @@
     "points/mod.rs",
     "products/list_product_types.rs",
     "products/mod.rs",
+    "radar/get_profiler.rs",
     "radar/get_queue.rs",
     "radar/get_server.rs",
     "radar/get_station.rs",

@@ -33,10 +33,12 @@
   `list_transmitters`), and `stations.list_stations_for_zone`,
   `stations.list_stations_for_gridpoint` and `stations.get_observations_for_zone`. Their
   requests take a zone type as one shared enum, `types::ZoneKind`.
-- **Seven more endpoints: a new `radar` group.** `list_stations`, `get_station` and
+- **Eight more endpoints: a new `radar` group.** `list_stations`, `get_station` and
   `list_station_alarms` for the radars themselves; `list_servers`, `get_server`, `get_queue`
-  and `list_spgds` for the network that distributes their data. `get_queue` and
-  `list_spgds` take an ISO 8601 interval as a `String`. The SPG reports' Unix seconds sent
+  and `list_spgds` for the network that distributes their data; and `get_profiler`, which
+  has no recording: every profiler answered 404 on 2026-10-01, so it returns
+  `serde_json::Value`. `get_queue` and `list_spgds` take an ISO 8601 interval as a
+  `String`, `get_queue`'s `created` included. The SPG reports' Unix seconds sent
   as strings are `TimestampSecondsString`, which needs the truewire-core this crate is
   generated against, not crates.io 0.1. `radar::get_queue::Request` requires its `host`
   enum, so it has no `Default`: name every field.
