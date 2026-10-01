@@ -24,6 +24,11 @@ Generated with truewire 0.11.
   runtime, but type checkers flag them (pyright reports `reportPrivateImportUsage`), so
   import all four from `weather_gov.schemas`. `Station` gains optional `distance` and
   `bearing`, which only `stations.list_stations_for_gridpoint` sends.
+- **Seven more endpoints: aviation weather.** A new `aviation` group: `get_cwsu`,
+  `list_cwas` and `get_cwa` for the Center Weather Service Units and their advisories, and
+  `list_sigmets`, `list_sigmets_for_atsu`, `list_sigmets_for_atsu_on_date` and
+  `get_sigmet` for SIGMETs and AIRMETs. Their outlines are an `AdvisoryPolygon`, whose
+  positions are latitude first, unlike every other geometry in this API.
 
 ## 0.1.0
 

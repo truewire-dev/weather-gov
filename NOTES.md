@@ -84,6 +84,6 @@ A real constraint, and not one this spec format carries: `pattern` on a request 
 
 ## 7. `meta` carries the envelope, because the core has to be told per call
 
-**Convention, not a gap.** Six of the nineteen endpoints declare `envelope.payload: "properties"`. A JSON-RPC API unwraps every response the same way, so its core can do so unconditionally; here it is per endpoint, and the core has to be told which is which on the call.
+**Convention, not a gap.** Six of the twenty-six endpoints declare `envelope.payload: "properties"`. A JSON-RPC API unwraps every response the same way, so its core can do so unconditionally; here it is per endpoint, and the core has to be told which is which on the call.
 
 `meta` is the mechanism the toolchain provides for exactly this (authoring rule 9), so each enveloped endpoint repeats the path as `meta.payload`. Two declarations of one fact can drift, so [`packages/python/test/test_spec.py`](packages/python/test/test_spec.py) compares them for every endpoint, in both directions, and fails if either exists without the other.
