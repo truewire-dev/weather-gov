@@ -182,7 +182,7 @@ GET /alerts/active: HTTP 400: query.zone[0]: Does not match the regex pattern
 
 ## What is covered
 
-Nineteen endpoints, in seven groups:
+Twenty-six endpoints, in eight groups:
 
 | Group | Endpoints |
 | --- | --- |
@@ -193,14 +193,15 @@ Nineteen endpoints, in seven groups:
 | `offices` | `get_office` |
 | `products` | `list_product_types` |
 | `zones` | `list_zones`, `list_zones_by_type`, `get_zone`, `get_forecast`, `list_transmitters` |
+| `aviation` | `get_cwsu`, `list_cwas`, `get_cwa`, `list_sigmets`, `list_sigmets_for_atsu`, `list_sigmets_for_atsu_on_date`, `get_sigmet` |
 
-Three response vocabularies, because the API uses three: GeoJSON for most of it, schema.org for the offices, JSON-LD for the product types and the radio transmitters. The spec describes each as it actually arrives.
+Three response vocabularies, because the API uses three: GeoJSON for most of it, schema.org for the offices and the aviation weather units, JSON-LD for the product types and the radio transmitters. The spec describes each as it actually arrives, down to the aviation outlines, which put latitude first where the rest of the API puts longitude first.
 
-The same nineteen endpoints in [TypeScript](packages/typescript/README.md) and [Rust](packages/rust/README.md), from this one spec. The three clients are equivalent, `stations.get_observations_paged` included.
+The same twenty-six endpoints in [TypeScript](packages/typescript/README.md) and [Rust](packages/rust/README.md), from this one spec. The three clients are equivalent, `stations.get_observations_paged` included.
 
 ## Recordings
 
-Every endpoint carries the request half of at least one example — the exact parameters the tests and the recording script replay — and every one of them has a recorded response. All nineteen, with no exceptions and no endpoint declaring a missing credential, because there are no credentials to miss.
+Every endpoint carries the request half of at least one example — the exact parameters the tests and the recording script replay — and every one of them has a recorded response. All twenty-six, with no exceptions and no endpoint declaring a missing credential, because there are no credentials to miss.
 
 The response halves are recorded from the live API through this same generated client, so a recording is the wire body the client saw and the response types are proven against it, never written by hand.
 
@@ -208,6 +209,7 @@ Some examples go stale on their own, and [`packages/python/test/refresh_examples
 
 - The service keeps about a week of observations and then drops them, so an old window records as an empty `FeatureCollection` — a 200 with nothing in it, which records exactly as happily as a full one. `stations.get_observations_for_zone` reads the same week, so its window moves with the station's.
 - Alerts expire, usually within hours, and `alerts.get_alert` names one by identifier. The replacement is read from whatever is severe and in effect right now.
+- The service keeps about a week of aviation advisories, and `aviation.get_cwa`, `aviation.get_sigmet` and `aviation.list_sigmets_for_atsu_on_date` name a day. Each is moved to the newest message of the unit its list example records.
 
 The tests read what the refresh moves — the window, the identifier, the row count — from the examples rather than from constants, so a repair is not a failure.
 

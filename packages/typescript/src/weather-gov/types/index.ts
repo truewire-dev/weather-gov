@@ -2,6 +2,23 @@
 /** Shapes shared by two or more endpoints, generated from `spec/schemas.json`. */
 import { type Codec, type TimestampIso, t } from '@truewire/core'
 
+/** The area an aviation advisory covers. Shaped like a GeoJSON `Polygon`, but each position is latitude first (`AdvisoryPosition`), so a GeoJSON library draws it transposed. */
+export interface AdvisoryPolygon {
+  /** Always `Polygon`. */
+  type: 'Polygon'
+  /** Linear rings; the first is the outer boundary. Each ring repeats its first position as its last. */
+  coordinates: (readonly [number, number])[][]
+}
+
+export const AdvisoryPolygon: Codec<AdvisoryPolygon> = t.object({
+  type: t.literal('Polygon'),
+  coordinates: t.array(t.array(t.tuple([t.number, t.number]))),
+})
+
+export type AdvisoryPosition = readonly [number, number]
+
+export const AdvisoryPosition: Codec<AdvisoryPosition> = t.tuple([t.number, t.number])
+
 /** The areas covered, as codes rather than prose. */
 export interface AlertGeocode {
   /** SAME (Specific Area Message Encoding) codes, one per county. */
@@ -31,6 +48,37 @@ export const AlertReference: Codec<AlertReference> = t.object({
   sent: t.optional(t.dateTime),
 })
 
+/** A Center Weather Advisory: a short-fused warning of weather hazardous to aircraft inside one en-route center's airspace. */
+export interface CenterWeatherAdvisory {
+  /** Canonical URL of the advisory, ending in its issue date and sequence number: the arguments `aviation.get_cwa` takes. */
+  id: string
+  /** When the advisory was issued. */
+  issueTime: TimestampIso
+  /** Three-letter code of a Center Weather Service Unit: the NWS meteorologists posted at one FAA air route traffic control center, and named after it (`ZSE` is Seattle Center). */
+  cwsu: 'ZAB' | 'ZAN' | 'ZAU' | 'ZBW' | 'ZDC' | 'ZDV' | 'ZFA' | 'ZFW' | 'ZHU' | 'ZID' | 'ZJX' | 'ZKC' | 'ZLA' | 'ZLC' | 'ZMA' | 'ZME' | 'ZMP' | 'ZNY' | 'ZOA' | 'ZOB' | 'ZSE' | 'ZTL'
+  /** Sequence number within the day: the hundreds digit numbers a hazard and the rest counts the advisories about it (`101`, `102`, then `201` for a second hazard). Not always unique: measured 2026-09-30, `ZAB` issued two `206`s that day. */
+  sequence: number
+  /** Start of the period the advisory is valid for. */
+  start: TimestampIso
+  /** End of the period the advisory is valid for. */
+  end: TimestampIso
+  /** What the advisory was issued for, as a code URL; null on a few. */
+  observedProperty: string | null
+  /** The advisory itself, in the abbreviated plain language of aviation weather (`AREA TS MOV LTL TOPS TO FL280`). */
+  text: string
+}
+
+export const CenterWeatherAdvisory: Codec<CenterWeatherAdvisory> = t.object({
+  id: t.string,
+  issueTime: t.dateTime,
+  cwsu: t.literal('ZAB', 'ZAN', 'ZAU', 'ZBW', 'ZDC', 'ZDV', 'ZFA', 'ZFW', 'ZHU', 'ZID', 'ZJX', 'ZKC', 'ZLA', 'ZLC', 'ZMA', 'ZME', 'ZMP', 'ZNY', 'ZOA', 'ZOB', 'ZSE', 'ZTL'),
+  sequence: t.integer,
+  start: t.dateTime,
+  end: t.dateTime,
+  observedProperty: t.nullable(t.string),
+  text: t.string,
+})
+
 /** Where the next page is. A whole URL, not a bare cursor -- which is why no endpoint returning this declares a pagination strategy. */
 export interface CollectionPagination {
   /** URL of the next page, cursor already in the query string. Absent on the last page. */
@@ -40,6 +88,10 @@ export interface CollectionPagination {
 export const CollectionPagination: Codec<CollectionPagination> = t.object({
   next: t.optional(t.string),
 })
+
+export type CwsuId = 'ZAB' | 'ZAN' | 'ZAU' | 'ZBW' | 'ZDC' | 'ZDV' | 'ZFA' | 'ZFW' | 'ZHU' | 'ZID' | 'ZJX' | 'ZKC' | 'ZLA' | 'ZLC' | 'ZMA' | 'ZME' | 'ZMP' | 'ZNY' | 'ZOA' | 'ZOB' | 'ZSE' | 'ZTL'
+
+export const CwsuId: Codec<CwsuId> = t.literal('ZAB', 'ZAN', 'ZAU', 'ZBW', 'ZDC', 'ZDV', 'ZFA', 'ZFW', 'ZHU', 'ZID', 'ZJX', 'ZKC', 'ZLA', 'ZLC', 'ZMA', 'ZME', 'ZMP', 'ZNY', 'ZOA', 'ZOB', 'ZSE', 'ZTL')
 
 /** One value of a gridded series, and the interval it holds over. */
 export interface GridValue {
@@ -146,6 +198,37 @@ export const QuantitativeValue: Codec<QuantitativeValue> = t.object({
   qualityControl: t.optional(t.string),
   maxValue: t.optional(t.number),
   minValue: t.optional(t.number),
+})
+
+/** A SIGMET or AIRMET: a warning to aircraft in flight of significant weather (convection, turbulence, icing, obscured mountains) over an area, issued by an air traffic services unit. */
+export interface Sigmet {
+  /** URL of the message, ending in its issuing unit, UTC issue date and `HHMM` issue time: the arguments `aviation.get_sigmet` takes. Not unique: every message a unit issues in the same minute shares it. */
+  id: string
+  /** When the message was issued. */
+  issueTime: TimestampIso
+  /** Flight information region the message covers; null on some. */
+  fir: string | null
+  /** The air traffic services unit that issued it, such as `KKCI` (the Aviation Weather Center) or `ANC` (Anchorage). */
+  atsu: string
+  /** Sequence identifier; null on some. */
+  sequence: string | null
+  /** The hazard, as a WMO code URL; null on more than half. */
+  phenomenon: string | null
+  /** Start of the period the message is valid for. */
+  start: TimestampIso
+  /** End of the period the message is valid for. */
+  end: TimestampIso
+}
+
+export const Sigmet: Codec<Sigmet> = t.object({
+  id: t.string,
+  issueTime: t.dateTime,
+  fir: t.nullable(t.string),
+  atsu: t.string,
+  sequence: t.nullable(t.string),
+  phenomenon: t.nullable(t.string),
+  start: t.dateTime,
+  end: t.dateTime,
 })
 
 /** One zone: a public forecast, county, fire-weather or marine area. */
@@ -289,6 +372,22 @@ export type AlertGeometry = PolygonGeometry | MultiPolygonGeometry | null
 
 export const AlertGeometry: Codec<AlertGeometry> = t.union(PolygonGeometry, MultiPolygonGeometry, t.null)
 
+/** One Center Weather Advisory, in the GeoJSON feature the API wraps it in. The feature has no `id` of its own; the advisory's URL is `properties.id`. */
+export interface CenterWeatherAdvisoryFeature {
+  /** Always `Feature`. */
+  type: 'Feature'
+  /** The area the advisory covers, latitude first; null on some. */
+  geometry: AdvisoryPolygon | null
+  /** The advisory itself. */
+  properties: CenterWeatherAdvisory
+}
+
+export const CenterWeatherAdvisoryFeature: Codec<CenterWeatherAdvisoryFeature> = t.object({
+  type: t.literal('Feature'),
+  geometry: t.nullable(AdvisoryPolygon),
+  properties: CenterWeatherAdvisory,
+})
+
 /** One reported cloud layer: how much of the sky it covers and how high its base is. */
 export interface CloudLayer {
   /** Height of the layer's base above the station. */
@@ -368,6 +467,22 @@ export interface GridSeries {
 export const GridSeries: Codec<GridSeries> = t.object({
   uom: t.optional(t.string),
   values: t.array(GridValue),
+})
+
+/** One SIGMET or AIRMET, in the GeoJSON feature the API wraps it in. The feature has no `id` of its own; the message's URL is `properties.id`. */
+export interface SigmetFeature {
+  /** Always `Feature`. */
+  type: 'Feature'
+  /** The area the message covers, latitude first; null on some. */
+  geometry: AdvisoryPolygon | null
+  /** The message itself. */
+  properties: Sigmet
+}
+
+export const SigmetFeature: Codec<SigmetFeature> = t.object({
+  type: t.literal('Feature'),
+  geometry: t.nullable(AdvisoryPolygon),
+  properties: Sigmet,
 })
 
 /** One observation station. */
@@ -450,6 +565,19 @@ export const AlertFeature: Codec<AlertFeature> = t.object({
   type: t.literal('Feature'),
   geometry: t.optional(t.union(PolygonGeometry, MultiPolygonGeometry, t.null)),
   properties: Alert,
+})
+
+/** Center Weather Advisories, as a GeoJSON feature collection, newest first. The service keeps about a week of them and answers all of them at once: there is no paging. */
+export interface CenterWeatherAdvisoryCollection {
+  /** Always `FeatureCollection`. */
+  type: 'FeatureCollection'
+  /** The advisories; empty when the unit issued none this week. */
+  features: CenterWeatherAdvisoryFeature[]
+}
+
+export const CenterWeatherAdvisoryCollection: Codec<CenterWeatherAdvisoryCollection> = t.object({
+  type: t.literal('FeatureCollection'),
+  features: t.array(CenterWeatherAdvisoryFeature),
 })
 
 /** A narrative forecast for one grid cell, as a list of periods. Named for the service's own term: `/gridpoints/{office}/{x},{y}/forecast` is the gridpoint forecast. */
@@ -563,6 +691,19 @@ export const Observation: Codec<Observation> = t.object({
   windChill: t.optional(QuantitativeValue),
   heatIndex: t.optional(QuantitativeValue),
   cloudLayers: t.array(CloudLayer),
+})
+
+/** SIGMETs and AIRMETs, as a GeoJSON feature collection, newest first. The service keeps about a week of them and answers everything that matched at once: there is no paging. */
+export interface SigmetCollection {
+  /** Always `FeatureCollection`. */
+  type: 'FeatureCollection'
+  /** The messages. */
+  features: SigmetFeature[]
+}
+
+export const SigmetCollection: Codec<SigmetCollection> = t.object({
+  type: t.literal('FeatureCollection'),
+  features: t.array(SigmetFeature),
 })
 
 /** One station, in the GeoJSON feature the API wraps it in. */

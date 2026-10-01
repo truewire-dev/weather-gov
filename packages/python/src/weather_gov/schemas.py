@@ -5,6 +5,18 @@ from typing_extensions import Literal, NotRequired, TypedDict
 from truewire_core.types import TimestampIso
 
 
+class AdvisoryPolygon(TypedDict):
+  """The area an aviation advisory covers. Shaped like a GeoJSON `Polygon`, but each position is latitude first (`AdvisoryPosition`), so a GeoJSON library draws it transposed."""
+
+  type: Literal['Polygon']
+  """Always `Polygon`."""
+  coordinates: list[list[tuple[float, float]]]
+  """Linear rings; the first is the outer boundary. Each ring repeats its first position as its last."""
+
+
+AdvisoryPosition = tuple[float, float]
+
+
 class AlertGeocode(TypedDict):
   """The areas covered, as codes rather than prose."""
 
@@ -25,11 +37,81 @@ class AlertReference(TypedDict):
   """When the referenced alert was sent."""
 
 
+class CenterWeatherAdvisory(TypedDict):
+  """A Center Weather Advisory: a short-fused warning of weather hazardous to aircraft inside one en-route center's airspace."""
+
+  id: str
+  """Canonical URL of the advisory, ending in its issue date and sequence number: the arguments `aviation.get_cwa` takes."""
+  issueTime: TimestampIso
+  """When the advisory was issued."""
+  cwsu: Literal[
+    'ZAB',
+    'ZAN',
+    'ZAU',
+    'ZBW',
+    'ZDC',
+    'ZDV',
+    'ZFA',
+    'ZFW',
+    'ZHU',
+    'ZID',
+    'ZJX',
+    'ZKC',
+    'ZLA',
+    'ZLC',
+    'ZMA',
+    'ZME',
+    'ZMP',
+    'ZNY',
+    'ZOA',
+    'ZOB',
+    'ZSE',
+    'ZTL',
+  ]
+  """Three-letter code of a Center Weather Service Unit: the NWS meteorologists posted at one FAA air route traffic control center, and named after it (`ZSE` is Seattle Center)."""
+  sequence: int
+  """Sequence number within the day: the hundreds digit numbers a hazard and the rest counts the advisories about it (`101`, `102`, then `201` for a second hazard). Not always unique: measured 2026-09-30, `ZAB` issued two `206`s that day."""
+  start: TimestampIso
+  """Start of the period the advisory is valid for."""
+  end: TimestampIso
+  """End of the period the advisory is valid for."""
+  observedProperty: str | None
+  """What the advisory was issued for, as a code URL; null on a few."""
+  text: str
+  """The advisory itself, in the abbreviated plain language of aviation weather (`AREA TS MOV LTL TOPS TO FL280`)."""
+
+
 class CollectionPagination(TypedDict):
   """Where the next page is. A whole URL, not a bare cursor -- which is why no endpoint returning this declares a pagination strategy."""
 
   next: NotRequired[str]
   """URL of the next page, cursor already in the query string. Absent on the last page."""
+
+
+CwsuId = Literal[
+  'ZAB',
+  'ZAN',
+  'ZAU',
+  'ZBW',
+  'ZDC',
+  'ZDV',
+  'ZFA',
+  'ZFW',
+  'ZHU',
+  'ZID',
+  'ZJX',
+  'ZKC',
+  'ZLA',
+  'ZLC',
+  'ZMA',
+  'ZME',
+  'ZMP',
+  'ZNY',
+  'ZOA',
+  'ZOB',
+  'ZSE',
+  'ZTL',
+]
 
 
 class GridValue(TypedDict):
@@ -104,6 +186,27 @@ class QuantitativeValue(TypedDict):
   """Upper end, where the value is a range rather than a point."""
   minValue: NotRequired[float]
   """Lower end, where the value is a range rather than a point."""
+
+
+class Sigmet(TypedDict):
+  """A SIGMET or AIRMET: a warning to aircraft in flight of significant weather (convection, turbulence, icing, obscured mountains) over an area, issued by an air traffic services unit."""
+
+  id: str
+  """URL of the message, ending in its issuing unit, UTC issue date and `HHMM` issue time: the arguments `aviation.get_sigmet` takes. Not unique: every message a unit issues in the same minute shares it."""
+  issueTime: TimestampIso
+  """When the message was issued."""
+  fir: str | None
+  """Flight information region the message covers; null on some."""
+  atsu: str
+  """The air traffic services unit that issued it, such as `KKCI` (the Aviation Weather Center) or `ANC` (Anchorage)."""
+  sequence: str | None
+  """Sequence identifier; null on some."""
+  phenomenon: str | None
+  """The hazard, as a WMO code URL; null on more than half."""
+  start: TimestampIso
+  """Start of the period the message is valid for."""
+  end: TimestampIso
+  """End of the period the message is valid for."""
 
 
 ZoneKeywords = TypedDict('ZoneKeywords', {'@id': str, '@type': NotRequired[Literal['wx:Zone']]})
@@ -223,6 +326,17 @@ class Alert(TypedDict):
 AlertGeometry = PolygonGeometry | MultiPolygonGeometry | None
 
 
+class CenterWeatherAdvisoryFeature(TypedDict):
+  """One Center Weather Advisory, in the GeoJSON feature the API wraps it in. The feature has no `id` of its own; the advisory's URL is `properties.id`."""
+
+  type: Literal['Feature']
+  """Always `Feature`."""
+  geometry: AdvisoryPolygon | None
+  """The area the advisory covers, latitude first; null on some."""
+  properties: CenterWeatherAdvisory
+  """The advisory itself."""
+
+
 class CloudLayer(TypedDict):
   """One reported cloud layer: how much of the sky it covers and how high its base is."""
 
@@ -276,6 +390,17 @@ class GridSeries(TypedDict):
   """WMO unit code every value is in."""
   values: list[GridValue]
   """The values, in time order."""
+
+
+class SigmetFeature(TypedDict):
+  """One SIGMET or AIRMET, in the GeoJSON feature the API wraps it in. The feature has no `id` of its own; the message's URL is `properties.id`."""
+
+  type: Literal['Feature']
+  """Always `Feature`."""
+  geometry: AdvisoryPolygon | None
+  """The area the message covers, latitude first; null on some."""
+  properties: Sigmet
+  """The message itself."""
 
 
 class Station(TypedDict):
@@ -332,6 +457,15 @@ class AlertFeature(TypedDict):
   """The area an alert covers, when it was drawn as a polygon rather than named as zones."""
   properties: Alert
   """The alert itself."""
+
+
+class CenterWeatherAdvisoryCollection(TypedDict):
+  """Center Weather Advisories, as a GeoJSON feature collection, newest first. The service keeps about a week of them and answers all of them at once: there is no paging."""
+
+  type: Literal['FeatureCollection']
+  """Always `FeatureCollection`."""
+  features: list[CenterWeatherAdvisoryFeature]
+  """The advisories; empty when the unit issued none this week."""
 
 
 class GridpointForecast(TypedDict):
@@ -408,6 +542,15 @@ class Observation(TypedDict):
   """Heat index; its `value` is null unless it is hot and humid enough to compute one."""
   cloudLayers: list[CloudLayer]
   """Reported cloud layers, lowest first."""
+
+
+class SigmetCollection(TypedDict):
+  """SIGMETs and AIRMETs, as a GeoJSON feature collection, newest first. The service keeps about a week of them and answers everything that matched at once: there is no paging."""
+
+  type: Literal['FeatureCollection']
+  """Always `FeatureCollection`."""
+  features: list[SigmetFeature]
+  """The messages."""
 
 
 class StationFeature(TypedDict):

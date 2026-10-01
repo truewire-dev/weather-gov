@@ -33,3 +33,9 @@
   `list_transmitters`), and `stations.list_stations_for_zone`,
   `stations.list_stations_for_gridpoint` and `stations.get_observations_for_zone`. Their
   requests take a zone type as one shared enum, `types::ZoneKind`.
+- **Seven more endpoints: aviation weather.** A new `aviation` group: `get_cwsu`,
+  `list_cwas` and `get_cwa` for the Center Weather Service Units and their advisories, and
+  `list_sigmets`, `list_sigmets_for_atsu`, `list_sigmets_for_atsu_on_date` and
+  `get_sigmet` for SIGMETs and AIRMETs. Their outlines are a `types::AdvisoryPolygon`, whose
+  positions are latitude first, unlike every other geometry in this API.
+  A unit is named by the shared enum `types::CwsuId`.

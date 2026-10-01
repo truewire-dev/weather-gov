@@ -1,0 +1,155 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": {
+      "@version": "1.1"
+    },
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                53.1,
+                -178
+              ],
+              [
+                53.2,
+                -182
+              ],
+              [
+                54.3,
+                -189.5
+              ],
+              [
+                52.1,
+                -190.7
+              ],
+              [
+                50.4,
+                -182
+              ],
+              [
+                50.4,
+                -176
+              ],
+              [
+                53.1,
+                -178
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/sigmets/ANC/2026-09-30/2005",
+          "issueTime": "2026-09-30T20:05:00+00:00",
+          "fir": null,
+          "atsu": "ANC",
+          "sequence": "0000",
+          "phenomenon": "http://codes.wmo.int/49-2/AirWxPhenomena/MT_OBSC",
+          "start": "2026-09-30T20:15:00+00:00",
+          "end": "2026-10-01T04:15:00+00:00"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                53.1,
+                -178
+              ],
+              [
+                53.2,
+                -182
+              ],
+              [
+                54.3,
+                -189.5
+              ],
+              [
+                52.1,
+                -190.7
+              ],
+              [
+                50.4,
+                -182
+              ],
+              [
+                50.4,
+                -176
+              ],
+              [
+                53.1,
+                -178
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/sigmets/ANC/2026-09-30/1204",
+          "issueTime": "2026-09-30T12:04:00+00:00",
+          "fir": null,
+          "atsu": "ANC",
+          "sequence": "0000",
+          "phenomenon": "http://codes.wmo.int/49-2/AirWxPhenomena/MT_OBSC",
+          "start": "2026-09-30T12:15:00+00:00",
+          "end": "2026-09-30T20:15:00+00:00"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                53.1,
+                -178
+              ],
+              [
+                53.2,
+                -182
+              ],
+              [
+                54.3,
+                -189.5
+              ],
+              [
+                52.1,
+                -190.7
+              ],
+              [
+                50.4,
+                -182
+              ],
+              [
+                50.4,
+                -176
+              ],
+              [
+                53.1,
+                -178
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/sigmets/ANC/2026-09-30/0412",
+          "issueTime": "2026-09-30T04:12:00+00:00",
+          "fir": null,
+          "atsu": "ANC",
+          "sequence": "0000",
+          "phenomenon": "http://codes.wmo.int/49-2/AirWxPhenomena/MT_OBSC",
+          "start": "2026-09-30T04:15:00+00:00",
+          "end": "2026-09-30T12:15:00+00:00"
+        }
+      }
+    ]
+  }
+}

@@ -31,6 +31,13 @@
     {"method": "GET", "path": "/zones/{type}/{zoneId}/radio", "endpoint": "zones.list_transmitters"},
     {"method": "GET", "path": "/zones/forecast/{zoneId}/observations", "endpoint": "stations.get_observations_for_zone"},
     {"method": "GET", "path": "/zones/forecast/{zoneId}/stations", "endpoint": "stations.list_stations_for_zone"},
-    {"method": "GET", "path": "/gridpoints/{wfo}/{x},{y}/stations", "endpoint": "stations.list_stations_for_gridpoint"}
+    {"method": "GET", "path": "/gridpoints/{wfo}/{x},{y}/stations", "endpoint": "stations.list_stations_for_gridpoint"},
+    {"method": "GET", "path": "/aviation/cwsus/{cwsuId}", "endpoint": "aviation.get_cwsu"},
+    {"method": "GET", "path": "/aviation/cwsus/{cwsuId}/cwas", "endpoint": "aviation.list_cwas"},
+    {"method": "GET", "path": "/aviation/cwsus/{cwsuId}/cwas/{date}/{sequence}", "endpoint": "aviation.get_cwa"},
+    {"method": "GET", "path": "/aviation/sigmets", "endpoint": "aviation.list_sigmets"},
+    {"method": "GET", "path": "/aviation/sigmets/{atsu}", "endpoint": "aviation.list_sigmets_for_atsu"},
+    {"method": "GET", "path": "/aviation/sigmets/{atsu}/{date}", "endpoint": "aviation.list_sigmets_for_atsu_on_date"},
+    {"method": "GET", "path": "/aviation/sigmets/{atsu}/{date}/{time}", "endpoint": "aviation.get_sigmet"}
   ]
 }

@@ -26,6 +26,47 @@ impl Weather {
                 let response = self.alerts.get_alert(request, options).await?;
                 dump(&response)
             }
+            "aviation.get_cwa" => {
+                let request = decode(request)?;
+                let response = self.aviation.get_cwa(request, options).await?;
+                dump(&response)
+            }
+            "aviation.get_cwsu" => {
+                let request = decode(request)?;
+                let response = self.aviation.get_cwsu(request, options).await?;
+                dump(&response)
+            }
+            "aviation.get_sigmet" => {
+                let request = decode(request)?;
+                let response = self.aviation.get_sigmet(request, options).await?;
+                dump(&response)
+            }
+            "aviation.list_cwas" => {
+                let request = decode(request)?;
+                let response = self.aviation.list_cwas(request, options).await?;
+                dump(&response)
+            }
+            "aviation.list_sigmets" => {
+                let request = decode(request)?;
+                let response = self.aviation.list_sigmets(request, options).await?;
+                dump(&response)
+            }
+            "aviation.list_sigmets_for_atsu" => {
+                let request = decode(request)?;
+                let response = self
+                    .aviation
+                    .list_sigmets_for_atsu(request, options)
+                    .await?;
+                dump(&response)
+            }
+            "aviation.list_sigmets_for_atsu_on_date" => {
+                let request = decode(request)?;
+                let response = self
+                    .aviation
+                    .list_sigmets_for_atsu_on_date(request, options)
+                    .await?;
+                dump(&response)
+            }
             "forecast.get_forecast" => {
                 let request = decode(request)?;
                 let response = self.forecast.get_forecast(request, options).await?;
@@ -143,6 +184,38 @@ impl Weather {
             "alerts.get_alert" => {
                 let request = decode(request)?;
                 self.alerts.get_alert_raw(request, options).await
+            }
+            "aviation.get_cwa" => {
+                let request = decode(request)?;
+                self.aviation.get_cwa_raw(request, options).await
+            }
+            "aviation.get_cwsu" => {
+                let request = decode(request)?;
+                self.aviation.get_cwsu_raw(request, options).await
+            }
+            "aviation.get_sigmet" => {
+                let request = decode(request)?;
+                self.aviation.get_sigmet_raw(request, options).await
+            }
+            "aviation.list_cwas" => {
+                let request = decode(request)?;
+                self.aviation.list_cwas_raw(request, options).await
+            }
+            "aviation.list_sigmets" => {
+                let request = decode(request)?;
+                self.aviation.list_sigmets_raw(request, options).await
+            }
+            "aviation.list_sigmets_for_atsu" => {
+                let request = decode(request)?;
+                self.aviation
+                    .list_sigmets_for_atsu_raw(request, options)
+                    .await
+            }
+            "aviation.list_sigmets_for_atsu_on_date" => {
+                let request = decode(request)?;
+                self.aviation
+                    .list_sigmets_for_atsu_on_date_raw(request, options)
+                    .await
             }
             "forecast.get_forecast" => {
                 let request = decode(request)?;

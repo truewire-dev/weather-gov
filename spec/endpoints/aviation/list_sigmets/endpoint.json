@@ -1,0 +1,43 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/sigmetQuery",
+  "meta": {},
+  "notes": [
+    "No `pagination` block: the service answers everything it matched in one response, with no page link or cursor (measured 2026-09-30, 1,059 SIGMETs in one 1.5 MB body).",
+    "The OpenAPI also lists an `atsu` filter. It is not declared: the service answers it with a 301 to `/aviation/sigmets/{atsu}` when it is the first query parameter and is followed by nothing but `date` (measured 2026-09-30: `?atsu=KKCI` and `?atsu=KKCI&date=2026-09-30` redirect, `?date=2026-09-30&atsu=KKCI` and `?atsu=KKCI&sequence=1E` answer 200). Python's HTTP client does not follow a redirect by default and the TypeScript and Rust ones do, so one parameter would behave differently in each language. `aviation.list_sigmets_for_atsu` and `aviation.list_sigmets_for_atsu_on_date` are the unit filter.",
+    "The OpenAPI also lists an `end` filter. It is not declared: the service does not treat it as an upper bound. Measured 2026-09-30, `?end=2026-09-29T00:00:00Z` answered only messages issued after that time, and `?start=2026-09-30T12:00:00Z&end=2026-09-30T13:00:00Z` answered messages issued from 13:10 to 23:55."
+  ],
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/aviation/sigmets",
+    "method": "GET",
+    "description": "SIGMETs and AIRMETs from every unit, newest first, from about the last week. Unfiltered this is a large response (1.5 MB measured); narrow it by `date`, `start` or `sequence`, or ask one unit through `aviation.list_sigmets_for_atsu`.",
+    "request": {
+      "title": "ListSigmetsRequest",
+      "type": "object",
+      "description": "Filters; every one is optional, and they combine.",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Only messages issued at or after this time."
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "Only messages issued on this UTC date."
+        },
+        "sequence": {
+          "type": "string",
+          "description": "Only messages with this sequence identifier, such as `1E`."
+        }
+      }
+    },
+    "response": {
+      "$ref": "SigmetCollection",
+      "description": "The messages."
+    }
+  }
+}

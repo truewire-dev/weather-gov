@@ -1,0 +1,6 @@
+{
+  "description": "Seattle Center's weather unit",
+  "request": {
+    "cwsu_id": "ZSE"
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/cwsu",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/aviation/cwsus/{cwsu_id}",
+    "method": "GET",
+    "description": "One Center Weather Service Unit: where it is and how to reach it.",
+    "request": {
+      "title": "GetCwsuRequest",
+      "type": "object",
+      "description": "Which unit.",
+      "properties": {
+        "cwsu_id": {
+          "$ref": "CwsuId",
+          "description": "The unit, such as `ZSE` for Seattle Center."
+        }
+      },
+      "required": [
+        "cwsu_id"
+      ]
+    },
+    "response": {
+      "title": "CenterWeatherServiceUnit",
+      "type": "object",
+      "description": "The unit. A schema.org `GovernmentOrganization`, like `offices.get_office`, but without the zones and stations an office is responsible for.",
+      "properties": {
+        "id": {
+          "$ref": "CwsuId",
+          "description": "The unit's code."
+        },
+        "name": {
+          "type": "string",
+          "description": "The center it serves, such as `Seattle, WA`."
+        },
+        "address": {
+          "title": "CenterWeatherServiceUnitAddress",
+          "type": "object",
+          "description": "Where the unit is.",
+          "properties": {
+            "streetAddress": {
+              "type": "string",
+              "description": "Street address."
+            },
+            "addressLocality": {
+              "type": "string",
+              "description": "City."
+            },
+            "addressRegion": {
+              "type": "string",
+              "description": "Two-letter state code."
+            },
+            "postalCode": {
+              "type": "string",
+              "description": "ZIP code."
+            }
+          }
+        },
+        "telephone": {
+          "type": "string",
+          "description": "Public telephone number; often empty."
+        },
+        "faxNumber": {
+          "type": "string",
+          "description": "Fax number; often empty."
+        },
+        "email": {
+          "type": "string",
+          "description": "Contact address."
+        },
+        "sameAs": {
+          "type": "string",
+          "description": "The unit's own website."
+        },
+        "nwsRegion": {
+          "type": "string",
+          "description": "NWS region the unit belongs to, such as `wr` for Western."
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    }
+  }
+}

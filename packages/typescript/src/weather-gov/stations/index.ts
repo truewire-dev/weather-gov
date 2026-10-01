@@ -82,7 +82,7 @@ export class Stations {
   }
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  listStations(request: listStations.Request, options: CallOptions & { validate: false }): Promise<unknown>
+  listStations(request: listStations.Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * The observation stations the service knows about, optionally narrowed to a state or to named identifiers. Use it to find the station code `stations.get_observations` takes.
    *

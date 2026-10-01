@@ -5,6 +5,7 @@ use std::sync::Arc;
 use truewire_core::HttpEndpoint;
 
 use crate::alerts::Alerts;
+use crate::aviation::Aviation;
 use crate::forecast::Forecast;
 use crate::meta::DefaultMeta;
 use crate::offices::Offices;
@@ -20,6 +21,8 @@ use crate::zones::Zones;
 pub struct Weather {
     /// Watches, warnings and advisories in effect.
     pub alerts: Alerts,
+    /// Aviation weather: the Center Weather Service Units at the FAA's en-route centers and the advisories they issue, and the SIGMETs and AIRMETs that warn aircraft in flight of significant weather.
+    pub aviation: Aviation,
     /// Forecasts for one grid cell: the twice-daily narrative, the hourly series, and the raw gridded data both are rendered from.
     pub forecast: Forecast,
     /// The weather forecast offices that issue everything else here.
@@ -44,6 +47,7 @@ impl Weather {
         let core: Arc<dyn HttpEndpoint<DefaultMeta>> = Arc::new(core);
         Self {
             alerts: Alerts::new(core.clone()),
+            aviation: Aviation::new(core.clone()),
             forecast: Forecast::new(core.clone()),
             offices: Offices::new(core.clone()),
             points: Points::new(core.clone()),

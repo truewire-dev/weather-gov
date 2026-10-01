@@ -1296,5 +1296,347 @@
       "county"
     ],
     "description": "The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses)."
+  },
+  "CwsuId": {
+    "title": "CwsuId",
+    "type": "string",
+    "description": "Three-letter code of a Center Weather Service Unit: the NWS meteorologists posted at one FAA air route traffic control center, and named after it (`ZSE` is Seattle Center).",
+    "enum": [
+      "ZAB",
+      "ZAN",
+      "ZAU",
+      "ZBW",
+      "ZDC",
+      "ZDV",
+      "ZFA",
+      "ZFW",
+      "ZHU",
+      "ZID",
+      "ZJX",
+      "ZKC",
+      "ZLA",
+      "ZLC",
+      "ZMA",
+      "ZME",
+      "ZMP",
+      "ZNY",
+      "ZOA",
+      "ZOB",
+      "ZSE",
+      "ZTL"
+    ]
+  },
+  "AdvisoryPosition": {
+    "title": "AdvisoryPosition",
+    "type": "array",
+    "description": "A corner of an aviation advisory's outline: latitude first, then longitude. The reverse of GeoJSON's order, and of `Position` everywhere else in this API. Measured 2026-09-30: of the 1,173 polygons the SIGMET and CWA lists held, none had a first value outside [-90, 90].",
+    "minItems": 2,
+    "maxItems": 2,
+    "prefixItems": [
+      {
+        "title": "latitude",
+        "type": "number",
+        "description": "Latitude, decimal degrees north of the equator."
+      },
+      {
+        "title": "longitude",
+        "type": "number",
+        "description": "Longitude, decimal degrees east of the prime meridian. Not wrapped at the antimeridian: an area across it runs past -180 (measured 2026-09-30, -190.7 on an Anchorage AIRMET over the Aleutians)."
+      }
+    ]
+  },
+  "AdvisoryPolygon": {
+    "title": "AdvisoryPolygon",
+    "type": "object",
+    "description": "The area an aviation advisory covers. Shaped like a GeoJSON `Polygon`, but each position is latitude first (`AdvisoryPosition`), so a GeoJSON library draws it transposed.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "Polygon"
+        ],
+        "description": "Always `Polygon`."
+      },
+      "coordinates": {
+        "type": "array",
+        "description": "Linear rings; the first is the outer boundary. Each ring repeats its first position as its last.",
+        "items": {
+          "type": "array",
+          "description": "One linear ring.",
+          "items": {
+            "$ref": "AdvisoryPosition",
+            "description": "One corner of the ring."
+          }
+        }
+      }
+    },
+    "required": [
+      "type",
+      "coordinates"
+    ]
+  },
+  "CenterWeatherAdvisory": {
+    "title": "CenterWeatherAdvisory",
+    "type": "object",
+    "description": "A Center Weather Advisory: a short-fused warning of weather hazardous to aircraft inside one en-route center's airspace.",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Canonical URL of the advisory, ending in its issue date and sequence number: the arguments `aviation.get_cwa` takes."
+      },
+      "issueTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When the advisory was issued."
+      },
+      "cwsu": {
+        "$ref": "CwsuId",
+        "description": "The unit that issued it."
+      },
+      "sequence": {
+        "type": "integer",
+        "description": "Sequence number within the day: the hundreds digit numbers a hazard and the rest counts the advisories about it (`101`, `102`, then `201` for a second hazard). Not always unique: measured 2026-09-30, `ZAB` issued two `206`s that day."
+      },
+      "start": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Start of the period the advisory is valid for."
+      },
+      "end": {
+        "type": "string",
+        "format": "date-time",
+        "description": "End of the period the advisory is valid for."
+      },
+      "observedProperty": {
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "A code URL under `https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/`, such as `.../Tstm` for thunderstorms or `.../Icing`."
+          },
+          {
+            "type": "null",
+            "description": "No basis stated."
+          }
+        ],
+        "description": "What the advisory was issued for, as a code URL; null on a few."
+      },
+      "text": {
+        "type": "string",
+        "description": "The advisory itself, in the abbreviated plain language of aviation weather (`AREA TS MOV LTL TOPS TO FL280`)."
+      }
+    },
+    "required": [
+      "id",
+      "issueTime",
+      "cwsu",
+      "sequence",
+      "start",
+      "end",
+      "observedProperty",
+      "text"
+    ]
+  },
+  "CenterWeatherAdvisoryFeature": {
+    "title": "CenterWeatherAdvisoryFeature",
+    "type": "object",
+    "description": "One Center Weather Advisory, in the GeoJSON feature the API wraps it in. The feature has no `id` of its own; the advisory's URL is `properties.id`.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "Feature"
+        ],
+        "description": "Always `Feature`."
+      },
+      "geometry": {
+        "anyOf": [
+          {
+            "$ref": "AdvisoryPolygon",
+            "description": "The area the advisory covers."
+          },
+          {
+            "type": "null",
+            "description": "No outline. Measured 2026-09-30, every such advisory described an isolated storm by its diameter in `text` instead."
+          }
+        ],
+        "description": "The area the advisory covers, latitude first; null on some."
+      },
+      "properties": {
+        "$ref": "CenterWeatherAdvisory",
+        "description": "The advisory itself."
+      }
+    },
+    "required": [
+      "type",
+      "geometry",
+      "properties"
+    ]
+  },
+  "CenterWeatherAdvisoryCollection": {
+    "title": "CenterWeatherAdvisoryCollection",
+    "type": "object",
+    "description": "Center Weather Advisories, as a GeoJSON feature collection, newest first. The service keeps about a week of them and answers all of them at once: there is no paging.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "FeatureCollection"
+        ],
+        "description": "Always `FeatureCollection`."
+      },
+      "features": {
+        "type": "array",
+        "description": "The advisories; empty when the unit issued none this week.",
+        "items": {
+          "$ref": "CenterWeatherAdvisoryFeature",
+          "description": "One advisory."
+        }
+      }
+    },
+    "required": [
+      "type",
+      "features"
+    ]
+  },
+  "Sigmet": {
+    "title": "Sigmet",
+    "type": "object",
+    "description": "A SIGMET or AIRMET: a warning to aircraft in flight of significant weather (convection, turbulence, icing, obscured mountains) over an area, issued by an air traffic services unit.",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "URL of the message, ending in its issuing unit, UTC issue date and `HHMM` issue time: the arguments `aviation.get_sigmet` takes. Not unique: every message a unit issues in the same minute shares it."
+      },
+      "issueTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When the message was issued."
+      },
+      "fir": {
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "ICAO code of the flight information region, such as `KZMA`."
+          },
+          {
+            "type": "null",
+            "description": "Not stated, as on every message from `ANC`, `FAI`, `JNU` and `HNL` measured 2026-09-30."
+          }
+        ],
+        "description": "Flight information region the message covers; null on some."
+      },
+      "atsu": {
+        "type": "string",
+        "description": "The air traffic services unit that issued it, such as `KKCI` (the Aviation Weather Center) or `ANC` (Anchorage)."
+      },
+      "sequence": {
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "The unit's own series and number, such as `12E` (the Aviation Weather Center's 12th eastern convective SIGMET of the day) or `0000`."
+          },
+          {
+            "type": "null",
+            "description": "Not stated."
+          }
+        ],
+        "description": "Sequence identifier; null on some."
+      },
+      "phenomenon": {
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "A WMO code URL, such as `http://codes.wmo.int/49-2/SigWxPhenomena/EMBD_TS` (embedded thunderstorms) or `.../AirWxPhenomena/MT_OBSC` (mountains obscured)."
+          },
+          {
+            "type": "null",
+            "description": "Not stated."
+          }
+        ],
+        "description": "The hazard, as a WMO code URL; null on more than half."
+      },
+      "start": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Start of the period the message is valid for."
+      },
+      "end": {
+        "type": "string",
+        "format": "date-time",
+        "description": "End of the period the message is valid for."
+      }
+    },
+    "required": [
+      "id",
+      "issueTime",
+      "fir",
+      "atsu",
+      "sequence",
+      "phenomenon",
+      "start",
+      "end"
+    ]
+  },
+  "SigmetFeature": {
+    "title": "SigmetFeature",
+    "type": "object",
+    "description": "One SIGMET or AIRMET, in the GeoJSON feature the API wraps it in. The feature has no `id` of its own; the message's URL is `properties.id`.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "Feature"
+        ],
+        "description": "Always `Feature`."
+      },
+      "geometry": {
+        "anyOf": [
+          {
+            "$ref": "AdvisoryPolygon",
+            "description": "The area the message covers."
+          },
+          {
+            "type": "null",
+            "description": "No outline."
+          }
+        ],
+        "description": "The area the message covers, latitude first; null on some."
+      },
+      "properties": {
+        "$ref": "Sigmet",
+        "description": "The message itself."
+      }
+    },
+    "required": [
+      "type",
+      "geometry",
+      "properties"
+    ]
+  },
+  "SigmetCollection": {
+    "title": "SigmetCollection",
+    "type": "object",
+    "description": "SIGMETs and AIRMETs, as a GeoJSON feature collection, newest first. The service keeps about a week of them and answers everything that matched at once: there is no paging.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "FeatureCollection"
+        ],
+        "description": "Always `FeatureCollection`."
+      },
+      "features": {
+        "type": "array",
+        "description": "The messages.",
+        "items": {
+          "$ref": "SigmetFeature",
+          "description": "One message."
+        }
+      }
+    },
+    "required": [
+      "type",
+      "features"
+    ]
   }
 }
