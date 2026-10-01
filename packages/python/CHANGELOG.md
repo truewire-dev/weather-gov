@@ -17,6 +17,12 @@ Generated with truewire 0.11.
   group (`list_zones`, `list_zones_by_type`, `get_zone`, `get_forecast` and
   `list_transmitters`), and `stations.list_stations_for_zone`,
   `stations.list_stations_for_gridpoint` and `stations.get_observations_for_zone`.
+- **Seven more endpoints: a new `radar` group.** `list_stations`, `get_station` and
+  `list_station_alarms` for the radars themselves; `list_servers`, `get_server`, `get_queue`
+  and `list_spgds` for the network that distributes their data. `get_queue` and
+  `list_spgds` take an ISO 8601 interval as a string. The SPG reports send their times as
+  Unix seconds in strings, which arrive here as `datetime`, and their counts as `int` and
+  `Decimal`.
 - **`ObservationCollection` and `StationCollection` are shared schemas.** Each is returned
   by more than one endpoint now, so they moved from `weather_gov.stations.get_observations`
   and `weather_gov.stations.list_stations` to `weather_gov.schemas`, with
