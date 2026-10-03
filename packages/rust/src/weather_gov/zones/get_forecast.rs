@@ -3,11 +3,13 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-use truewire_core::{
-    decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso,
-};
+
+use truewire_core::{decode, dump, serde_json};
+
+use truewire_core::{CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso};
 
 use crate::meta::DefaultMeta;
+
 use crate::types::ZoneKind;
 
 /// One period: a named half-day.
@@ -49,6 +51,17 @@ pub struct ZoneForecast {
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+impl Request {
+    /// Build a request with every required field; optional fields are absent.
+    pub fn new(zone_id: String, zone_type: ZoneKind) -> Self {
+        Self {
+            zone_id,
+            zone_type,
+            extra: Default::default(),
+        }
+    }
 }
 
 /// The text forecast for a public forecast zone: the forecaster's narrative, period by period, for the week ahead. Coarser than `forecast.get_forecast`, which renders one grid cell; this is what is read on NOAA Weather Radio for the whole zone.

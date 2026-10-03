@@ -3,9 +3,10 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-use truewire_core::{
-    decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso,
-};
+
+use truewire_core::{decode, dump, serde_json};
+
+use truewire_core::{CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso};
 
 use crate::meta::DefaultMeta;
 
@@ -46,10 +47,20 @@ pub struct TafSummary {
 pub struct TafCollection {
     /// The forecasts, newest first.
     #[serde(rename = "@graph")]
-    pub graph: Vec<TafSummary>,
+    pub at_graph: Vec<TafSummary>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+impl Request {
+    /// Build a request with every required field; optional fields are absent.
+    pub fn new(station_id: String) -> Self {
+        Self {
+            station_id,
+            extra: Default::default(),
+        }
+    }
 }
 
 /// The Terminal Aerodrome Forecasts issued for an airport station over roughly the last week, newest first. Only when and for how long each one applies: the forecast text is at each one's `id`, which answers only in XML.

@@ -347,16 +347,23 @@ async fn offices_and_products_answer_in_their_own_vocabularies() {
         .await
         .expect("list_product_types");
     // JSON-LD, a third vocabulary from the same host.
-    assert!(types.graph.len() > 300);
-    assert!(types.graph.iter().any(|entry| entry.product_code == "AFD"));
+    assert!(types.at_graph.len() > 300);
+    assert!(types
+        .at_graph
+        .iter()
+        .any(|entry| entry.product_code == "AFD"));
 }
 
 /// A zone feature: its URL is its code, and a list leaves the outline out.
 fn is_zone(feature: &weather_gov::types::ZoneFeature, geometry: bool) -> &weather_gov::types::Zone {
     let zone = &feature.properties;
-    // `@id` renders as `id` and the zone code as `id2`: generator naming, not the wire's.
-    assert_eq!(feature.id, zone.id);
-    assert!(zone.id.ends_with(&format!("/{}", zone.id2)), "{}", zone.id);
+    // JSON-LD URLs remain distinct from the natural zone code.
+    assert_eq!(feature.id, zone.at_id);
+    assert!(
+        zone.at_id.ends_with(&format!("/{}", zone.id)),
+        "{}",
+        zone.at_id
+    );
     assert!(!zone.name.is_empty());
     assert!(zone.effective_date < zone.expiration_date);
     assert_eq!(feature.geometry.is_some(), geometry);
@@ -365,7 +372,7 @@ fn is_zone(feature: &weather_gov::types::ZoneFeature, geometry: bool) -> &weathe
 
 #[tokio::test]
 async fn zones_list_zones_finds_one_zone_of_each_land_kind_at_a_point() {
-    use weather_gov::types::ZoneType2;
+    use weather_gov::types::ZoneKind;
     let mock = start_mock();
     let client = client(&mock);
     let page = client
@@ -380,14 +387,11 @@ async fn zones_list_zones_finds_one_zone_of_each_land_kind_at_a_point() {
         .await
         .expect("list_zones");
     let zones: Vec<_> = page.features.iter().map(|f| is_zone(f, false)).collect();
-    let mut kinds: Vec<_> = zones.iter().map(|zone| zone.type_2).collect();
+    let mut kinds: Vec<_> = zones.iter().map(|zone| zone.type_).collect();
     kinds.sort_by_key(|kind| format!("{kind:?}"));
-    assert_eq!(
-        kinds,
-        [ZoneType2::County, ZoneType2::Fire, ZoneType2::Public]
-    );
-    assert!(zones.iter().any(|zone| zone.id2 == "WAZ315"));
-    assert!(zones.iter().any(|zone| zone.id2 == "WAC033"));
+    assert_eq!(kinds, [ZoneKind::County, ZoneKind::Fire, ZoneKind::Public]);
+    assert!(zones.iter().any(|zone| zone.id == "WAZ315"));
+    assert!(zones.iter().any(|zone| zone.id == "WAC033"));
 }
 
 #[tokio::test]
@@ -414,9 +418,9 @@ async fn zones_list_zones_honours_area_type_and_limit() {
         .iter()
         .map(|f| {
             let zone = is_zone(f, false);
-            assert_eq!(zone.type_2, weather_gov::types::ZoneType2::Fire);
+            assert_eq!(zone.type_, weather_gov::types::ZoneKind::Fire);
             assert_eq!(zone.state, Some(Some("WA".to_string())));
-            zone.id2.clone()
+            zone.id.clone()
         })
         .collect();
     let mut sorted = ids.clone();
@@ -450,8 +454,8 @@ async fn zones_list_zones_by_type_takes_the_type_from_the_path() {
     assert_eq!(page.features.len(), 5);
     for feature in &page.features {
         let zone = is_zone(feature, false);
-        assert_eq!(zone.type_2, weather_gov::types::ZoneType2::County);
-        assert!(zone.id2.starts_with("WAC"));
+        assert_eq!(zone.type_, weather_gov::types::ZoneKind::County);
+        assert!(zone.id.starts_with("WAC"));
     }
 }
 
@@ -476,7 +480,7 @@ async fn zones_get_zone_keeps_the_outline_and_get_forecast_unwraps() {
         .await
         .expect("get_zone");
     let zone = is_zone(&feature, true);
-    assert_eq!(zone.id2, "WAZ315");
+    assert_eq!(zone.id, "WAZ315");
     assert_eq!(zone.name, "City of Seattle");
     assert_eq!(zone.grid_identifier.as_deref(), Some("SEW"));
     assert!(zone
@@ -523,8 +527,8 @@ async fn zones_list_transmitters_answers_in_json_ld_for_the_county_asked() {
         )
         .await
         .expect("list_transmitters");
-    assert!(!radio.graph.is_empty());
-    for transmitter in &radio.graph {
+    assert!(!radio.at_graph.is_empty());
+    for transmitter in &radio.at_graph {
         assert!(transmitter.counties.iter().any(|county| county == "WAC033"));
         // A decimal string on the wire, kept as one: 162.400 to 162.550 MHz.
         assert!(transmitter
@@ -532,7 +536,7 @@ async fn zones_list_transmitters_answers_in_json_ld_for_the_county_asked() {
             .as_str()
             .starts_with("162."));
     }
-    assert!(radio.graph.iter().any(|t| t.call_sign == "KHB60"));
+    assert!(radio.at_graph.iter().any(|t| t.call_sign == "KHB60"));
 }
 
 #[tokio::test]
@@ -705,12 +709,12 @@ async fn stations_list_tafs_answers_newest_first_with_a_latitude_first_point() {
         )
         .await
         .expect("list_tafs");
-    assert!(tafs.graph.len() > 10);
-    let issued: Vec<_> = tafs.graph.iter().map(|taf| taf.issue_time).collect();
+    assert!(tafs.at_graph.len() > 10);
+    let issued: Vec<_> = tafs.at_graph.iter().map(|taf| taf.issue_time).collect();
     let mut newest_first = issued.clone();
     newest_first.sort_by(|a, b| b.cmp(a));
     assert_eq!(issued, newest_first);
-    for taf in &tafs.graph {
+    for taf in &tafs.at_graph {
         assert_eq!(taf.location, "KSEA");
         assert!(taf
             .id
@@ -723,7 +727,7 @@ async fn stations_list_tafs_answers_newest_first_with_a_latitude_first_point() {
         .clone();
     let longitude = coordinates[0].as_f64().expect("a longitude");
     let latitude = coordinates[1].as_f64().expect("a latitude");
-    let point = tafs.graph[0].geometry.as_deref().expect("a point");
+    let point = tafs.at_graph[0].geometry.as_deref().expect("a point");
     let numbers: Vec<f64> = point
         .trim_start_matches("POINT(")
         .trim_end_matches(')')
@@ -796,13 +800,13 @@ async fn offices_list_headlines_links_each_headline() {
         )
         .await
         .expect("list_headlines");
-    assert!(!headlines.graph.is_empty());
-    for headline in &headlines.graph {
+    assert!(!headlines.at_graph.is_empty());
+    for headline in &headlines.at_graph {
         assert_eq!(headline.office, "https://api.weather.gov/offices/AKQ");
-        // `@id` renders as `id` and the headline id as `id2`, as on `Zone`.
+        // The URL and the token used by get_headline have distinct fields.
         assert_eq!(
-            headline.id,
-            format!("{}/headlines/{}", headline.office, headline.id2)
+            headline.at_id,
+            format!("{}/headlines/{}", headline.office, headline.id)
         );
         assert!(headline.content.contains(&headline.title));
     }
@@ -829,7 +833,7 @@ async fn offices_get_headline_returns_the_headline_the_office_lists() {
         )
         .await
         .expect("get_headline");
-    assert_eq!(headline.id2, id);
+    assert_eq!(headline.id, id);
     let listed = payload("offices/list_headlines/examples/wakefield.response.json")["@graph"]
         .as_array()
         .expect("a graph")
@@ -885,13 +889,13 @@ async fn radio_list_transmitters_last_page_is_short_with_no_next_page() {
         )
         .await
         .expect("list_transmitters");
-    assert!(!page.graph.is_empty() && page.graph.len() < 500);
+    assert!(!page.at_graph.is_empty() && page.at_graph.len() < 500);
     assert!(page.pagination.is_none());
-    let calls: std::collections::HashSet<_> = page.graph.iter().map(|t| &t.call_sign).collect();
-    assert!(calls.len() < page.graph.len());
-    for transmitter in &page.graph {
+    let calls: std::collections::HashSet<_> = page.at_graph.iter().map(|t| &t.call_sign).collect();
+    assert!(calls.len() < page.at_graph.len());
+    for transmitter in &page.at_graph {
         assert_eq!(
-            transmitter.id,
+            transmitter.at_id,
             format!("https://api.weather.gov/radio/{}", transmitter.call_sign)
         );
         assert_eq!(
@@ -921,7 +925,7 @@ async fn radio_get_transmitter_returns_the_one_the_county_lists() {
         .await
         .expect("get_transmitter");
     assert_eq!(transmitter.call_sign, "KHB60");
-    assert_eq!(transmitter.id, "https://api.weather.gov/radio/KHB60");
+    assert_eq!(transmitter.at_id, "https://api.weather.gov/radio/KHB60");
     let county = payload("zones/list_transmitters/examples/king_county.response.json")["@graph"]
         .as_array()
         .expect("a graph")

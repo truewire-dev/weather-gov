@@ -19,6 +19,7 @@
     "offices/list_weather_stories.ts",
     "points/get_point.ts",
     "points/index.ts",
+    "policy.ts",
     "products/index.ts",
     "products/list_product_types.ts",
     "radio/get_transmitter.ts",

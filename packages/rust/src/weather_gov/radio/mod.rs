@@ -5,9 +5,12 @@ pub mod list_transmitters;
 
 use std::sync::Arc;
 
-use truewire_core::{serde_json, CallOptions, HttpEndpoint, Result};
+use truewire_core::serde_json;
+
+use truewire_core::{CallOptions, HttpEndpoint, Result};
 
 use crate::meta::DefaultMeta;
+
 use crate::types::{Transmitter, TransmitterCollection};
 
 /// NOAA Weather Radio: the transmitters that broadcast forecasts and warnings, and the counties each one serves.

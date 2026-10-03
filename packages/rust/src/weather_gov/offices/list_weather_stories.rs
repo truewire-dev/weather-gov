@@ -3,9 +3,10 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-use truewire_core::{
-    decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso,
-};
+
+use truewire_core::{decode, dump, serde_json};
+
+use truewire_core::{CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso};
 
 use crate::meta::DefaultMeta;
 
@@ -46,6 +47,7 @@ pub struct WeatherStory {
     /// Where the office places it among its stories, lowest first.
     pub order: i64,
     /// URL of the graphic. The service answers only an image there, so no endpoint here fetches it. Null on a few stories: 3 of 252 across every office on 2026-09-30.
+    #[serde(deserialize_with = "serde::Deserialize::deserialize")]
     pub download: Option<String>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
@@ -60,6 +62,16 @@ pub struct WeatherStoryCollection {
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+impl Request {
+    /// Build a request with every required field; optional fields are absent.
+    pub fn new(office_id: String) -> Self {
+        Self {
+            office_id,
+            extra: Default::default(),
+        }
+    }
 }
 
 /// The weather stories an office has active: the forecast graphics on the front of its website, each with its text.

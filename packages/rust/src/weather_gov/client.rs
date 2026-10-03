@@ -5,13 +5,21 @@ use std::sync::Arc;
 use truewire_core::HttpEndpoint;
 
 use crate::alerts::Alerts;
+
 use crate::forecast::Forecast;
+
 use crate::meta::DefaultMeta;
+
 use crate::offices::Offices;
+
 use crate::points::Points;
+
 use crate::products::Products;
+
 use crate::radio::Radio;
+
 use crate::stations::Stations;
+
 use crate::zones::Zones;
 
 /// The United States National Weather Service API (`api.weather.gov`): forecasts, observations, active alerts and the offices and stations behind them. No credentials -- the service asks only that a caller identify itself in `User-Agent`.
@@ -39,7 +47,7 @@ pub struct Weather {
 
 impl Weather {
     /// `[policy].rate`: requests per second the core's `HttpClient` paces to; `None` for none.
-    pub const RATE: Option<f64> = None;
+    pub const RATE: ::core::option::Option<f64> = None;
     /// `[policy].retry`: whether the core's `HttpClient` retries on its own.
     pub const RETRY: bool = false;
 

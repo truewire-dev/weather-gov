@@ -3,9 +3,10 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-use truewire_core::{
-    decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso,
-};
+
+use truewire_core::{decode, dump, serde_json};
+
+use truewire_core::{CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso};
 
 use crate::meta::DefaultMeta;
 
@@ -53,10 +54,21 @@ pub struct Request {
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct ActiveBriefing {
     /// The briefing. Null when the office has none active, which is most of them.
+    #[serde(deserialize_with = "serde::Deserialize::deserialize")]
     pub briefing: Option<OfficeBriefing>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+impl Request {
+    /// Build a request with every required field; optional fields are absent.
+    pub fn new(office_id: String) -> Self {
+        Self {
+            office_id,
+            extra: Default::default(),
+        }
+    }
 }
 
 /// The decision-support briefing an office has active, if any: a slide deck for emergency managers, downloadable as a PDF.

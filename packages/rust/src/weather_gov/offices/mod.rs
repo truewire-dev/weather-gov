@@ -8,9 +8,12 @@ pub mod list_weather_stories;
 
 use std::sync::Arc;
 
-use truewire_core::{serde_json, CallOptions, HttpEndpoint, Result};
+use truewire_core::serde_json;
+
+use truewire_core::{CallOptions, HttpEndpoint, Result};
 
 use crate::meta::DefaultMeta;
+
 use crate::types::OfficeHeadline;
 
 /// The weather forecast offices that issue everything else here.

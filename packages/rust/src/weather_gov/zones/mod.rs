@@ -8,9 +8,12 @@ pub mod list_zones_by_type;
 
 use std::sync::Arc;
 
-use truewire_core::{serde_json, CallOptions, HttpEndpoint, Result};
+use truewire_core::serde_json;
+
+use truewire_core::{CallOptions, HttpEndpoint, Result};
 
 use crate::meta::DefaultMeta;
+
 use crate::types::{TransmitterCollection, ZoneCollection, ZoneFeature};
 
 /// Forecast, county, fire-weather and marine zones: the areas forecasts, alerts and radio broadcasts are issued for.

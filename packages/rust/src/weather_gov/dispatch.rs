@@ -2,7 +2,9 @@
 //!
 //! Every generated method reachable by its dotted function path: the lookup a replay test, a CLI or anything else driving the client from data uses instead of reflection.
 
-use truewire_core::{decode, dump, serde_json, CallOptions, Error, Result};
+use truewire_core::{decode, dump, serde_json};
+
+use truewire_core::{CallOptions, Error, Result};
 
 use crate::Weather;
 
