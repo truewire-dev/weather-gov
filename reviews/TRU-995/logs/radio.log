@@ -1,0 +1,6 @@
+packages/typescript/src/weather-gov/stations/get_observations.ts(2,88): error TS2305: Module '"@truewire/core"' has no exported member 'SeekState'.
+packages/typescript/src/weather-gov/stations/get_observations.ts(2,118): error TS2305: Module '"@truewire/core"' has no exported member 'rowField'.
+packages/typescript/src/weather-gov/stations/get_observations.ts(2,128): error TS2305: Module '"@truewire/core"' has no exported member 'seek'.
+packages/typescript/src/weather-gov/stations/get_observations.ts(47,13): error TS7006: Parameter 'row' implicitly has an 'any' type.
+packages/typescript/src/weather-gov/stations/get_observations.ts(53,21): error TS7006: Parameter 'pos' implicitly has an 'any' type.
+packages/typescript/src/weather-gov/stations/index.ts(2,61): error TS2305: Module '"@truewire/core"' has no exported member 'SeekState'.

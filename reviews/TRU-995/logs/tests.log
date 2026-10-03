@@ -1,0 +1,109 @@
+yarn run v1.22.22
+(node:3369662) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+$ vitest run --maxWorkers=1
+
+ RUN  v4.1.11 /home/truewire/work/weather-gov/.paperclip/worktrees/agent/TRU-995/packages/typescript
+
+ ❯ test/paging.test.ts (9 tests | 8 failed) 27ms
+     × is one page 8ms
+     × awaited, returns every observation newest first 2ms
+     × moves end to the oldest observation it held 2ms
+     × at limit 10 against an exclusive end, as the live service has, returns every observation once, newest first 2ms
+     × at limit 10 against an inclusive end, re-serving the boundary, returns every observation once, newest first 1ms
+     × with validate: false, returns the same rows 1ms
+     × resumes from a page it checkpointed 1ms
+     × is typed by what it walks 2ms
+ ❯ test/readme.test.ts (1 test | 1 failed) 9118ms
+   × every TypeScript example in the README compiles against the package 9115ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/paging.test.ts > a span under the cap > is one page
+TypeError: seek is not a function
+ ❯ GetObservations.getObservationsPaged src/weather-gov/stations/get_observations.ts:44:12
+
+ ❯ Stations.getObservationsPaged src/weather-gov/stations/index.ts:78:34
+ ❯ test/paging.test.ts:73:34
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  test/paging.test.ts > a span under the cap > awaited, returns every observation newest first
+TypeError: seek is not a function
+ ❯ GetObservations.getObservationsPaged src/weather-gov/stations/get_observations.ts:44:12
+
+ ❯ Stations.getObservationsPaged src/weather-gov/stations/index.ts:78:34
+ ❯ test/paging.test.ts:82:40
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  test/paging.test.ts > a capped page > moves end to the oldest observation it held
+TypeError: seek is not a function
+ ❯ GetObservations.getObservationsPaged src/weather-gov/stations/get_observations.ts:44:12
+
+ ❯ Stations.getObservationsPaged src/weather-gov/stations/index.ts:78:34
+ ❯ test/paging.test.ts:98:34
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  test/paging.test.ts > the whole walk > at limit 10 against an exclusive end, as the live service has, returns every observation once, newest first
+ FAIL  test/paging.test.ts > the whole walk > at limit 10 against an inclusive end, re-serving the boundary, returns every observation once, newest first
+TypeError: seek is not a function
+ ❯ GetObservations.getObservationsPaged src/weather-gov/stations/get_observations.ts:44:12
+
+ ❯ test/paging.test.ts:135:67
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  test/paging.test.ts > the whole walk > with validate: false, returns the same rows
+TypeError: seek is not a function
+ ❯ GetObservations.getObservationsPaged src/weather-gov/stations/get_observations.ts:44:12
+
+ ❯ test/paging.test.ts:146:51
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  test/paging.test.ts > the whole walk > resumes from a page it checkpointed
+TypeError: seek is not a function
+ ❯ GetObservations.getObservationsPaged src/weather-gov/stations/get_observations.ts:44:12
+
+ ❯ test/paging.test.ts:154:51
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  test/paging.test.ts > the whole walk > is typed by what it walks
+TypeError: seek is not a function
+ ❯ GetObservations.getObservationsPaged src/weather-gov/stations/get_observations.ts:44:12
+
+ ❯ Stations.getObservationsPaged src/weather-gov/stations/index.ts:78:34
+ ❯ test/paging.test.ts:165:34
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+ FAIL  test/readme.test.ts > every TypeScript example in the README compiles against the package
+Error: README examples do not compile:
+src/weather-gov/stations/get_observations.ts(2,88): error TS2305: Module '"@truewire/core"' has no exported member 'SeekState'.
+src/weather-gov/stations/get_observations.ts(2,118): error TS2305: Module '"@truewire/core"' has no exported member 'rowField'.
+src/weather-gov/stations/get_observations.ts(2,128): error TS2305: Module '"@truewire/core"' has no exported member 'seek'.
+src/weather-gov/stations/get_observations.ts(47,13): error TS7006: Parameter 'row' implicitly has an 'any' type.
+src/weather-gov/stations/get_observations.ts(53,21): error TS7006: Parameter 'pos' implicitly has an 'any' type.
+src/weather-gov/stations/index.ts(2,61): error TS2305: Module '"@truewire/core"' has no exported member 'SeekState'.
+
+ ❯ test/readme.test.ts:61:11
+     59|   } catch (e) {
+     60|     const { stdout } = e as { stdout?: Buffer }
+     61|     throw new Error(`README examples do not compile:\n${stdout?.toStri…
+       |           ^
+     62|   }
+     63|   rmSync(dir, { recursive: true, force: true })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/9]⎯
+
+
+ Test Files  2 failed | 1 passed (3)
+      Tests  9 failed | 31 passed (40)
+   Start at  07:58:49
+   Duration  34.98s (transform 3.53s, setup 0ms, import 4.66s, tests 20.24s, environment 1ms)
+
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

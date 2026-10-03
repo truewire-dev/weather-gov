@@ -1,0 +1,13 @@
+yarn run v1.22.22
+(node:3369755) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+$ tsc -p tsconfig.json --noEmit
+src/weather-gov/stations/get_observations.ts(2,88): error TS2305: Module '"@truewire/core"' has no exported member 'SeekState'.
+src/weather-gov/stations/get_observations.ts(2,118): error TS2305: Module '"@truewire/core"' has no exported member 'rowField'.
+src/weather-gov/stations/get_observations.ts(2,128): error TS2305: Module '"@truewire/core"' has no exported member 'seek'.
+src/weather-gov/stations/get_observations.ts(47,13): error TS7006: Parameter 'row' implicitly has an 'any' type.
+src/weather-gov/stations/get_observations.ts(53,21): error TS7006: Parameter 'pos' implicitly has an 'any' type.
+src/weather-gov/stations/index.ts(2,61): error TS2305: Module '"@truewire/core"' has no exported member 'SeekState'.
+test/paging.test.ts(26,58): error TS2305: Module '"@truewire/core"' has no exported member 'SeekState'.
+error Command failed with exit code 2.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

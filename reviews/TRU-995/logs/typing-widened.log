@@ -1,0 +1,2 @@
+reviews/TRU-995/typing_widened.mts(11,3): error TS2578: Unused '@ts-expect-error' directive.
+reviews/TRU-995/typing_widened.mts(13,3): error TS2578: Unused '@ts-expect-error' directive.

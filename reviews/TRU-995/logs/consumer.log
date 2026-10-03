@@ -1,0 +1,3 @@
+PASS: public shared aliases and recorded geometry codecs
+endpoint: result.briefing.startTime.getTime is not a function
+router: result.briefing.startTime.getTime is not a function
