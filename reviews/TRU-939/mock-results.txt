@@ -1,0 +1,7 @@
+PASS stations: comma returns both requested IDs
+PASS stations: rejects id=KSEA&id=KPDX
+PASS stations: rejects id=KSEA,KPDX&id=KPDX
+PASS zones: comma returns both requested IDs
+PASS zones: rejects id=WAZ315&id=WAC033
+PASS zones: rejects id=WAZ315,WAC033&id=WAC033
+PASS 5 matcher edge cases: empty arrays, boolean arrays/scalars, numbers, scalar commas
