@@ -35,8 +35,10 @@ export class Zones {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/zone_forecast
    */
-  getForecast(request: getForecast.Request, options?: CallOptions): Promise<getForecast.ZoneForecast>
-  getForecast(request: getForecast.Request, options?: CallOptions): Promise<getForecast.ZoneForecast> {
+  getForecast(request: getForecast.Request, options?: CallOptions & { validate?: true }): Promise<getForecast.ZoneForecast>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  getForecast(request: getForecast.Request, options?: CallOptions): Promise<unknown>
+  getForecast(request: getForecast.Request, options?: CallOptions): Promise<unknown> {
     return this.getForecast_.getForecast(request, options)
   }
 
@@ -47,8 +49,10 @@ export class Zones {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/zone
    */
-  getZone(request: getZone.Request, options?: CallOptions): Promise<ZoneFeature>
-  getZone(request: getZone.Request, options?: CallOptions): Promise<ZoneFeature> {
+  getZone(request: getZone.Request, options?: CallOptions & { validate?: true }): Promise<ZoneFeature>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  getZone(request: getZone.Request, options?: CallOptions): Promise<unknown>
+  getZone(request: getZone.Request, options?: CallOptions): Promise<unknown> {
     return this.getZone_.getZone(request, options)
   }
 
@@ -59,8 +63,10 @@ export class Zones {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/transmitter_zone
    */
-  listTransmitters(request: listTransmitters.ListTransmittersArgs, options?: CallOptions): Promise<TransmitterCollection>
-  listTransmitters(request: listTransmitters.ListTransmittersArgs, options?: CallOptions): Promise<TransmitterCollection> {
+  listTransmitters(request: listTransmitters.ListTransmittersArgs, options?: CallOptions & { validate?: true }): Promise<TransmitterCollection>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  listTransmitters(request: listTransmitters.ListTransmittersArgs, options?: CallOptions): Promise<unknown>
+  listTransmitters(request: listTransmitters.ListTransmittersArgs, options?: CallOptions): Promise<unknown> {
     return this.listTransmitters_.listTransmitters(request, options)
   }
 
@@ -71,8 +77,10 @@ export class Zones {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/zone_list
    */
-  listZones(request?: listZones.Request, options?: CallOptions): Promise<ZoneCollection>
-  listZones(request?: listZones.Request, options?: CallOptions): Promise<ZoneCollection> {
+  listZones(request?: listZones.Request, options?: CallOptions & { validate?: true }): Promise<ZoneCollection>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  listZones(request?: listZones.Request, options?: CallOptions): Promise<unknown>
+  listZones(request?: listZones.Request, options?: CallOptions): Promise<unknown> {
     return this.listZones_.listZones(request, options)
   }
 
@@ -83,8 +91,10 @@ export class Zones {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/zone_list_type
    */
-  listZonesByType(request: listZonesByType.Request, options?: CallOptions): Promise<ZoneCollection>
-  listZonesByType(request: listZonesByType.Request, options?: CallOptions): Promise<ZoneCollection> {
+  listZonesByType(request: listZonesByType.Request, options?: CallOptions & { validate?: true }): Promise<ZoneCollection>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  listZonesByType(request: listZonesByType.Request, options?: CallOptions): Promise<unknown>
+  listZonesByType(request: listZonesByType.Request, options?: CallOptions): Promise<unknown> {
     return this.listZonesByType_.listZonesByType(request, options)
   }
 }

@@ -27,7 +27,9 @@ export class GetObservation {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/station_observation_time
    */
-  getObservation(request: Request, options?: CallOptions): Promise<Observation>
+  getObservation(request: Request, options?: CallOptions & { validate?: true }): Promise<Observation>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  getObservation(request: Request, options?: CallOptions): Promise<unknown>
   async getObservation(request: Request, options?: CallOptions): Promise<Observation> {
     return this.core.request({
       method: 'GET',

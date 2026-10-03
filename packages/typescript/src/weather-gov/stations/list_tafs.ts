@@ -58,7 +58,9 @@ export class ListTafs {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/tafs
    */
-  listTafs(request: Request, options?: CallOptions): Promise<TafCollection>
+  listTafs(request: Request, options?: CallOptions & { validate?: true }): Promise<TafCollection>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  listTafs(request: Request, options?: CallOptions): Promise<unknown>
   async listTafs(request: Request, options?: CallOptions): Promise<TafCollection> {
     return this.core.request({
       method: 'GET',

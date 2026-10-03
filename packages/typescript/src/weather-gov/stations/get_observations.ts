@@ -38,7 +38,9 @@ export class GetObservations {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/station_observation_list
    */
-  getObservationsPaged(request: GetObservationsPagedRequest, options?: CallOptions): PaginatedResponse<ObservationFeature, SeekState<ObservationFeature, TimestampIso>>
+  getObservationsPaged(request: GetObservationsPagedRequest, options?: CallOptions & { validate?: true }): PaginatedResponse<ObservationFeature, SeekState<ObservationFeature, TimestampIso>>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  getObservationsPaged(request: GetObservationsPagedRequest, options?: CallOptions): PaginatedResponse<unknown, SeekState<unknown, TimestampIso>>
   getObservationsPaged(request: GetObservationsPagedRequest, options?: CallOptions): PaginatedResponse<ObservationFeature, SeekState<ObservationFeature, TimestampIso>> | PaginatedResponse<unknown, SeekState<unknown, TimestampIso>> {
     const size = request.limit == null ? undefined : Math.min(Math.max(request.limit, 2), 500)
     return seek<ObservationFeature, TimestampIso>(request.end, {
@@ -51,7 +53,7 @@ export class GetObservations {
       cap: size ?? 500,
       far: request.start,
       fetch: async (pos) => {
-        const response = await this.getObservations({ ...request, limit: size, end: pos }, options)
+        const response = await this.getObservations({ ...request, limit: size, end: pos }, options) as ObservationCollection
         return response.features ?? []
       },
     })
@@ -64,7 +66,9 @@ export class GetObservations {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/station_observation_list
    */
-  getObservations(request: Request, options?: CallOptions): Promise<ObservationCollection>
+  getObservations(request: Request, options?: CallOptions & { validate?: true }): Promise<ObservationCollection>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  getObservations(request: Request, options?: CallOptions): Promise<unknown>
   async getObservations(request: Request, options?: CallOptions): Promise<ObservationCollection> {
     return this.core.request({
       method: 'GET',

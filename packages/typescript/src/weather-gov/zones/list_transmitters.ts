@@ -30,7 +30,9 @@ export class ListTransmitters {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/transmitter_zone
    */
-  listTransmitters(request: ListTransmittersArgs, options?: CallOptions): Promise<TransmitterCollection>
+  listTransmitters(request: ListTransmittersArgs, options?: CallOptions & { validate?: true }): Promise<TransmitterCollection>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  listTransmitters(request: ListTransmittersArgs, options?: CallOptions): Promise<unknown>
   async listTransmitters(request: ListTransmittersArgs, options?: CallOptions): Promise<TransmitterCollection> {
     const wire: Request = { ...request, zone_type: request.zone_type ?? 'county' }
     return this.core.request({

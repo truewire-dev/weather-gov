@@ -67,7 +67,9 @@ export class GetActiveAlerts {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/alerts_active
    */
-  getActiveAlerts(request?: Request, options?: CallOptions): Promise<AlertCollection>
+  getActiveAlerts(request?: Request, options?: CallOptions & { validate?: true }): Promise<AlertCollection>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  getActiveAlerts(request?: Request, options?: CallOptions): Promise<unknown>
   async getActiveAlerts(request?: Request, options?: CallOptions): Promise<AlertCollection> {
     return this.core.request({
       method: 'GET',

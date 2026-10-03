@@ -24,7 +24,9 @@ export class GetStation {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/obs_station
    */
-  getStation(request: Request, options?: CallOptions): Promise<StationFeature>
+  getStation(request: Request, options?: CallOptions & { validate?: true }): Promise<StationFeature>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  getStation(request: Request, options?: CallOptions): Promise<unknown>
   async getStation(request: Request, options?: CallOptions): Promise<StationFeature> {
     return this.core.request({
       method: 'GET',

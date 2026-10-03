@@ -24,7 +24,9 @@ export class ListTransmitters {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/transmitters
    */
-  listTransmitters(request?: Request, options?: CallOptions): Promise<TransmitterCollection>
+  listTransmitters(request?: Request, options?: CallOptions & { validate?: true }): Promise<TransmitterCollection>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  listTransmitters(request?: Request, options?: CallOptions): Promise<unknown>
   async listTransmitters(request?: Request, options?: CallOptions): Promise<TransmitterCollection> {
     return this.core.request({
       method: 'GET',

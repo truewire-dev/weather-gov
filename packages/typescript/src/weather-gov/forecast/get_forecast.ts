@@ -33,7 +33,9 @@ export class GetForecast {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/gridpoint_forecast
    */
-  getForecast(request: Request, options?: CallOptions): Promise<GridpointForecast>
+  getForecast(request: Request, options?: CallOptions & { validate?: true }): Promise<GridpointForecast>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  getForecast(request: Request, options?: CallOptions): Promise<unknown>
   async getForecast(request: Request, options?: CallOptions): Promise<GridpointForecast> {
     return this.core.request({
       method: 'GET',

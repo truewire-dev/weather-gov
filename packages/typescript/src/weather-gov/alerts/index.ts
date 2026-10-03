@@ -26,8 +26,10 @@ export class Alerts {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/alerts_active
    */
-  getActiveAlerts(request?: getActiveAlerts.Request, options?: CallOptions): Promise<getActiveAlerts.AlertCollection>
-  getActiveAlerts(request?: getActiveAlerts.Request, options?: CallOptions): Promise<getActiveAlerts.AlertCollection> {
+  getActiveAlerts(request?: getActiveAlerts.Request, options?: CallOptions & { validate?: true }): Promise<getActiveAlerts.AlertCollection>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  getActiveAlerts(request?: getActiveAlerts.Request, options?: CallOptions): Promise<unknown>
+  getActiveAlerts(request?: getActiveAlerts.Request, options?: CallOptions): Promise<unknown> {
     return this.getActiveAlerts_.getActiveAlerts(request, options)
   }
 
@@ -38,8 +40,10 @@ export class Alerts {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/alerts_single
    */
-  getAlert(request: getAlert.Request, options?: CallOptions): Promise<AlertFeature>
-  getAlert(request: getAlert.Request, options?: CallOptions): Promise<AlertFeature> {
+  getAlert(request: getAlert.Request, options?: CallOptions & { validate?: true }): Promise<AlertFeature>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  getAlert(request: getAlert.Request, options?: CallOptions): Promise<unknown>
+  getAlert(request: getAlert.Request, options?: CallOptions): Promise<unknown> {
     return this.getAlert_.getAlert(request, options)
   }
 }

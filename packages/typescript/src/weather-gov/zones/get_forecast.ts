@@ -59,7 +59,9 @@ export class GetForecast {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/zone_forecast
    */
-  getForecast(request: Request, options?: CallOptions): Promise<ZoneForecast>
+  getForecast(request: Request, options?: CallOptions & { validate?: true }): Promise<ZoneForecast>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  getForecast(request: Request, options?: CallOptions): Promise<unknown>
   async getForecast(request: Request, options?: CallOptions): Promise<ZoneForecast> {
     return this.core.request({
       method: 'GET',

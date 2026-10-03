@@ -22,8 +22,10 @@ export class Products {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/product_types
    */
-  listProductTypes(request?: listProductTypes.Request, options?: CallOptions): Promise<listProductTypes.ProductTypeCollection>
-  listProductTypes(request?: listProductTypes.Request, options?: CallOptions): Promise<listProductTypes.ProductTypeCollection> {
+  listProductTypes(request?: listProductTypes.Request, options?: CallOptions & { validate?: true }): Promise<listProductTypes.ProductTypeCollection>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  listProductTypes(request?: listProductTypes.Request, options?: CallOptions): Promise<unknown>
+  listProductTypes(request?: listProductTypes.Request, options?: CallOptions): Promise<unknown> {
     return this.listProductTypes_.listProductTypes(request, options)
   }
 }

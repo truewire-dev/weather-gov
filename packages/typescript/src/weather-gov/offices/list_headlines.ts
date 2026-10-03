@@ -34,7 +34,9 @@ export class ListHeadlines {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/office_headlines
    */
-  listHeadlines(request: Request, options?: CallOptions): Promise<OfficeHeadlineCollection>
+  listHeadlines(request: Request, options?: CallOptions & { validate?: true }): Promise<OfficeHeadlineCollection>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  listHeadlines(request: Request, options?: CallOptions): Promise<unknown>
   async listHeadlines(request: Request, options?: CallOptions): Promise<OfficeHeadlineCollection> {
     return this.core.request({
       method: 'GET',

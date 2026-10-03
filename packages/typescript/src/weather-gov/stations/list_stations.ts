@@ -33,7 +33,9 @@ export class ListStations {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/obs_stations
    */
-  listStations(request?: Request, options?: CallOptions): Promise<StationCollection>
+  listStations(request?: Request, options?: CallOptions & { validate?: true }): Promise<StationCollection>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  listStations(request?: Request, options?: CallOptions): Promise<unknown>
   async listStations(request?: Request, options?: CallOptions): Promise<StationCollection> {
     return this.core.request({
       method: 'GET',

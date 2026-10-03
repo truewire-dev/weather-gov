@@ -67,7 +67,9 @@ export class GetBriefing {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/office_briefing
    */
-  getBriefing(request: Request, options?: CallOptions): Promise<ActiveBriefing>
+  getBriefing(request: Request, options?: CallOptions & { validate?: true }): Promise<ActiveBriefing>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  getBriefing(request: Request, options?: CallOptions): Promise<unknown>
   async getBriefing(request: Request, options?: CallOptions): Promise<ActiveBriefing> {
     return this.core.request({
       method: 'GET',

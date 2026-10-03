@@ -42,7 +42,9 @@ export class ListZones {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/zone_list
    */
-  listZones(request?: Request, options?: CallOptions): Promise<ZoneCollection>
+  listZones(request?: Request, options?: CallOptions & { validate?: true }): Promise<ZoneCollection>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  listZones(request?: Request, options?: CallOptions): Promise<unknown>
   async listZones(request?: Request, options?: CallOptions): Promise<ZoneCollection> {
     return this.core.request({
       method: 'GET',

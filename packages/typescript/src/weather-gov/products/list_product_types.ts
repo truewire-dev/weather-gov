@@ -41,7 +41,9 @@ export class ListProductTypes {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/product_types
    */
-  listProductTypes(request?: Request, options?: CallOptions): Promise<ProductTypeCollection>
+  listProductTypes(request?: Request, options?: CallOptions & { validate?: true }): Promise<ProductTypeCollection>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  listProductTypes(request?: Request, options?: CallOptions): Promise<unknown>
   async listProductTypes(request?: Request, options?: CallOptions): Promise<ProductTypeCollection> {
     return this.core.request({
       method: 'GET',
