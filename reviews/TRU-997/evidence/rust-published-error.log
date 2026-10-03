@@ -1,0 +1,22 @@
+Excerpt from original handoff rust-published.log; not a new run.
+   Compiling truewire-core v0.1.0
+   Compiling truewire-weather-gov v0.3.0 (/home/truewire/work/weather-gov/.paperclip/worktrees/agent/TRU-466/packages/rust)
+error[E0432]: unresolved imports `truewire_core::Seek`, `truewire_core::SeekState`
+  --> src/weather_gov/stations/get_observations.rs:10:69
+   |
+10 |     CallOptions, HttpCall, HttpEndpoint, PaginatedResponse, Result, Seek, SeekState, TimestampIso,
+   |                                                                     ^^^^  ^^^^^^^^^ no `SeekState` in the root
+   |                                                                     |
+   |                                                                     no `Seek` in the root
+   |
+   = help: consider importing this trait instead:
+           std::io::Seek
+
+error[E0432]: unresolved import `truewire_core::SeekState`
+  --> src/weather_gov/stations/mod.rs:18:59
+   |
+18 |     CallOptions, HttpEndpoint, PaginatedResponse, Result, SeekState, TimestampIso,
+   |                                                           ^^^^^^^^^ no `SeekState` in the root
+
+For more information about this error, try `rustc --explain E0432`.
+error: could not compile `truewire-weather-gov` (lib) due to 2 previous errors

@@ -1,0 +1,70 @@
+   Compiling truewire-weather-gov v0.3.0 (/home/truewire/work/scratch/TRU-609/rust-diagnostic/packages/rust)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1m 06s
+     Running unittests src/weather_gov/lib.rs (/home/truewire/work/scratch/TRU-609/cargo-target/debug/deps/weather_gov-89e93bffde4912f5)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/probe_tru598.rs (/home/truewire/work/scratch/TRU-609/cargo-target/debug/deps/probe_tru598-1effbb439f78559e)
+
+running 1 test
+PASS: headline.id=8c67c3a1e638b30d1d9dd1524ab53330 fetches the headline; at_id=https://api.weather.gov/offices/AKQ/headlines/8c67c3a1e638b30d1d9dd1524ab53330
+test listed_headline_id_fetches_the_headline_and_at_id_remains_the_url ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.90s
+
+     Running tests/readme_examples.rs (/home/truewire/work/scratch/TRU-609/cargo-target/debug/deps/readme_examples-44a32191d31d9e3d)
+
+running 1 test
+test every_readme_example_is_compiled_here ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/replay.rs (/home/truewire/work/scratch/TRU-609/cargo-target/debug/deps/replay-5c4c9957ac4e943e)
+
+running 25 tests
+test alerts_honour_filters_that_disagree_about_capitalisation ... ok
+test alerts_get_alert_keeps_the_whole_feature_and_a_colon_in_the_path ... ok
+test forecast_get_forecast_returns_fourteen_periods ... ok
+test offices_and_products_answer_in_their_own_vocabularies ... ok
+test offices_get_briefing_answers_an_honest_null_for_an_office_with_none ... ok
+test offices_get_briefing_returns_an_active_briefing_and_its_pdf ... ok
+test offices_get_headline_returns_the_headline_the_office_lists ... ok
+test offices_list_headlines_links_each_headline ... ok
+test offices_list_weather_stories_returns_each_graphic_with_its_text ... ok
+test points_get_point_returns_the_payload_not_the_wrapper ... ok
+test radio_list_transmitters_last_page_is_short_with_no_next_page ... ok
+test radio_get_transmitter_returns_the_one_the_county_lists ... ok
+test stations_for_a_zone_and_a_grid_cell ... ok
+test stations_get_latest_observation_carries_a_unit_on_every_measurement ... ok
+test stations_get_observation_returns_the_observation_at_the_moment_asked ... ok
+test stations_get_observations_for_zone_merges_stations_newest_first ... ok
+test stations_get_station_keeps_the_whole_feature ... ok
+test stations_list_stations_sends_a_repeated_query_key ... ok
+test stations_get_observations_answers_newest_first ... ok
+test stations_list_tafs_answers_newest_first_with_a_latitude_first_point ... ok
+test zones_get_zone_keeps_the_outline_and_get_forecast_unwraps ... ok
+test zones_list_zones_by_type_takes_the_type_from_the_path ... ok
+test zones_list_transmitters_answers_in_json_ld_for_the_county_asked ... ok
+test zones_list_zones_finds_one_zone_of_each_land_kind_at_a_point ... ok
+test zones_list_zones_honours_area_type_and_limit ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 33.53s
+
+     Running tests/shared_types.rs (/home/truewire/work/scratch/TRU-609/cargo-target/debug/deps/shared_types-17a5ecf22c293a9f)
+
+running 4 tests
+test product_graph_retains_its_json_ld_wire_name ... ok
+test alert_geometry_preserves_missing_null_and_value ... ok
+test zone_geometry_and_kind_use_public_shared_types ... ok
+test transmitter_graph_and_identifiers_retain_json_ld_wire_names ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests weather_gov
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

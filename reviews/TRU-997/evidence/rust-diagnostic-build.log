@@ -1,0 +1,12 @@
+   Compiling tokio v1.53.1
+   Compiling hyper v1.11.1
+   Compiling tokio-rustls v0.26.5
+   Compiling tower v0.5.3
+   Compiling hyper-util v0.1.20
+   Compiling tower-http v0.6.11
+   Compiling hyper-rustls v0.27.9
+   Compiling reqwest v0.12.28
+   Compiling tokio-tungstenite v0.30.0
+   Compiling truewire-core v0.2.0 (/home/truewire/work/scratch/TRU-609/toolchain/crates/truewire-core)
+   Compiling truewire-weather-gov v0.3.0 (/home/truewire/work/scratch/TRU-609/rust-diagnostic/packages/rust)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 35.54s
