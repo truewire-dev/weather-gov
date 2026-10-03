@@ -27,13 +27,15 @@ export class ListStations {
   constructor(readonly core: HttpEndpoint<DefaultMeta>) {}
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  listStations(request: Request, options: CallOptions & { validate: false }): Promise<unknown>
+  listStations(request: Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * The observation stations the service knows about, optionally narrowed to a state or to named identifiers. Use it to find the station code `stations.get_observations` takes.
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/obs_stations
    */
-  listStations(request?: Request, options?: CallOptions): Promise<StationCollection>
+  listStations(request?: Request, options?: CallOptions & { validate?: true }): Promise<StationCollection>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  listStations(request?: Request, options?: CallOptions): Promise<unknown>
   async listStations(request?: Request, options?: CallOptions): Promise<StationCollection> {
     return this.core.request({
       method: 'GET',

@@ -3,11 +3,13 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-use truewire_core::{
-    decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso,
-};
+
+use truewire_core::{decode, dump, serde_json};
+
+use truewire_core::{CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso};
 
 use crate::meta::DefaultMeta;
+
 use crate::types::{GridSeries, QuantitativeValue};
 
 /// Which grid cell.
@@ -28,10 +30,13 @@ pub struct Request {
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct WeatherPhenomenon {
     /// How widespread it is: `patchy`, `scattered`, `likely`, `definite`.
+    #[serde(deserialize_with = "serde::Deserialize::deserialize")]
     pub coverage: Option<String>,
     /// The phenomenon: `rain`, `snow`, `fog`, `thunderstorms`.
+    #[serde(deserialize_with = "serde::Deserialize::deserialize")]
     pub weather: Option<String>,
     /// `very_light`, `light`, `moderate` or `heavy`.
+    #[serde(deserialize_with = "serde::Deserialize::deserialize")]
     pub intensity: Option<String>,
     /// Visibility in the phenomenon.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -201,6 +206,18 @@ pub struct GridData {
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+impl Request {
+    /// Build a request with every required field; optional fields are absent.
+    pub fn new(office: String, grid_x: i64, grid_y: i64) -> Self {
+        Self {
+            office,
+            grid_x,
+            grid_y,
+            extra: Default::default(),
+        }
+    }
 }
 
 /// The raw gridded forecast for one cell: the seventy-odd series the narrative forecasts are rendered from, each a run of intervals with its own unit. This is the endpoint to reach for when the prose is not enough -- a snow-load calculation wants `snowfallAmount`, not `Snow likely, with 2 to 4 inches possible`.

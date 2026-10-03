@@ -5,6 +5,7 @@ from .forecast import Forecast
 from .offices import Offices
 from .points import Points
 from .products import Products
+from .radio import Radio
 from .stations import Stations
 from .zones import Zones
 from weather_gov.core import ClientBase
@@ -61,6 +62,15 @@ class Weather(ClientBase):
       - [Upstream docs](https://www.weather.gov/documentation/services-web-api#/default/product_types)
     """
     return Products(client=self.client)
+
+  @cached_property
+  def radio(self) -> Radio:
+    """NOAA Weather Radio: the transmitters that broadcast forecasts and warnings, and the counties each one serves.
+
+    References:
+      - [Upstream docs](https://www.weather.gov/documentation/services-web-api#/default/transmitters)
+    """
+    return Radio(client=self.client)
 
   @cached_property
   def stations(self) -> Stations:

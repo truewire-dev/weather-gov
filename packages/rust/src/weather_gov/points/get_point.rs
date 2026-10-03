@@ -3,9 +3,13 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-use truewire_core::{decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result};
+
+use truewire_core::{decode, dump, serde_json};
+
+use truewire_core::{CallOptions, HttpCall, HttpEndpoint, Result};
 
 use crate::meta::DefaultMeta;
+
 use crate::types::{PointGeometry, QuantitativeValue};
 
 /// The coordinates to resolve.
@@ -127,6 +131,17 @@ pub struct Point {
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+impl Request {
+    /// Build a request with every required field; optional fields are absent.
+    pub fn new(latitude: f64, longitude: f64) -> Self {
+        Self {
+            latitude,
+            longitude,
+            extra: Default::default(),
+        }
+    }
 }
 
 /// Resolve a latitude/longitude to the forecast grid it falls in. Almost every other endpoint here is addressed by grid cell rather than by coordinates, so this is where a caller starts: it returns the office and the grid indices `forecast.get_forecast` takes, plus the zones, the radar station and the nearest city.

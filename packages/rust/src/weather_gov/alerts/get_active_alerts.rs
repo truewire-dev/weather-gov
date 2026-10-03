@@ -3,11 +3,13 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-use truewire_core::{
-    decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso,
-};
+
+use truewire_core::{decode, dump, serde_json};
+
+use truewire_core::{CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso};
 
 use crate::meta::DefaultMeta;
+
 use crate::types::AlertFeature;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
@@ -124,6 +126,24 @@ pub struct AlertCollection {
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+impl Request {
+    /// Build a request with every required field; optional fields are absent.
+    pub fn new() -> Self {
+        Self {
+            area: None,
+            region: None,
+            zone: None,
+            point: None,
+            status: None,
+            severity: None,
+            urgency: None,
+            certainty: None,
+            event: None,
+            extra: Default::default(),
+        }
+    }
 }
 
 /// Every watch, warning and advisory in effect right now, optionally narrowed. Unnarrowed this is the whole country and runs to a few hundred alerts, so narrow by `area`, `zone` or `point` unless you want all of it.

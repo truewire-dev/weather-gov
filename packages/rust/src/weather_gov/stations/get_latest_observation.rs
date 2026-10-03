@@ -3,9 +3,13 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-use truewire_core::{decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result};
+
+use truewire_core::{decode, dump, serde_json};
+
+use truewire_core::{CallOptions, HttpCall, HttpEndpoint, Result};
 
 use crate::meta::DefaultMeta;
+
 use crate::types::Observation;
 
 /// Which station.
@@ -19,6 +23,17 @@ pub struct Request {
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+impl Request {
+    /// Build a request with every required field; optional fields are absent.
+    pub fn new(station_id: String) -> Self {
+        Self {
+            station_id,
+            require_qc: None,
+            extra: Default::default(),
+        }
+    }
 }
 
 /// The most recent observation from one station. This is the endpoint behind "what is it doing outside right now".

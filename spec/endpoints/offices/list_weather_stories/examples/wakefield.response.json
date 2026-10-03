@@ -1,0 +1,46 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": {
+      "@version": "1.1"
+    },
+    "stories": [
+      {
+        "officeId": "AKQ",
+        "startTime": "2026-09-26T20:28:00+00:00",
+        "endTime": "2026-10-01T12:00:00+00:00",
+        "updateTime": "2026-09-30T09:28:38+00:00",
+        "title": "Today's Forecast",
+        "description": "Some patchy fog to begin the day. Otherwise, partly sunny and warmer today with highs in the low to mid 80s. A brief but steady warmup for the next couple of days, to be quickly followed by much cooler temperatures and increased rain chances over the weekend. ",
+        "altText": "National Weather Service 4-day forecast graphic for Wakefield, VA, featuring an image of Coleman Bridge in York County, VA, detailing conditions and temperatures from Today through Saturday, issued September 30, 2026. Patchy AM Fog,\n\nPartly Sunny and Warmer Today highs 80-85\nPartly Sunny, Very Warm and Dry Tomorrow, highs 85-90\nPartly Sunny, hot and breezy Friday, highs upper 80s to low 90s.\nIncreasing clouds and cooler with afternoon and evening showers Saturday. Highs in the 70s north to low to mid 80s south.",
+        "priority": false,
+        "order": 0,
+        "download": "https://api.weather.gov/offices/AKQ/weatherstories/download/ac580033-2a8e-429e-9796-50be30e52904"
+      },
+      {
+        "officeId": "AKQ",
+        "startTime": "2026-09-27T08:50:00+00:00",
+        "endTime": "2026-10-02T11:00:00+00:00",
+        "updateTime": "2026-09-30T20:38:58+00:00",
+        "title": "Coastal Waters Forecast",
+        "description": "Generally light winds and sub-Small Craft Advisory conditions are expected through the rest of the week. Light winds will gradually increase and become S-SW ahead of an approaching cold front through Friday.",
+        "altText": "Generally light winds and sub-Small Craft Advisory conditions are expected through the rest of the week. Light winds will gradually increase and become S-SW ahead of an approaching cold front through Friday.",
+        "priority": false,
+        "order": 2,
+        "download": "https://api.weather.gov/offices/AKQ/weatherstories/download/467b157d-fee3-457d-ac4c-fda8ac448097"
+      },
+      {
+        "officeId": "AKQ",
+        "startTime": "2026-09-27T08:45:00+00:00",
+        "endTime": "2026-10-01T11:00:00+00:00",
+        "updateTime": "2026-09-30T20:39:52+00:00",
+        "title": "Chesapeake Bay Forecast",
+        "description": "Generally light winds and sub-Small Craft Advisory conditions are expected through the rest of the week. Light winds will gradually increase and become S-SW ahead of an approaching cold front through Friday.",
+        "altText": "Generally light winds and sub-Small Craft Advisory conditions are expected through the rest of the week. Light winds will gradually increase and become S-SW ahead of an approaching cold front through Friday.",
+        "priority": false,
+        "order": 3,
+        "download": "https://api.weather.gov/offices/AKQ/weatherstories/download/7664a954-a3ae-481c-b5e3-bce3a5d0ece2"
+      }
+    ]
+  }
+}

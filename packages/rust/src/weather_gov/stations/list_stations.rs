@@ -3,9 +3,13 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-use truewire_core::{decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result};
+
+use truewire_core::{decode, dump, serde_json};
+
+use truewire_core::{CallOptions, HttpCall, HttpEndpoint, Result};
 
 use crate::meta::DefaultMeta;
+
 use crate::types::StationCollection;
 
 /// Which stations, and how many.
@@ -26,6 +30,19 @@ pub struct Request {
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+impl Request {
+    /// Build a request with every required field; optional fields are absent.
+    pub fn new() -> Self {
+        Self {
+            id: None,
+            state: None,
+            limit: None,
+            cursor: None,
+            extra: Default::default(),
+        }
+    }
 }
 
 /// The observation stations the service knows about, optionally narrowed to a state or to named identifiers. Use it to find the station code `stations.get_observations` takes.

@@ -27,7 +27,9 @@ export class GetLatestObservation {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/station_observation_latest
    */
-  getLatestObservation(request: Request, options?: CallOptions): Promise<Observation>
+  getLatestObservation(request: Request, options?: CallOptions & { validate?: true }): Promise<Observation>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  getLatestObservation(request: Request, options?: CallOptions): Promise<unknown>
   async getLatestObservation(request: Request, options?: CallOptions): Promise<Observation> {
     return this.core.request({
       method: 'GET',

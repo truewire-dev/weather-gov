@@ -49,7 +49,7 @@ class GetZone(Endpoint):
 
     Args:
       zone_id: Zone code, such as `WAZ315`. `points.get_point` returns the forecast, county and fire-weather zones of a place as URLs ending in one.
-      zone_type:
+      zone_type: The zone type. Any of them finds a zone of another type too (`/zones/forecast/PZZ135` answers the coastal zone), but the code decides what comes back.
       effective: Answer as the zone stood at this time rather than now. Before the zone took effect the service answers 404.
       validate: Override this call's response validation; falls back to the client-level default when omitted. `False` returns the parsed body as it came, typed `Any`.
 

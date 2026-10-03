@@ -29,8 +29,10 @@ export class Forecast {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/gridpoint_forecast
    */
-  getForecast(request: getForecast.Request, options?: CallOptions): Promise<GridpointForecast>
-  getForecast(request: getForecast.Request, options?: CallOptions): Promise<GridpointForecast> {
+  getForecast(request: getForecast.Request, options?: CallOptions & { validate?: true }): Promise<GridpointForecast>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  getForecast(request: getForecast.Request, options?: CallOptions): Promise<unknown>
+  getForecast(request: getForecast.Request, options?: CallOptions): Promise<unknown> {
     return this.getForecast_.getForecast(request, options)
   }
 
@@ -41,8 +43,10 @@ export class Forecast {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/gridpoint
    */
-  getGridData(request: getGridData.Request, options?: CallOptions): Promise<getGridData.GridData>
-  getGridData(request: getGridData.Request, options?: CallOptions): Promise<getGridData.GridData> {
+  getGridData(request: getGridData.Request, options?: CallOptions & { validate?: true }): Promise<getGridData.GridData>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  getGridData(request: getGridData.Request, options?: CallOptions): Promise<unknown>
+  getGridData(request: getGridData.Request, options?: CallOptions): Promise<unknown> {
     return this.getGridData_.getGridData(request, options)
   }
 
@@ -53,8 +57,10 @@ export class Forecast {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/gridpoint_forecast_hourly
    */
-  getHourlyForecast(request: getHourlyForecast.Request, options?: CallOptions): Promise<GridpointForecast>
-  getHourlyForecast(request: getHourlyForecast.Request, options?: CallOptions): Promise<GridpointForecast> {
+  getHourlyForecast(request: getHourlyForecast.Request, options?: CallOptions & { validate?: true }): Promise<GridpointForecast>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  getHourlyForecast(request: getHourlyForecast.Request, options?: CallOptions): Promise<unknown>
+  getHourlyForecast(request: getHourlyForecast.Request, options?: CallOptions): Promise<unknown> {
     return this.getHourlyForecast_.getHourlyForecast(request, options)
   }
 }

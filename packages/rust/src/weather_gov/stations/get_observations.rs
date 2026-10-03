@@ -3,12 +3,15 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
+
+use truewire_core::{decode, dump, serde_json};
+
 use truewire_core::{
-    decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, PaginatedResponse, Result, Seek,
-    SeekState, TimestampIso,
+    CallOptions, HttpCall, HttpEndpoint, PaginatedResponse, Result, Seek, SeekState, TimestampIso,
 };
 
 use crate::meta::DefaultMeta;
+
 use crate::types::{ObservationCollection, ObservationFeature};
 
 /// Which station, over which span.
@@ -30,6 +33,18 @@ pub struct Request {
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
+impl Request {
+    /// Build a request with every required field; optional fields are absent.
+    pub fn new(station_id: String) -> Self {
+        Self {
+            station_id,
+            start: None,
+            end: None,
+            limit: None,
+            extra: Default::default(),
+        }
+    }
+}
 /// `get_observations_paged`'s request: `Request`, whose `end` the walk moves and whose `start` caps it.
 pub type GetObservationsPagedRequest = Request;
 

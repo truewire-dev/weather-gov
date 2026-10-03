@@ -16,14 +16,16 @@ export class Products {
   }
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  listProductTypes(request: listProductTypes.Request, options: CallOptions & { validate: false }): Promise<unknown>
+  listProductTypes(request: listProductTypes.Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * Every kind of text product the service issues, by code. Three-letter codes such as `AFD` (area forecast discussion) or `TOR` (tornado warning), each with the name it stands for.
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/product_types
    */
-  listProductTypes(request?: listProductTypes.Request, options?: CallOptions): Promise<listProductTypes.ProductTypeCollection>
-  listProductTypes(request?: listProductTypes.Request, options?: CallOptions): Promise<listProductTypes.ProductTypeCollection> {
+  listProductTypes(request?: listProductTypes.Request, options?: CallOptions & { validate?: true }): Promise<listProductTypes.ProductTypeCollection>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  listProductTypes(request?: listProductTypes.Request, options?: CallOptions): Promise<unknown>
+  listProductTypes(request?: listProductTypes.Request, options?: CallOptions): Promise<unknown> {
     return this.listProductTypes_.listProductTypes(request, options)
   }
 }

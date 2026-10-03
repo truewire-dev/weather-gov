@@ -1,0 +1,45 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/office_headlines",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/offices/{office_id}/headlines",
+    "method": "GET",
+    "description": "The news headlines an office has posted.",
+    "request": {
+      "title": "ListHeadlinesRequest",
+      "type": "object",
+      "description": "Which office.",
+      "properties": {
+        "office_id": {
+          "type": "string",
+          "description": "Three-letter office code, such as `AKQ`. `points.get_point` returns it as `gridId`."
+        }
+      },
+      "required": [
+        "office_id"
+      ]
+    },
+    "response": {
+      "title": "OfficeHeadlineCollection",
+      "type": "object",
+      "description": "The headlines, as a JSON-LD graph.",
+      "properties": {
+        "@graph": {
+          "type": "array",
+          "description": "The headlines. Empty for an office that has posted none.",
+          "items": {
+            "$ref": "OfficeHeadline",
+            "description": "One headline."
+          }
+        }
+      },
+      "required": [
+        "@graph"
+      ]
+    }
+  }
+}

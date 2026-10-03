@@ -1,0 +1,19 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": {
+      "@version": "1.1"
+    },
+    "briefing": {
+      "id": "f32dba11-6c45-4c72-987e-a9bd6b552364",
+      "officeId": "AKQ",
+      "startTime": "2026-09-30T13:06:00+00:00",
+      "endTime": "2026-10-01T13:06:00+00:00",
+      "updateTime": "2026-09-30T20:08:01+00:00",
+      "title": "Click to view briefing",
+      "description": "Wednesday 9/30/26 Weather Briefing (PM Update)\n\n",
+      "priority": false,
+      "download": "https://api.weather.gov/offices/AKQ/briefing/download/f32dba11-6c45-4c72-987e-a9bd6b552364"
+    }
+  }
+}

@@ -3,11 +3,14 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-use truewire_core::{
-    decode, dump, serde_json, CallOptions, DecimalString, HttpCall, HttpEndpoint, Result,
-};
+
+use truewire_core::{decode, dump, serde_json};
+
+use truewire_core::{CallOptions, HttpCall, HttpEndpoint, Result};
 
 use crate::meta::DefaultMeta;
+
+use crate::types::TransmitterCollection;
 
 /// Which county.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
@@ -19,58 +22,14 @@ pub struct Request {
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub enum TransmitterType {
-    #[serde(rename = "wx:Transmitter")]
-    WxTransmitter,
-}
-
-/// One NOAA Weather Radio transmitter.
-#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
-pub struct Transmitter {
-    /// URL of the transmitter.
-    #[serde(rename = "@id")]
-    pub id: String,
-    /// Always `wx:Transmitter`.
-    #[serde(rename = "@type", default, skip_serializing_if = "Option::is_none")]
-    pub type_: Option<TransmitterType>,
-    /// Which release of the transmitter list this came from.
-    #[serde(rename = "setId", default, skip_serializing_if = "Option::is_none")]
-    pub set_id: Option<String>,
-    /// Call sign, such as `KHB60`.
-    #[serde(rename = "callSign")]
-    pub call_sign: String,
-    /// Frequency in MHz, such as `162.550`.
-    #[serde(rename = "transmitterFrequency")]
-    pub transmitter_frequency: DecimalString,
-    /// Name of the transmitter, such as `Seattle`.
-    #[serde(rename = "siteName", default, skip_serializing_if = "Option::is_none")]
-    pub site_name: Option<String>,
-    /// Where the transmitter stands.
-    #[serde(rename = "siteCity", default, skip_serializing_if = "Option::is_none")]
-    pub site_city: Option<String>,
-    /// Two-letter state of the site.
-    #[serde(rename = "siteState", default, skip_serializing_if = "Option::is_none")]
-    pub site_state: Option<String>,
-    /// SAME codes of the counties it broadcasts for: `0`, the FIPS state, the FIPS county, such as `053033`.
-    #[serde(rename = "sameCodes", default, skip_serializing_if = "Option::is_none")]
-    pub same_codes: Option<Vec<String>>,
-    /// County zone codes it broadcasts for, such as `WAC033`, in the order of `sameCodes`.
-    pub counties: Vec<String>,
-    /// Keys the spec does not document, kept as they came.
-    #[serde(flatten)]
-    pub extra: serde_json::Map<String, serde_json::Value>,
-}
-
-/// The transmitters, as a JSON-LD graph.
-#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
-pub struct TransmitterCollection {
-    /// The transmitters. Each one arrives many times over, identical: 64 copies of each on 2026-09-30.
-    #[serde(rename = "@graph")]
-    pub graph: Vec<Transmitter>,
-    /// Keys the spec does not document, kept as they came.
-    #[serde(flatten)]
-    pub extra: serde_json::Map<String, serde_json::Value>,
+impl Request {
+    /// Build a request with every required field; optional fields are absent.
+    pub fn new(zone_id: String) -> Self {
+        Self {
+            zone_id,
+            extra: Default::default(),
+        }
+    }
 }
 
 /// The NOAA Weather Radio transmitters that broadcast for a county. JSON-LD, not GeoJSON: the transmitters come as a `@graph`.

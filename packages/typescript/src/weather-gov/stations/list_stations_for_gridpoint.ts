@@ -33,7 +33,9 @@ export class ListStationsForGridpoint {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/gridpoint_stations
    */
-  listStationsForGridpoint(request: Request, options?: CallOptions): Promise<StationCollection>
+  listStationsForGridpoint(request: Request, options?: CallOptions & { validate?: true }): Promise<StationCollection>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  listStationsForGridpoint(request: Request, options?: CallOptions): Promise<unknown>
   async listStationsForGridpoint(request: Request, options?: CallOptions): Promise<StationCollection> {
     return this.core.request({
       method: 'GET',

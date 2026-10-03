@@ -6,9 +6,12 @@ pub mod get_hourly_forecast;
 
 use std::sync::Arc;
 
-use truewire_core::{serde_json, CallOptions, HttpEndpoint, Result};
+use truewire_core::serde_json;
+
+use truewire_core::{CallOptions, HttpEndpoint, Result};
 
 use crate::meta::DefaultMeta;
+
 use crate::types::GridpointForecast;
 
 /// Forecasts for one grid cell: the twice-daily narrative, the hourly series, and the raw gridded data both are rendered from.

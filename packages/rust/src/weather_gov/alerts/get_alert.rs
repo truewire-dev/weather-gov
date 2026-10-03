@@ -3,9 +3,13 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-use truewire_core::{decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result};
+
+use truewire_core::{decode, dump, serde_json};
+
+use truewire_core::{CallOptions, HttpCall, HttpEndpoint, Result};
 
 use crate::meta::DefaultMeta;
+
 use crate::types::AlertFeature;
 
 /// Which alert.
@@ -16,6 +20,16 @@ pub struct Request {
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+impl Request {
+    /// Build a request with every required field; optional fields are absent.
+    pub fn new(id: String) -> Self {
+        Self {
+            id,
+            extra: Default::default(),
+        }
+    }
 }
 
 /// One alert by its identifier, including the polygon it was drawn for when it has one. The identifiers come from `alerts.get_active_alerts`.

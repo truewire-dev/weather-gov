@@ -61,13 +61,15 @@ export class GetActiveAlerts {
   constructor(readonly core: HttpEndpoint<DefaultMeta>) {}
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  getActiveAlerts(request: Request, options: CallOptions & { validate: false }): Promise<unknown>
+  getActiveAlerts(request: Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * Every watch, warning and advisory in effect right now, optionally narrowed. Unnarrowed this is the whole country and runs to a few hundred alerts, so narrow by `area`, `zone` or `point` unless you want all of it.
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/alerts_active
    */
-  getActiveAlerts(request?: Request, options?: CallOptions): Promise<AlertCollection>
+  getActiveAlerts(request?: Request, options?: CallOptions & { validate?: true }): Promise<AlertCollection>
+  /** When validation may be disabled, returned values are typed `unknown`. */
+  getActiveAlerts(request?: Request, options?: CallOptions): Promise<unknown>
   async getActiveAlerts(request?: Request, options?: CallOptions): Promise<AlertCollection> {
     return this.core.request({
       method: 'GET',
