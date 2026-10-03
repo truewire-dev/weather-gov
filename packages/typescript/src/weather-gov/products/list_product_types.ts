@@ -35,7 +35,7 @@ export class ListProductTypes {
   constructor(readonly core: HttpEndpoint<DefaultMeta>) {}
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  listProductTypes(request: Request, options: CallOptions & { validate: false }): Promise<unknown>
+  listProductTypes(request: Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * Every kind of text product the service issues, by code. Three-letter codes such as `AFD` (area forecast discussion) or `TOR` (tornado warning), each with the name it stands for.
    *

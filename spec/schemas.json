@@ -1043,6 +1043,17 @@
       "features"
     ]
   },
+  "CollectionPagination": {
+    "title": "CollectionPagination",
+    "type": "object",
+    "description": "Where the next page is. A whole URL, not a bare cursor -- which is why no endpoint returning this declares a pagination strategy.",
+    "properties": {
+      "next": {
+        "type": "string",
+        "description": "URL of the next page, cursor already in the query string. Absent on the last page."
+      }
+    }
+  },
   "StationCollection": {
     "title": "StationCollection",
     "type": "object",
@@ -1072,15 +1083,8 @@
         }
       },
       "pagination": {
-        "title": "CollectionPagination",
-        "type": "object",
-        "description": "Where the next page is. A whole URL, not a bare cursor -- which is why no endpoint returning this declares a pagination strategy.",
-        "properties": {
-          "next": {
-            "type": "string",
-            "description": "URL of the next page, cursor already in the query string. Absent on the last page."
-          }
-        }
+        "$ref": "CollectionPagination",
+        "description": "Where the next page is."
       }
     },
     "required": [
@@ -1296,5 +1300,159 @@
       "county"
     ],
     "description": "The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses)."
+  },
+  "Transmitter": {
+    "title": "Transmitter",
+    "type": "object",
+    "description": "One NOAA Weather Radio transmitter.",
+    "properties": {
+      "@id": {
+        "type": "string",
+        "description": "URL of the transmitter."
+      },
+      "@type": {
+        "type": "string",
+        "enum": [
+          "wx:Transmitter"
+        ],
+        "description": "Always `wx:Transmitter`."
+      },
+      "setId": {
+        "type": "string",
+        "description": "Which release of the transmitter list this came from."
+      },
+      "callSign": {
+        "type": "string",
+        "description": "Call sign, such as `KHB60`."
+      },
+      "transmitterFrequency": {
+        "type": "string",
+        "format": "decimal-string",
+        "description": "Frequency in MHz, such as `162.550`."
+      },
+      "siteName": {
+        "type": "string",
+        "description": "Name of the transmitter, such as `Seattle`."
+      },
+      "siteCity": {
+        "type": "string",
+        "description": "Where the transmitter stands."
+      },
+      "siteState": {
+        "type": "string",
+        "description": "Two-letter state of the site."
+      },
+      "sameCodes": {
+        "type": "array",
+        "description": "SAME codes of the counties it broadcasts for: `0`, the FIPS state, the FIPS county, such as `053033`.",
+        "items": {
+          "type": "string",
+          "description": "One SAME code."
+        }
+      },
+      "counties": {
+        "type": "array",
+        "description": "County zone codes it broadcasts for, such as `WAC033`, in the order of `sameCodes`.",
+        "items": {
+          "type": "string",
+          "description": "One county zone code."
+        }
+      }
+    },
+    "required": [
+      "@id",
+      "callSign",
+      "transmitterFrequency",
+      "counties"
+    ]
+  },
+  "TransmitterCollection": {
+    "title": "TransmitterCollection",
+    "type": "object",
+    "description": "NOAA Weather Radio transmitters, as a JSON-LD graph.",
+    "properties": {
+      "@graph": {
+        "type": "array",
+        "description": "The transmitters. Each one arrives many times over, identical: 64 copies of each on 2026-09-30.",
+        "items": {
+          "$ref": "Transmitter",
+          "description": "One transmitter."
+        }
+      },
+      "pagination": {
+        "$ref": "CollectionPagination",
+        "description": "Where the next page is. Only `radio.list_transmitters` sends it, and not on its last page."
+      }
+    },
+    "required": [
+      "@graph"
+    ]
+  },
+  "OfficeHeadline": {
+    "title": "OfficeHeadline",
+    "type": "object",
+    "description": "One news headline an office has posted: a title and a link, usually to a page or a PDF on the office's own site.",
+    "properties": {
+      "@id": {
+        "type": "string",
+        "description": "URL of the headline."
+      },
+      "id": {
+        "type": "string",
+        "description": "Headline id, such as `058e41fd34b935b395e9aaf0fe175dc9`. This is what `offices.get_headline` takes."
+      },
+      "office": {
+        "type": "string",
+        "description": "URL of the office that posted it."
+      },
+      "important": {
+        "type": "boolean",
+        "description": "Whether the office flagged it as important."
+      },
+      "issuanceTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When it was posted."
+      },
+      "link": {
+        "type": "string",
+        "description": "Where the headline points."
+      },
+      "name": {
+        "type": "string",
+        "description": "The office's own short name for it, such as `latestbrief`."
+      },
+      "title": {
+        "type": "string",
+        "description": "Headline text."
+      },
+      "summary": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "description": "Longer summary. Null on most headlines: 113 of 149 across every office on 2026-09-30."
+      },
+      "content": {
+        "type": "string",
+        "description": "The headline as an HTML fragment: an `<a>` around `title`, its `href` percent-encoded."
+      }
+    },
+    "required": [
+      "@id",
+      "id",
+      "office",
+      "important",
+      "issuanceTime",
+      "link",
+      "name",
+      "title",
+      "summary",
+      "content"
+    ]
   }
 }

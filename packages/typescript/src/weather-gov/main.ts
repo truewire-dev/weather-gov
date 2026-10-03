@@ -5,7 +5,9 @@ import { Forecast } from './forecast/index.js'
 import type { DefaultMeta } from './meta.js'
 import { Offices } from './offices/index.js'
 import { Points } from './points/index.js'
+import { RATE, RETRY } from './policy.js'
 import { Products } from './products/index.js'
+import { Radio } from './radio/index.js'
 import { Stations } from './stations/index.js'
 import { Zones } from './zones/index.js'
 
@@ -16,9 +18,9 @@ import { Zones } from './zones/index.js'
  */
 export class Weather {
   /** `[policy].rate`: requests per second the core's `HttpClient` paces to; `undefined` for none. */
-  static readonly RATE: number | undefined = undefined
+  static readonly RATE: number | undefined = RATE
   /** `[policy].retry`: whether the core's `HttpClient` retries on its own. */
-  static readonly RETRY: boolean = false
+  static readonly RETRY: boolean = RETRY
   /** Watches, warnings and advisories in effect. */
   readonly alerts: Alerts
   /** Forecasts for one grid cell: the twice-daily narrative, the hourly series, and the raw gridded data both are rendered from. */
@@ -29,6 +31,8 @@ export class Weather {
   readonly points: Points
   /** The text products the service publishes, by type. */
   readonly products: Products
+  /** NOAA Weather Radio: the transmitters that broadcast forecasts and warnings, and the counties each one serves. */
+  readonly radio: Radio
   /** Observation stations and what they have reported. */
   readonly stations: Stations
   /** Forecast, county, fire-weather and marine zones: the areas forecasts, alerts and radio broadcasts are issued for. */
@@ -40,6 +44,7 @@ export class Weather {
     this.offices = new Offices(core)
     this.points = new Points(core)
     this.products = new Products(core)
+    this.radio = new Radio(core)
     this.stations = new Stations(core)
     this.zones = new Zones(core)
   }

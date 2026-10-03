@@ -3,11 +3,13 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-use truewire_core::{
-    decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso,
-};
+
+use truewire_core::{decode, dump, serde_json};
+
+use truewire_core::{CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso};
 
 use crate::meta::DefaultMeta;
+
 use crate::types::ObservationCollection;
 
 /// Which zone, over which span.
@@ -27,6 +29,19 @@ pub struct Request {
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+impl Request {
+    /// Build a request with every required field; optional fields are absent.
+    pub fn new(zone_id: String) -> Self {
+        Self {
+            zone_id,
+            start: None,
+            end: None,
+            limit: None,
+            extra: Default::default(),
+        }
+    }
 }
 
 /// Observations from every station in a public forecast zone, over a span, newest first. The same rows `stations.get_observations` returns for each of `stations.list_stations_for_zone`, merged.

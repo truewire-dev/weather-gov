@@ -73,7 +73,7 @@ class ListZonesByType(Endpoint):
     """The zones of one type, optionally narrowed by code, place, region or point. Each comes without its outline; `zones.get_zone` has it.
 
     Args:
-      zone_type:
+      zone_type: The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses).
       id: Zone codes to narrow to, such as `WAZ315` or `WAC033`.
       area: Two-letter state, territory or marine-area codes to narrow to, such as `WA` or `PZ`. Un-enumerated for the reason `alerts.get_active_alerts` gives for `area`.
       region: Regions to narrow to: a land region (`AR` Alaska, `CR` Central, `ER` Eastern, `PR` Pacific, `SR` Southern, `WR` Western) or a marine one (`AL` Alaska waters, `AT` Atlantic, `GL` Great Lakes, `GM` Gulf of Mexico, `PA` Eastern Pacific, `PI` Pacific Islands).

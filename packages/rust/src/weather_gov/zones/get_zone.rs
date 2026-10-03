@@ -3,11 +3,13 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-use truewire_core::{
-    decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso,
-};
+
+use truewire_core::{decode, dump, serde_json};
+
+use truewire_core::{CallOptions, HttpCall, HttpEndpoint, Result, TimestampIso};
 
 use crate::meta::DefaultMeta;
+
 use crate::types::{ZoneFeature, ZoneKind};
 
 /// Which zone, and as of when.
@@ -23,6 +25,18 @@ pub struct Request {
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+impl Request {
+    /// Build a request with every required field; optional fields are absent.
+    pub fn new(zone_id: String, zone_type: ZoneKind) -> Self {
+        Self {
+            zone_id,
+            zone_type,
+            effective: None,
+            extra: Default::default(),
+        }
+    }
 }
 
 /// One zone, with its outline. The outline is most of what a zone is, so the client hands back the whole GeoJSON feature: `geometry` is the area, `properties` the rest.

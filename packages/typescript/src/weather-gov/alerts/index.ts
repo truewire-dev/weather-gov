@@ -20,7 +20,7 @@ export class Alerts {
   }
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  getActiveAlerts(request: getActiveAlerts.Request, options: CallOptions & { validate: false }): Promise<unknown>
+  getActiveAlerts(request: getActiveAlerts.Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * Every watch, warning and advisory in effect right now, optionally narrowed. Unnarrowed this is the whole country and runs to a few hundred alerts, so narrow by `area`, `zone` or `point` unless you want all of it.
    *

@@ -32,83 +32,8 @@
       ]
     },
     "response": {
-      "title": "TransmitterCollection",
-      "type": "object",
-      "description": "The transmitters, as a JSON-LD graph.",
-      "properties": {
-        "@graph": {
-          "type": "array",
-          "description": "The transmitters. Each one arrives many times over, identical: 64 copies of each on 2026-09-30.",
-          "items": {
-            "title": "Transmitter",
-            "type": "object",
-            "description": "One NOAA Weather Radio transmitter.",
-            "properties": {
-              "@id": {
-                "type": "string",
-                "description": "URL of the transmitter."
-              },
-              "@type": {
-                "type": "string",
-                "enum": [
-                  "wx:Transmitter"
-                ],
-                "description": "Always `wx:Transmitter`."
-              },
-              "setId": {
-                "type": "string",
-                "description": "Which release of the transmitter list this came from."
-              },
-              "callSign": {
-                "type": "string",
-                "description": "Call sign, such as `KHB60`."
-              },
-              "transmitterFrequency": {
-                "type": "string",
-                "format": "decimal-string",
-                "description": "Frequency in MHz, such as `162.550`."
-              },
-              "siteName": {
-                "type": "string",
-                "description": "Name of the transmitter, such as `Seattle`."
-              },
-              "siteCity": {
-                "type": "string",
-                "description": "Where the transmitter stands."
-              },
-              "siteState": {
-                "type": "string",
-                "description": "Two-letter state of the site."
-              },
-              "sameCodes": {
-                "type": "array",
-                "description": "SAME codes of the counties it broadcasts for: `0`, the FIPS state, the FIPS county, such as `053033`.",
-                "items": {
-                  "type": "string",
-                  "description": "One SAME code."
-                }
-              },
-              "counties": {
-                "type": "array",
-                "description": "County zone codes it broadcasts for, such as `WAC033`, in the order of `sameCodes`.",
-                "items": {
-                  "type": "string",
-                  "description": "One county zone code."
-                }
-              }
-            },
-            "required": [
-              "@id",
-              "callSign",
-              "transmitterFrequency",
-              "counties"
-            ]
-          }
-        }
-      },
-      "required": [
-        "@graph"
-      ]
+      "$ref": "TransmitterCollection",
+      "description": "The transmitters, as a JSON-LD graph."
     }
   },
   "notes": [

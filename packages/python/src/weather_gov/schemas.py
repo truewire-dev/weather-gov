@@ -2,6 +2,7 @@
 """Shapes shared by two or more endpoints under the client root, generated from `spec/schemas.json`."""
 
 from typing_extensions import Literal, NotRequired, TypedDict
+from decimal import Decimal
 from truewire_core.types import TimestampIso
 
 
@@ -41,15 +42,6 @@ class GridValue(TypedDict):
   """The value over `validTime`."""
 
 
-class MultiPolygonGeometry(TypedDict):
-  """GeoJSON geometry of several disjoint areas -- an alert covering counties that do not touch."""
-
-  type: Literal['MultiPolygon']
-  """Always `MultiPolygon`."""
-  coordinates: list[list[list[tuple[float, float]]]]
-  """One entry per polygon, each shaped like `PolygonGeometry.coordinates`."""
-
-
 class ObservationPagination(TypedDict):
   """Where the next page is, as a whole URL. The declared walk moves the time window instead and never reads this."""
 
@@ -57,25 +49,37 @@ class ObservationPagination(TypedDict):
   """URL of the next page. Absent on the last one."""
 
 
-class PointGeometry(TypedDict):
-  """GeoJSON geometry of a feature that sits at a single place: a station, an observation, a forecast point."""
-
-  type: Literal['Point']
-  """Always `Point` for these features."""
-  coordinates: tuple[float, float]
-  """A GeoJSON position: longitude first, then latitude, in WGS 84 decimal degrees."""
+OfficeHeadlineKeywords = TypedDict('OfficeHeadlineKeywords', {'@id': str})
+"""
+- `@id`: URL of the headline.
+"""
 
 
-class PolygonGeometry(TypedDict):
-  """GeoJSON geometry of an area: one outer ring, then any holes."""
+class OfficeHeadline(OfficeHeadlineKeywords):
+  """One news headline an office has posted: a title and a link, usually to a page or a PDF on the office's own site."""
 
-  type: Literal['Polygon']
-  """Always `Polygon`."""
-  coordinates: list[list[tuple[float, float]]]
-  """Linear rings. The first is the outer boundary; any others are holes in it. Each ring repeats its first position as its last."""
+  id: str
+  """Headline id, such as `058e41fd34b935b395e9aaf0fe175dc9`. This is what `offices.get_headline` takes."""
+  office: str
+  """URL of the office that posted it."""
+  important: bool
+  """Whether the office flagged it as important."""
+  issuanceTime: TimestampIso
+  """When it was posted."""
+  link: str
+  """Where the headline points."""
+  name: str
+  """The office's own short name for it, such as `latestbrief`."""
+  title: str
+  """Headline text."""
+  summary: str | None
+  """Longer summary. Null on most headlines: 113 of 149 across every office on 2026-09-30."""
+  content: str
+  """The headline as an HTML fragment: an `<a>` around `title`, its `href` percent-encoded."""
 
 
 Position = tuple[float, float]
+"""A GeoJSON position: longitude first, then latitude, in WGS 84 decimal degrees."""
 
 
 class PresentWeather(TypedDict):
@@ -106,47 +110,38 @@ class QuantitativeValue(TypedDict):
   """Lower end, where the value is a range rather than a point."""
 
 
-ZoneKeywords = TypedDict('ZoneKeywords', {'@id': str, '@type': NotRequired[Literal['wx:Zone']]})
+TransmitterKeywords = TypedDict(
+  'TransmitterKeywords', {'@id': str, '@type': NotRequired[Literal['wx:Transmitter']]}
+)
 """
-  - `@id`: Canonical URL of the zone.
-  - `@type`: Always `wx:Zone`.
+  - `@id`: URL of the transmitter.
+  - `@type`: Always `wx:Transmitter`.
 """
 
 
-class Zone(ZoneKeywords):
-  """One zone: a public forecast, county, fire-weather or marine area."""
+class Transmitter(TransmitterKeywords):
+  """One NOAA Weather Radio transmitter."""
 
-  id: str
-  """Zone code: two letters of state or marine area, `Z` or `C`, three digits."""
-  type: Literal['land', 'marine', 'forecast', 'public', 'coastal', 'offshore', 'fire', 'county']
-  """The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses)."""
-  name: str
-  """Name of the zone, such as `City of Seattle`."""
-  effectiveDate: TimestampIso
-  """When this version of the zone took effect."""
-  expirationDate: TimestampIso
-  """When it expires; `2200-01-01` for every zone in effect on 2026-09-30."""
-  state: NotRequired[str | None]
-  """State or territory the zone is in."""
-  forecastOffice: NotRequired[str]
-  """URL of the office that forecasts for the zone."""
-  gridIdentifier: NotRequired[str]
-  """Three-letter code of the office's forecast grid, such as `SEW`."""
-  awipsLocationIdentifier: NotRequired[str]
-  """AWIPS identifier of the forecasting office."""
-  cwa: NotRequired[list[str]]
-  """Offices whose warning area covers the zone. Deprecated upstream; use `forecastOffice`."""
-  forecastOffices: NotRequired[list[str]]
-  """URLs of the same offices. Deprecated upstream; use `forecastOffice`."""
-  timeZone: NotRequired[list[str]]
-  """IANA time zones the zone is in; two for a zone that straddles a boundary."""
-  observationStations: NotRequired[list[str]]
-  """URLs of the observation stations in the zone. Empty for most county, fire and marine zones."""
-  radarStation: NotRequired[str | None]
-  """The radar that covers the zone."""
+  setId: NotRequired[str]
+  """Which release of the transmitter list this came from."""
+  callSign: str
+  """Call sign, such as `KHB60`."""
+  transmitterFrequency: Decimal
+  """Frequency in MHz, such as `162.550`."""
+  siteName: NotRequired[str]
+  """Name of the transmitter, such as `Seattle`."""
+  siteCity: NotRequired[str]
+  """Where the transmitter stands."""
+  siteState: NotRequired[str]
+  """Two-letter state of the site."""
+  sameCodes: NotRequired[list[str]]
+  """SAME codes of the counties it broadcasts for: `0`, the FIPS state, the FIPS county, such as `053033`."""
+  counties: list[str]
+  """County zone codes it broadcasts for, such as `WAC033`, in the order of `sameCodes`."""
 
 
 ZoneKind = Literal['land', 'marine', 'forecast', 'public', 'coastal', 'offshore', 'fire', 'county']
+"""The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses)."""
 
 
 class Alert(TypedDict):
@@ -220,9 +215,6 @@ class Alert(TypedDict):
   """Free-form parameters the issuing system attached: `NWSheadline`, `VTEC`, `AWIPSidentifier` and others. Every value is a list, even when it holds one item."""
 
 
-AlertGeometry = PolygonGeometry | MultiPolygonGeometry | None
-
-
 class CloudLayer(TypedDict):
   """One reported cloud layer: how much of the sky it covers and how high its base is."""
 
@@ -278,6 +270,33 @@ class GridSeries(TypedDict):
   """The values, in time order."""
 
 
+class MultiPolygonGeometry(TypedDict):
+  """GeoJSON geometry of several disjoint areas -- an alert covering counties that do not touch."""
+
+  type: Literal['MultiPolygon']
+  """Always `MultiPolygon`."""
+  coordinates: list[list[list[Position]]]
+  """One entry per polygon, each shaped like `PolygonGeometry.coordinates`."""
+
+
+class PointGeometry(TypedDict):
+  """GeoJSON geometry of a feature that sits at a single place: a station, an observation, a forecast point."""
+
+  type: Literal['Point']
+  """Always `Point` for these features."""
+  coordinates: Position
+  """Where the feature is."""
+
+
+class PolygonGeometry(TypedDict):
+  """GeoJSON geometry of an area: one outer ring, then any holes."""
+
+  type: Literal['Polygon']
+  """Always `Polygon`."""
+  coordinates: list[list[Position]]
+  """Linear rings. The first is the outer boundary; any others are holes in it. Each ring repeats its first position as its last."""
+
+
 class Station(TypedDict):
   """One observation station."""
 
@@ -305,33 +324,63 @@ class Station(TypedDict):
   """Direction from the grid cell to the station, in degrees clockwise from true north. Only `stations.list_stations_for_gridpoint` sends it."""
 
 
-class ZoneFeature(TypedDict):
-  """One zone, in the GeoJSON feature the API wraps it in."""
+TransmitterCollectionKeywords = TypedDict(
+  'TransmitterCollectionKeywords', {'@graph': list[Transmitter]}
+)
+"""
+- `@graph`: The transmitters. Each one arrives many times over, identical: 64 copies of each on 2026-09-30.
+"""
+
+
+class TransmitterCollection(TransmitterCollectionKeywords):
+  """NOAA Weather Radio transmitters, as a JSON-LD graph."""
+
+  pagination: NotRequired[CollectionPagination]
+  """Where the next page is. Only `radio.list_transmitters` sends it, and not on its last page."""
+
+
+ZoneKeywords = TypedDict('ZoneKeywords', {'@id': str, '@type': NotRequired[Literal['wx:Zone']]})
+"""
+  - `@id`: Canonical URL of the zone.
+  - `@type`: Always `wx:Zone`.
+"""
+
+
+class Zone(ZoneKeywords):
+  """One zone: a public forecast, county, fire-weather or marine area."""
 
   id: str
-  """Canonical URL of the zone."""
-  type: Literal['Feature']
-  """Always `Feature`."""
-  geometry: PolygonGeometry | MultiPolygonGeometry | None
-  """The area a zone covers."""
-  properties: Zone
-  """The zone itself."""
+  """Zone code: two letters of state or marine area, `Z` or `C`, three digits."""
+  type: ZoneKind
+  """The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses)."""
+  name: str
+  """Name of the zone, such as `City of Seattle`."""
+  effectiveDate: TimestampIso
+  """When this version of the zone took effect."""
+  expirationDate: TimestampIso
+  """When it expires; `2200-01-01` for every zone in effect on 2026-09-30."""
+  state: NotRequired[str | None]
+  """State or territory the zone is in."""
+  forecastOffice: NotRequired[str]
+  """URL of the office that forecasts for the zone."""
+  gridIdentifier: NotRequired[str]
+  """Three-letter code of the office's forecast grid, such as `SEW`."""
+  awipsLocationIdentifier: NotRequired[str]
+  """AWIPS identifier of the forecasting office."""
+  cwa: NotRequired[list[str]]
+  """Offices whose warning area covers the zone. Deprecated upstream; use `forecastOffice`."""
+  forecastOffices: NotRequired[list[str]]
+  """URLs of the same offices. Deprecated upstream; use `forecastOffice`."""
+  timeZone: NotRequired[list[str]]
+  """IANA time zones the zone is in; two for a zone that straddles a boundary."""
+  observationStations: NotRequired[list[str]]
+  """URLs of the observation stations in the zone. Empty for most county, fire and marine zones."""
+  radarStation: NotRequired[str | None]
+  """The radar that covers the zone."""
 
 
-ZoneGeometry = PolygonGeometry | MultiPolygonGeometry | None
-
-
-class AlertFeature(TypedDict):
-  """One alert, in the GeoJSON feature the API wraps it in."""
-
-  id: str
-  """Canonical URL of this alert."""
-  type: Literal['Feature']
-  """Always `Feature`."""
-  geometry: NotRequired[PolygonGeometry | MultiPolygonGeometry | None]
-  """The area an alert covers, when it was drawn as a polygon rather than named as zones."""
-  properties: Alert
-  """The alert itself."""
+AlertGeometry = PolygonGeometry | MultiPolygonGeometry | None
+"""The area an alert covers, when it was drawn as a polygon rather than named as zones."""
 
 
 class GridpointForecast(TypedDict):
@@ -423,13 +472,21 @@ class StationFeature(TypedDict):
   """The station itself."""
 
 
-class ZoneCollection(TypedDict):
-  """Zones, as a GeoJSON feature collection, ordered by code."""
+ZoneGeometry = PolygonGeometry | MultiPolygonGeometry | None
+"""The area a zone covers."""
 
-  type: Literal['FeatureCollection']
-  """Always `FeatureCollection`."""
-  features: list[ZoneFeature]
-  """The zones."""
+
+class AlertFeature(TypedDict):
+  """One alert, in the GeoJSON feature the API wraps it in."""
+
+  id: str
+  """Canonical URL of this alert."""
+  type: Literal['Feature']
+  """Always `Feature`."""
+  geometry: NotRequired[AlertGeometry]
+  """The area covered, when it was drawn as a polygon."""
+  properties: Alert
+  """The alert itself."""
 
 
 class ObservationFeature(TypedDict):
@@ -455,6 +512,20 @@ class StationCollection(TypedDict):
   observationStations: NotRequired[list[str]]
   """The same stations as bare URLs, in the same order."""
   pagination: NotRequired[CollectionPagination]
+  """Where the next page is."""
+
+
+class ZoneFeature(TypedDict):
+  """One zone, in the GeoJSON feature the API wraps it in."""
+
+  id: str
+  """Canonical URL of the zone."""
+  type: Literal['Feature']
+  """Always `Feature`."""
+  geometry: ZoneGeometry
+  """The zone's outline; null in lists."""
+  properties: Zone
+  """The zone itself."""
 
 
 class ObservationCollection(TypedDict):
@@ -465,3 +536,12 @@ class ObservationCollection(TypedDict):
   features: list[ObservationFeature]
   """The observations, newest first."""
   pagination: NotRequired[ObservationPagination]
+
+
+class ZoneCollection(TypedDict):
+  """Zones, as a GeoJSON feature collection, ordered by code."""
+
+  type: Literal['FeatureCollection']
+  """Always `FeatureCollection`."""
+  features: list[ZoneFeature]
+  """The zones."""

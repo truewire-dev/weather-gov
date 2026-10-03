@@ -66,7 +66,7 @@ class GetForecast(Endpoint):
 
     Args:
       zone_id: Public zone code, such as `WAZ315`.
-      zone_type:
+      zone_type: The zone type. Only public zones have one, addressed as `forecast`, `public` or `land`; a county, fire or marine zone answers 404.
       validate: Override this call's response validation; falls back to the client-level default when omitted. `False` returns the parsed body as it came, typed `Any`.
 
     References:

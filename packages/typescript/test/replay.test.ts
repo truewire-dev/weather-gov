@@ -40,6 +40,25 @@ const ZONE_STATIONS = recorded<{ zone_id: string }>(
   'stations/list_stations_for_zone/examples/seattle.request.json',
 )
 
+/** The response half of another recorded example, as it came off the wire. */
+function payload<T>(file: string): T {
+  const full = path.join(projectRoot, 'spec/endpoints', file)
+  return (JSON.parse(readFileSync(full, 'utf8')) as { payload: T }).payload
+}
+
+const OBSERVATION = recorded<{ station_id: string; time: string }>(
+  'stations/get_observation/examples/ksea_metar.request.json',
+)
+const BRIEFING = recorded<{ office_id: string }>(
+  'offices/get_briefing/examples/active.request.json',
+)
+const HEADLINE = recorded<{ office_id: string; headline_id: string }>(
+  'offices/get_headline/examples/wakefield.request.json',
+)
+const RADIO_PAGE = recorded<{ cursor: string }>(
+  'radio/list_transmitters/examples/last_page.request.json',
+)
+
 /** A `QuantitativeValue`: a unit, and a number or an honest null. */
 function isMeasurement(value: QuantitativeValue, unit?: string): void {
   expect(value.unitCode.startsWith('wmoUnit:')).toBe(true)
@@ -367,5 +386,133 @@ describe('recorded examples replay through the generated client', () => {
       return feature.properties.distance!.value as number
     })
     expect([...distances].sort((a, b) => a - b)).toEqual(distances)
+  })
+
+  it('stations.getStation keeps the whole feature: the geometry is the only place it is', async () => {
+    const station = await client.stations.getStation({ station_id: 'KSEA' })
+    expect(station.type).toBe('Feature')
+    expect(station.id).toBe('https://api.weather.gov/stations/KSEA')
+    isPoint(station.geometry)
+    const [longitude, latitude] = station.geometry!.coordinates
+    expect(Math.round(latitude)).toBe(47)
+    expect(Math.round(longitude)).toBe(-122)
+    expect(station.properties.stationIdentifier).toBe('KSEA')
+    expect(station.properties.timeZone).toBe('America/Los_Angeles')
+    isMeasurement(station.properties.elevation!, 'wmoUnit:m')
+    expect(station.properties.county!.endsWith('/zones/county/WAC033')).toBe(true)
+  })
+
+  it('stations.getObservation returns the observation at exactly the moment asked', async () => {
+    const observation = await client.stations.getObservation({
+      station_id: OBSERVATION.station_id,
+      time: new Date(OBSERVATION.time),
+    })
+    expect(observation.stationId).toBe(OBSERVATION.station_id)
+    expect(observation.timestamp.getTime()).toBe(new Date(OBSERVATION.time).getTime())
+    expect(observation.rawMessage!.startsWith(`${OBSERVATION.station_id} `)).toBe(true)
+    isMeasurement(observation.temperature, 'wmoUnit:degC')
+  })
+
+  it('stations.listTafs answers newest first, its WKT point latitude first', async () => {
+    const tafs = await client.stations.listTafs({ station_id: 'KSEA' })
+    const graph = tafs['@graph']
+    expect(graph.length).toBeGreaterThan(10)
+    const issued = graph.map(taf => taf.issueTime.getTime())
+    expect([...issued].sort((a, b) => b - a)).toEqual(issued)
+    for (const taf of graph) {
+      expect(taf.location).toBe('KSEA')
+      expect(taf.id.startsWith('https://api.weather.gov/stations/KSEA/tafs/')).toBe(true)
+      expect(taf.issueTime.getTime()).toBeLessThanOrEqual(taf.start.getTime())
+      expect(taf.start.getTime()).toBeLessThan(taf.end.getTime())
+    }
+    const [longitude, latitude] = payload<{ geometry: { coordinates: [number, number] } }>(
+      'stations/get_station/examples/ksea.response.json',
+    ).geometry.coordinates
+    const [first, second] = graph[0].geometry!.replace('POINT(', '').replace(')', '').split(' ')
+    expect([Number(first), Number(second)]).toEqual([
+      Math.round(latitude * 100) / 100,
+      Math.round(longitude * 100) / 100,
+    ])
+  })
+
+  it('offices.getBriefing returns an active briefing and the PDF it points at', async () => {
+    const { briefing } = await client.offices.getBriefing({ office_id: BRIEFING.office_id })
+    expect(briefing).not.toBeNull()
+    expect(briefing!.officeId).toBe(BRIEFING.office_id)
+    expect(briefing!.startTime.getTime()).toBeLessThan(briefing!.endTime.getTime())
+    expect(briefing!.download).toBe(
+      `https://api.weather.gov/offices/${BRIEFING.office_id}/briefing/download/${briefing!.id}`,
+    )
+  })
+
+  it('offices.getBriefing answers an honest null for an office with none out', async () => {
+    const { briefing } = await client.offices.getBriefing({ office_id: 'SEW' })
+    expect(briefing).toBeNull()
+  })
+
+  it('offices.listHeadlines links each headline, its HTML repeating its title', async () => {
+    const headlines = await client.offices.listHeadlines({ office_id: 'AKQ' })
+    const graph = headlines['@graph']
+    expect(graph.length).toBeGreaterThan(0)
+    for (const headline of graph) {
+      expect(headline.office).toBe('https://api.weather.gov/offices/AKQ')
+      expect(headline['@id']).toBe(`${headline.office}/headlines/${headline.id}`)
+      expect(headline.content).toContain(headline.title)
+      expect(headline.summary === null || typeof headline.summary === 'string').toBe(true)
+    }
+  })
+
+  it('offices.getHeadline returns the headline the office lists', async () => {
+    const headline = await client.offices.getHeadline(HEADLINE)
+    expect(headline.id).toBe(HEADLINE.headline_id)
+    const listed = payload<{ '@graph': { id: string; title: string; link: string }[] }>(
+      'offices/list_headlines/examples/wakefield.response.json',
+    )['@graph'].find(entry => entry.id === headline.id)!
+    expect(headline.title).toBe(listed.title)
+    expect(headline.link).toBe(listed.link)
+  })
+
+  it('offices.listWeatherStories returns each graphic with its text', async () => {
+    const { stories } = await client.offices.listWeatherStories({ office_id: 'AKQ' })
+    expect(stories.length).toBeGreaterThan(0)
+    for (const story of stories) {
+      expect(story.officeId).toBe('AKQ')
+      expect(story.title && story.description).toBeTruthy()
+      expect(story.startTime.getTime()).toBeLessThan(story.endTime.getTime())
+      if (story.download !== null) {
+        expect(
+          story.download.startsWith('https://api.weather.gov/offices/AKQ/weatherstories/download/'),
+        ).toBe(true)
+      }
+    }
+  })
+
+  it('radio.listTransmitters on the last page: short, no next page, repeats and all', async () => {
+    const page = await client.radio.listTransmitters({ cursor: RADIO_PAGE.cursor })
+    const graph = page['@graph']
+    expect(graph.length).toBeGreaterThan(0)
+    expect(graph.length).toBeLessThan(500)
+    expect(page.pagination).toBeUndefined()
+    const calls = graph.map(transmitter => transmitter.callSign)
+    expect(new Set(calls).size).toBeLessThan(calls.length)
+    for (const transmitter of graph) {
+      expect(transmitter['@id']).toBe(`https://api.weather.gov/radio/${transmitter.callSign}`)
+      expect(transmitter.sameCodes!.length).toBe(transmitter.counties.length)
+      expect(Number(transmitter.transmitterFrequency)).toBeGreaterThan(162)
+      expect(Number(transmitter.transmitterFrequency)).toBeLessThan(163)
+    }
+  })
+
+  it('radio.getTransmitter returns the one zones.listTransmitters found for the county', async () => {
+    const transmitter = await client.radio.getTransmitter({ call_sign: 'KHB60' })
+    expect(transmitter.callSign).toBe('KHB60')
+    expect(transmitter['@id']).toBe('https://api.weather.gov/radio/KHB60')
+    const county = payload<{
+      '@graph': { callSign: string; counties: string[]; transmitterFrequency: string }[]
+    }>('zones/list_transmitters/examples/king_county.response.json')['@graph'].find(
+      entry => entry.callSign === 'KHB60',
+    )!
+    expect(transmitter.counties).toEqual(county.counties)
+    expect(transmitter.transmitterFrequency).toBe(county.transmitterFrequency)
   })
 })

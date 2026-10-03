@@ -3,9 +3,13 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-use truewire_core::{decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result};
+
+use truewire_core::{decode, dump, serde_json};
+
+use truewire_core::{CallOptions, HttpCall, HttpEndpoint, Result};
 
 use crate::meta::DefaultMeta;
+
 use crate::types::GridpointForecast;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
@@ -31,6 +35,19 @@ pub struct Request {
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+impl Request {
+    /// Build a request with every required field; optional fields are absent.
+    pub fn new(office: String, grid_x: i64, grid_y: i64) -> Self {
+        Self {
+            office,
+            grid_x,
+            grid_y,
+            units: None,
+            extra: Default::default(),
+        }
+    }
 }
 
 /// The hourly forecast for one grid cell: one period per hour for about the next week, carrying dew point and relative humidity the twice-daily forecast leaves out, and no prose.
