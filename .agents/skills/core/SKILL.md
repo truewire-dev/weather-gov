@@ -2,7 +2,7 @@
 name: truewire-core
 description: Adapt a Truewire project's hand-written core (transport, auth, envelope, errors) to a specific API until one `truewire capture` succeeds against the live API. Use after `truewire-spec` and before recording examples.
 ---
-<!-- vendored from truewire 0.10.1 sha256:55b0031756f0c601; `truewire agents update` rewrites this file -->
+<!-- vendored from truewire 0.11.0 sha256:55b0031756f0c601; `truewire agents update` rewrites this file -->
 
 # Core: the one place that knows how to reach the API
 
