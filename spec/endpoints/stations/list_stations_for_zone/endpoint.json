@@ -1,0 +1,34 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/zone_stations",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/zones/forecast/{zone_id}/stations",
+    "method": "GET",
+    "description": "The observation stations in a public forecast zone: the ones `stations.get_observations_for_zone` merges.",
+    "request": {
+      "title": "ListStationsForZoneRequest",
+      "type": "object",
+      "description": "Which zone.",
+      "properties": {
+        "zone_id": {
+          "type": "string",
+          "description": "Public zone code, such as `WAZ315`."
+        }
+      },
+      "required": [
+        "zone_id"
+      ]
+    },
+    "response": {
+      "$ref": "StationCollection",
+      "description": "The stations."
+    }
+  },
+  "notes": [
+    "The OpenAPI also lists `limit` and `cursor`. Neither is declared, because the service ignores both: measured 2026-09-30, `/zones/forecast/WAZ315/stations` answers the same six stations with `limit=1`, `limit=2` and `cursor=eyJzIjo1MDB9` (the cursor its own `pagination.next` carries). That `next` is a `/stations?id[0]=...` URL, not this endpoint's."
+  ]
+}

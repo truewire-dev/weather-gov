@@ -26,6 +26,7 @@ class WeatherPhenomenon(TypedDict):
   intensity: str | None
   """`very_light`, `light`, `moderate` or `heavy`."""
   visibility: NotRequired[QuantitativeValue]
+  """Visibility in the phenomenon."""
   attributes: NotRequired[list[str]]
   """Extra qualifiers, such as `damaging_wind` or `small_hail`."""
 
@@ -54,6 +55,7 @@ class GridData(TypedDict):
   validTimes: str
   """ISO 8601 interval the grid covers, as `<start>/<duration>`."""
   elevation: NotRequired[QuantitativeValue]
+  """Elevation of the grid cell."""
   forecastOffice: NotRequired[str]
   """URL of the office that produced it."""
   gridId: str
@@ -63,24 +65,43 @@ class GridData(TypedDict):
   gridY: int
   """Grid row."""
   temperature: NotRequired[GridSeries]
+  """Air temperature."""
   dewpoint: NotRequired[GridSeries]
+  """Dew point."""
   maxTemperature: NotRequired[GridSeries]
+  """Daily maximum temperature."""
   minTemperature: NotRequired[GridSeries]
+  """Daily minimum temperature."""
   relativeHumidity: NotRequired[GridSeries]
+  """Relative humidity."""
   apparentTemperature: NotRequired[GridSeries]
+  """What the air feels like, combining heat index and wind chill."""
   heatIndex: NotRequired[GridSeries]
+  """Heat index."""
   windChill: NotRequired[GridSeries]
+  """Wind chill."""
   skyCover: NotRequired[GridSeries]
+  """Percentage of the sky covered by cloud."""
   windDirection: NotRequired[GridSeries]
+  """Direction the wind comes from, in degrees clockwise from true north."""
   windSpeed: NotRequired[GridSeries]
+  """Sustained wind speed."""
   windGust: NotRequired[GridSeries]
+  """Peak gust."""
   probabilityOfPrecipitation: NotRequired[GridSeries]
+  """Chance of measurable precipitation."""
   quantitativePrecipitation: NotRequired[GridSeries]
+  """Expected liquid precipitation."""
   iceAccumulation: NotRequired[GridSeries]
+  """Expected ice accumulation."""
   snowfallAmount: NotRequired[GridSeries]
+  """Expected snowfall."""
   ceilingHeight: NotRequired[GridSeries]
+  """Cloud ceiling above ground."""
   visibility: NotRequired[GridSeries]
+  """Horizontal visibility."""
   probabilityOfThunder: NotRequired[GridSeries]
+  """Chance of thunder."""
   weather: NotRequired[WeatherSeries]
 
 

@@ -1,0 +1,9 @@
+{
+  "description": "Six hours of the City of Seattle zone, capped at ten rows",
+  "request": {
+    "zone_id": "WAZ315",
+    "start": "2026-09-29T20:00:00Z",
+    "end": "2026-09-30T02:00:00Z",
+    "limit": 10
+  }
+}

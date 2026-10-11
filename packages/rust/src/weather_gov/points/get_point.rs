@@ -27,8 +27,10 @@ pub struct RelativeLocation {
     pub city: String,
     /// Two-letter state code.
     pub state: String,
+    /// Distance from the point to that city.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub distance: Option<QuantitativeValue>,
+    /// Bearing from that city to the point, in degrees clockwise from true north.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub bearing: Option<QuantitativeValue>,
     /// Keys the spec does not document, kept as they came.
@@ -47,6 +49,7 @@ pub struct RelativeLocationFeature {
     /// Always `Feature`.
     #[serde(rename = "type")]
     pub type_: RelativeLocationFeatureType,
+    /// Where that place is.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub geometry: Option<PointGeometry>,
     pub properties: RelativeLocation,

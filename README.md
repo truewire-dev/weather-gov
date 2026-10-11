@@ -62,7 +62,7 @@ Wednesday Night  57°F  Partly Cloudy
 
 ### Every measurement carries its unit
 
-This API never sends a bare number. A temperature is `{"unitCode": "wmoUnit:degC", "value": 13, "qualityControl": "V"}`, and `value` is `None` wherever the measurement is missing rather than zero — an airport station reports `windGust` only when there were gusts. The types say so, so the null is impossible to forget:
+This API never sends a bare number. A temperature is `{"unitCode": "wmoUnit:degC", "value": 13, "qualityControl": "V"}`, and `value` is `None` wherever the measurement is missing rather than zero — an airport station's `windGust` has a `value` only when there were gusts. The types say so, so the null is impossible to forget:
 
 ```python
 from weather_gov import Weather
@@ -99,37 +99,28 @@ async def both_shapes(client: Weather) -> None:
     print(feature['properties']['event'], '—', feature['properties']['areaDesc'][:40], f'({where})')
 ```
 
-### Walking a window of observations
+### Walking a span of observations
 
-`stations.get_observations` is paged by time, and the walk is declared in the spec rather than written by hand. The generated `_paged` variant takes the span you want and knows one thing hand-written code usually does not: the service caps a response at 500 observations and says nothing about the ones it withheld. A full page is evidence the window held more, so the walk raises instead of stepping past them.
+`stations.get_observations` is paged by time, and the walk is declared in the spec rather than written by hand. The generated `_paged` variant takes the span you want and knows one thing hand-written code usually does not: the service caps a response at 500 observations, keeps the newest, and says nothing about the ones it withheld. A full page is evidence the span held more, so the walk asks again with `end` moved back to the oldest observation it has. The service's `end` is exclusive, so that request stops just short of it; were the service ever to serve it again, the walk would drop it by its timestamp.
+
+Await it for the whole span, newest first:
 
 ```python
 from datetime import datetime, timedelta, timezone
 
-from truewire_core.exceptions import LogicError
-
 from weather_gov import Weather
 
 
-async def yesterday(client: Weather) -> None:
+async def last_week(client: Weather) -> None:
   end = datetime.now(timezone.utc)
-  try:
-    async for page in client.stations.get_observations_paged(
-      'KSEA', start=end - timedelta(days=7), end=end
-    ):
-      print(len(page['features']), 'observations')
-  except LogicError as truncated:
-    # A week is more than 500 observations, so this is the error you get -- by design.
-    print(truncated)
+  # A week is more than 500 observations, so this is several requests -- by design.
+  observations = await client.stations.get_observations_paged(
+    'KSEA', start=end - timedelta(days=7), end=end
+  )
+  print(len(observations), 'observations')
 ```
 
-```text
-`get_observations_paged` requested the window 2026-09-02 14:00:00+00:00 to 2026-09-09 14:00:00+00:00
-and the API returned a full page of 500 rows, so it may hold more; advancing would move past the rows
-that were left out. Narrow the window, or pass `allow_truncation=True` to accept the loss.
-```
-
-Narrow the window and it walks:
+Or iterate it, one page at a time:
 
 ```python
 from datetime import datetime, timedelta, timezone
@@ -142,7 +133,7 @@ async def six_hours(client: Weather) -> None:
   async for page in client.stations.get_observations_paged(
     'KSEA', start=end - timedelta(hours=6), end=end
   ):
-    for feature in page['features']:
+    for feature in page:
       observation = feature['properties']
       print(observation['timestamp'], observation['temperature']['value'])
 ```
@@ -191,30 +182,31 @@ GET /alerts/active: HTTP 400: query.zone[0]: Does not match the regex pattern
 
 ## What is covered
 
-Eleven endpoints, in six groups:
+Nineteen endpoints, in seven groups:
 
 | Group | Endpoints |
 | --- | --- |
 | `points` | `get_point` |
 | `forecast` | `get_forecast`, `get_hourly_forecast`, `get_grid_data` |
-| `stations` | `list_stations`, `get_observations`, `get_latest_observation` |
+| `stations` | `list_stations`, `list_stations_for_zone`, `list_stations_for_gridpoint`, `get_observations`, `get_observations_for_zone`, `get_latest_observation` |
 | `alerts` | `get_active_alerts`, `get_alert` |
 | `offices` | `get_office` |
 | `products` | `list_product_types` |
+| `zones` | `list_zones`, `list_zones_by_type`, `get_zone`, `get_forecast`, `list_transmitters` |
 
-Three response vocabularies, because the API uses three: GeoJSON for most of it, schema.org for the offices, JSON-LD for the product types. The spec describes each as it actually arrives.
+Three response vocabularies, because the API uses three: GeoJSON for most of it, schema.org for the offices, JSON-LD for the product types and the radio transmitters. The spec describes each as it actually arrives.
 
-The same eleven endpoints in [TypeScript](packages/typescript/README.md) and [Rust](packages/rust/README.md), from this one spec. The three clients are equivalent but for one thing: the Rust backend has no `window` walker yet, so `stations.get_observations` there is a plain call rather than a guarded walk. That is stated on the Rust page and in [`NOTES.md`](NOTES.md) rather than glossed over.
+The same nineteen endpoints in [TypeScript](packages/typescript/README.md) and [Rust](packages/rust/README.md), from this one spec. The three clients are equivalent, `stations.get_observations_paged` included.
 
 ## Recordings
 
-Every endpoint carries the request half of at least one example — the exact parameters the tests and the recording script replay — and every one of them has a recorded response. All eleven, with no exceptions and no endpoint declaring a missing credential, because there are no credentials to miss.
+Every endpoint carries the request half of at least one example — the exact parameters the tests and the recording script replay — and every one of them has a recorded response. All nineteen, with no exceptions and no endpoint declaring a missing credential, because there are no credentials to miss.
 
 The response halves are recorded from the live API through this same generated client, so a recording is the wire body the client saw and the response types are proven against it, never written by hand.
 
-Two examples go stale on their own, and [`packages/python/test/refresh_examples.py`](packages/python/test/refresh_examples.py) repairs them before anything is captured:
+Some examples go stale on their own, and [`packages/python/test/refresh_examples.py`](packages/python/test/refresh_examples.py) repairs them before anything is captured:
 
-- The service keeps about a week of observations and then drops them, so an old window records as an empty `FeatureCollection` — a 200 with nothing in it, which records exactly as happily as a full one.
+- The service keeps about a week of observations and then drops them, so an old window records as an empty `FeatureCollection` — a 200 with nothing in it, which records exactly as happily as a full one. `stations.get_observations_for_zone` reads the same week, so its window moves with the station's.
 - Alerts expire, usually within hours, and `alerts.get_alert` names one by identifier. The replacement is read from whatever is severe and in effect right now.
 
 The tests read what the refresh moves — the window, the identifier, the row count — from the examples rather than from constants, so a repair is not a failure.

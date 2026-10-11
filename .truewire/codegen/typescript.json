@@ -19,8 +19,17 @@
     "products/list_product_types.ts",
     "stations/get_latest_observation.ts",
     "stations/get_observations.ts",
+    "stations/get_observations_for_zone.ts",
     "stations/index.ts",
     "stations/list_stations.ts",
-    "types/index.ts"
+    "stations/list_stations_for_gridpoint.ts",
+    "stations/list_stations_for_zone.ts",
+    "types/index.ts",
+    "zones/get_forecast.ts",
+    "zones/get_zone.ts",
+    "zones/index.ts",
+    "zones/list_transmitters.ts",
+    "zones/list_zones.ts",
+    "zones/list_zones_by_type.ts"
   ]
 }

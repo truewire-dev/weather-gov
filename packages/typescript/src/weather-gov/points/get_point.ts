@@ -22,7 +22,9 @@ export interface RelativeLocation {
   city: string
   /** Two-letter state code. */
   state: string
+  /** Distance from the point to that city. */
   distance?: QuantitativeValue
+  /** Bearing from that city to the point, in degrees clockwise from true north. */
   bearing?: QuantitativeValue
 }
 
@@ -37,6 +39,7 @@ export const RelativeLocation: Codec<RelativeLocation> = t.object({
 export interface RelativeLocationFeature {
   /** Always `Feature`. */
   type: 'Feature'
+  /** Where that place is. */
   geometry?: PointGeometry
   properties: RelativeLocation
 }

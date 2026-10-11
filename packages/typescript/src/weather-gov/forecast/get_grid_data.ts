@@ -27,6 +27,7 @@ export interface WeatherPhenomenon {
   weather: string | null
   /** `very_light`, `light`, `moderate` or `heavy`. */
   intensity: string | null
+  /** Visibility in the phenomenon. */
   visibility?: QuantitativeValue
   /** Extra qualifiers, such as `damaging_wind` or `small_hail`. */
   attributes?: string[]
@@ -69,6 +70,7 @@ export interface GridData {
   updateTime: TimestampIso
   /** ISO 8601 interval the grid covers, as `<start>/<duration>`. */
   validTimes: string
+  /** Elevation of the grid cell. */
   elevation?: QuantitativeValue
   /** URL of the office that produced it. */
   forecastOffice?: string
@@ -78,24 +80,43 @@ export interface GridData {
   gridX: number
   /** Grid row. */
   gridY: number
+  /** Air temperature. */
   temperature?: GridSeries
+  /** Dew point. */
   dewpoint?: GridSeries
+  /** Daily maximum temperature. */
   maxTemperature?: GridSeries
+  /** Daily minimum temperature. */
   minTemperature?: GridSeries
+  /** Relative humidity. */
   relativeHumidity?: GridSeries
+  /** What the air feels like, combining heat index and wind chill. */
   apparentTemperature?: GridSeries
+  /** Heat index. */
   heatIndex?: GridSeries
+  /** Wind chill. */
   windChill?: GridSeries
+  /** Percentage of the sky covered by cloud. */
   skyCover?: GridSeries
+  /** Direction the wind comes from, in degrees clockwise from true north. */
   windDirection?: GridSeries
+  /** Sustained wind speed. */
   windSpeed?: GridSeries
+  /** Peak gust. */
   windGust?: GridSeries
+  /** Chance of measurable precipitation. */
   probabilityOfPrecipitation?: GridSeries
+  /** Expected liquid precipitation. */
   quantitativePrecipitation?: GridSeries
+  /** Expected ice accumulation. */
   iceAccumulation?: GridSeries
+  /** Expected snowfall. */
   snowfallAmount?: GridSeries
+  /** Cloud ceiling above ground. */
   ceilingHeight?: GridSeries
+  /** Horizontal visibility. */
   visibility?: GridSeries
+  /** Chance of thunder. */
   probabilityOfThunder?: GridSeries
   weather?: WeatherSeries
 }

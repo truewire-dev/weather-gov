@@ -20,6 +20,15 @@
     "stations/__init__.py",
     "stations/get_latest_observation.py",
     "stations/get_observations.py",
-    "stations/list_stations.py"
+    "stations/get_observations_for_zone.py",
+    "stations/list_stations.py",
+    "stations/list_stations_for_gridpoint.py",
+    "stations/list_stations_for_zone.py",
+    "zones/__init__.py",
+    "zones/get_forecast.py",
+    "zones/get_zone.py",
+    "zones/list_transmitters.py",
+    "zones/list_zones.py",
+    "zones/list_zones_by_type.py"
   ]
 }

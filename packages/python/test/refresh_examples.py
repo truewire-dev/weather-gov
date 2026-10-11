@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
-"""Repoint the two examples that go stale on their own, before anything is captured.
+"""Repoint the examples that go stale on their own, before anything is captured.
 
 Most of this API is stable enough to re-record from a fixed request: the Seattle grid cell
-will still be the Seattle grid cell next week. Two examples are not:
+will still be the Seattle grid cell next week. Two kinds are not:
 
 - `stations.get_observations` names a six-hour window. The service keeps about a week of
   observations and then drops them, so last month's window records as an empty
   `FeatureCollection` -- a 200 with nothing in it, which records exactly as happily as a
   full one and turns the recording into a file that proves nothing. Both observation
-  examples are repointed to the same window so the capped one stays a comparison.
+  examples are repointed to the same window so the capped one stays a comparison, and
+  `stations.get_observations_for_zone` moves with them, since it reads the same week.
 - `alerts.get_alert` names one alert by identifier. Alerts expire, usually within hours,
   and the identifier is then gone. The replacement is read from whatever is severe and in
   effect right now -- the same query `alerts.get_active_alerts` records.
@@ -33,7 +34,10 @@ CONTACT = 'hello@truewire.dev'
 it runs before the client has anything current to record -- so it repeats the same
 `User-Agent` policy the core implements."""
 
-OBSERVATIONS = PROJECT / 'spec/endpoints/stations/get_observations/examples'
+OBSERVATIONS = (
+  PROJECT / 'spec/endpoints/stations/get_observations/examples',
+  PROJECT / 'spec/endpoints/stations/get_observations_for_zone/examples',
+)
 ALERT = PROJECT / 'spec/endpoints/alerts/get_alert/examples/one.request.json'
 
 ACTIVE = 'https://api.weather.gov/alerts/active?status=actual&severity=Severe'
@@ -61,7 +65,7 @@ def rewrite(path: Path, changes: dict) -> None:
 
 
 def refresh_observations() -> None:
-  """Move both observation windows to the most recent whole six hours that has settled.
+  """Move every observation window to the most recent whole six hours that has settled.
 
   Ending six hours ago rather than now: the newest observations are still arriving, so a
   window ending at `now` would record a different row count every run for no reason.
@@ -69,7 +73,9 @@ def refresh_observations() -> None:
   end = datetime.now(timezone.utc).replace(minute=0, second=0, microsecond=0) - timedelta(hours=6)
   start = end - timedelta(hours=6)
   stamp = '%Y-%m-%dT%H:%M:%SZ'
-  for request in sorted(OBSERVATIONS.glob('*.request.json')):
+  for request in sorted(
+    path for examples in OBSERVATIONS for path in examples.glob('*.request.json')
+  ):
     rewrite(request, {'start': start.strftime(stamp), 'end': end.strftime(stamp)})
 
 

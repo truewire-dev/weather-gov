@@ -1,0 +1,12 @@
+{
+  "description": "The first three fire-weather zones in Washington",
+  "request": {
+    "area": [
+      "WA"
+    ],
+    "type": [
+      "fire"
+    ],
+    "limit": 3
+  }
+}

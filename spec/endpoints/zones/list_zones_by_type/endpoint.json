@@ -1,0 +1,89 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/zone_list_type",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/zones/{zone_type}",
+    "method": "GET",
+    "description": "The zones of one type, optionally narrowed by code, place, region or point. Each comes without its outline; `zones.get_zone` has it.",
+    "request": {
+      "title": "ListZonesByTypeRequest",
+      "type": "object",
+      "description": "Which type, and which of its zones. Give one value per array filter: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last.",
+      "properties": {
+        "zone_type": {
+          "$ref": "ZoneKind",
+          "description": "The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses)."
+        },
+        "id": {
+          "type": "array",
+          "description": "Zone codes to narrow to, such as `WAZ315` or `WAC033`.",
+          "items": {
+            "type": "string",
+            "description": "One zone code."
+          }
+        },
+        "area": {
+          "type": "array",
+          "description": "Two-letter state, territory or marine-area codes to narrow to, such as `WA` or `PZ`. Un-enumerated for the reason `alerts.get_active_alerts` gives for `area`.",
+          "items": {
+            "type": "string",
+            "description": "One state, territory or marine-area code."
+          }
+        },
+        "region": {
+          "type": "array",
+          "description": "Regions to narrow to: a land region (`AR` Alaska, `CR` Central, `ER` Eastern, `PR` Pacific, `SR` Southern, `WR` Western) or a marine one (`AL` Alaska waters, `AT` Atlantic, `GL` Great Lakes, `GM` Gulf of Mexico, `PA` Eastern Pacific, `PI` Pacific Islands).",
+          "items": {
+            "type": "string",
+            "enum": [
+              "AR",
+              "CR",
+              "ER",
+              "PR",
+              "SR",
+              "WR",
+              "AL",
+              "AT",
+              "GL",
+              "GM",
+              "PA",
+              "PI"
+            ],
+            "description": "One region code."
+          }
+        },
+        "point": {
+          "type": "string",
+          "description": "A `latitude,longitude` pair, such as `47.6062,-122.3321`; returns the zones containing it."
+        },
+        "effective": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Answer as the zone boundaries stood at this time rather than now. A zone that did not exist yet is left out."
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Most zones to return. At least 1 (`0` is a 400). Without it the service answers every match: all of `/zones` is over 11,000 zones and about 16 MB."
+        }
+      },
+      "required": [
+        "zone_type"
+      ]
+    },
+    "response": {
+      "$ref": "ZoneCollection",
+      "description": "The zones."
+    }
+  },
+  "notes": [
+    "The OpenAPI also lists a `type` query filter on this path. It is not declared: its name is the path's, and the path wins (measured 2026-09-30, `/zones/forecast?type=county` answers public zones).",
+    "No `pagination` block, for the reason `zones.list_zones` gives.",
+    "The service reads an array filter comma-separated (the OpenAPI declares `explode: false`), and keeps only the last of repeated keys. Measured 2026-09-30: `/zones?id=WAZ315,WAC033` returns both zones, `id=WAZ315&id=WAC033` only `WAC033`. This client's core sends repeated keys, as it does for every other array filter in this API (TRU-495), so until the core joins them only the last value of each filter takes effect. The examples send one value per filter.",
+    "The OpenAPI also lists `include_geometry`. It is not declared: measured 2026-09-30, `include_geometry=true` (and `=1`) still answers `geometry: null` on every zone, with and without other filters. `zones.get_zone` is where a zone's outline comes from."
+  ]
+}

@@ -7,6 +7,7 @@
 pub mod alerts;
 pub mod client;
 pub mod core;
+mod dispatch;
 pub mod forecast;
 pub mod meta;
 pub mod offices;
@@ -14,6 +15,7 @@ pub mod points;
 pub mod products;
 pub mod stations;
 pub mod types;
+pub mod zones;
 
 pub use client::Weather;
 pub use truewire_core::CallOptions;

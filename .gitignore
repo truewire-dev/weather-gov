@@ -8,3 +8,7 @@ build/
 node_modules/
 ts/dist/
 target/
+.env
+.truewire/cache/
+# Written by test/readme.test.ts on every `yarn test`.
+packages/typescript/test/.readme/

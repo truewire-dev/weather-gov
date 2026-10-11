@@ -2,14 +2,19 @@
 
 pub mod get_latest_observation;
 pub mod get_observations;
+pub mod get_observations_for_zone;
 pub mod list_stations;
+pub mod list_stations_for_gridpoint;
+pub mod list_stations_for_zone;
 
 use std::sync::Arc;
 
-use truewire_core::{serde_json, CallOptions, HttpEndpoint, Result};
+use truewire_core::{
+    serde_json, CallOptions, HttpEndpoint, PaginatedResponse, Result, SeekState, TimestampIso,
+};
 
 use crate::meta::DefaultMeta;
-use crate::types::Observation;
+use crate::types::{Observation, ObservationCollection, ObservationFeature, StationCollection};
 
 /// Observation stations and what they have reported.
 ///
@@ -18,7 +23,10 @@ use crate::types::Observation;
 pub struct Stations {
     get_latest_observation: get_latest_observation::GetLatestObservation,
     get_observations: get_observations::GetObservations,
+    get_observations_for_zone: get_observations_for_zone::GetObservationsForZone,
     list_stations: list_stations::ListStations,
+    list_stations_for_gridpoint: list_stations_for_gridpoint::ListStationsForGridpoint,
+    list_stations_for_zone: list_stations_for_zone::ListStationsForZone,
 }
 
 impl Stations {
@@ -26,7 +34,14 @@ impl Stations {
         Self {
             get_latest_observation: get_latest_observation::GetLatestObservation::new(core.clone()),
             get_observations: get_observations::GetObservations::new(core.clone()),
-            list_stations: list_stations::ListStations::new(core),
+            get_observations_for_zone: get_observations_for_zone::GetObservationsForZone::new(
+                core.clone(),
+            ),
+            list_stations: list_stations::ListStations::new(core.clone()),
+            list_stations_for_gridpoint: list_stations_for_gridpoint::ListStationsForGridpoint::new(
+                core.clone(),
+            ),
+            list_stations_for_zone: list_stations_for_zone::ListStationsForZone::new(core),
         }
     }
 
@@ -54,14 +69,28 @@ impl Stations {
             .await
     }
 
-    /// What one station reported over a span of time, newest first. Airport stations report about every twenty minutes, and more often when the weather changes, so a day is a few hundred observations.
+    /// What one station reported over a span of time, newest first. A busy airport station such as `KSEA` reports every five minutes, plus an hourly report at 53 minutes past, so a day there is about 300 observations.
+    ///
+    /// Paged variant of [`Self::get_observations`]: await it for every row, or walk `rows()`/`pages()` one page at a time. Walks backwards by moving `end` to the earliest `properties.timestamp` of each page that came back full, never past the caller's own `start`; a page re-serving rows already yielded is deduplicated. The walk requests pages of at least 2 rows and at most 500: a page must hold one new row beside the one it re-reads.
+    ///
+    /// See <https://www.weather.gov/documentation/services-web-api#/default/station_observation_list>.
+    pub fn get_observations_paged(
+        &self,
+        request: get_observations::GetObservationsPagedRequest,
+        options: CallOptions,
+    ) -> PaginatedResponse<ObservationFeature, SeekState<TimestampIso, ObservationFeature>> {
+        self.get_observations
+            .get_observations_paged(request, options)
+    }
+
+    /// What one station reported over a span of time, newest first. A busy airport station such as `KSEA` reports every five minutes, plus an hourly report at 53 minutes past, so a day there is about 300 observations.
     ///
     /// See <https://www.weather.gov/documentation/services-web-api#/default/station_observation_list>.
     pub async fn get_observations(
         &self,
         request: get_observations::Request,
         options: CallOptions,
-    ) -> Result<get_observations::ObservationCollection> {
+    ) -> Result<ObservationCollection> {
         self.get_observations
             .get_observations(request, options)
             .await
@@ -78,6 +107,30 @@ impl Stations {
             .await
     }
 
+    /// Observations from every station in a public forecast zone, over a span, newest first. The same rows `stations.get_observations` returns for each of `stations.list_stations_for_zone`, merged.
+    ///
+    /// See <https://www.weather.gov/documentation/services-web-api#/default/zone_obs>.
+    pub async fn get_observations_for_zone(
+        &self,
+        request: get_observations_for_zone::Request,
+        options: CallOptions,
+    ) -> Result<ObservationCollection> {
+        self.get_observations_for_zone
+            .get_observations_for_zone(request, options)
+            .await
+    }
+
+    /// `get_observations_for_zone` without validation: the wire body as it came.
+    pub async fn get_observations_for_zone_raw(
+        &self,
+        request: get_observations_for_zone::Request,
+        options: CallOptions,
+    ) -> Result<serde_json::Value> {
+        self.get_observations_for_zone
+            .get_observations_for_zone_raw(request, options)
+            .await
+    }
+
     /// The observation stations the service knows about, optionally narrowed to a state or to named identifiers. Use it to find the station code `stations.get_observations` takes.
     ///
     /// See <https://www.weather.gov/documentation/services-web-api#/default/obs_stations>.
@@ -85,7 +138,7 @@ impl Stations {
         &self,
         request: list_stations::Request,
         options: CallOptions,
-    ) -> Result<list_stations::StationCollection> {
+    ) -> Result<StationCollection> {
         self.list_stations.list_stations(request, options).await
     }
 
@@ -96,5 +149,53 @@ impl Stations {
         options: CallOptions,
     ) -> Result<serde_json::Value> {
         self.list_stations.list_stations_raw(request, options).await
+    }
+
+    /// The observation stations usable for a grid cell, nearest first. Each carries its `distance` and `bearing` from the cell.
+    ///
+    /// See <https://www.weather.gov/documentation/services-web-api#/default/gridpoint_stations>.
+    pub async fn list_stations_for_gridpoint(
+        &self,
+        request: list_stations_for_gridpoint::Request,
+        options: CallOptions,
+    ) -> Result<StationCollection> {
+        self.list_stations_for_gridpoint
+            .list_stations_for_gridpoint(request, options)
+            .await
+    }
+
+    /// `list_stations_for_gridpoint` without validation: the wire body as it came.
+    pub async fn list_stations_for_gridpoint_raw(
+        &self,
+        request: list_stations_for_gridpoint::Request,
+        options: CallOptions,
+    ) -> Result<serde_json::Value> {
+        self.list_stations_for_gridpoint
+            .list_stations_for_gridpoint_raw(request, options)
+            .await
+    }
+
+    /// The observation stations in a public forecast zone: the ones `stations.get_observations_for_zone` merges.
+    ///
+    /// See <https://www.weather.gov/documentation/services-web-api#/default/zone_stations>.
+    pub async fn list_stations_for_zone(
+        &self,
+        request: list_stations_for_zone::Request,
+        options: CallOptions,
+    ) -> Result<StationCollection> {
+        self.list_stations_for_zone
+            .list_stations_for_zone(request, options)
+            .await
+    }
+
+    /// `list_stations_for_zone` without validation: the wire body as it came.
+    pub async fn list_stations_for_zone_raw(
+        &self,
+        request: list_stations_for_zone::Request,
+        options: CallOptions,
+    ) -> Result<serde_json::Value> {
+        self.list_stations_for_zone
+            .list_stations_for_zone_raw(request, options)
+            .await
     }
 }

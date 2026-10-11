@@ -33,6 +33,7 @@ pub struct WeatherPhenomenon {
     pub weather: Option<String>,
     /// `very_light`, `light`, `moderate` or `heavy`.
     pub intensity: Option<String>,
+    /// Visibility in the phenomenon.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub visibility: Option<QuantitativeValue>,
     /// Extra qualifiers, such as `damaging_wind` or `small_hail`.
@@ -75,6 +76,7 @@ pub struct GridData {
     /// ISO 8601 interval the grid covers, as `<start>/<duration>`.
     #[serde(rename = "validTimes")]
     pub valid_times: String,
+    /// Elevation of the grid cell.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub elevation: Option<QuantitativeValue>,
     /// URL of the office that produced it.
@@ -93,82 +95,101 @@ pub struct GridData {
     /// Grid row.
     #[serde(rename = "gridY")]
     pub grid_y: i64,
+    /// Air temperature.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub temperature: Option<GridSeries>,
+    /// Dew point.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub dewpoint: Option<GridSeries>,
+    /// Daily maximum temperature.
     #[serde(
         rename = "maxTemperature",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub max_temperature: Option<GridSeries>,
+    /// Daily minimum temperature.
     #[serde(
         rename = "minTemperature",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub min_temperature: Option<GridSeries>,
+    /// Relative humidity.
     #[serde(
         rename = "relativeHumidity",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub relative_humidity: Option<GridSeries>,
+    /// What the air feels like, combining heat index and wind chill.
     #[serde(
         rename = "apparentTemperature",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub apparent_temperature: Option<GridSeries>,
+    /// Heat index.
     #[serde(rename = "heatIndex", default, skip_serializing_if = "Option::is_none")]
     pub heat_index: Option<GridSeries>,
+    /// Wind chill.
     #[serde(rename = "windChill", default, skip_serializing_if = "Option::is_none")]
     pub wind_chill: Option<GridSeries>,
+    /// Percentage of the sky covered by cloud.
     #[serde(rename = "skyCover", default, skip_serializing_if = "Option::is_none")]
     pub sky_cover: Option<GridSeries>,
+    /// Direction the wind comes from, in degrees clockwise from true north.
     #[serde(
         rename = "windDirection",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub wind_direction: Option<GridSeries>,
+    /// Sustained wind speed.
     #[serde(rename = "windSpeed", default, skip_serializing_if = "Option::is_none")]
     pub wind_speed: Option<GridSeries>,
+    /// Peak gust.
     #[serde(rename = "windGust", default, skip_serializing_if = "Option::is_none")]
     pub wind_gust: Option<GridSeries>,
+    /// Chance of measurable precipitation.
     #[serde(
         rename = "probabilityOfPrecipitation",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub probability_of_precipitation: Option<GridSeries>,
+    /// Expected liquid precipitation.
     #[serde(
         rename = "quantitativePrecipitation",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub quantitative_precipitation: Option<GridSeries>,
+    /// Expected ice accumulation.
     #[serde(
         rename = "iceAccumulation",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub ice_accumulation: Option<GridSeries>,
+    /// Expected snowfall.
     #[serde(
         rename = "snowfallAmount",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub snowfall_amount: Option<GridSeries>,
+    /// Cloud ceiling above ground.
     #[serde(
         rename = "ceilingHeight",
         default,
         skip_serializing_if = "Option::is_none"
     )]
     pub ceiling_height: Option<GridSeries>,
+    /// Horizontal visibility.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub visibility: Option<GridSeries>,
+    /// Chance of thunder.
     #[serde(
         rename = "probabilityOfThunder",
         default,

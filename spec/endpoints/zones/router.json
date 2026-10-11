@@ -1,0 +1,5 @@
+{
+  "description": "Forecast, county, fire-weather and marine zones: the areas forecasts, alerts and radio broadcasts are issued for.",
+  "upstream": "https://www.weather.gov/documentation/services-web-api#/default/zone_list",
+  "core": "default"
+}

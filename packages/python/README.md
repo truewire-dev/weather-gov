@@ -38,7 +38,9 @@ async def main() -> None:
       office=point['gridId'], grid_x=point['gridX'], grid_y=point['gridY']
     )
     for period in forecast['periods'][:3]:
-      print(period['name'], period['temperature'], period['temperatureUnit'], period['shortForecast'])
+      print(
+        period['name'], period['temperature'], period['temperatureUnit'], period['shortForecast']
+      )
 
 
 asyncio.run(main())
@@ -48,19 +50,36 @@ asyncio.run(main())
 
 This API never sends a bare number. A temperature is
 `{'unitCode': 'wmoUnit:degC', 'value': 13, 'qualityControl': 'V'}`, and `value` is `None`
-wherever the measurement is missing rather than zero — an airport station reports
-`windGust` only when there were gusts. The types say so, so the null is hard to forget.
+wherever the measurement is missing rather than zero — an airport station's `windGust`
+has a `value` only when there were gusts. The types say so, so the null is hard to forget.
 
-## Walking observations safely
+## Walking a span of observations
 
 `stations.get_observations` is paged by time, and the walk knows something hand-written
-code usually does not: the service caps a response at 500 observations and says nothing
-about the ones it withheld. A full page raises `LogicError` rather than letting the walk
-step past them.
+code usually does not: the service caps a response at 500 observations, keeps the newest,
+and says nothing about the ones it withheld. A full page is evidence the span held more, so
+`stations.get_observations_paged` moves `end` back to the oldest observation it held and
+asks again, until the span is done. Await it for every observation in the span, newest
+first, or iterate it for one page at a time:
+
+```python
+from datetime import datetime, timedelta, timezone
+
+from weather_gov import Weather
+
+
+async def last_week(client: Weather) -> None:
+  end = datetime.now(timezone.utc)
+  # A week is more than 500 observations, so this is several requests -- by design.
+  observations = await client.stations.get_observations_paged(
+    'KSEA', start=end - timedelta(days=7), end=end
+  )
+  print(len(observations), 'observations')
+```
 
 ## Everything else
 
-Eleven endpoints across six groups, three response vocabularies (GeoJSON, schema.org,
+Nineteen endpoints across seven groups, three response vocabularies (GeoJSON, schema.org,
 JSON-LD) described as they actually arrive, and TypeScript and Rust clients from the same
 spec.
 

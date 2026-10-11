@@ -1,3 +1,4 @@
+#:schema https://truewire.dev/schemas/truewire.toml.json
 [project]
 name = "weather_gov"
 

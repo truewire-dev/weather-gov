@@ -42,7 +42,11 @@ pub struct CoreOptions {
 impl CoreOptions {
     /// The options with nothing but a contact, which is the common case.
     pub fn new(contact: impl Into<String>) -> Self {
-        Self { contact: contact.into(), base_url: None, http: None }
+        Self {
+            contact: contact.into(),
+            base_url: None,
+            http: None,
+        }
     }
 
     /// Point the client at another host -- a `truewire mock` address in tests.
@@ -167,7 +171,9 @@ fn encode_path_value(value: &str) -> String {
 /// missing optional field, so it is an error here rather than a deserialization failure a
 /// frame later.
 fn unwrap(raw: Value, payload: Option<&str>) -> Result<Value> {
-    let Some(payload) = payload else { return Ok(raw) };
+    let Some(payload) = payload else {
+        return Ok(raw);
+    };
     let mut value = raw;
     for key in payload.split('.') {
         value = match value {

@@ -76,7 +76,7 @@ console.log(alerts.features.length, 'severe alerts in effect')
 
 ### Every measurement carries its unit
 
-This API never sends a bare number. A temperature is `{ unitCode: 'wmoUnit:degC', value: 13, qualityControl: 'V' }`, and `value` is `null` wherever the measurement is missing rather than zero — an airport station reports `windGust` only when there were gusts. `value` is typed `number | null`, so the null is impossible to forget:
+This API never sends a bare number. A temperature is `{ unitCode: 'wmoUnit:degC', value: 13, qualityControl: 'V' }`, and `value` is `null` wherever the measurement is missing rather than zero — an airport station's `windGust` has a `value` only when there were gusts. `value` is typed `number | null`, so the null is impossible to forget:
 
 ```ts
 import { Weather } from '@truewire/weather-gov'
@@ -176,7 +176,7 @@ Passing `validate: false` to `Weather.new` makes that the default for the whole 
 
 ## What is covered
 
-The same eleven endpoints as the Python client, in the same six groups, from the same spec: `points`, `forecast`, `stations`, `alerts`, `offices`, `products`. The method names are camelCase here and snake_case there; nothing else differs.
+The same nineteen endpoints as the Python client, in the same seven groups, from the same spec: `points`, `forecast`, `stations`, `alerts`, `offices`, `products`, `zones`. The method names are camelCase here and snake_case there; nothing else differs.
 
 ## Tests
 
