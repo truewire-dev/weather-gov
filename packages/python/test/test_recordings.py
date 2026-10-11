@@ -287,6 +287,8 @@ def latest_product(result: Any) -> None:
   """The newest Seattle area forecast discussion, text included."""
   assert (result['productCode'], result['issuingOffice']) == ('AFD', 'KSEW')
   assert 'AFDSEW' in result['productText']
+
+
 def example_request(endpoint: str, example_id: str) -> Any:
   """The request half of an example, for a test that checks the answer against what was
   asked rather than against a constant the refresh would move."""

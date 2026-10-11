@@ -104,7 +104,7 @@ def refresh_alert() -> None:
 def refresh_products() -> None:
   """Move the product window to the observations' window, and the product id to Seattle's
   latest area forecast discussion. Runs after `refresh_observations`, whose window it reads."""
-  window = json.loads((OBSERVATIONS / 'ksea_window.request.json').read_text())['request']
+  window = json.loads((OBSERVATIONS[0] / 'ksea_window.request.json').read_text())['request']
   rewrite(PRODUCTS, {'start': window['start'], 'end': window['end']})
   rewrite(PRODUCT, {'product_id': fetch(LATEST_AFD)['id']})
 
