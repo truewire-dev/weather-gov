@@ -1,4 +1,4 @@
-<!-- vendored from truewire 0.11.0 sha256:813e1b4a9137f811; `truewire agents update` rewrites this file -->
+<!-- vendored from truewire 0.11.0 sha256:3d48c7f5e526caae; `truewire agents update` rewrites this file -->
 # Rust rules
 
 These rules cover the Rust crate: the generated modules under `src/<package>/`, the
@@ -11,8 +11,9 @@ hand-written `core` module, and `tests/`. Each rule names the tool that enforces
   where `Cargo.toml` is. Every warning is an error, in `tests/` too.
 - Don't add a `rustfmt.toml`. Generated files are printed to rustfmt's defaults (100 columns)
   and no formatter runs over them, so a changed width fails `cargo fmt --check`. (rustfmt)
-- Generated files support the default rustfmt styles for both `edition = "2021"` and
-  `edition = "2024"`. Import blocks keep the same layout under either style. (rustfmt)
+- Keep `edition = "2021"` in `Cargo.toml` (`cargo new` writes 2024). Generated files follow
+  rustfmt's 2021 style; under 2024 `cargo fmt --check` re-sorts every generated `use`
+  list. (rustfmt)
 - An `#[allow(..)]` goes on the one item that needs it, names one lint, and has a comment
   saying why. A call to a `#[deprecated]` generated method needs
   `#[allow(deprecated)]` on the caller. No crate-level `#![allow]` in hand-written code.

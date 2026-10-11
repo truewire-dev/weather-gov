@@ -1,4 +1,4 @@
-<!-- vendored from truewire 0.11.0 sha256:2726c12ef38da2ac; `truewire agents update` rewrites this file -->
+<!-- vendored from truewire 0.11.0 sha256:2e937abb1bc07067; `truewire agents update` rewrites this file -->
 # TypeScript rules
 
 These rules cover the package `[typescript]` declares: the client `truewire generate
@@ -74,8 +74,8 @@ says (review) when a reviewer checks it by reading the code.
 
 - `request` honours `call.validate ?? this.validate`. When it is on, return
   `responseCodec.parse(...)`. When it is off, return the raw parsed value. (review)
-- Pass `call.signal` to every HTTP request the core sends through `HttpClient` and as
-  the second argument to WebSocket `Rpc.rpcRequest` / `StreamsRpc.rpcRequest`. (review)
+- Pass `call.signal` to every HTTP request the core sends through `HttpClient`. WebSocket
+  RPC (`rpcRequest`) takes no signal today. (review)
 - Sign inside `RequestOptions.prepare`: the nonce, the timestamp and the signature.
   `prepare` runs after pacing and again on every retry. Never sign before calling
   `http.request`. (review)

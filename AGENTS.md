@@ -47,5 +47,8 @@ ruff check --config packages/python/ruff.toml packages/python/src packages/pytho
 ruff format --check --config packages/python/ruff.toml packages/python/src packages/python/test
 ```
 
-The `typescript` job runs `yarn run typecheck` and `yarn run test` in `packages/typescript`.
-The `rust` job runs `cargo build` and `cargo test` in `packages/rust` with `RUSTFLAGS='-D warnings'`, so a warning fails it.
+The `typescript` job runs `yarn run typecheck`, `yarn run test` and `yarn run build` in
+`packages/typescript`, then checks that every `main`, `types` and `exports` target is in the
+packed tarball.
+The `rust` job runs `cargo build` and `cargo test` in `packages/rust` with
+`RUSTFLAGS='-D warnings'`, so a warning fails it.

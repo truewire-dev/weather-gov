@@ -2,7 +2,7 @@
 name: truewire-spec
 description: Write or extend a Truewire spec (endpoint.json per endpoint, routers, shared schemas) from an endpoint inventory and the API docs, until `truewire check` passes. Use after `truewire-discover`, or when adding endpoints to an existing project.
 ---
-<!-- vendored from truewire 0.10.1 sha256:9b61c30e98406446; `truewire agents update` rewrites this file -->
+<!-- vendored from truewire 0.11.0 sha256:9b61c30e98406446; `truewire agents update` rewrites this file -->
 
 # Spec: from the inventory to a tree that checks
 
