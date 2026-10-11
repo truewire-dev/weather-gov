@@ -2,7 +2,7 @@
 name: truewire-docs
 description: Write a Truewire project's README and usage docs so every code block type-checks against the generated client, verified by `truewire docs check` and `truewire docs lint`. Use after `truewire-implement`.
 ---
-<!-- vendored from truewire 0.10.1 sha256:cb44e9d0c9c04129; `truewire agents update` rewrites this file -->
+<!-- vendored from truewire 0.11.0 sha256:cb44e9d0c9c04129; `truewire agents update` rewrites this file -->
 
 # Docs: a README whose examples cannot rot
 
