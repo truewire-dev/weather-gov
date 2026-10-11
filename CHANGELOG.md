@@ -17,7 +17,7 @@ Rust field names for the JSON-LD keys are the ones 0.11 derives:
 
 `ZoneFeature.geometry` is `Option<ZoneFeatureGeometry>` and `AlertFeature.geometry` is
 `Option<Option<AlertFeatureGeometry>>`: missing is `None`, explicit null is `Some(None)`.
-Required nullable fields such as `Alert.description` still accept a missing key (TRU-760).
+Required nullable fields such as `ZoneFeature.geometry` still accept a missing key (TRU-760).
 Stable JSON-LD names (`at_id`, `at_graph`), shared geometry types and request
 constructors need a newer toolchain release; they and their tests return then (TRU-1046).
 `packages/rust/tests/probe_tru598.rs` and `packages/rust/tests/shared_types.rs` check
