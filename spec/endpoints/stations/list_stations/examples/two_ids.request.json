@@ -1,0 +1,9 @@
+{
+  "description": "Two named stations in one filter, sent as id=KSEA,KPDX: both come back",
+  "request": {
+    "id": [
+      "KSEA",
+      "KPDX"
+    ]
+  }
+}

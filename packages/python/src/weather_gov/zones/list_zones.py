@@ -6,7 +6,7 @@ from weather_gov.schemas import ZoneCollection, ZoneKind
 
 
 class Request(TypedDict):
-  """Which zones. Every filter is optional. Give one value per array filter: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last."""
+  """Which zones. Every filter is optional; an array filter means "any of" and travels as one comma-separated query item."""
 
   id: NotRequired[list[str]]
   """Zone codes to narrow to, such as `WAZ315` or `WAC033`."""
