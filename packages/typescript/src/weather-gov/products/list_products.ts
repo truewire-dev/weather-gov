@@ -3,19 +3,19 @@ import { type CallOptions, type Codec, type HttpEndpoint, type TimestampIso, t }
 import type { DefaultMeta } from '../meta.js'
 import { ProductCollection } from '../types/index.js'
 
-/** Which products. Every filter is optional. Give one value per array filter: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last. */
+/** Which products. Every filter is optional. */
 export interface Request {
-  /** Issuance locations to narrow to, such as `SEW`. */
+  /** Issuance locations to narrow to, such as `SEW`. Several travel as one comma-separated query item. */
   location?: string[]
   /** Start of the span, inclusive. The service keeps about a week of products here; an older start returns nothing rather than failing. */
   start?: TimestampIso
   /** End of the span, exclusive: a product issued at exactly `end` is not returned. */
   end?: TimestampIso
-  /** Four-letter issuing offices to narrow to, such as `KSEW`. */
+  /** Four-letter issuing offices to narrow to, such as `KSEW`. Several travel as one comma-separated query item. */
   office?: string[]
-  /** WMO abbreviated headings to narrow to, four letters and two digits, such as `FXUS66`. */
+  /** WMO abbreviated headings to narrow to, four letters and two digits, such as `FXUS66`. Several travel as one comma-separated query item. */
   wmoid?: string[]
-  /** Three-letter product types to narrow to, such as `AFD`. Left un-enumerated: `products.list_product_types` lists over 300 codes, and the service adds them. */
+  /** Three-letter product types to narrow to, such as `AFD`. Left un-enumerated: `products.list_product_types` lists over 300 codes, and the service adds them. Several travel as one comma-separated query item. */
   type?: string[]
   /** Products per response. Range [1, 500]; the service refuses anything outside it with a 400. Without it the service answers up to 5000. */
   limit?: number

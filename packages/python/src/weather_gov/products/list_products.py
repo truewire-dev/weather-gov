@@ -6,20 +6,20 @@ from weather_gov.schemas import ProductCollection
 
 
 class Request(TypedDict):
-  """Which products. Every filter is optional. Give one value per array filter: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last."""
+  """Which products. Every filter is optional."""
 
   location: NotRequired[list[str]]
-  """Issuance locations to narrow to, such as `SEW`."""
+  """Issuance locations to narrow to, such as `SEW`. Several travel as one comma-separated query item."""
   start: NotRequired[TimestampIso]
   """Start of the span, inclusive. The service keeps about a week of products here; an older start returns nothing rather than failing."""
   end: NotRequired[TimestampIso]
   """End of the span, exclusive: a product issued at exactly `end` is not returned."""
   office: NotRequired[list[str]]
-  """Four-letter issuing offices to narrow to, such as `KSEW`."""
+  """Four-letter issuing offices to narrow to, such as `KSEW`. Several travel as one comma-separated query item."""
   wmoid: NotRequired[list[str]]
-  """WMO abbreviated headings to narrow to, four letters and two digits, such as `FXUS66`."""
+  """WMO abbreviated headings to narrow to, four letters and two digits, such as `FXUS66`. Several travel as one comma-separated query item."""
   type: NotRequired[list[str]]
-  """Three-letter product types to narrow to, such as `AFD`. Left un-enumerated: `products.list_product_types` lists over 300 codes, and the service adds them."""
+  """Three-letter product types to narrow to, such as `AFD`. Left un-enumerated: `products.list_product_types` lists over 300 codes, and the service adds them. Several travel as one comma-separated query item."""
   limit: NotRequired[int]
   """Products per response. Range [1, 500]; the service refuses anything outside it with a 400. Without it the service answers up to 5000."""
 
@@ -68,12 +68,12 @@ class ListProducts(Endpoint):
     """Text products issued in a span of time, newest first, narrowed by type, office, location or WMO heading. Header fields only; `products.get_product` fetches one with its text.
 
     Args:
-      location: Issuance locations to narrow to, such as `SEW`.
+      location: Issuance locations to narrow to, such as `SEW`. Several travel as one comma-separated query item.
       start: Start of the span, inclusive. The service keeps about a week of products here; an older start returns nothing rather than failing.
       end: End of the span, exclusive: a product issued at exactly `end` is not returned.
-      office: Four-letter issuing offices to narrow to, such as `KSEW`.
-      wmoid: WMO abbreviated headings to narrow to, four letters and two digits, such as `FXUS66`.
-      type: Three-letter product types to narrow to, such as `AFD`. Left un-enumerated: `products.list_product_types` lists over 300 codes, and the service adds them.
+      office: Four-letter issuing offices to narrow to, such as `KSEW`. Several travel as one comma-separated query item.
+      wmoid: WMO abbreviated headings to narrow to, four letters and two digits, such as `FXUS66`. Several travel as one comma-separated query item.
+      type: Three-letter product types to narrow to, such as `AFD`. Left un-enumerated: `products.list_product_types` lists over 300 codes, and the service adds them. Several travel as one comma-separated query item.
       limit: Products per response. Range [1, 500]; the service refuses anything outside it with a 400. Without it the service answers up to 5000.
       validate: Override this call's response validation; falls back to the client-level default when omitted. `False` returns the parsed body as it came, typed `Any`.
 

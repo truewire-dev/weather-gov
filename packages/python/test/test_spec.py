@@ -79,4 +79,4 @@ def test_a_list_filter_is_declared_comma_separated(path: Path):
 def test_some_endpoints_take_list_filters():
   """A guard on the guard, as above."""
   with_lists = [path for path in ENDPOINTS if list_filters(json.loads(path.read_text()))]
-  assert len(with_lists) == 4
+  assert len(with_lists) == 5

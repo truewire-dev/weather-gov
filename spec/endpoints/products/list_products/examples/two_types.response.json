@@ -1,0 +1,38 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": {
+      "@version": "1.1",
+      "@vocab": "https://api.weather.gov/ontology#"
+    },
+    "@graph": [
+      {
+        "@id": "https://api.weather.gov/products/d2852ba2-68b7-4355-adf4-e68f2d824185",
+        "id": "d2852ba2-68b7-4355-adf4-e68f2d824185",
+        "wmoCollectiveId": "FXUS66",
+        "issuingOffice": "KSEW",
+        "issuanceTime": "2026-10-10T22:21:00+00:00",
+        "productCode": "AFD",
+        "productName": "Area Forecast Discussion"
+      },
+      {
+        "@id": "https://api.weather.gov/products/349bcc40-71fb-454a-8d55-8cd94030f09a",
+        "id": "349bcc40-71fb-454a-8d55-8cd94030f09a",
+        "wmoCollectiveId": "FPUS56",
+        "issuingOffice": "KSEW",
+        "issuanceTime": "2026-10-10T21:37:00+00:00",
+        "productCode": "ZFP",
+        "productName": "Zone Forecast Product"
+      },
+      {
+        "@id": "https://api.weather.gov/products/7a7ea395-d9d7-4e72-8b6d-03df817a4188",
+        "id": "7a7ea395-d9d7-4e72-8b6d-03df817a4188",
+        "wmoCollectiveId": "FXUS66",
+        "issuingOffice": "KSEW",
+        "issuanceTime": "2026-10-10T16:45:00+00:00",
+        "productCode": "AFD",
+        "productName": "Area Forecast Discussion"
+      }
+    ]
+  }
+}
