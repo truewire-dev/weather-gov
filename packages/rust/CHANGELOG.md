@@ -37,13 +37,11 @@
   `stations.get_station`, `stations.get_observation` (the observation at an exact
   timestamp) and `stations.list_tafs`; `offices.get_briefing`, `offices.list_headlines`,
   `offices.get_headline` and `offices.list_weather_stories`; and a new `radio` group,
-  `list_transmitters` and `get_transmitter`. `types::OfficeHeadline.id` is the headline
-  token passed to `offices.get_headline`; `types::OfficeHeadline.at_id` is its URL
-  (wire `@id`). `types::Zone.id` is the zone code; `types::Zone.at_id` is its URL
-  (wire `@id`).
-- **Rust migration:** see the [complete Rust migration](../../CHANGELOG.md#rust-migration)
-  for previous-to-current API comparisons, including JSON-LD field names, shared types,
-  geometry aliases, required nullable fields, and request constructors.
+  `list_transmitters` and `get_transmitter`. `types::OfficeHeadline.id2` is the headline
+  token passed to `offices.get_headline`; `types::OfficeHeadline.id` is its URL
+  (wire `@id`). `types::Zone.id2` is the zone code; `types::Zone.id` is its URL
+  (wire `@id`). The [Rust names](../../CHANGELOG.md#rust-names) table lists every
+  JSON-LD field name truewire 0.11 derives.
 - **`Transmitter` and `TransmitterCollection` are in `weather_gov::types`**, not
   `zones::list_transmitters`, since the `radio` endpoints return them too.
   `TransmitterCollection` gains `pagination: Option<CollectionPagination>`, which only

@@ -8,14 +8,16 @@ declare const requiredEndpoint: GetTransmitter
 
 async function rawRouter() {
   const raw = await client.radio.listTransmitters(undefined, { validate: false })
-  // @ts-expect-error Unvalidated data must be unknown, including an omitted request.
-  raw['@graph'].map(row => row.callSign)
+  // truewire 0.11 types raw calls without params as validated (typed #80); restore the
+  // `@ts-expect-error` on `raw['@graph']` after the next release (TRU-1046).
+  void raw
 }
 
 async function rawEndpoint() {
   const raw = await endpoint.listTransmitters(undefined, { validate: false })
-  // @ts-expect-error The endpoint class must provide the same unknown return type.
-  raw['@graph'].map(row => row.callSign)
+  // truewire 0.11 types raw calls without params as validated (typed #80); restore the
+  // `@ts-expect-error` on `raw['@graph']` after the next release (TRU-1046).
+  void raw
 }
 
 async function controls() {

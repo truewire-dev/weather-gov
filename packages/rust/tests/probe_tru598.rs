@@ -1,4 +1,6 @@
-//! A listed headline's natural `id` works as the get_headline argument; `at_id` is its URL.
+//! A listed headline's natural `id` works as the get_headline argument; `@id` is its URL.
+//! truewire 0.11 names them `id2` and `id`; the stable `id`/`at_id` names return after the
+//! next release (TRU-1046).
 use std::io::{BufRead, BufReader};
 use std::path::{Path, PathBuf};
 use std::process::{Child, Command, Stdio};
@@ -47,7 +49,7 @@ fn mock() -> (Mock, String) {
 }
 
 #[tokio::test]
-async fn listed_headline_id_fetches_the_headline_and_at_id_remains_the_url() {
+async fn listed_headline_id_fetches_the_headline_and_json_ld_id_remains_the_url() {
     let recorded: Value = serde_json::from_str(
         &std::fs::read_to_string(
             root().join("spec/endpoints/offices/get_headline/examples/wakefield.request.json"),
@@ -63,39 +65,42 @@ async fn listed_headline_id_fetches_the_headline_and_at_id_remains_the_url() {
     let list = client
         .offices
         .list_headlines(
-            offices::list_headlines::Request::new(office.to_owned()),
+            offices::list_headlines::Request {
+                office_id: office.to_owned(),
+                ..Default::default()
+            },
             CallOptions::default(),
         )
         .await
         .expect("list headlines");
-    let listed = list
-        .at_graph
-        .iter()
-        .find(|h| h.id == id)
-        .expect("listed id");
-    assert_ne!(listed.id, listed.at_id);
+    let listed = list.graph.iter().find(|h| h.id2 == id).expect("listed id");
+    assert_ne!(listed.id2, listed.id);
     assert_eq!(
-        listed.at_id,
-        format!("{}/headlines/{}", listed.office, listed.id)
+        listed.id,
+        format!("{}/headlines/{}", listed.office, listed.id2)
     );
     let headline = client
         .offices
         .get_headline(
-            offices::get_headline::Request::new(office.to_owned(), listed.id.clone()),
+            offices::get_headline::Request {
+                office_id: office.to_owned(),
+                headline_id: listed.id2.clone(),
+                ..Default::default()
+            },
             CallOptions::default(),
         )
         .await
-        .expect("the natural headline.id lookup succeeds");
+        .expect("the natural headline id lookup succeeds");
+    assert_eq!(headline.id2, listed.id2);
     assert_eq!(headline.id, listed.id);
-    assert_eq!(headline.at_id, listed.at_id);
     assert_eq!(headline.title, listed.title);
     assert!(!headline.title.is_empty());
     let wire = serde_json::to_value(&headline).expect("serialize headline");
-    assert_eq!(wire["id"], headline.id);
-    assert_eq!(wire["@id"], headline.at_id);
-    assert!(wire.get("at_id").is_none());
+    assert_eq!(wire["id"], headline.id2);
+    assert_eq!(wire["@id"], headline.id);
+    assert!(wire.get("id2").is_none());
     println!(
-        "PASS: headline.id={} fetches the headline; at_id={}",
-        headline.id, headline.at_id
+        "PASS: headline id={} fetches the headline; @id={}",
+        headline.id2, headline.id
     );
 }
