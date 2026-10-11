@@ -1,0 +1,10 @@
+{
+  "description": "The first five Washington counties",
+  "request": {
+    "zone_type": "county",
+    "area": [
+      "WA"
+    ],
+    "limit": 5
+  }
+}

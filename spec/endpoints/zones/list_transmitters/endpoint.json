@@ -1,0 +1,118 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/transmitter_zone",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/zones/{zone_type}/{zone_id}/radio",
+    "method": "GET",
+    "description": "The NOAA Weather Radio transmitters that broadcast for a county. JSON-LD, not GeoJSON: the transmitters come as a `@graph`.",
+    "request": {
+      "title": "ListTransmittersRequest",
+      "type": "object",
+      "description": "Which county.",
+      "properties": {
+        "zone_id": {
+          "type": "string",
+          "description": "County code, such as `WAC033`."
+        },
+        "zone_type": {
+          "type": "string",
+          "enum": [
+            "county"
+          ],
+          "description": "The zone type. Only `county`: the OpenAPI lists every zone type, but the service refuses any other with a 404 naming `county` as the one value it takes."
+        }
+      },
+      "required": [
+        "zone_id",
+        "zone_type"
+      ]
+    },
+    "response": {
+      "title": "TransmitterCollection",
+      "type": "object",
+      "description": "The transmitters, as a JSON-LD graph.",
+      "properties": {
+        "@graph": {
+          "type": "array",
+          "description": "The transmitters. Each one arrives many times over, identical: 64 copies of each on 2026-09-30.",
+          "items": {
+            "title": "Transmitter",
+            "type": "object",
+            "description": "One NOAA Weather Radio transmitter.",
+            "properties": {
+              "@id": {
+                "type": "string",
+                "description": "URL of the transmitter."
+              },
+              "@type": {
+                "type": "string",
+                "enum": [
+                  "wx:Transmitter"
+                ],
+                "description": "Always `wx:Transmitter`."
+              },
+              "setId": {
+                "type": "string",
+                "description": "Which release of the transmitter list this came from."
+              },
+              "callSign": {
+                "type": "string",
+                "description": "Call sign, such as `KHB60`."
+              },
+              "transmitterFrequency": {
+                "type": "string",
+                "format": "decimal-string",
+                "description": "Frequency in MHz, such as `162.550`."
+              },
+              "siteName": {
+                "type": "string",
+                "description": "Name of the transmitter, such as `Seattle`."
+              },
+              "siteCity": {
+                "type": "string",
+                "description": "Where the transmitter stands."
+              },
+              "siteState": {
+                "type": "string",
+                "description": "Two-letter state of the site."
+              },
+              "sameCodes": {
+                "type": "array",
+                "description": "SAME codes of the counties it broadcasts for: `0`, the FIPS state, the FIPS county, such as `053033`.",
+                "items": {
+                  "type": "string",
+                  "description": "One SAME code."
+                }
+              },
+              "counties": {
+                "type": "array",
+                "description": "County zone codes it broadcasts for, such as `WAC033`, in the order of `sameCodes`.",
+                "items": {
+                  "type": "string",
+                  "description": "One county zone code."
+                }
+              }
+            },
+            "required": [
+              "@id",
+              "callSign",
+              "transmitterFrequency",
+              "counties"
+            ]
+          }
+        }
+      },
+      "required": [
+        "@graph"
+      ]
+    }
+  },
+  "notes": [
+    "TRU-414 excluded the other `/radio` operation it met, `/points/{point}/radio`, as XML-only. This one answers `application/ld+json` whatever the `Accept` header asks for (measured 2026-09-30 with `application/geo+json`, `application/ld+json` and `*/*`).",
+    "The service repeats every transmitter: `/zones/county/WAC033/radio` held `KHB60` 64 times and nothing else, `/zones/county/ALC001/radio` three transmitters 64 times each, all identical. The spec describes the wire, so the repeats are in the recording and in what the client returns."
+  ]
+}

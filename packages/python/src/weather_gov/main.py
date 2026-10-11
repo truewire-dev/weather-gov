@@ -6,6 +6,7 @@ from .offices import Offices
 from .points import Points
 from .products import Products
 from .stations import Stations
+from .zones import Zones
 from weather_gov.core import ClientBase
 
 
@@ -69,3 +70,12 @@ class Weather(ClientBase):
       - [Upstream docs](https://www.weather.gov/documentation/services-web-api#/default/obs_stations)
     """
     return Stations(client=self.client)
+
+  @cached_property
+  def zones(self) -> Zones:
+    """Forecast, county, fire-weather and marine zones: the areas forecasts, alerts and radio broadcasts are issued for.
+
+    References:
+      - [Upstream docs](https://www.weather.gov/documentation/services-web-api#/default/zone_list)
+    """
+    return Zones(client=self.client)

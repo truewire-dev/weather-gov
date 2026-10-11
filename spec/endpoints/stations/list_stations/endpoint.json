@@ -44,49 +44,8 @@
       "required": []
     },
     "response": {
-      "title": "StationCollection",
-      "type": "object",
-      "description": "One page of stations, as a GeoJSON feature collection.",
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": [
-            "FeatureCollection"
-          ],
-          "description": "Always `FeatureCollection`."
-        },
-        "features": {
-          "type": "array",
-          "description": "The stations.",
-          "items": {
-            "$ref": "StationFeature",
-            "description": "One station."
-          }
-        },
-        "observationStations": {
-          "type": "array",
-          "description": "The same stations as bare URLs, in the same order.",
-          "items": {
-            "type": "string",
-            "description": "URL of one station."
-          }
-        },
-        "pagination": {
-          "title": "CollectionPagination",
-          "type": "object",
-          "description": "Where the next page is. A whole URL, not a bare cursor -- which is why this endpoint declares no pagination strategy.",
-          "properties": {
-            "next": {
-              "type": "string",
-              "description": "URL of the next page, cursor already in the query string. Absent on the last page."
-            }
-          }
-        }
-      },
-      "required": [
-        "type",
-        "features"
-      ]
+      "$ref": "StationCollection",
+      "description": "One page of stations."
     }
   },
   "notes": [

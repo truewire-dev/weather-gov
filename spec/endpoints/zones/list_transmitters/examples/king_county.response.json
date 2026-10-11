@@ -1,0 +1,1546 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": {
+      "@version": "1.1"
+    },
+    "@graph": [
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KHB60",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KHB60",
+        "transmitterFrequency": "162.550",
+        "siteName": "Seattle",
+        "siteCity": "Cougar Mtn.",
+        "siteState": "WA",
+        "sameCodes": [
+          "053053",
+          "053033",
+          "053035",
+          "053045",
+          "053061"
+        ],
+        "counties": [
+          "WAC053",
+          "WAC033",
+          "WAC035",
+          "WAC045",
+          "WAC061"
+        ]
+      }
+    ]
+  }
+}

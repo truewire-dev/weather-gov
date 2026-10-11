@@ -1,0 +1,6 @@
+{
+  "description": "The stations in the City of Seattle zone",
+  "request": {
+    "zone_id": "WAZ315"
+  }
+}

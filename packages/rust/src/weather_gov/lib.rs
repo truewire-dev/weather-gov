@@ -15,6 +15,7 @@ pub mod points;
 pub mod products;
 pub mod stations;
 pub mod types;
+pub mod zones;
 
 pub use client::Weather;
 pub use truewire_core::CallOptions;

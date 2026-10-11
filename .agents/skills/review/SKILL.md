@@ -2,7 +2,7 @@
 name: truewire-review
 description: Review a finished Truewire project against docs/standards.md and every CLI gate before it is delivered, released or merged. Use as the last step of a spec-service delivery or before a pull request that adds endpoints.
 ---
-<!-- vendored from truewire 0.10.1 sha256:ce8edf2165d68229; `truewire agents update` rewrites this file -->
+<!-- vendored from truewire 0.11.0 sha256:ce8edf2165d68229; `truewire agents update` rewrites this file -->
 
 # Review: the last gate before anyone else sees it
 

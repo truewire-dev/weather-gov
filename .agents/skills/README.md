@@ -1,4 +1,4 @@
-<!-- vendored from truewire 0.10.1 sha256:e21783789c40eb67; `truewire agents update` rewrites this file -->
+<!-- vendored from truewire 0.11.0 sha256:e21783789c40eb67; `truewire agents update` rewrites this file -->
 # Agent skills
 
 Six skills that take a coding agent from a docs URL to a project that passes every Truewire

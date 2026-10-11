@@ -1,0 +1,156 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": {
+      "@version": "1.1"
+    },
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "id": "https://api.weather.gov/zones/county/WAC001",
+        "type": "Feature",
+        "geometry": null,
+        "properties": {
+          "@id": "https://api.weather.gov/zones/county/WAC001",
+          "@type": "wx:Zone",
+          "id": "WAC001",
+          "type": "county",
+          "name": "Adams",
+          "effectiveDate": "2026-04-16T18:00:00+00:00",
+          "expirationDate": "2200-01-01T00:00:00+00:00",
+          "state": "WA",
+          "forecastOffice": "https://api.weather.gov/offices/OTX",
+          "gridIdentifier": "OTX",
+          "awipsLocationIdentifier": "OTX",
+          "cwa": [
+            "OTX"
+          ],
+          "forecastOffices": [
+            "https://api.weather.gov/offices/OTX"
+          ],
+          "timeZone": [
+            "America/Los_Angeles"
+          ],
+          "observationStations": [],
+          "radarStation": null
+        }
+      },
+      {
+        "id": "https://api.weather.gov/zones/county/WAC003",
+        "type": "Feature",
+        "geometry": null,
+        "properties": {
+          "@id": "https://api.weather.gov/zones/county/WAC003",
+          "@type": "wx:Zone",
+          "id": "WAC003",
+          "type": "county",
+          "name": "Asotin",
+          "effectiveDate": "2026-04-16T18:00:00+00:00",
+          "expirationDate": "2200-01-01T00:00:00+00:00",
+          "state": "WA",
+          "forecastOffice": "https://api.weather.gov/offices/OTX",
+          "gridIdentifier": "OTX",
+          "awipsLocationIdentifier": "OTX",
+          "cwa": [
+            "OTX"
+          ],
+          "forecastOffices": [
+            "https://api.weather.gov/offices/OTX"
+          ],
+          "timeZone": [
+            "America/Los_Angeles"
+          ],
+          "observationStations": [],
+          "radarStation": null
+        }
+      },
+      {
+        "id": "https://api.weather.gov/zones/county/WAC005",
+        "type": "Feature",
+        "geometry": null,
+        "properties": {
+          "@id": "https://api.weather.gov/zones/county/WAC005",
+          "@type": "wx:Zone",
+          "id": "WAC005",
+          "type": "county",
+          "name": "Benton",
+          "effectiveDate": "2026-04-16T18:00:00+00:00",
+          "expirationDate": "2200-01-01T00:00:00+00:00",
+          "state": "WA",
+          "forecastOffice": "https://api.weather.gov/offices/PDT",
+          "gridIdentifier": "PDT",
+          "awipsLocationIdentifier": "PDT",
+          "cwa": [
+            "PDT"
+          ],
+          "forecastOffices": [
+            "https://api.weather.gov/offices/PDT"
+          ],
+          "timeZone": [
+            "America/Los_Angeles"
+          ],
+          "observationStations": [],
+          "radarStation": null
+        }
+      },
+      {
+        "id": "https://api.weather.gov/zones/county/WAC007",
+        "type": "Feature",
+        "geometry": null,
+        "properties": {
+          "@id": "https://api.weather.gov/zones/county/WAC007",
+          "@type": "wx:Zone",
+          "id": "WAC007",
+          "type": "county",
+          "name": "Chelan",
+          "effectiveDate": "2026-04-16T18:00:00+00:00",
+          "expirationDate": "2200-01-01T00:00:00+00:00",
+          "state": "WA",
+          "forecastOffice": "https://api.weather.gov/offices/OTX",
+          "gridIdentifier": "OTX",
+          "awipsLocationIdentifier": "OTX",
+          "cwa": [
+            "OTX"
+          ],
+          "forecastOffices": [
+            "https://api.weather.gov/offices/OTX"
+          ],
+          "timeZone": [
+            "America/Los_Angeles"
+          ],
+          "observationStations": [],
+          "radarStation": null
+        }
+      },
+      {
+        "id": "https://api.weather.gov/zones/county/WAC009",
+        "type": "Feature",
+        "geometry": null,
+        "properties": {
+          "@id": "https://api.weather.gov/zones/county/WAC009",
+          "@type": "wx:Zone",
+          "id": "WAC009",
+          "type": "county",
+          "name": "Clallam",
+          "effectiveDate": "2026-04-16T18:00:00+00:00",
+          "expirationDate": "2200-01-01T00:00:00+00:00",
+          "state": "WA",
+          "forecastOffice": "https://api.weather.gov/offices/SEW",
+          "gridIdentifier": "SEW",
+          "awipsLocationIdentifier": "SEW",
+          "cwa": [
+            "SEW"
+          ],
+          "forecastOffices": [
+            "https://api.weather.gov/offices/SEW"
+          ],
+          "timeZone": [
+            "America/Los_Angeles"
+          ],
+          "observationStations": [],
+          "radarStation": null
+        }
+      }
+    ]
+  }
+}

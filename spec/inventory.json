@@ -31,6 +31,14 @@
     {"method": "GET", "path": "/products/types/{typeId}/locations", "endpoint": "products.list_locations_for_type"},
     {"method": "GET", "path": "/products/locations/{locationId}/types", "endpoint": "products.list_types_for_location"},
     {"method": "GET", "path": "/products/types/{typeId}/locations/{locationId}", "endpoint": "products.list_products_by_type_and_location"},
-    {"method": "GET", "path": "/products/types/{typeId}/locations/{locationId}/latest", "endpoint": "products.get_latest_product"}
+    {"method": "GET", "path": "/products/types/{typeId}/locations/{locationId}/latest", "endpoint": "products.get_latest_product"},
+    {"method": "GET", "path": "/zones", "endpoint": "zones.list_zones"},
+    {"method": "GET", "path": "/zones/{type}", "endpoint": "zones.list_zones_by_type"},
+    {"method": "GET", "path": "/zones/{type}/{zoneId}", "endpoint": "zones.get_zone"},
+    {"method": "GET", "path": "/zones/{type}/{zoneId}/forecast", "endpoint": "zones.get_forecast"},
+    {"method": "GET", "path": "/zones/{type}/{zoneId}/radio", "endpoint": "zones.list_transmitters"},
+    {"method": "GET", "path": "/zones/forecast/{zoneId}/observations", "endpoint": "stations.get_observations_for_zone"},
+    {"method": "GET", "path": "/zones/forecast/{zoneId}/stations", "endpoint": "stations.list_stations_for_zone"},
+    {"method": "GET", "path": "/gridpoints/{wfo}/{x},{y}/stations", "endpoint": "stations.list_stations_for_gridpoint"}
   ]
 }
