@@ -1,0 +1,116 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": [
+      "https://geojson.org/geojson-ld/geojson-context.jsonld",
+      {
+        "@version": "1.1",
+        "wx": "https://api.weather.gov/ontology#",
+        "s": "https://schema.org/",
+        "geo": "http://www.opengis.net/ont/geosparql#",
+        "unit": "http://codes.wmo.int/common/unit/",
+        "@vocab": "https://api.weather.gov/ontology#",
+        "geometry": {
+          "@id": "s:GeoCoordinates",
+          "@type": "geo:wktLiteral"
+        },
+        "city": "s:addressLocality",
+        "state": "s:addressRegion",
+        "distance": {
+          "@id": "s:Distance",
+          "@type": "s:QuantitativeValue"
+        },
+        "bearing": {
+          "@type": "s:QuantitativeValue"
+        },
+        "value": {
+          "@id": "s:value"
+        },
+        "unitCode": {
+          "@id": "s:unitCode",
+          "@type": "@id"
+        },
+        "forecastOffice": {
+          "@type": "@id"
+        },
+        "forecastGridData": {
+          "@type": "@id"
+        },
+        "publicZone": {
+          "@type": "@id"
+        },
+        "county": {
+          "@type": "@id"
+        },
+        "observationStations": {
+          "@container": "@list",
+          "@type": "@id"
+        }
+      }
+    ],
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "id": "https://api.weather.gov/stations/KPDX",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -122.60917,
+            45.59578
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/KPDX",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 6.096
+          },
+          "stationIdentifier": "KPDX",
+          "name": "Portland, Portland International Airport",
+          "timeZone": "America/Los_Angeles",
+          "provider": "ASOS-HFM",
+          "subProvider": "",
+          "forecast": "https://api.weather.gov/zones/forecast/ORZ111",
+          "county": "https://api.weather.gov/zones/county/ORC051",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/ORZ684"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/stations/KSEA",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -122.31361,
+            47.44472
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/stations/KSEA",
+          "@type": "wx:ObservationStation",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 130.1496
+          },
+          "stationIdentifier": "KSEA",
+          "name": "Seattle, Seattle-Tacoma International Airport",
+          "timeZone": "America/Los_Angeles",
+          "provider": "ASOS-HFM",
+          "subProvider": "",
+          "forecast": "https://api.weather.gov/zones/forecast/WAZ316",
+          "county": "https://api.weather.gov/zones/county/WAC033",
+          "fireWeatherZone": "https://api.weather.gov/zones/fire/WAZ654"
+        }
+      }
+    ],
+    "observationStations": [
+      "https://api.weather.gov/stations/KPDX",
+      "https://api.weather.gov/stations/KSEA"
+    ],
+    "pagination": {
+      "next": "https://api.weather.gov/stations?id%5B0%5D=KSEA&id%5B1%5D=KPDX&limit=500&cursor=eyJzIjo1MDB9"
+    }
+  }
+}

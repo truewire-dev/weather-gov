@@ -16,8 +16,9 @@ Three things about this API shape the core:
    unwraps them before validating -- so a caller gets the forecast, not the wrapper.
    Endpoints whose geometry is real data (an alert's polygon) declare no envelope and are
    returned whole.
-3. **A repeated filter is a repeated query key.** `state`, `area`, `severity` and the rest
-   take lists, and travel as `?state=WA&state=OR`.
+3. **A list filter is one comma-separated query item.** `state`, `area`, `severity` and
+   the rest take lists, and travel as `?state=WA,OR`. The service keeps only the last of a
+   repeated key, so `?state=WA&state=OR` would answer for Oregon alone.
 """
 
 import json
@@ -107,6 +108,13 @@ def render(request: Any, request_type: type[Any] | UnionType | None) -> dict[str
   return {k: v for k, v in rendered.items() if v is not None}
 
 
+def query_text(value: Any) -> str:
+  """One list item as query text, spelled the way `httpx` spells a lone value (`true`)."""
+  if isinstance(value, bool):
+    return 'true' if value else 'false'
+  return str(value)
+
+
 def unwrap(raw: Any, payload: str | None) -> Any:
   """Read the declared envelope payload off a decoded response body.
 
@@ -142,7 +150,8 @@ class Transport:
     """Send one request and return the body; a non-2xx status raises.
 
     A `{name}` placeholder in the path is filled from the request and removed from the
-    query. The value is percent-encoded, with one exception: `:` is left alone. It is a
+    query, where a list becomes one comma-separated item (point 3 above). The path value
+    is percent-encoded, with one exception: `:` is left alone. It is a
     legal path character (RFC 3986 `pchar`), an alert id is
     `urn:oid:2.49.0.1.840.0.<hash>.001.1`, and the service publishes that id inside the
     URL it hands back -- so encoding it would send a different URL than the one the API
@@ -154,6 +163,11 @@ class Transport:
       if f'{{{name}}}' in filled:
         filled = filled.replace(f'{{{name}}}', quote(str(value), safe=':'))
         params.pop(name)
+      elif isinstance(value, list):
+        if value:
+          params[name] = ','.join(query_text(item) for item in value)
+        else:
+          params.pop(name)
     response = await self.http.request(
       method,
       self.base_url.rstrip('/') + '/' + filled.lstrip('/'),
