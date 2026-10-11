@@ -29,11 +29,6 @@ function recorded<T>(file: string): T {
   const full = path.join(projectRoot, 'spec/endpoints', file)
   return (JSON.parse(readFileSync(full, 'utf8')) as { request: T }).request
 }
-
-const WINDOW = recorded<{ station_id: string; start: string; end: string; limit: number }>(
-  'stations/get_observations/examples/ksea_window.request.json',
-)
-const ALERT = recorded<{ id: string }>('alerts/get_alert/examples/one.request.json')
 const PRODUCTS = recorded<{ type: string[]; start: string; end: string; limit: number }>(
   'products/list_products/examples/afd_window.request.json',
 )
@@ -55,6 +50,11 @@ function isProductList(products: Product[], code: string, office?: string): void
   const issued = products.map(product => product.issuanceTime.getTime())
   expect([...issued].sort((a, b) => b - a)).toEqual(issued)
 }
+
+const WINDOW = recorded<{ station_id: string; start: string; end: string; limit: number }>(
+  'stations/get_observations/examples/ksea_window.request.json',
+)
+const ALERT = recorded<{ id: string }>('alerts/get_alert/examples/one.request.json')
 const ZONE_WINDOW = recorded<{ zone_id: string; start: string; end: string; limit: number }>(
   'stations/get_observations_for_zone/examples/seattle_capped.request.json',
 )
