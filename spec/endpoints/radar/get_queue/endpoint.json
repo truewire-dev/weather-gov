@@ -12,7 +12,7 @@
     "request": {
       "title": "GetRadarQueueRequest",
       "type": "object",
-      "description": "Which host, and which products. Every filter is optional.",
+      "description": "Which host, and which products. `host` is required; every filter after it is optional.",
       "properties": {
         "host": {
           "type": "string",

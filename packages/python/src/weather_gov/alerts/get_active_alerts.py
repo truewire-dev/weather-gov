@@ -6,10 +6,10 @@ from weather_gov.schemas import AlertFeature
 
 
 class Request(TypedDict):
-  """How to narrow the alerts. Every filter is optional; the array-valued ones are sent as repeated query keys and mean "any of"."""
+  """How to narrow the alerts. Every filter is optional; the array-valued ones mean "any of" and travel as one comma-separated query item."""
 
   area: NotRequired[list[str]]
-  """Two-letter state, territory or marine-area codes to narrow to, such as `WA` or `PZ`. Sent as a repeated query key. Left un-enumerated deliberately: the service's own 400 lists only the marine half of what it accepts, and a guessed enum would reject the states."""
+  """Two-letter state, territory or marine-area codes to narrow to, such as `WA` or `PZ`. Left un-enumerated deliberately: the service's own 400 lists only the marine half of what it accepts, and a guessed enum would reject the states."""
   region: NotRequired[list[Literal['AL', 'AT', 'GL', 'GM', 'PA', 'PI']]]
   """Marine regions to narrow to."""
   zone: NotRequired[list[str]]
@@ -91,7 +91,7 @@ class GetActiveAlerts(Endpoint):
     """Every watch, warning and advisory in effect right now, optionally narrowed. Unnarrowed this is the whole country and runs to a few hundred alerts, so narrow by `area`, `zone` or `point` unless you want all of it.
 
     Args:
-      area: Two-letter state, territory or marine-area codes to narrow to, such as `WA` or `PZ`. Sent as a repeated query key. Left un-enumerated deliberately: the service's own 400 lists only the marine half of what it accepts, and a guessed enum would reject the states.
+      area: Two-letter state, territory or marine-area codes to narrow to, such as `WA` or `PZ`. Left un-enumerated deliberately: the service's own 400 lists only the marine half of what it accepts, and a guessed enum would reject the states.
       region: Marine regions to narrow to.
       zone: Forecast zone codes, such as `WAZ315`.
       point: A `latitude,longitude` pair; returns the alerts covering that point.

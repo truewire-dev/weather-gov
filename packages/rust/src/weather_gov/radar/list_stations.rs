@@ -8,10 +8,10 @@ use truewire_core::{decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoin
 use crate::meta::DefaultMeta;
 use crate::types::RadarStationFeature;
 
-/// Which radars. Every filter is optional. Give one value to `stationType`: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last.
+/// Which radars. Every filter is optional.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct Request {
-    /// Kinds of radar to narrow to: `WSR-88D`, `TDWR` or `Profiler`, matched case-sensitively (`tdwr` answers an empty list). Undocumented, so not enumerated.
+    /// Kinds of radar to narrow to, any of: `WSR-88D`, `TDWR` or `Profiler`, matched case-sensitively (`tdwr` answers an empty list). Undocumented, so not enumerated. Sent as one comma-separated item, `stationType=TDWR,Profiler`.
     #[serde(
         rename = "stationType",
         default,

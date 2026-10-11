@@ -1,6 +1,9 @@
 {
   "docs": "https://www.weather.gov/documentation/services-web-api#/default/alerts_active",
   "meta": {},
+  "match": {
+    "query_arrays": "comma"
+  },
   "spec": {
     "kind": "rpc",
     "transports": [
@@ -12,11 +15,11 @@
     "request": {
       "title": "GetActiveAlertsRequest",
       "type": "object",
-      "description": "How to narrow the alerts. Every filter is optional; the array-valued ones are sent as repeated query keys and mean \"any of\".",
+      "description": "How to narrow the alerts. Every filter is optional; the array-valued ones mean \"any of\" and travel as one comma-separated query item.",
       "properties": {
         "area": {
           "type": "array",
-          "description": "Two-letter state, territory or marine-area codes to narrow to, such as `WA` or `PZ`. Sent as a repeated query key. Left un-enumerated deliberately: the service's own 400 lists only the marine half of what it accepts, and a guessed enum would reject the states.",
+          "description": "Two-letter state, territory or marine-area codes to narrow to, such as `WA` or `PZ`. Left un-enumerated deliberately: the service's own 400 lists only the marine half of what it accepts, and a guessed enum would reject the states.",
           "items": {
             "type": "string",
             "description": "One state or marine-area code."
@@ -160,6 +163,7 @@
   "notes": [
     "No `pagination` block: this endpoint takes no `limit` and no cursor. It answers with everything matching the filters in one response, which is why the filters matter.",
     "The filter enumerations are not guessed: the service publishes each one in the 400 it answers a bad value with (`Does not have a value in the enumeration [...]`), and these are copied from those replies. That is also how the casing quirk surfaced -- `status` takes `actual`, while `severity`, `urgency` and `certainty` take `Severe`, `Immediate`, `Likely`. A client that lower-cased all four uniformly would 400 on three of them.",
-    "`zone` is a plain string. The service constrains it with a regex over every state and zone-type combination (`^(A[KLMNRSZ]|C[AOT]|...)[CZ]\\d{3}$`), which is a real constraint but not an enumeration, and not one this spec format can carry."
+    "`zone` is a plain string. The service constrains it with a regex over every state and zone-type combination (`^(A[KLMNRSZ]|C[AOT]|...)[CZ]\\d{3}$`), which is a real constraint but not an enumeration, and not one this spec format can carry.",
+    "The service reads an array filter comma-separated (the OpenAPI declares `explode: false`), and keeps only the last of repeated keys. Measured 2026-09-30: `/alerts/active?area=WA,OR` answers with the title \"Current watches, warnings, and advisories for Washington, Oregon\", `area=WA&area=OR` with \"... for Oregon\". The core joins every array filter with commas, and `match.query_arrays` tells `truewire mock` to expect that form, so a core that sent repeated keys would fail every recording with two values."
   ]
 }

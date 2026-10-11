@@ -2,6 +2,12 @@
 
 ## 0.3.0 (unreleased)
 
+- **Fixed: a list filter with more than one value kept only the last.** The service reads
+  `id=KSEA,KPDX` and keeps only the last of `id=KSEA&id=KPDX`, and the client sent the
+  second form, so `stations.list_stations` given the ids `KSEA` and `KPDX` answered with
+  KPDX alone. Every list filter now travels as one comma-separated item:
+  `alerts.get_active_alerts`, `stations.list_stations`, `zones.list_zones` and
+  `zones.list_zones_by_type`.
 - **`stations.get_observations_paged` walks a whole span of observations.** The endpoint
   declares `seek` pagination anchored to `end` (ADR 0013): a full page moves `end` back to
   the oldest observation it held and asks again, never past your own `start`. It takes a

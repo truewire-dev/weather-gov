@@ -5,9 +5,9 @@ import { StationCollection } from '../types/index.js'
 
 /** Which stations, and how many. */
 export interface Request {
-  /** Station identifiers to return, such as `KSEA`. Sent as a repeated query key, one per identifier. */
+  /** Station identifiers to return, such as `KSEA`. Several travel as one comma-separated query item. */
   id?: string[]
-  /** Two-letter state or marine-area codes to narrow to. Sent as a repeated query key. */
+  /** Two-letter state or marine-area codes to narrow to. Several travel as one comma-separated query item. */
   state?: string[]
   /** Stations per page. Range [1, 500]. */
   limit?: number

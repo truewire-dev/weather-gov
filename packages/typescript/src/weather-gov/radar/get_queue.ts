@@ -39,7 +39,7 @@ export const RadarQueueProduct: Codec<RadarQueueProduct> = t.object({
   size: t.integer,
 })
 
-/** Which host, and which products. Every filter is optional. */
+/** Which host, and which products. `host` is required; every filter after it is optional. */
 export interface Request {
   /** Distribution host: `rds` or `tds`. */
   host: 'rds' | 'tds'
