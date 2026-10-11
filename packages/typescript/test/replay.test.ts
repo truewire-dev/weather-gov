@@ -463,6 +463,17 @@ describe('recorded examples replay through the generated client', () => {
     expect([...times].sort((a, b) => b - a)).toEqual(times)
   })
 
+  it('radar.listStations sends two kinds as one comma-separated item, and both come back', async () => {
+    // The service keeps only the last of a repeated key, so `?stationType=TDWR&stationType=Profiler`
+    // would answer with the profilers alone. The endpoint declares `match.query_arrays: "comma"`,
+    // so the mock 422s any form but `?stationType=TDWR,Profiler`.
+    const asked = recorded<{ stationType: string[] }>('radar/list_stations/examples/tdwr_and_profilers.request.json')
+    expect(asked.stationType).toHaveLength(2)
+    const page = await client.radar.listStations({ stationType: asked.stationType })
+    const kinds = new Set(page.features.map(feature => feature.properties.stationType))
+    expect(kinds).toEqual(new Set(asked.stationType))
+  })
+
   it('radar.listStations narrows to the profilers, whose status and latency are null', async () => {
     const page = await client.radar.listStations({ stationType: ['Profiler'] })
     expect(page.features.length).toBeGreaterThan(0)

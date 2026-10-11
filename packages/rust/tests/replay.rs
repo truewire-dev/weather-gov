@@ -859,6 +859,49 @@ async fn radar_spgds_parses_the_numeral_strings() {
 }
 
 #[tokio::test]
+async fn radar_list_stations_sends_two_kinds_as_one_comma_separated_item() {
+    let mock = start_mock();
+    let client = client(&mock);
+    // The service keeps only the last of a repeated key, so
+    // `?stationType=TDWR&stationType=Profiler` would answer with the profilers alone. The
+    // endpoint declares `match.query_arrays: "comma"`, so the mock refuses any form but
+    // `?stationType=TDWR,Profiler`.
+    let asked: Vec<String> =
+        recorded("radar/list_stations/examples/tdwr_and_profilers.request.json")["stationType"]
+            .as_array()
+            .expect("a recorded `stationType` list")
+            .iter()
+            .map(|kind| kind.as_str().expect("a string kind").to_string())
+            .collect();
+    assert_eq!(
+        asked.len(),
+        2,
+        "the example records two values in one filter"
+    );
+    let page = client
+        .radar
+        .list_stations(
+            weather_gov::radar::list_stations::Request {
+                station_type: Some(asked.clone()),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_stations");
+    let mut kinds: Vec<_> = page
+        .features
+        .iter()
+        .map(|feature| feature.properties.station_type.clone())
+        .collect();
+    kinds.sort();
+    kinds.dedup();
+    let mut expected = asked;
+    expected.sort();
+    assert_eq!(kinds, expected);
+}
+
+#[tokio::test]
 async fn radar_stations_profilers_and_one_radar() {
     let mock = start_mock();
     let client = client(&mock);

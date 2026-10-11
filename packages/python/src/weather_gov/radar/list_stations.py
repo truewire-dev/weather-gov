@@ -5,10 +5,10 @@ from weather_gov.schemas import RadarStationFeature
 
 
 class Request(TypedDict):
-  """Which radars. Every filter is optional. Give one value to `stationType`: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last."""
+  """Which radars. Every filter is optional."""
 
   stationType: NotRequired[list[str]]
-  """Kinds of radar to narrow to: `WSR-88D`, `TDWR` or `Profiler`, matched case-sensitively (`tdwr` answers an empty list). Undocumented, so not enumerated."""
+  """Kinds of radar to narrow to, any of: `WSR-88D`, `TDWR` or `Profiler`, matched case-sensitively (`tdwr` answers an empty list). Undocumented, so not enumerated. Sent as one comma-separated item, `stationType=TDWR,Profiler`."""
   reportingHost: NotRequired[str]
   """Monitoring host to report status and latency from: `rdss` or `tdss` on 2026-10-01. Without it, the service picks one; any other value answers 503."""
   host: NotRequired[str]
@@ -56,7 +56,7 @@ class ListStations(Endpoint):
     """Every radar the service tracks -- NEXRAD (WSR-88D), terminal Doppler (TDWR) and wind profilers -- each with its data latency and status.
 
     Args:
-      station_type: Kinds of radar to narrow to: `WSR-88D`, `TDWR` or `Profiler`, matched case-sensitively (`tdwr` answers an empty list). Undocumented, so not enumerated.
+      station_type: Kinds of radar to narrow to, any of: `WSR-88D`, `TDWR` or `Profiler`, matched case-sensitively (`tdwr` answers an empty list). Undocumented, so not enumerated. Sent as one comma-separated item, `stationType=TDWR,Profiler`.
       reporting_host: Monitoring host to report status and latency from: `rdss` or `tdss` on 2026-10-01. Without it, the service picks one; any other value answers 503.
       host: LDM host to measure `latency` at, such as `ldm1`. Without it, `ldm4` on 2026-10-01; a host the service does not know answers 503.
       validate: Override this call's response validation; falls back to the client-level default when omitted. `False` returns the parsed body as it came, typed `Any`.

@@ -66,7 +66,7 @@ pub enum RequestHost {
     Tds,
 }
 
-/// Which host, and which products. Every filter is optional.
+/// Which host, and which products. `host` is required; every filter after it is optional.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Request {
     /// Distribution host: `rds` or `tds`.

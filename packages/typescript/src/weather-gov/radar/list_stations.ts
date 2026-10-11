@@ -3,9 +3,9 @@ import { type CallOptions, type Codec, type HttpEndpoint, t } from '@truewire/co
 import type { DefaultMeta } from '../meta.js'
 import { RadarStationFeature } from '../types/index.js'
 
-/** Which radars. Every filter is optional. Give one value to `stationType`: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last. */
+/** Which radars. Every filter is optional. */
 export interface Request {
-  /** Kinds of radar to narrow to: `WSR-88D`, `TDWR` or `Profiler`, matched case-sensitively (`tdwr` answers an empty list). Undocumented, so not enumerated. */
+  /** Kinds of radar to narrow to, any of: `WSR-88D`, `TDWR` or `Profiler`, matched case-sensitively (`tdwr` answers an empty list). Undocumented, so not enumerated. Sent as one comma-separated item, `stationType=TDWR,Profiler`. */
   stationType?: string[]
   /** Monitoring host to report status and latency from: `rdss` or `tdss` on 2026-10-01. Without it, the service picks one; any other value answers 503. */
   reportingHost?: string

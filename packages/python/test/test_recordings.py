@@ -450,6 +450,17 @@ def radar_profilers(result: Any) -> None:
     assert 'performance' not in radar and 'adaptation' not in radar
 
 
+def radar_two_kinds(result: Any) -> None:
+  """Two kinds of radar in one filter, and both kinds back. The service reads
+  `stationType=TDWR,Profiler` and keeps only the last of a repeated key, so a client sending
+  `stationType=TDWR&stationType=Profiler` would get the profilers alone. The mock expects the
+  comma form (`match.query_arrays`), so this also fails if the core stops joining."""
+  asked = example_request('radar.list_stations', 'tdwr_and_profilers')
+  assert len(asked['stationType']) == 2
+  kinds = {feature['properties']['stationType'] for feature in result['features']}
+  assert kinds == set(asked['stationType'])
+
+
 def radar_station(result: Any) -> None:
   """One NEXRAD radar, whole: the feature, its latency in seconds, and the maintenance
   reports only this endpoint sends."""
@@ -526,6 +537,7 @@ PROVES: dict[str, Callable[[Any], None]] = {
   'radar.get_server[ldm1]': radar_server,
   'radar.list_spgds[one_minute]': spgds,
   'radar.list_stations[profilers]': radar_profilers,
+  'radar.list_stations[tdwr_and_profilers]': radar_two_kinds,
   'radar.get_station[seattle]': radar_station,
   'radar.list_station_alarms[seattle]': radar_alarms,
   'radar.get_queue[seattle_capped]': radar_queue,
