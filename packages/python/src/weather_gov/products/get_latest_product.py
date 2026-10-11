@@ -14,7 +14,7 @@ class Request(TypedDict):
 
 
 class GetLatestProduct(Endpoint):
-  """The newest product of one type from one location, with its text."""
+  """The newest product of one type from one location, with its text. Where that location has issued nothing of that type, the service answers HTTP 500 ("Unexpected Problem"), not 404, and the call raises `ApiError`: `products.list_products_by_type_and_location` tells the two apart, answering an empty `@graph`."""
 
   @overload
   async def get_latest_product(
@@ -39,7 +39,7 @@ class GetLatestProduct(Endpoint):
     location_id: str,
     validate: bool | None = None,
   ) -> Product:
-    """The newest product of one type from one location, with its text.
+    """The newest product of one type from one location, with its text. Where that location has issued nothing of that type, the service answers HTTP 500 ("Unexpected Problem"), not 404, and the call raises `ApiError`: `products.list_products_by_type_and_location` tells the two apart, answering an empty `@graph`.
 
     Args:
       type_id: Three-letter product type, such as `AFD`. `products.list_product_types` names every code.

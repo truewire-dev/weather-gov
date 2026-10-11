@@ -16,14 +16,14 @@ export const Request: Codec<Request> = t.object({
   location_id: t.string,
 })
 
-/** The newest product of one type from one location, with its text. */
+/** The newest product of one type from one location, with its text. Where that location has issued nothing of that type, the service answers HTTP 500 ("Unexpected Problem"), not 404, and the call raises `ApiError`: `products.list_products_by_type_and_location` tells the two apart, answering an empty `@graph`. */
 export class GetLatestProduct {
   constructor(readonly core: HttpEndpoint<DefaultMeta>) {}
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
   getLatestProduct(request: Request, options: CallOptions & { validate: false }): Promise<unknown>
   /**
-   * The newest product of one type from one location, with its text.
+   * The newest product of one type from one location, with its text. Where that location has issued nothing of that type, the service answers HTTP 500 ("Unexpected Problem"), not 404, and the call raises `ApiError`: `products.list_products_by_type_and_location` tells the two apart, answering an empty `@graph`.
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/latest_product_type_location
    */
