@@ -457,6 +457,31 @@ describe('recorded examples replay through the generated client', () => {
     for (const name of Object.values(locations)) expect(name).toBeTruthy()
   })
 
+  it('products.listLocationsForType turns the empty list the service sends into an empty map', async () => {
+    // For a type nobody issues the service sends `"locations": []`, not `{}`. The core
+    // normalises it (`meta.empty_map`), so validation passes and the type holds.
+    const { locations } = await client.products.listLocationsForType({ type_id: 'AGF' })
+    expect(Array.isArray(locations)).toBe(false)
+    expect(locations).toEqual({})
+  })
+
+  it('products.listProducts sends two types as one comma-separated item, and both come back', async () => {
+    // `type=AFD&type=ZFP` would answer with ZFP alone; the mock refuses any form but
+    // `type=AFD,ZFP` (`match.query_arrays: "comma"`).
+    const asked = recorded<{ type: string[]; location: string[]; start: string; end: string; limit: number }>(
+      'products/list_products/examples/two_types.request.json',
+    )
+    expect(asked.type).toHaveLength(2)
+    const page = await client.products.listProducts({
+      type: asked.type,
+      location: asked.location,
+      start: new Date(asked.start),
+      end: new Date(asked.end),
+      limit: asked.limit,
+    })
+    expect(new Set(page['@graph'].map(product => product.productCode))).toEqual(new Set(asked.type))
+  })
+
   it('products.listTypesForLocation answers in the product-type vocabulary', async () => {
     const types = await client.products.listTypesForLocation({ location_id: 'SEW' })
     const codes = types['@graph'].map(entry => entry.productCode)

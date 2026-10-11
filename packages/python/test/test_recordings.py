@@ -208,13 +208,6 @@ def product_types(result: Any) -> None:
     assert entry['productName']
 
 
-def product_example(endpoint: str, example_id: str) -> Any:
-  """The parameters a product recording was made with, which `refresh_examples.py` may have
-  moved."""
-  path = PROJECT / f'spec/endpoints/products/{endpoint}/examples/{example_id}.request.json'
-  return json.loads(path.read_text())['request']
-
-
 def moment(value: Any) -> datetime:
   """A timestamp as the client hands it back, or as a request example writes it."""
   return value if isinstance(value, datetime) else datetime.fromisoformat(value)
@@ -239,13 +232,26 @@ def product_headers(result: Any, *, code: str, office: str | None = None) -> lis
 
 def product_list(result: Any) -> None:
   """A window of one product type, cut to the recorded `limit`, all inside the window."""
-  example = product_example('list_products', 'afd_window')
+  example = example_request('products.list_products', 'afd_window')
   (code,) = example['type']
   products = product_headers(result, code=code)
   assert len(products) == example['limit'], 'the limit was honoured'
   start, end = moment(example['start']), moment(example['end'])
   # `end` is exclusive: measured, and the reason the endpoint declares no seek walk.
   assert all(start <= moment(product['issuanceTime']) < end for product in products)
+
+
+def product_list_two_types(result: Any) -> None:
+  """Two types in one filter, and both back. The service reads `type=AFD,ZFP` and keeps only
+  the last of a repeated key, so a client sending `type=AFD&type=ZFP` would get ZFP alone.
+  The mock expects the comma form (`match.query_arrays`), so this also fails if the core
+  stops joining."""
+  example = example_request('products.list_products', 'two_types')
+  assert len(example['type']) == 2
+  products = result['@graph']
+  assert {product['productCode'] for product in products} == set(example['type'])
+  (office,) = example['location']
+  assert all(product['issuingOffice'] == 'K' + office for product in products)
 
 
 def product_locations(result: Any) -> None:
@@ -258,7 +264,7 @@ def product_locations(result: Any) -> None:
 
 def one_product(result: Any) -> None:
   """The product the id names, with the bulletin text lists leave out."""
-  example = product_example('get_product', 'seattle_afd')
+  example = example_request('products.get_product', 'seattle_afd')
   assert result['id'] == example['product_id']
   assert result['@id'].endswith('/products/' + example['product_id'])
   assert (result['productCode'], result['issuingOffice']) == ('AFD', 'KSEW')
@@ -268,7 +274,7 @@ def one_product(result: Any) -> None:
 
 def products_of_type(result: Any) -> None:
   """Every product of the type in the path, from more than one office."""
-  code = product_example('list_products_by_type', 'admin_messages')['type_id']
+  code = example_request('products.list_products_by_type', 'admin_messages')['type_id']
   products = product_headers(result, code=code)
   assert len({product['issuingOffice'] for product in products}) > 1
 
@@ -279,6 +285,13 @@ def type_locations(result: Any) -> None:
   assert len(locations) > 100
   assert locations['SEW'] == 'Seattle/Tacoma, WA'
   assert all(isinstance(name, str) and name for name in locations.values())
+
+
+def type_locations_empty(result: Any) -> None:
+  """A type nobody issues: the service sends `"locations": []`, and the core hands back the
+  empty map the type promises, so `.items()` works on every answer."""
+  assert result['locations'] == {}
+  assert isinstance(result['locations'], dict)
 
 
 def location_types(result: Any) -> None:
@@ -462,10 +475,12 @@ PROVES: dict[str, Callable[[Any], None]] = {
   'offices.get_office[seattle]': office,
   'products.list_product_types[all]': product_types,
   'products.list_products[afd_window]': product_list,
+  'products.list_products[two_types]': product_list_two_types,
   'products.list_locations[all]': product_locations,
   'products.get_product[seattle_afd]': one_product,
   'products.list_products_by_type[admin_messages]': products_of_type,
   'products.list_locations_for_type[afd]': type_locations,
+  'products.list_locations_for_type[agf_empty]': type_locations_empty,
   'products.list_types_for_location[seattle]': location_types,
   'products.list_products_by_type_and_location[seattle_afd]': type_location_products,
   'products.get_latest_product[seattle_afd]': latest_product,

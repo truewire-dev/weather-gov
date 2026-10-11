@@ -794,6 +794,70 @@ async fn products_locations_keep_the_nulls_and_name_every_issuer_of_a_type() {
 }
 
 #[tokio::test]
+async fn products_list_locations_for_type_turns_an_empty_list_into_an_empty_map() {
+    let mock = start_mock();
+    let client = client(&mock);
+    // For a type nobody issues the service sends `"locations": []`, which a `HashMap` cannot
+    // decode. The core turns it into `{}` (`meta.empty_map`).
+    let agf = client
+        .products
+        .list_locations_for_type(
+            weather_gov::products::list_locations_for_type::Request {
+                type_id: "AGF".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_locations_for_type");
+    assert!(agf.locations.is_empty());
+}
+
+#[tokio::test]
+async fn products_list_products_sends_two_types_as_one_comma_separated_item() {
+    let mock = start_mock();
+    let client = client(&mock);
+    // `type=AFD&type=ZFP` would answer with ZFP alone; the mock refuses any form but
+    // `type=AFD,ZFP` (`match.query_arrays: "comma"`).
+    let example = recorded("products/list_products/examples/two_types.request.json");
+    let strings = |key: &str| -> Vec<String> {
+        example[key]
+            .as_array()
+            .expect("a recorded list")
+            .iter()
+            .map(|item| item.as_str().expect("a string").to_string())
+            .collect()
+    };
+    let asked = strings("type");
+    assert_eq!(asked.len(), 2);
+    let page = client
+        .products
+        .list_products(
+            weather_gov::products::list_products::Request {
+                type_: Some(asked.clone()),
+                location: Some(strings("location")),
+                start: Some(timestamp(&example["start"])),
+                end: Some(timestamp(&example["end"])),
+                limit: example["limit"].as_i64(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_products");
+    let mut returned: Vec<_> = page
+        .graph
+        .iter()
+        .map(|product| product.product_code.clone())
+        .collect();
+    returned.sort();
+    returned.dedup();
+    let mut expected = asked;
+    expected.sort();
+    assert_eq!(returned, expected);
+}
+
+#[tokio::test]
 async fn products_get_product_and_the_latest_carry_their_text() {
     let mock = start_mock();
     let client = client(&mock);

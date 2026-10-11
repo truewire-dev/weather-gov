@@ -33,7 +33,10 @@ Generated with truewire 0.11.
   (a span, filtered by type, office, location or WMO heading), `products.get_product`,
   `products.list_products_by_type`, `products.list_products_by_type_and_location`,
   `products.get_latest_product`, `products.list_locations`,
-  `products.list_locations_for_type` and `products.list_types_for_location`.
+  `products.list_locations_for_type` and `products.list_types_for_location`. The service
+  sends an empty location map as `[]` (most type codes in `list_locations_for_type`); the
+  core turns it into `{}`. `get_latest_product` answers HTTP 500, not 404, where the
+  location has issued nothing of that type.
 - **`ProductTypeCollection` is a shared schema.** `products.list_product_types` and
   `products.list_types_for_location` both return it, so it moved from
   `weather_gov.products.list_product_types` to `weather_gov.schemas`, with `ProductType`;
