@@ -87,9 +87,7 @@ export class GetOffice {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/office
    */
-  getOffice(request: Request, options?: CallOptions & { validate?: true }): Promise<Office>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  getOffice(request: Request, options?: CallOptions): Promise<unknown>
+  getOffice(request: Request, options?: CallOptions): Promise<Office>
   async getOffice(request: Request, options?: CallOptions): Promise<Office> {
     return this.core.request({
       method: 'GET',

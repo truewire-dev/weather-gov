@@ -35,10 +35,8 @@ export class Offices {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/office_briefing
    */
-  getBriefing(request: getBriefing.Request, options?: CallOptions & { validate?: true }): Promise<getBriefing.ActiveBriefing>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  getBriefing(request: getBriefing.Request, options?: CallOptions): Promise<unknown>
-  getBriefing(request: getBriefing.Request, options?: CallOptions): Promise<unknown> {
+  getBriefing(request: getBriefing.Request, options?: CallOptions): Promise<getBriefing.ActiveBriefing>
+  getBriefing(request: getBriefing.Request, options?: CallOptions): Promise<getBriefing.ActiveBriefing> {
     return this.getBriefing_.getBriefing(request, options)
   }
 
@@ -49,10 +47,8 @@ export class Offices {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/office_headline
    */
-  getHeadline(request: getHeadline.Request, options?: CallOptions & { validate?: true }): Promise<OfficeHeadline>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  getHeadline(request: getHeadline.Request, options?: CallOptions): Promise<unknown>
-  getHeadline(request: getHeadline.Request, options?: CallOptions): Promise<unknown> {
+  getHeadline(request: getHeadline.Request, options?: CallOptions): Promise<OfficeHeadline>
+  getHeadline(request: getHeadline.Request, options?: CallOptions): Promise<OfficeHeadline> {
     return this.getHeadline_.getHeadline(request, options)
   }
 
@@ -63,10 +59,8 @@ export class Offices {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/office
    */
-  getOffice(request: getOffice.Request, options?: CallOptions & { validate?: true }): Promise<getOffice.Office>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  getOffice(request: getOffice.Request, options?: CallOptions): Promise<unknown>
-  getOffice(request: getOffice.Request, options?: CallOptions): Promise<unknown> {
+  getOffice(request: getOffice.Request, options?: CallOptions): Promise<getOffice.Office>
+  getOffice(request: getOffice.Request, options?: CallOptions): Promise<getOffice.Office> {
     return this.getOffice_.getOffice(request, options)
   }
 
@@ -77,10 +71,8 @@ export class Offices {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/office_headlines
    */
-  listHeadlines(request: listHeadlines.Request, options?: CallOptions & { validate?: true }): Promise<listHeadlines.OfficeHeadlineCollection>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  listHeadlines(request: listHeadlines.Request, options?: CallOptions): Promise<unknown>
-  listHeadlines(request: listHeadlines.Request, options?: CallOptions): Promise<unknown> {
+  listHeadlines(request: listHeadlines.Request, options?: CallOptions): Promise<listHeadlines.OfficeHeadlineCollection>
+  listHeadlines(request: listHeadlines.Request, options?: CallOptions): Promise<listHeadlines.OfficeHeadlineCollection> {
     return this.listHeadlines_.listHeadlines(request, options)
   }
 
@@ -91,10 +83,8 @@ export class Offices {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/office_weatherstory
    */
-  listWeatherStories(request: listWeatherStories.Request, options?: CallOptions & { validate?: true }): Promise<listWeatherStories.WeatherStoryCollection>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  listWeatherStories(request: listWeatherStories.Request, options?: CallOptions): Promise<unknown>
-  listWeatherStories(request: listWeatherStories.Request, options?: CallOptions): Promise<unknown> {
+  listWeatherStories(request: listWeatherStories.Request, options?: CallOptions): Promise<listWeatherStories.WeatherStoryCollection>
+  listWeatherStories(request: listWeatherStories.Request, options?: CallOptions): Promise<listWeatherStories.WeatherStoryCollection> {
     return this.listWeatherStories_.listWeatherStories(request, options)
   }
 }

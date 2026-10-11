@@ -24,9 +24,7 @@ export class GetAlert {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/alerts_single
    */
-  getAlert(request: Request, options?: CallOptions & { validate?: true }): Promise<AlertFeature>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  getAlert(request: Request, options?: CallOptions): Promise<unknown>
+  getAlert(request: Request, options?: CallOptions): Promise<AlertFeature>
   async getAlert(request: Request, options?: CallOptions): Promise<AlertFeature> {
     return this.core.request({
       method: 'GET',

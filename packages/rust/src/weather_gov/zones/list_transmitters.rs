@@ -3,13 +3,9 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-
-use truewire_core::{decode, dump, serde_json};
-
-use truewire_core::{CallOptions, HttpCall, HttpEndpoint, Result};
+use truewire_core::{decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result};
 
 use crate::meta::DefaultMeta;
-
 use crate::types::TransmitterCollection;
 
 /// Which county.
@@ -20,16 +16,6 @@ pub struct Request {
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
-}
-
-impl Request {
-    /// Build a request with every required field; optional fields are absent.
-    pub fn new(zone_id: String) -> Self {
-        Self {
-            zone_id,
-            extra: Default::default(),
-        }
-    }
 }
 
 /// The NOAA Weather Radio transmitters that broadcast for a county. JSON-LD, not GeoJSON: the transmitters come as a `@graph`.

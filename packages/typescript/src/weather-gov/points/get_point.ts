@@ -112,9 +112,7 @@ export class GetPoint {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/point
    */
-  getPoint(request: Request, options?: CallOptions & { validate?: true }): Promise<Point>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  getPoint(request: Request, options?: CallOptions): Promise<unknown>
+  getPoint(request: Request, options?: CallOptions): Promise<Point>
   async getPoint(request: Request, options?: CallOptions): Promise<Point> {
     return this.core.request({
       method: 'GET',

@@ -5,7 +5,6 @@ import { Forecast } from './forecast/index.js'
 import type { DefaultMeta } from './meta.js'
 import { Offices } from './offices/index.js'
 import { Points } from './points/index.js'
-import { RATE, RETRY } from './policy.js'
 import { Products } from './products/index.js'
 import { Radio } from './radio/index.js'
 import { Stations } from './stations/index.js'
@@ -18,9 +17,9 @@ import { Zones } from './zones/index.js'
  */
 export class Weather {
   /** `[policy].rate`: requests per second the core's `HttpClient` paces to; `undefined` for none. */
-  static readonly RATE: number | undefined = RATE
+  static readonly RATE: number | undefined = undefined
   /** `[policy].retry`: whether the core's `HttpClient` retries on its own. */
-  static readonly RETRY: boolean = RETRY
+  static readonly RETRY: boolean = false
   /** Watches, warnings and advisories in effect. */
   readonly alerts: Alerts
   /** Forecasts for one grid cell: the twice-daily narrative, the hourly series, and the raw gridded data both are rendered from. */

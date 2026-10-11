@@ -12,14 +12,11 @@ pub mod list_tafs;
 
 use std::sync::Arc;
 
-use truewire_core::serde_json;
-
 use truewire_core::{
-    CallOptions, HttpEndpoint, PaginatedResponse, Result, SeekState, TimestampIso,
+    serde_json, CallOptions, HttpEndpoint, PaginatedResponse, Result, SeekState, TimestampIso,
 };
 
 use crate::meta::DefaultMeta;
-
 use crate::types::{
     Observation, ObservationCollection, ObservationFeature, StationCollection, StationFeature,
 };

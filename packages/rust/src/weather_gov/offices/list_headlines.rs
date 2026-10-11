@@ -3,13 +3,9 @@
 use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
-
-use truewire_core::{decode, dump, serde_json};
-
-use truewire_core::{CallOptions, HttpCall, HttpEndpoint, Result};
+use truewire_core::{decode, dump, serde_json, CallOptions, HttpCall, HttpEndpoint, Result};
 
 use crate::meta::DefaultMeta;
-
 use crate::types::OfficeHeadline;
 
 /// Which office.
@@ -27,20 +23,10 @@ pub struct Request {
 pub struct OfficeHeadlineCollection {
     /// The headlines. Empty for an office that has posted none.
     #[serde(rename = "@graph")]
-    pub at_graph: Vec<OfficeHeadline>,
+    pub graph: Vec<OfficeHeadline>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
-}
-
-impl Request {
-    /// Build a request with every required field; optional fields are absent.
-    pub fn new(office_id: String) -> Self {
-        Self {
-            office_id,
-            extra: Default::default(),
-        }
-    }
 }
 
 /// The news headlines an office has posted.

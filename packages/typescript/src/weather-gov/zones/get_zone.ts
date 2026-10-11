@@ -30,9 +30,7 @@ export class GetZone {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/zone
    */
-  getZone(request: Request, options?: CallOptions & { validate?: true }): Promise<ZoneFeature>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  getZone(request: Request, options?: CallOptions): Promise<unknown>
+  getZone(request: Request, options?: CallOptions): Promise<ZoneFeature>
   async getZone(request: Request, options?: CallOptions): Promise<ZoneFeature> {
     return this.core.request({
       method: 'GET',

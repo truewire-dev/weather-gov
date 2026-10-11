@@ -24,9 +24,7 @@ export class ListStationsForZone {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/zone_stations
    */
-  listStationsForZone(request: Request, options?: CallOptions & { validate?: true }): Promise<StationCollection>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  listStationsForZone(request: Request, options?: CallOptions): Promise<unknown>
+  listStationsForZone(request: Request, options?: CallOptions): Promise<StationCollection>
   async listStationsForZone(request: Request, options?: CallOptions): Promise<StationCollection> {
     return this.core.request({
       method: 'GET',

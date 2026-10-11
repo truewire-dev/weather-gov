@@ -18,15 +18,13 @@ export class ListTransmitters {
   constructor(readonly core: HttpEndpoint<DefaultMeta>) {}
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  listTransmitters(request: Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
+  listTransmitters(request: Request, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * Every NOAA Weather Radio transmitter, a page at a time. JSON-LD, not GeoJSON: the transmitters come as a `@graph`.
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/transmitters
    */
-  listTransmitters(request?: Request, options?: CallOptions & { validate?: true }): Promise<TransmitterCollection>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  listTransmitters(request?: Request, options?: CallOptions): Promise<unknown>
+  listTransmitters(request?: Request, options?: CallOptions): Promise<TransmitterCollection>
   async listTransmitters(request?: Request, options?: CallOptions): Promise<TransmitterCollection> {
     return this.core.request({
       method: 'GET',

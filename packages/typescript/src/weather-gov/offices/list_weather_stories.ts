@@ -70,9 +70,7 @@ export class ListWeatherStories {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/office_weatherstory
    */
-  listWeatherStories(request: Request, options?: CallOptions & { validate?: true }): Promise<WeatherStoryCollection>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  listWeatherStories(request: Request, options?: CallOptions): Promise<unknown>
+  listWeatherStories(request: Request, options?: CallOptions): Promise<WeatherStoryCollection>
   async listWeatherStories(request: Request, options?: CallOptions): Promise<WeatherStoryCollection> {
     return this.core.request({
       method: 'GET',

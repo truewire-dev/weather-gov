@@ -47,10 +47,8 @@ export class Stations {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/station_observation_latest
    */
-  getLatestObservation(request: getLatestObservation.Request, options?: CallOptions & { validate?: true }): Promise<Observation>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  getLatestObservation(request: getLatestObservation.Request, options?: CallOptions): Promise<unknown>
-  getLatestObservation(request: getLatestObservation.Request, options?: CallOptions): Promise<unknown> {
+  getLatestObservation(request: getLatestObservation.Request, options?: CallOptions): Promise<Observation>
+  getLatestObservation(request: getLatestObservation.Request, options?: CallOptions): Promise<Observation> {
     return this.getLatestObservation_.getLatestObservation(request, options)
   }
 
@@ -61,10 +59,8 @@ export class Stations {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/station_observation_time
    */
-  getObservation(request: getObservation.Request, options?: CallOptions & { validate?: true }): Promise<Observation>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  getObservation(request: getObservation.Request, options?: CallOptions): Promise<unknown>
-  getObservation(request: getObservation.Request, options?: CallOptions): Promise<unknown> {
+  getObservation(request: getObservation.Request, options?: CallOptions): Promise<Observation>
+  getObservation(request: getObservation.Request, options?: CallOptions): Promise<Observation> {
     return this.getObservation_.getObservation(request, options)
   }
 
@@ -77,9 +73,7 @@ export class Stations {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/station_observation_list
    */
-  getObservationsPaged(request: getObservations.GetObservationsPagedRequest, options?: CallOptions & { validate?: true }): PaginatedResponse<ObservationFeature, SeekState<ObservationFeature, TimestampIso>>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  getObservationsPaged(request: getObservations.GetObservationsPagedRequest, options?: CallOptions): PaginatedResponse<unknown, SeekState<unknown, TimestampIso>>
+  getObservationsPaged(request: getObservations.GetObservationsPagedRequest, options?: CallOptions): PaginatedResponse<ObservationFeature, SeekState<ObservationFeature, TimestampIso>>
   getObservationsPaged(request: getObservations.GetObservationsPagedRequest, options?: CallOptions): PaginatedResponse<ObservationFeature, SeekState<ObservationFeature, TimestampIso>> | PaginatedResponse<unknown, SeekState<unknown, TimestampIso>> {
     return this.getObservations_.getObservationsPaged(request, options)
   }
@@ -91,10 +85,8 @@ export class Stations {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/station_observation_list
    */
-  getObservations(request: getObservations.Request, options?: CallOptions & { validate?: true }): Promise<ObservationCollection>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  getObservations(request: getObservations.Request, options?: CallOptions): Promise<unknown>
-  getObservations(request: getObservations.Request, options?: CallOptions): Promise<unknown> {
+  getObservations(request: getObservations.Request, options?: CallOptions): Promise<ObservationCollection>
+  getObservations(request: getObservations.Request, options?: CallOptions): Promise<ObservationCollection> {
     return this.getObservations_.getObservations(request, options)
   }
 
@@ -105,10 +97,8 @@ export class Stations {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/zone_obs
    */
-  getObservationsForZone(request: getObservationsForZone.Request, options?: CallOptions & { validate?: true }): Promise<ObservationCollection>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  getObservationsForZone(request: getObservationsForZone.Request, options?: CallOptions): Promise<unknown>
-  getObservationsForZone(request: getObservationsForZone.Request, options?: CallOptions): Promise<unknown> {
+  getObservationsForZone(request: getObservationsForZone.Request, options?: CallOptions): Promise<ObservationCollection>
+  getObservationsForZone(request: getObservationsForZone.Request, options?: CallOptions): Promise<ObservationCollection> {
     return this.getObservationsForZone_.getObservationsForZone(request, options)
   }
 
@@ -119,24 +109,20 @@ export class Stations {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/obs_station
    */
-  getStation(request: getStation.Request, options?: CallOptions & { validate?: true }): Promise<StationFeature>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  getStation(request: getStation.Request, options?: CallOptions): Promise<unknown>
-  getStation(request: getStation.Request, options?: CallOptions): Promise<unknown> {
+  getStation(request: getStation.Request, options?: CallOptions): Promise<StationFeature>
+  getStation(request: getStation.Request, options?: CallOptions): Promise<StationFeature> {
     return this.getStation_.getStation(request, options)
   }
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  listStations(request: listStations.Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
+  listStations(request: listStations.Request, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * The observation stations the service knows about, optionally narrowed to a state or to named identifiers. Use it to find the station code `stations.get_observations` takes.
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/obs_stations
    */
-  listStations(request?: listStations.Request, options?: CallOptions & { validate?: true }): Promise<StationCollection>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  listStations(request?: listStations.Request, options?: CallOptions): Promise<unknown>
-  listStations(request?: listStations.Request, options?: CallOptions): Promise<unknown> {
+  listStations(request?: listStations.Request, options?: CallOptions): Promise<StationCollection>
+  listStations(request?: listStations.Request, options?: CallOptions): Promise<StationCollection> {
     return this.listStations_.listStations(request, options)
   }
 
@@ -147,10 +133,8 @@ export class Stations {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/gridpoint_stations
    */
-  listStationsForGridpoint(request: listStationsForGridpoint.Request, options?: CallOptions & { validate?: true }): Promise<StationCollection>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  listStationsForGridpoint(request: listStationsForGridpoint.Request, options?: CallOptions): Promise<unknown>
-  listStationsForGridpoint(request: listStationsForGridpoint.Request, options?: CallOptions): Promise<unknown> {
+  listStationsForGridpoint(request: listStationsForGridpoint.Request, options?: CallOptions): Promise<StationCollection>
+  listStationsForGridpoint(request: listStationsForGridpoint.Request, options?: CallOptions): Promise<StationCollection> {
     return this.listStationsForGridpoint_.listStationsForGridpoint(request, options)
   }
 
@@ -161,10 +145,8 @@ export class Stations {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/zone_stations
    */
-  listStationsForZone(request: listStationsForZone.Request, options?: CallOptions & { validate?: true }): Promise<StationCollection>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  listStationsForZone(request: listStationsForZone.Request, options?: CallOptions): Promise<unknown>
-  listStationsForZone(request: listStationsForZone.Request, options?: CallOptions): Promise<unknown> {
+  listStationsForZone(request: listStationsForZone.Request, options?: CallOptions): Promise<StationCollection>
+  listStationsForZone(request: listStationsForZone.Request, options?: CallOptions): Promise<StationCollection> {
     return this.listStationsForZone_.listStationsForZone(request, options)
   }
 
@@ -175,10 +157,8 @@ export class Stations {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/tafs
    */
-  listTafs(request: listTafs.Request, options?: CallOptions & { validate?: true }): Promise<listTafs.TafCollection>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  listTafs(request: listTafs.Request, options?: CallOptions): Promise<unknown>
-  listTafs(request: listTafs.Request, options?: CallOptions): Promise<unknown> {
+  listTafs(request: listTafs.Request, options?: CallOptions): Promise<listTafs.TafCollection>
+  listTafs(request: listTafs.Request, options?: CallOptions): Promise<listTafs.TafCollection> {
     return this.listTafs_.listTafs(request, options)
   }
 }

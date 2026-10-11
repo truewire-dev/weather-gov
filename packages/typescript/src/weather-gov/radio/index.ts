@@ -26,24 +26,20 @@ export class Radio {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/transmitter
    */
-  getTransmitter(request: getTransmitter.Request, options?: CallOptions & { validate?: true }): Promise<Transmitter>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  getTransmitter(request: getTransmitter.Request, options?: CallOptions): Promise<unknown>
-  getTransmitter(request: getTransmitter.Request, options?: CallOptions): Promise<unknown> {
+  getTransmitter(request: getTransmitter.Request, options?: CallOptions): Promise<Transmitter>
+  getTransmitter(request: getTransmitter.Request, options?: CallOptions): Promise<Transmitter> {
     return this.getTransmitter_.getTransmitter(request, options)
   }
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
-  listTransmitters(request: listTransmitters.Request | undefined, options: CallOptions & { validate: false }): Promise<unknown>
+  listTransmitters(request: listTransmitters.Request, options: CallOptions & { validate: false }): Promise<unknown>
   /**
    * Every NOAA Weather Radio transmitter, a page at a time. JSON-LD, not GeoJSON: the transmitters come as a `@graph`.
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/transmitters
    */
-  listTransmitters(request?: listTransmitters.Request, options?: CallOptions & { validate?: true }): Promise<TransmitterCollection>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  listTransmitters(request?: listTransmitters.Request, options?: CallOptions): Promise<unknown>
-  listTransmitters(request?: listTransmitters.Request, options?: CallOptions): Promise<unknown> {
+  listTransmitters(request?: listTransmitters.Request, options?: CallOptions): Promise<TransmitterCollection>
+  listTransmitters(request?: listTransmitters.Request, options?: CallOptions): Promise<TransmitterCollection> {
     return this.listTransmitters_.listTransmitters(request, options)
   }
 }

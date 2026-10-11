@@ -33,9 +33,7 @@ export class GetObservationsForZone {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/zone_obs
    */
-  getObservationsForZone(request: Request, options?: CallOptions & { validate?: true }): Promise<ObservationCollection>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  getObservationsForZone(request: Request, options?: CallOptions): Promise<unknown>
+  getObservationsForZone(request: Request, options?: CallOptions): Promise<ObservationCollection>
   async getObservationsForZone(request: Request, options?: CallOptions): Promise<ObservationCollection> {
     return this.core.request({
       method: 'GET',

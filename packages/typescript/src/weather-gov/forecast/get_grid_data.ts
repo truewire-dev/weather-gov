@@ -162,9 +162,7 @@ export class GetGridData {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/gridpoint
    */
-  getGridData(request: Request, options?: CallOptions & { validate?: true }): Promise<GridData>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  getGridData(request: Request, options?: CallOptions): Promise<unknown>
+  getGridData(request: Request, options?: CallOptions): Promise<GridData>
   async getGridData(request: Request, options?: CallOptions): Promise<GridData> {
     return this.core.request({
       method: 'GET',

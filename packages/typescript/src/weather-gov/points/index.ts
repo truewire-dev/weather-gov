@@ -22,10 +22,8 @@ export class Points {
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/point
    */
-  getPoint(request: getPoint.Request, options?: CallOptions & { validate?: true }): Promise<getPoint.Point>
-  /** When validation may be disabled, returned values are typed `unknown`. */
-  getPoint(request: getPoint.Request, options?: CallOptions): Promise<unknown>
-  getPoint(request: getPoint.Request, options?: CallOptions): Promise<unknown> {
+  getPoint(request: getPoint.Request, options?: CallOptions): Promise<getPoint.Point>
+  getPoint(request: getPoint.Request, options?: CallOptions): Promise<getPoint.Point> {
     return this.getPoint_.getPoint(request, options)
   }
 }
