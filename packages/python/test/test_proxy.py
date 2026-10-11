@@ -49,3 +49,9 @@ async def test_a_call_goes_through_the_named_proxy(mock_servers, proxy, monkeypa
     point = await client.points.get_point(latitude=47.6062, longitude=-122.3321)
   assert point['gridId'] == 'SEW'
   assert seen == [f'GET {mock_servers.http_base_url}/points/47.6062,-122.3321']
+
+
+def test_repr_hides_the_proxy_credentials():
+  """A proxy URL can carry a password; `repr(client)` must not print it."""
+  client = Weather.new(contact=CONTACT, proxy='http://user:S3CRET@127.0.0.1:3128')
+  assert 'S3CRET' not in repr(client)

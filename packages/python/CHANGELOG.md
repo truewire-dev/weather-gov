@@ -28,6 +28,7 @@ Generated with truewire 0.11.
   that cannot set the process environment. Left out, `HTTPS_PROXY`/`HTTP_PROXY` (and
   `NO_PROXY`) from the environment are still used; a proxy given here ignores them.
   Needs `truewire-core>=0.3.0`, the first release whose `HttpClient` takes `proxy=`.
+  `repr(client)` leaves the HTTP client out, so a password in the proxy URL is not printed.
 
 ## 0.1.0
 

@@ -131,7 +131,7 @@ class Transport:
 
   base_url: str
   contact: str
-  http: HttpClient = field(default_factory=HttpClient)
+  http: HttpClient = field(default_factory=HttpClient, repr=False)
   validate: bool = True
 
   def headers(self) -> dict[str, str]:
