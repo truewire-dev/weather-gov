@@ -1,0 +1,10 @@
+import { Weather } from '../../packages/typescript/dist/core/index.js'
+const c = Weather.new({ contact: 'hello@truewire.dev' })
+const s = await c.stations.listStations({ id: ['KSEA', 'KPDX'] })
+console.log('stations', s.features.map(f => f.properties.stationIdentifier).sort())
+const a = await c.alerts.getActiveAlerts({ area: ['WA', 'OR'], status: ['actual'] })
+console.log('alerts', a.title)
+const z = await c.zones.listZones({ id: ['WAZ315', 'WAC033'] })
+console.log('zones', z.features.map(f => f.properties.id).sort())
+const e = await c.stations.listStations({ id: [], limit: 1 })
+console.log('empty', e.features.length)
