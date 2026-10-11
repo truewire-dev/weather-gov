@@ -32,7 +32,7 @@ export class ListLocationsForType {
       request,
       requestCodec: Request,
       responseCodec: ProductLocationCollection,
-      meta: {},
+      meta: { empty_map: 'locations' },
       ...options,
     })
   }

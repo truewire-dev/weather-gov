@@ -27,7 +27,7 @@ export class ListLocations {
       request: request ?? {},
       requestCodec: Request,
       responseCodec: ProductLocationCollection,
-      meta: {},
+      meta: { empty_map: 'locations' },
       ...options,
     })
   }

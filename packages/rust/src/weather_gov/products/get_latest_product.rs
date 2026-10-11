@@ -20,7 +20,7 @@ pub struct Request {
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
-/// The newest product of one type from one location, with its text.
+/// The newest product of one type from one location, with its text. Where that location has issued nothing of that type, the service answers HTTP 500 ("Unexpected Problem"), not 404, and the call raises `ApiError`: `products.list_products_by_type_and_location` tells the two apart, answering an empty `@graph`.
 #[derive(Clone)]
 pub struct GetLatestProduct {
     core: Arc<dyn HttpEndpoint<DefaultMeta>>,
@@ -31,7 +31,7 @@ impl GetLatestProduct {
         Self { core }
     }
 
-    /// The newest product of one type from one location, with its text.
+    /// The newest product of one type from one location, with its text. Where that location has issued nothing of that type, the service answers HTTP 500 ("Unexpected Problem"), not 404, and the call raises `ApiError`: `products.list_products_by_type_and_location` tells the two apart, answering an empty `@graph`.
     ///
     /// See <https://www.weather.gov/documentation/services-web-api#/default/latest_product_type_location>.
     pub async fn get_latest_product(
@@ -49,7 +49,10 @@ impl GetLatestProduct {
         request: Request,
         options: CallOptions,
     ) -> Result<serde_json::Value> {
-        let meta = DefaultMeta { payload: None };
+        let meta = DefaultMeta {
+            payload: None,
+            empty_map: None,
+        };
         let call = HttpCall {
             method: Some("GET"),
             path: "/products/types/{type_id}/locations/{location_id}/latest",

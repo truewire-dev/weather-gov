@@ -45,7 +45,10 @@ impl ListLocations {
         request: Request,
         options: CallOptions,
     ) -> Result<serde_json::Value> {
-        let meta = DefaultMeta { payload: None };
+        let meta = DefaultMeta {
+            payload: None,
+            empty_map: Some("locations".to_string()),
+        };
         let call = HttpCall {
             method: Some("GET"),
             path: "/products/locations",

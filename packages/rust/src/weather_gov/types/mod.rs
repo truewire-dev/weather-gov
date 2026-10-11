@@ -193,7 +193,7 @@ pub struct Product {
 /// Text product issuance locations, keyed by location id.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct ProductLocationCollection {
-    /// Location name by location id, such as `SEW` -> `Seattle/Tacoma, WA`. A map, not a list: the service sends one object keyed by id.
+    /// Location name by location id, such as `SEW` -> `Seattle/Tacoma, WA`. A map, not a list: the service sends one object keyed by id, except that it sends an empty map as `[]` (140 of 338 type codes in `products.list_locations_for_type`, 2026-10-11). The core turns that `[]` into an empty map, so this is always a map to a caller.
     pub locations: HashMap<String, Option<String>>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]

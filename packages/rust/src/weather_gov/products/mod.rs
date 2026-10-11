@@ -52,7 +52,7 @@ impl Products {
         }
     }
 
-    /// The newest product of one type from one location, with its text.
+    /// The newest product of one type from one location, with its text. Where that location has issued nothing of that type, the service answers HTTP 500 ("Unexpected Problem"), not 404, and the call raises `ApiError`: `products.list_products_by_type_and_location` tells the two apart, answering an empty `@graph`.
     ///
     /// See <https://www.weather.gov/documentation/services-web-api#/default/latest_product_type_location>.
     pub async fn get_latest_product(

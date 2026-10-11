@@ -4,4 +4,5 @@
 /** `meta` for every endpoint whose nearest `router.json` resolves to the `default` core. */
 export interface DefaultMeta {
   payload?: string
+  empty_map?: string
 }

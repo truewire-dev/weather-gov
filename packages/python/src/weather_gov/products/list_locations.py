@@ -36,7 +36,7 @@ class ListLocations(Endpoint):
       Request(),
       method='GET',
       path='/products/locations',
-      meta={},
+      meta={'empty_map': 'locations'},
       validate=validate,
       request_type=Request,
       response_type=ProductLocationCollection,

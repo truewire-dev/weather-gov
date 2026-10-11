@@ -10,10 +10,10 @@ use truewire_core::{
 use crate::meta::DefaultMeta;
 use crate::types::ProductCollection;
 
-/// Which products. Every filter is optional. Give one value per array filter: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last.
+/// Which products. Every filter is optional.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct Request {
-    /// Issuance locations to narrow to, such as `SEW`.
+    /// Issuance locations to narrow to, such as `SEW`. Several travel as one comma-separated query item.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub location: Option<Vec<String>>,
     /// Start of the span, inclusive. The service keeps about a week of products here; an older start returns nothing rather than failing.
@@ -22,13 +22,13 @@ pub struct Request {
     /// End of the span, exclusive: a product issued at exactly `end` is not returned.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub end: Option<TimestampIso>,
-    /// Four-letter issuing offices to narrow to, such as `KSEW`.
+    /// Four-letter issuing offices to narrow to, such as `KSEW`. Several travel as one comma-separated query item.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub office: Option<Vec<String>>,
-    /// WMO abbreviated headings to narrow to, four letters and two digits, such as `FXUS66`.
+    /// WMO abbreviated headings to narrow to, four letters and two digits, such as `FXUS66`. Several travel as one comma-separated query item.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub wmoid: Option<Vec<String>>,
-    /// Three-letter product types to narrow to, such as `AFD`. Left un-enumerated: `products.list_product_types` lists over 300 codes, and the service adds them.
+    /// Three-letter product types to narrow to, such as `AFD`. Left un-enumerated: `products.list_product_types` lists over 300 codes, and the service adds them. Several travel as one comma-separated query item.
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<Vec<String>>,
     /// Products per response. Range [1, 500]; the service refuses anything outside it with a 400. Without it the service answers up to 5000.
@@ -68,7 +68,10 @@ impl ListProducts {
         request: Request,
         options: CallOptions,
     ) -> Result<serde_json::Value> {
-        let meta = DefaultMeta { payload: None };
+        let meta = DefaultMeta {
+            payload: None,
+            empty_map: None,
+        };
         let call = HttpCall {
             method: Some("GET"),
             path: "/products",

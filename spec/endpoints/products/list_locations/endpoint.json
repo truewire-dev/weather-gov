@@ -1,6 +1,8 @@
 {
   "docs": "https://www.weather.gov/documentation/services-web-api#/default/product_locations",
-  "meta": {},
+  "meta": {
+    "empty_map": "locations"
+  },
   "spec": {
     "kind": "rpc",
     "transports": [
