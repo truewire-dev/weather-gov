@@ -2,7 +2,7 @@
 name: truewire-implement
 description: Record real examples for every endpoint of a Truewire project, generate the client and make its tests pass against the mock server, until `truewire examples --require-verified`, `truewire surface` and the test suite are green. Use after `truewire-core`.
 ---
-<!-- vendored from truewire 0.10.1 sha256:d8500f1153bb8161; `truewire agents update` rewrites this file -->
+<!-- vendored from truewire 0.11.0 sha256:d8500f1153bb8161; `truewire agents update` rewrites this file -->
 
 # Implement: recordings, client, tests
 
