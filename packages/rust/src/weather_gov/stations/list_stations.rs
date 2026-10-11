@@ -11,10 +11,10 @@ use crate::types::StationCollection;
 /// Which stations, and how many.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct Request {
-    /// Station identifiers to return, such as `KSEA`. Sent as a repeated query key, one per identifier.
+    /// Station identifiers to return, such as `KSEA`. Several travel as one comma-separated query item.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<Vec<String>>,
-    /// Two-letter state or marine-area codes to narrow to. Sent as a repeated query key.
+    /// Two-letter state or marine-area codes to narrow to. Several travel as one comma-separated query item.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub state: Option<Vec<String>>,
     /// Stations per page. Range [1, 500].

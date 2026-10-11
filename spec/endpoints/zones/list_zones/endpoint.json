@@ -1,6 +1,9 @@
 {
   "docs": "https://www.weather.gov/documentation/services-web-api#/default/zone_list",
   "meta": {},
+  "match": {
+    "query_arrays": "comma"
+  },
   "spec": {
     "kind": "rpc",
     "transports": [
@@ -12,7 +15,7 @@
     "request": {
       "title": "ListZonesRequest",
       "type": "object",
-      "description": "Which zones. Every filter is optional. Give one value per array filter: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last.",
+      "description": "Which zones. Every filter is optional; an array filter means \"any of\" and travels as one comma-separated query item.",
       "properties": {
         "id": {
           "type": "array",
@@ -83,7 +86,7 @@
   },
   "notes": [
     "No `pagination` block: the service hands back no cursor and no next link here, only every match or the first `limit` of them.",
-    "The service reads an array filter comma-separated (the OpenAPI declares `explode: false`), and keeps only the last of repeated keys. Measured 2026-09-30: `/zones?id=WAZ315,WAC033` returns both zones, `id=WAZ315&id=WAC033` only `WAC033`. This client's core sends repeated keys, as it does for every other array filter in this API (TRU-495), so until the core joins them only the last value of each filter takes effect. The examples send one value per filter.",
+    "The service reads an array filter comma-separated (the OpenAPI declares `explode: false`), and keeps only the last of repeated keys. Measured 2026-09-30: `/zones?id=WAZ315,WAC033` returns both zones, `id=WAZ315&id=WAC033` only `WAC033`. The core joins every array filter with commas, and `match.query_arrays` tells `truewire mock` to expect that form, so a core that sent repeated keys would fail every recording with two values.",
     "The OpenAPI also lists `include_geometry`. It is not declared: measured 2026-09-30, `include_geometry=true` (and `=1`) still answers `geometry: null` on every zone, with and without other filters. `zones.get_zone` is where a zone's outline comes from."
   ]
 }
