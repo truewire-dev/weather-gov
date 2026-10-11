@@ -2,7 +2,7 @@
 name: truewire-discover
 description: Turn an API's documentation into an endpoint inventory a Truewire spec can be written from. Use when starting a new Truewire project from a docs URL, or when an existing project needs to know what upstream added.
 ---
-<!-- vendored from truewire 0.10.1 sha256:65329c2ee3a5c581; `truewire agents update` rewrites this file -->
+<!-- vendored from truewire 0.11.0 sha256:65329c2ee3a5c581; `truewire agents update` rewrites this file -->
 
 # Discover: from a docs URL to an inventory
 
