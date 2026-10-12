@@ -51,11 +51,20 @@ for request in spec/endpoints/*/*/examples/*.request.json; do
     kept=$((kept + 1))
     continue
   fi
-  if capture_example "$request"; then
-    recorded=$((recorded + 1))
-    continue
-  fi
-  failed="$failed $request"
+  # The service answers a few percent of requests with a 500 that the same request, sent
+  # again, answers normally, and `truewire capture` sends once. A request whose half was
+  # repointed and then not recorded leaves the old response beside the new request, which
+  # fails the gates, so a 500 is worth two resends.
+  attempt=1
+  until capture_example "$request"; do
+    if [ "$attempt" -ge 3 ]; then
+      failed="$failed $request"
+      continue 2
+    fi
+    attempt=$((attempt + 1))
+    sleep $((attempt * 2))
+  done
+  recorded=$((recorded + 1))
 done
 
 echo

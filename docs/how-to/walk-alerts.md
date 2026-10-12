@@ -10,13 +10,39 @@ Stop when the page is empty or the next cursor is absent. A short non-empty page
 is not a stopping condition: live review observed 100 rows, then 76 with a next
 link, then an empty page.
 
+api.weather.gov answers a few percent of pages with an HTTP 500 that the same
+request, sent again, answers normally: 6 of 95 pages in one five-day walk. The
+client does not retry a 500, so a walk of more than a few pages must, or it dies
+partway. Retry the same request, cursor included; a `BadRequest` will not change.
+
 ```python
+import asyncio
 from collections.abc import AsyncIterator
 from datetime import datetime
 from urllib.parse import parse_qs, urlsplit
 
+from truewire_core.exceptions import ApiError, BadRequest
 from weather_gov import Weather
-from weather_gov.schemas import AlertFeature
+from weather_gov.schemas import AlertCollection, AlertFeature
+
+ATTEMPTS = 4
+
+
+async def list_page(
+  client: Weather, *, start: datetime, end: datetime, limit: int, cursor: str | None
+) -> AlertCollection:
+  for attempt in range(1, ATTEMPTS):
+    try:
+      return await client.alerts.list_alerts(
+        start=start, end=end, status=['actual'], limit=limit, cursor=cursor
+      )
+    except BadRequest:
+      raise
+    except ApiError:
+      await asyncio.sleep(attempt)
+  return await client.alerts.list_alerts(
+    start=start, end=end, status=['actual'], limit=limit, cursor=cursor
+  )
 
 
 async def walk_alerts(
@@ -24,9 +50,7 @@ async def walk_alerts(
 ) -> AsyncIterator[AlertFeature]:
   cursor: str | None = None
   while True:
-    page = await client.alerts.list_alerts(
-      start=start, end=end, status=['actual'], limit=limit, cursor=cursor
-    )
+    page = await list_page(client, start=start, end=end, limit=limit, cursor=cursor)
     if not page['features']:
       return
     for feature in page['features']:
@@ -40,4 +64,4 @@ async def walk_alerts(
 In TypeScript, use `new URL(nextUrl).searchParams.get('cursor')`. In Rust, use
 `url::Url::parse(next_url)?.query_pairs()` (add the `url` crate) and take the
 `cursor` value. Both decode the query value; neither restores filters omitted
-from the URL, so retain those from your original request.
+from the URL, so retain those from your original request. Retry a 500 there too.

@@ -4,6 +4,12 @@
 
 Generated with truewire 0.11.
 
+- **Breaking: `Alert.description` and `Alert.response` may be `None`.** The service sends an
+  explicit null for both (about 40 descriptions a week, and the occasional Civil Emergency
+  Message's response), which 0.1.0 refused while validating. `description` is now
+  `str | None` and still always present; `response` is still optional and, when present,
+  may be `None`. Code that type-checked against 0.1.0, such as `alert['description'].lower()`,
+  now needs a `None` check, and pyright reports `reportOptionalMemberAccess` until it has one.
 - **Breaking: `stations.get_observations_paged` walks the whole span.** The endpoint
   declares `seek` pagination anchored to `end` instead of `window` (ADR 0013). A full page
   now moves `end` back to the oldest observation it held and asks again, where it used to
