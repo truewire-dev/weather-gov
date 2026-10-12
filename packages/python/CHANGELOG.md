@@ -4,6 +4,8 @@
 
 Generated with truewire 0.11.
 
+- **Changed: a 422 raises `BadRequest`, like a 400.** It raised plain `ApiError`, while
+  the TypeScript client has raised `BadRequest` for both since its own fix.
 - **Fixed: a list filter with more than one value kept only the last.** The service reads
   `id=KSEA,KPDX` and keeps only the last of `id=KSEA&id=KPDX`, and the client sent the
   second form, so `stations.list_stations(id=['KSEA', 'KPDX'])` answered with KPDX alone.

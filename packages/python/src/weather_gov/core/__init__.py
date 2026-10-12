@@ -85,7 +85,7 @@ def raise_for_status(method: str, path: str, status: int, text: str) -> None:
     elif isinstance(body.get('title'), str):
       reason = body['title']
   message = f'{method} {path}: HTTP {status}: {reason}'
-  if status == 400:
+  if status in (400, 422):
     raise BadRequest(message)
   if status == 429:
     raise RateLimited(message)
