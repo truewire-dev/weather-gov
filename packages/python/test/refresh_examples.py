@@ -14,7 +14,11 @@ will still be the Seattle grid cell next week. These examples are not:
   and the identifier is then gone. The replacement is read from whatever is severe and in
   effect right now -- the same query `alerts.get_active_alerts` records.
 - `alerts.list_alerts` names a six-hour window, and the service keeps about a week of
-  alerts. It moves with the observation window.
+  alerts. It moves with the observation window. Its `second_page` example carries the
+  cursor the first page answers, which expires with the window, so it is re-read from the
+  service for the moved window.
+- `alerts.get_alert`'s `null_description` names an alert whose description is an explicit
+  null. The replacement is the newest alert in the service's week that still has one.
 - `alerts.get_active_alerts_for_zone`, `_for_area` and `_for_region` name a place. Once its
   alerts expire the place records an empty collection. Each keeps its place while
   `/alerts/active/count` still counts an alert there, and otherwise moves to the place with
@@ -22,13 +26,18 @@ will still be the Seattle grid cell next week. These examples are not:
 
 Run before `truewire capture`, not after a capture failed: only one of these fails loudly.
 
+Some examples cannot be repointed, because what they prove may not exist in the service's
+week at all. Those are listed in `frozen_examples.txt` and are not re-recorded.
+
 The request half of each example is the source of truth for re-recording, so this edits
 that half and leaves the description alone.
 """
 
 import json
 import sys
+import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -47,6 +56,10 @@ OBSERVATIONS = (
 ALERT = PROJECT / 'spec/endpoints/alerts/get_alert/examples/one.request.json'
 
 ALERT_WINDOW = PROJECT / 'spec/endpoints/alerts/list_alerts/examples/first_page.request.json'
+SECOND_PAGE = PROJECT / 'spec/endpoints/alerts/list_alerts/examples/second_page.request.json'
+NULL_DESCRIPTION = (
+  PROJECT / 'spec/endpoints/alerts/get_alert/examples/null_description.request.json'
+)
 PLACES = {
   'zone_id': ('zones', PROJECT / 'spec/endpoints/alerts/get_active_alerts_for_zone/examples'),
   'area': ('areas', PROJECT / 'spec/endpoints/alerts/get_active_alerts_for_area/examples'),
@@ -60,6 +73,16 @@ recording also holds."""
 
 COUNT = 'https://api.weather.gov/alerts/active/count'
 
+ALERTS = 'https://api.weather.gov/alerts'
+
+NULL_SEARCH_PAGES = 30
+"""How many pages of 500 alerts the null search reads, newest first, before giving up. The
+service's week is about 25 pages."""
+
+ATTEMPTS = 4
+"""How many times one request is sent. The service answers a few percent of requests with a
+500 that the same request, sent again, answers with a 200."""
+
 
 def fetch(url: str) -> dict:
   request = urllib.request.Request(
@@ -69,8 +92,25 @@ def fetch(url: str) -> dict:
       'User-Agent': f'truewire-weather-gov ({CONTACT})',
     },
   )
-  with urllib.request.urlopen(request, timeout=30) as response:
-    return json.load(response)
+  for attempt in range(1, ATTEMPTS + 1):
+    try:
+      with urllib.request.urlopen(request, timeout=30) as response:
+        return json.load(response)
+    except urllib.error.HTTPError as error:
+      if error.code < 500 or attempt == ATTEMPTS:
+        raise
+      time.sleep(2 * attempt)
+  raise AssertionError('unreachable')
+
+
+def alerts_query(request: dict) -> str:
+  """An example request of `alerts.list_alerts` as the query string the service reads.
+
+  List filters travel as one comma-separated item, as the generated client sends them.
+  """
+  return urllib.parse.urlencode(
+    {key: ','.join(value) if isinstance(value, list) else value for key, value in request.items()}
+  )
 
 
 def rewrite(path: Path, changes: dict) -> None:
@@ -106,6 +146,38 @@ def refresh_alert_window() -> None:
   rewrite(ALERT_WINDOW, settled_window())
 
 
+def refresh_second_page() -> None:
+  """Point the second page at the cursor the first page answers now.
+
+  Read from the first page's request rather than from the window this run computed, so the
+  two stay a pair even when moving the window failed.
+  """
+  first = json.loads(ALERT_WINDOW.read_text())['request']
+  following = fetch(f'{ALERTS}?{alerts_query(first)}').get('pagination', {}).get('next')
+  if not following:
+    raise SystemExit(f'the first page of {first} has no next page, so there is no cursor')
+  (cursor,) = urllib.parse.parse_qs(urllib.parse.urlsplit(following).query)['cursor']
+  rewrite(SECOND_PAGE, {**first, 'cursor': cursor})
+
+
+def refresh_null_description() -> None:
+  """Point the null-description example at the newest alert that has one."""
+  url = f'{ALERTS}?limit=500'
+  for _ in range(NULL_SEARCH_PAGES):
+    page = fetch(url)
+    for alert in page['features']:
+      if alert['properties'].get('description', '') is None:
+        rewrite(NULL_DESCRIPTION, {'id': alert['properties']['id']})
+        return
+    url = page.get('pagination', {}).get('next')
+    if not page['features'] or not url:
+      break
+  raise SystemExit(
+    "no alert in the service's week has a null description; the existing example keeps "
+    'its identifier and will record the 404 the service answers for an expired alert'
+  )
+
+
 def refresh_alert_places() -> None:
   """Point each place example at a place with an alert in effect now."""
   counts = fetch(COUNT)
@@ -136,10 +208,17 @@ def refresh_alert() -> None:
 
 def main() -> int:
   failed = []
-  for step in (refresh_observations, refresh_alert, refresh_alert_window, refresh_alert_places):
+  for step in (
+    refresh_observations,
+    refresh_alert,
+    refresh_alert_window,
+    refresh_second_page,
+    refresh_null_description,
+    refresh_alert_places,
+  ):
     try:
       step()
-    except (urllib.error.URLError, SystemExit, KeyError, IndexError) as error:
+    except (urllib.error.URLError, SystemExit, KeyError, IndexError, ValueError) as error:
       # One stale example does not stop the others from being repaired, and none stops the
       # examples that need no repair at all from recording.
       print(f'{step.__name__}: {error}', file=sys.stderr)

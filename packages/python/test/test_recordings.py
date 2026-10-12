@@ -501,6 +501,22 @@ def recorded_requests() -> list[Any]:
   return params
 
 
+def frozen_examples() -> list[str]:
+  """The request halves `recapture.sh` does not re-record, from `frozen_examples.txt`."""
+  lines = (Path(__file__).parent / 'frozen_examples.txt').read_text().splitlines()
+  return [line for line in lines if line and not line.startswith('#')]
+
+
+def test_frozen_examples_are_recorded_requests():
+  """A frozen example is never re-recorded, so its recording must already be here, and a
+  typo in the list would silently re-record nothing less."""
+  frozen = frozen_examples()
+  assert frozen == ['spec/endpoints/alerts/get_alert/examples/null_response.request.json']
+  for path in frozen:
+    assert (PROJECT / path).is_file(), path
+    assert (PROJECT / path.replace('.request.json', '.response.json')).is_file(), path
+
+
 def test_every_request_has_an_assertion():
   """A new example needs a `PROVES` entry, or its recording proves nothing here."""
   assert {param.id for param in recorded_requests()} == set(PROVES)

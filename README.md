@@ -210,6 +210,9 @@ Some examples go stale on their own, and [`packages/python/test/refresh_examples
 - The service keeps about a week of observations and then drops them, so an old window records as an empty `FeatureCollection` — a 200 with nothing in it, which records exactly as happily as a full one. `stations.get_observations_for_zone` reads the same week, so its window moves with the station's.
 - Alerts expire, usually within hours, and `alerts.get_alert` names one by identifier. The replacement is read from whatever is severe and in effect right now.
 - The same goes for the zone, area and region the `get_active_alerts_for_*` examples name, which move to a place `alerts.count_active_alerts` still counts an alert in, and for the six-hour window of `alerts.list_alerts`, which moves with the observations'.
+- `alerts.list_alerts`' second page carries the cursor its first page answers, which expires with the window, so it is read again from the service for the moved window. `alerts.get_alert`'s `null_description` moves to the newest alert in the service's week whose description is an explicit null.
+
+One example cannot be repaired: `alerts.get_alert`'s `null_response`, an alert whose `response` is an explicit null, which may not exist in the service's week at all. It is listed in [`packages/python/test/frozen_examples.txt`](packages/python/test/frozen_examples.txt), is not re-recorded, and keeps the response it was captured with.
 
 The tests read what the refresh moves — the window, the identifier, the place, the row count — from the examples rather than from constants, so a repair is not a failure.
 

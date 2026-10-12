@@ -15,6 +15,14 @@ No authentication is required; use `--new contact=hello@truewire.dev`.
   Three distinct alerts followed the original three, inside the same window and
   with the original `status=['actual']` and `limit=3`.
 
+The weekly Record workflow keeps two of these current: `refresh_examples.py`
+re-reads the cursor for `second_page` after moving `first_page`'s window, and
+points `null_description` at the newest alert in the service's week whose
+description is null. `null_response` cannot be kept current that way (a null
+response was found once in a 7-day walk on 2026-10-11, and none on 2026-10-12),
+so it is listed in `packages/python/test/frozen_examples.txt` and is never
+re-recorded.
+
 The exact requests are committed beside their responses. Reproduce any pair by
 passing its `request` object to `truewire capture <function> --id <example>` with
 `--request` and the contact above. Alert retention is about seven days: an old
