@@ -11,9 +11,8 @@
  */
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
-import { DateIso } from '@truewire/core'
 import { beforeAll, describe, expect, inject, it } from 'vitest'
-import { Weather } from '../src/weather-gov/core/index.js'
+import { DateIso, Weather } from '../src/weather-gov/core/index.js'
 import type {
   AdvisoryPolygon,
   PointGeometry,

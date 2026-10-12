@@ -97,6 +97,8 @@ for (const layer of now.cloudLayers) {
 
 Note `now.timestamp.toISOString()`: a wire timestamp arrives as a `Date`, not as the string it travelled as. The spec declares the format and the codec does the conversion, in both directions — a `start` passed as a `Date` is rendered back to the ISO 8601 the service parses.
 
+A calendar date, such as the `date` of `aviation.getCwa`, is a `DateIso` rather than a plain string, so a date that is not one fails to compile rather than at the service. Make one with `DateIso.of('2026-10-11')`, imported from this package alongside `Weather`.
+
 ### The wrapper is gone where it carried nothing
 
 Most of this API answers in GeoJSON. For a forecast, the `Feature` wrapper's `geometry` is the outline of the grid cell you just named, and its `properties` is the forecast — so those endpoints declare an envelope and the client hands back the forecast. Endpoints whose geometry is real data, like an alert's polygon, are returned whole:
