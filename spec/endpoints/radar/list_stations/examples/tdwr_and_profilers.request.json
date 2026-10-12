@@ -1,0 +1,9 @@
+{
+  "description": "Two kinds in one filter, sent as stationType=TDWR,Profiler: both kinds come back",
+  "request": {
+    "stationType": [
+      "TDWR",
+      "Profiler"
+    ]
+  }
+}

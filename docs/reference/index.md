@@ -1,6 +1,6 @@
 # Reference
 
-Eight groups, twenty-six endpoints, every one recorded against the live API. Each signature is
+Nine groups, thirty-four endpoints, every one but `radar.get_profiler` recorded against the live API. Each signature is
 generated from the endpoint's schema, so the types in your editor are the reference: every
 field carries its description, and every method's docstring links the service's own page
 for the endpoint.
@@ -71,8 +71,9 @@ service spells them: `actual`, but `Severe`, `Immediate` and `Likely`.
 | `get_forecast` | `GET /zones/{zone_type}/{zone_id}/forecast` | unwrapped: a public zone's text forecast |
 | `list_transmitters` | `GET /zones/{zone_type}/{zone_id}/radio` | whole: a county's weather radio transmitters, in JSON-LD |
 
-Array filters take one value each until TRU-495: the service reads several only
-comma-separated.
+An array filter takes several values and means "any of". The clients send them as one
+comma-separated item, the only form the service reads: it keeps only the last of a
+repeated key.
 
 ## `aviation`
 
@@ -91,6 +92,27 @@ not wrapped at the antimeridian. Nothing here pages: a list answers everything i
 `list_sigmets` has no `atsu` or `end` filter, though the service documents both: it
 redirects the first and does not apply the second as an upper bound. The endpoints'
 `notes` hold the measurements.
+
+## `radar`
+
+| Endpoint | Upstream | Returns |
+| --- | --- | --- |
+| `list_stations` | `GET /radar/stations` | whole: every radar, with its latency and status |
+| `get_station` | `GET /radar/stations/{station_id}` | whole: one radar, with its maintenance reports |
+| `list_station_alarms` | `GET /radar/stations/{station_id}/alarms` | whole: a radar's alarm log, newest first, in JSON-LD |
+| `list_servers` | `GET /radar/servers` | whole: the data distribution servers and their health, in JSON-LD |
+| `get_server` | `GET /radar/servers/{server_id}` | whole: one server |
+| `get_queue` | `GET /radar/queues/{host}` | whole: the Level II products through one host's queue, in JSON-LD |
+| `list_spgds` | `GET /radar/spgds` | whole: status reports from the SPG data servers, in JSON-LD |
+| `get_profiler` | `GET /radar/profilers/{station_id}` | whole, untyped: whatever the service sends for one wind profiler |
+
+`get_queue` and `list_spgds` take ISO 8601 intervals as strings, such as
+`2026-09-30T23:00:00Z/PT10M`, and the service keeps about a week of either. The SPG
+reports send their times as Unix seconds in strings; the clients parse them into real
+times. Seven of the eight are recorded. `get_profiler` has never answered: every
+profiler answered 404 on 2026-10-01, so it has no example and its response has no fields
+to describe. `get_queue`'s `created` filter answered 503 that day; the client sends it,
+but no example uses it.
 
 ## In each language
 

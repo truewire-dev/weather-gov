@@ -182,7 +182,7 @@ GET /alerts/active: HTTP 400: query.zone[0]: Does not match the regex pattern
 
 ## What is covered
 
-Twenty-six endpoints, in eight groups:
+Thirty-four endpoints, in nine groups:
 
 | Group | Endpoints |
 | --- | --- |
@@ -194,14 +194,17 @@ Twenty-six endpoints, in eight groups:
 | `products` | `list_product_types` |
 | `zones` | `list_zones`, `list_zones_by_type`, `get_zone`, `get_forecast`, `list_transmitters` |
 | `aviation` | `get_cwsu`, `list_cwas`, `get_cwa`, `list_sigmets`, `list_sigmets_for_atsu`, `list_sigmets_for_atsu_on_date`, `get_sigmet` |
+| `radar` | `list_stations`, `get_station`, `list_station_alarms`, `list_servers`, `get_server`, `get_queue`, `list_spgds`, `get_profiler` (no recording) |
 
-Three response vocabularies, because the API uses three: GeoJSON for most of it, schema.org for the offices and the aviation weather units, JSON-LD for the product types and the radio transmitters. The spec describes each as it actually arrives, down to the aviation outlines, which put latitude first where the rest of the API puts longitude first.
+Three response vocabularies, because the API uses three: GeoJSON for most of it, schema.org for the offices and the aviation weather units, JSON-LD for the product types, the radio transmitters and the radar network's servers, queues and alarms. The spec describes each as it actually arrives, down to the aviation outlines, which put latitude first where the rest of the API puts longitude first.
 
-The same twenty-six endpoints in [TypeScript](packages/typescript/README.md) and [Rust](packages/rust/README.md), from this one spec. The three clients are equivalent, `stations.get_observations_paged` included.
+The same thirty-four endpoints in [TypeScript](packages/typescript/README.md) and [Rust](packages/rust/README.md), from this one spec. The three clients are equivalent, `stations.get_observations_paged` included.
 
 ## Recordings
 
-Every endpoint carries the request half of at least one example — the exact parameters the tests and the recording script replay — and every one of them has a recorded response. All twenty-six, with no exceptions and no endpoint declaring a missing credential, because there are no credentials to miss.
+Every endpoint but one carries the request half of at least one example — the exact parameters the tests and the recording script replay — and every one of them has a recorded response. Thirty-three of thirty-four, and no endpoint declares a missing credential, because there are no credentials to miss.
+
+The one is `radar.get_profiler`. The service documents it, but on 2026-10-01 every profiler answered a JSON 404, so its spec says why it has no recording rather than leaving it out. It is built from the documentation, with a response left unconstrained because no body has been seen to describe, and its 404s are never saved as examples. Likewise `radar.get_queue` takes the documented `created` filter, which answered 503 on every try that day, so no example uses it.
 
 The response halves are recorded from the live API through this same generated client, so a recording is the wire body the client saw and the response types are proven against it, never written by hand.
 

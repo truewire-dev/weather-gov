@@ -63,13 +63,13 @@
     {"method": "GET", "path": "/aviation/sigmets/{atsu}/{date}", "endpoint": "aviation.list_sigmets_for_atsu_on_date"},
     {"method": "GET", "path": "/aviation/sigmets/{atsu}/{date}/{time}", "endpoint": "aviation.get_sigmet"},
     {"method": "GET", "path": "/glossary"},
-    {"method": "GET", "path": "/radar/servers"},
-    {"method": "GET", "path": "/radar/servers/{id}"},
-    {"method": "GET", "path": "/radar/spgds"},
-    {"method": "GET", "path": "/radar/stations"},
-    {"method": "GET", "path": "/radar/stations/{stationId}"},
-    {"method": "GET", "path": "/radar/stations/{stationId}/alarms"},
-    {"method": "GET", "path": "/radar/queues/{host}"},
-    {"method": "GET", "path": "/radar/profilers/{stationId}"}
+    {"method": "GET", "path": "/radar/servers", "endpoint": "radar.list_servers"},
+    {"method": "GET", "path": "/radar/servers/{id}", "endpoint": "radar.get_server"},
+    {"method": "GET", "path": "/radar/spgds", "endpoint": "radar.list_spgds"},
+    {"method": "GET", "path": "/radar/stations", "endpoint": "radar.list_stations"},
+    {"method": "GET", "path": "/radar/stations/{stationId}", "endpoint": "radar.get_station"},
+    {"method": "GET", "path": "/radar/stations/{stationId}/alarms", "endpoint": "radar.list_station_alarms"},
+    {"method": "GET", "path": "/radar/queues/{host}", "endpoint": "radar.get_queue"},
+    {"method": "GET", "path": "/radar/profilers/{stationId}", "endpoint": "radar.get_profiler"}
   ]
 }

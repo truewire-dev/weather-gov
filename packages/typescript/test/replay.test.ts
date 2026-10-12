@@ -12,7 +12,7 @@
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { beforeAll, describe, expect, inject, it } from 'vitest'
-import { DateIso, Weather } from '../src/weather-gov/core/index.js'
+import { DateIso, type RadarHost, Weather } from '../src/weather-gov/core/index.js'
 import type {
   AdvisoryPolygon,
   PointGeometry,
@@ -108,6 +108,27 @@ function isSigmetOf(feature: SigmetFeature, atsu: string): SigmetFeature['proper
   expect(sigmet.start.getTime()).toBeLessThanOrEqual(sigmet.end.getTime())
   if (feature.geometry !== null) isAdvisoryArea(feature.geometry, ALASKA)
   return sigmet
+}
+
+const SPGDS = recorded<{ published: string }>('radar/list_spgds/examples/one_minute.request.json')
+const QUEUE = recorded<{ host: RadarHost; station: string; arrived: string; limit: number }>(
+  'radar/get_queue/examples/seattle_capped.request.json',
+)
+
+/** The start and end of a `start/duration` ISO 8601 interval, such as `2026-09-30T23:00:00Z/PT10M`. */
+function interval(value: string): [number, number] {
+  const [start, duration] = value.split('/')
+  const match = /^PT(?:(\d+)H)?(?:(\d+)M)?$/.exec(duration!)
+  expect(match).not.toBeNull()
+  const minutes = Number(match![1] ?? 0) * 60 + Number(match![2] ?? 0)
+  const from = Date.parse(start!)
+  return [from, from + minutes * 60_000]
+}
+
+/** A ping group: target name to whether it answered, or `[]` when there are none. */
+function isPingGroup(group: Record<string, boolean> | boolean[]): void {
+  if (Array.isArray(group)) expect(group).toEqual([])
+  else for (const answered of Object.values(group)) expect(typeof answered).toBe('boolean')
 }
 
 /** A `QuantitativeValue`: a unit, and a number or an honest null. */
@@ -211,7 +232,18 @@ describe('recorded examples replay through the generated client', () => {
     }
   })
 
-  it('stations.listStations sends a repeated query key, not a stringified array', async () => {
+  it('stations.listStations sends two ids as one comma-separated item, and both come back', async () => {
+    // The service keeps only the last of a repeated key, so `?id=KSEA&id=KPDX` would answer
+    // with KPDX alone. The endpoint declares `match.query_arrays: "comma"`, so the mock 422s
+    // any form but `?id=KSEA,KPDX`.
+    const asked = recorded<{ id: string[] }>('stations/list_stations/examples/two_ids.request.json')
+    expect(asked.id).toHaveLength(2)
+    const page = await client.stations.listStations({ id: asked.id })
+    const returned = page.features.map(feature => feature.properties.stationIdentifier)
+    expect(returned.sort()).toEqual([...asked.id].sort())
+  })
+
+  it('stations.listStations sends a list filter as text, not a stringified array', async () => {
     const page = await client.stations.listStations({ state: ['WA'], limit: 20 })
     expect(page.type).toBe('FeatureCollection')
     expect(page.features).toHaveLength(20)
@@ -319,6 +351,15 @@ describe('recorded examples replay through the generated client', () => {
     }
     const ids = zones.map(zone => zone.id)
     expect([...ids].sort()).toEqual(ids)
+  })
+
+  it('zones.listZones sends two ids as one comma-separated item, and both come back', async () => {
+    const asked = recorded<{ id: string[] }>('zones/list_zones/examples/two_ids.request.json')
+    expect(asked.id).toHaveLength(2)
+    const page = await client.zones.listZones({ id: asked.id })
+    const zones = page.features.map(feature => isZone(feature, false))
+    expect(zones.map(zone => zone.id).sort()).toEqual([...asked.id].sort())
+    expect(new Set(zones.map(zone => zone.type))).toEqual(new Set(['public', 'county']))
   })
 
   it('zones.listZonesByType takes the type from the path', async () => {
@@ -512,5 +553,137 @@ describe('recorded examples replay through the generated client', () => {
     const sigmet = isSigmetOf(feature, SIGMET.atsu)
     expect([utcDay(sigmet.issueTime), utcMinute(sigmet.issueTime)]).toEqual([SIGMET.date, SIGMET.time])
     expect(feature.geometry).not.toBeNull()
+  })
+
+  it('radar.listServers lists the LDM servers and the distribution hosts, empty groups as []', async () => {
+    const page = await client.radar.listServers()
+    const servers = new Map(page['@graph'].map(server => [server.id, server]))
+    for (const name of ['ldm1', 'rds', 'tds']) expect(servers.has(name)).toBe(true)
+    for (const [name, server] of servers) {
+      expect(server['@id'].endsWith(`/radar/servers/${name}`)).toBe(true)
+      expect(server.collectionTime).toBeInstanceOf(Date)
+      for (const group of Object.values(server.ping.targets)) isPingGroup(group)
+      if (server.type === 'ldm') {
+        expect(typeof server.active).toBe('boolean')
+        expect(server.command?.lastExecutedTime).toBeInstanceOf(Date)
+      } else {
+        expect(server.command).toBeUndefined()
+        expect(server.active).toBeUndefined()
+      }
+    }
+    expect(servers.get('rds')!.ping.targets['radar']).toEqual([])
+  })
+
+  it('radar.getServer returns one LDM server, its uptime a boot time', async () => {
+    const server = await client.radar.getServer({ server_id: 'ldm1' })
+    expect(server.id).toBe('ldm1')
+    expect(server.type).toBe('ldm')
+    expect(server.ldm.count).toBeGreaterThan(0)
+    expect(server.ldm.oldestProduct.getTime()).toBeLessThanOrEqual(server.ldm.latestProduct.getTime())
+    expect(server.hardware.uptime.getTime()).toBeLessThan(server.collectionTime.getTime())
+    expect(server.network.eth0.interface).toBe('eth0')
+    const radars = server.ping.targets['radar'] as Record<string, boolean>
+    expect(typeof radars['KATX']).toBe('boolean')
+  })
+
+  it('radar.listSpgds parses the Unix seconds and counts the service sends as strings', async () => {
+    const [start, end] = interval(SPGDS.published)
+    const page = await client.radar.listSpgds({ published: SPGDS.published })
+    const reports = page['@graph']
+    expect(reports.length).toBeGreaterThan(0)
+    for (const report of reports) {
+      expect(report.timestamp.getTime()).toBeGreaterThanOrEqual(start)
+      expect(report.timestamp.getTime()).toBeLessThanOrEqual(end)
+      for (const block of [report.dataflow, report.connectQ, report.appRunning]) {
+        expect(block.stateSince).toBeInstanceOf(Date)
+        expect(block.stateSince.getTime()).toBeLessThanOrEqual(block.stateValid.getTime())
+      }
+      expect(typeof report.ldm.conns).toBe('bigint')
+      expect(report.secondHD.pctUsed).toBeLessThanOrEqual(100n)
+      expect(Number(report.throughput.in)).toBeGreaterThanOrEqual(0)
+      expect(report.spgdsUpSince.upSince.getTime()).toBeLessThan(report.timestamp.getTime())
+      const sites = Object.values(report.spg)
+      expect(sites.length).toBeGreaterThan(0)
+      for (const site of sites) expect(site.ldmPingStateSince).toBeInstanceOf(Date)
+    }
+    const times = reports.map(report => report.timestamp.getTime())
+    expect([...times].sort((a, b) => b - a)).toEqual(times)
+  })
+
+  it('radar.listStations sends two kinds as one comma-separated item, and both come back', async () => {
+    // The service keeps only the last of a repeated key, so `?stationType=TDWR&stationType=Profiler`
+    // would answer with the profilers alone. The endpoint declares `match.query_arrays: "comma"`,
+    // so the mock 422s any form but `?stationType=TDWR,Profiler`.
+    const asked = recorded<{ stationType: string[] }>('radar/list_stations/examples/tdwr_and_profilers.request.json')
+    expect(asked.stationType).toHaveLength(2)
+    const page = await client.radar.listStations({ stationType: asked.stationType })
+    const kinds = new Set(page.features.map(feature => feature.properties.stationType))
+    expect(kinds).toEqual(new Set(asked.stationType))
+  })
+
+  it('radar.listStations narrows to the profilers, whose status and latency are null', async () => {
+    const page = await client.radar.listStations({ stationType: ['Profiler'] })
+    expect(page.features.length).toBeGreaterThan(0)
+    for (const feature of page.features) {
+      const radar = feature.properties
+      expect(radar.stationType).toBe('Profiler')
+      expect(feature.id).toBe(radar['@id'])
+      isPoint(feature.geometry)
+      expect(radar.rda).toBeNull()
+      for (const value of Object.values(radar.latency)) expect(value).toBeNull()
+      expect(radar.performance).toBeUndefined()
+      expect(radar.adaptation).toBeUndefined()
+    }
+  })
+
+  it('radar.getStation returns the whole feature, with its maintenance reports', async () => {
+    const feature = await client.radar.getStation({ station_id: 'KATX' })
+    const radar = feature.properties
+    expect(radar.id).toBe('KATX')
+    expect(radar.stationType).toBe('WSR-88D')
+    expect(feature.id).toBe(radar['@id'])
+    isPoint(feature.geometry)
+    expect(radar.latency.current?.unitCode).toBe('nwsUnit:s')
+    expect(radar.latency.levelTwoLastReceivedTime).toBeInstanceOf(Date)
+    expect(radar.rda?.properties.volumeCoveragePattern).toBeTruthy()
+    for (const report of [radar.performance, radar.adaptation]) {
+      const readings = report?.properties
+      expect(Array.isArray(readings)).toBe(false)
+      const measured = Object.values(readings as object).filter(r => typeof r === 'object')
+      expect(measured.length).toBeGreaterThan(0)
+      for (const reading of measured) expect(reading).toHaveProperty('unitCode')
+    }
+    const readings = radar.performance!.properties as Record<string, unknown>
+    expect((readings['transmitterPeakPower'] as QuantitativeValue).unitCode).toBe('wmoUnit:kW')
+  })
+
+  it('radar.listStationAlarms returns the radar\'s log, newest first', async () => {
+    const log = await client.radar.listStationAlarms({ station_id: 'KATX' })
+    const alarms = log['@graph']
+    expect(alarms.length).toBeGreaterThan(0)
+    expect(log['@id']?.endsWith('/radar/stations/KATX/alarms')).toBe(true)
+    for (const alarm of alarms) {
+      expect(alarm.stationId).toBe('KATX')
+      expect(alarm.message).toBeTruthy()
+    }
+    const times = alarms.map(alarm => alarm.timestamp.getTime())
+    expect([...times].sort((a, b) => b - a)).toEqual(times)
+  })
+
+  it('radar.getQueue keeps the oldest products from the start of the window', async () => {
+    const [start, end] = interval(QUEUE.arrived)
+    const queue = await client.radar.getQueue(QUEUE)
+    const products = queue['@graph']
+    expect(products).toHaveLength(QUEUE.limit)
+    const arrivals = products.map(product => product.arrivalTime.getTime())
+    expect([...arrivals].sort((a, b) => a - b)).toEqual(arrivals)
+    for (const product of products) {
+      expect(product.host).toBe(QUEUE.host)
+      expect(product.stationId).toBe(QUEUE.station)
+      expect(product.arrivalTime.getTime()).toBeGreaterThanOrEqual(start)
+      expect(product.arrivalTime.getTime()).toBeLessThan(end)
+      expect(product.creationTime.getTime()).toBeLessThanOrEqual(product.arrivalTime.getTime())
+      expect(product.size).toBeGreaterThan(0)
+    }
   })
 })

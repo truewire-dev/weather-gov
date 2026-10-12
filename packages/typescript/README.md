@@ -22,7 +22,7 @@ No account, no key, no quota. The service asks one thing of a caller: say who yo
 npm install @truewire/weather-gov
 ```
 
-Node 20 or newer, or any runtime with `fetch` and `URLSearchParams` — the transport is `fetch` and nothing else, so Deno, Bun and the browser work unchanged. `api.weather.gov` sends `Access-Control-Allow-Origin: *`, so a browser is a real target here rather than a theoretical one.
+Node 22 or newer, or any runtime with `fetch` and `URLSearchParams` — the transport is `fetch` and nothing else, so Deno, Bun and the browser work unchanged. `api.weather.gov` sends `Access-Control-Allow-Origin: *`, so a browser is a real target here rather than a theoretical one.
 
 ## Use
 
@@ -178,7 +178,7 @@ Passing `validate: false` to `Weather.new` makes that the default for the whole 
 
 ## What is covered
 
-The same twenty-six endpoints as the Python client, in the same eight groups, from the same spec: `points`, `forecast`, `stations`, `alerts`, `offices`, `products`, `zones`, `aviation`. The method names are camelCase here and snake_case there; nothing else differs.
+The same thirty-four endpoints as the Python client, in the same nine groups, from the same spec: `points`, `forecast`, `stations`, `alerts`, `offices`, `products`, `zones`, `aviation`, `radar`. The method names are camelCase here and snake_case there; nothing else differs.
 
 ## Tests
 

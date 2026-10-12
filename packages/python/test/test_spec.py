@@ -5,6 +5,10 @@ is the one convention this project invented: the core learns which responses to 
 from `meta.payload`, and the spec states the same thing in `envelope.payload` so
 `truewire check` validates recordings against the whole wire frame. Two declarations of
 one fact can drift, so they are compared here.
+
+The same goes for the query form: the core joins every list filter with commas, and each
+endpoint that takes one says so in `match.query_arrays`, which is what `truewire mock`
+matches recordings by.
 """
 
 import json
@@ -47,11 +51,80 @@ def test_some_endpoints_unwrap_and_some_do_not():
 
 @pytest.mark.parametrize('path', ENDPOINTS, ids=endpoint_id)
 def test_every_endpoint_has_a_recording(path: Path):
-  """No endpoint here needs a credential, so none of them has an excuse. This is the gate
-  the `Recordings` CI job runs: an endpoint added without a recorded example fails."""
+  """No endpoint here needs a credential, so the only excuse is the service itself failing,
+  declared as `unverified` (ADR 0001). This is the gate the `Recordings` CI job runs: an
+  endpoint added without a recorded example, or a declaration, fails."""
   examples = path.parent / 'examples'
   requests = sorted(examples.glob('*.request.json'))
+  if json.loads(path.read_text()).get('unverified'):
+    assert not requests, f'{endpoint_id(path)} is declared unverified but has examples'
+    return
   assert requests, f'{endpoint_id(path)} has no recorded example'
   for request in requests:
     response = request.with_name(request.name.replace('.request.', '.response.'))
     assert response.exists(), f'{request.name} was recorded without its response half'
+
+
+def test_seven_radar_operations_are_recorded_and_the_profiler_is_not():
+  """The radar group is eight operations: seven recorded, and `get_profiler`, which every
+  profiler answered with a 404 on 2026-10-01. A 404 body is never saved as an example."""
+  radar = {endpoint_id(path): path for path in ENDPOINTS if path.parent.parent.name == 'radar'}
+  unverified = {
+    name: json.loads(path.read_text())['unverified']
+    for name, path in radar.items()
+    if 'unverified' in json.loads(path.read_text())
+  }
+  assert len(radar) == 8
+  assert set(unverified) == {'radar.get_profiler'}
+  assert unverified['radar.get_profiler']['reason'] == 'runtime_error'
+  assert '2026-10-01' in unverified['radar.get_profiler']['detail']
+  assert not (radar['radar.get_profiler'].parent / 'examples').exists()
+  assert len(radar) - len(unverified) == 7
+
+
+def test_the_profiler_is_in_the_inventory_and_the_spec():
+  """Documented and answering JSON, so built and unverified rather than excluded."""
+  inventory = json.loads((PROJECT / 'spec/inventory.json').read_text())
+  (entry,) = [e for e in inventory['endpoints'] if e['path'] == '/radar/profilers/{stationId}']
+  assert entry == {
+    'method': 'GET',
+    'path': '/radar/profilers/{stationId}',
+    'endpoint': 'radar.get_profiler',
+  }
+  assert inventory['approved'] is None
+  spec = json.loads((PROJECT / 'spec/endpoints/radar/get_profiler/endpoint.json').read_text())[
+    'spec'
+  ]
+  assert spec['path'] == '/radar/profilers/{station_id}'
+  assert set(spec['request']['properties']) == {'station_id', 'time', 'interval'}
+  assert spec['request']['required'] == ['station_id']
+  # No field is invented for a body nobody has seen.
+  assert not {'type', 'properties', '$ref'} & set(spec['response'])
+
+
+def test_the_queue_request_keeps_created():
+  """`created` answered 503 upstream, which is no reason to drop a documented filter."""
+  spec = json.loads((PROJECT / 'spec/endpoints/radar/get_queue/endpoint.json').read_text())
+  assert spec['spec']['request']['properties']['created']['type'] == 'string'
+  assert 'created' not in spec['spec']['request']['required']
+
+
+def list_filters(doc: dict) -> list[str]:
+  properties = (doc['spec'].get('request') or {}).get('properties') or {}
+  return sorted(name for name, schema in properties.items() if schema.get('type') == 'array')
+
+
+@pytest.mark.parametrize('path', ENDPOINTS, ids=endpoint_id)
+def test_a_list_filter_is_declared_comma_separated(path: Path):
+  """The service reads `?id=KSEA,KPDX` and keeps only the last of `?id=KSEA&id=KPDX`, and
+  the core sends the first. An endpoint with a list filter that did not declare it would
+  have the mock expect repeated keys, so a two-value recording could never replay there."""
+  doc = json.loads(path.read_text())
+  declared = (doc.get('match') or {}).get('query_arrays', 'repeat')
+  assert declared == ('comma' if list_filters(doc) else 'repeat'), endpoint_id(path)
+
+
+def test_some_endpoints_take_list_filters():
+  """A guard on the guard, as above."""
+  with_lists = [path for path in ENDPOINTS if list_filters(json.loads(path.read_text()))]
+  assert len(with_lists) == 5
