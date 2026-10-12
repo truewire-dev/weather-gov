@@ -4,7 +4,7 @@
   "notes": [
     "No `envelope`: the area is most of what an advisory is for, so the client returns the whole feature, as `zones.get_zone` does.",
     "The OpenAPI also offers `application/vnd.noaa.uswx+xml` here. This client asks for GeoJSON only.",
-    "An advisory that does not exist answers 500 `UnexpectedProblem`, not 404 (measured 2026-09-30, `/aviation/cwsus/ZSE/cwas/2026-09-28/999`)."
+    "An advisory that does not exist answers 500 `UnexpectedProblem`, not 404 (measured 2026-09-30, `/aviation/cwsus/ZSE/cwas/2026-09-28/999`). So do most that do exist: on 2026-10-11, 206 of the 221 advisories `aviation.list_cwas` listed across eight units answered 500 at their own URL, and on 2026-10-12, 221 of 223, every one issued since 2026-10-06. The advisory is not gone: `aviation.list_cwas` still lists it, with its text and area. A 500 here does not mean the advisory does not exist, and asking again does not help; read it from the list instead. `refresh_examples.py` re-records the newest advisory that answers, and fails when none does."
   ],
   "spec": {
     "kind": "rpc",
@@ -13,7 +13,7 @@
     ],
     "path": "/aviation/cwsus/{cwsu_id}/cwas/{date}/{sequence}",
     "method": "GET",
-    "description": "One Center Weather Advisory, with its area. A unit occasionally gives two advisories one sequence number on one day (measured 2026-09-30, `ZAB` issued two `206`s), and the service then answers one of them; `aviation.list_cwas` holds both.",
+    "description": "One Center Weather Advisory, with its area. Since 2026-10-06 the service has answered HTTP 500 for most advisories, including ones `aviation.list_cwas` lists; that list holds the same advisories, text and area included. A unit occasionally gives two advisories one sequence number on one day (measured 2026-09-30, `ZAB` issued two `206`s), and the service then answers one of them; `aviation.list_cwas` holds both.",
     "request": {
       "title": "GetCwaRequest",
       "type": "object",

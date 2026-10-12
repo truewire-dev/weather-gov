@@ -17,7 +17,7 @@ class Request(TypedDict):
 
 
 class GetCwa(Endpoint):
-  """One Center Weather Advisory, with its area. A unit occasionally gives two advisories one sequence number on one day (measured 2026-09-30, `ZAB` issued two `206`s), and the service then answers one of them; `aviation.list_cwas` holds both."""
+  """One Center Weather Advisory, with its area. Since 2026-10-06 the service has answered HTTP 500 for most advisories, including ones `aviation.list_cwas` lists; that list holds the same advisories, text and area included. A unit occasionally gives two advisories one sequence number on one day (measured 2026-09-30, `ZAB` issued two `206`s), and the service then answers one of them; `aviation.list_cwas` holds both."""
 
   @overload
   async def get_cwa(
@@ -45,7 +45,7 @@ class GetCwa(Endpoint):
     sequence: int,
     validate: bool | None = None,
   ) -> CenterWeatherAdvisoryFeature:
-    """One Center Weather Advisory, with its area. A unit occasionally gives two advisories one sequence number on one day (measured 2026-09-30, `ZAB` issued two `206`s), and the service then answers one of them; `aviation.list_cwas` holds both.
+    """One Center Weather Advisory, with its area. Since 2026-10-06 the service has answered HTTP 500 for most advisories, including ones `aviation.list_cwas` lists; that list holds the same advisories, text and area included. A unit occasionally gives two advisories one sequence number on one day (measured 2026-09-30, `ZAB` issued two `206`s), and the service then answers one of them; `aviation.list_cwas` holds both.
 
     Args:
       cwsu_id:

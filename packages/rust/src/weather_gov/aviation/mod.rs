@@ -45,7 +45,7 @@ impl Aviation {
         }
     }
 
-    /// One Center Weather Advisory, with its area. A unit occasionally gives two advisories one sequence number on one day (measured 2026-09-30, `ZAB` issued two `206`s), and the service then answers one of them; `aviation.list_cwas` holds both.
+    /// One Center Weather Advisory, with its area. Since 2026-10-06 the service has answered HTTP 500 for most advisories, including ones `aviation.list_cwas` lists; that list holds the same advisories, text and area included. A unit occasionally gives two advisories one sequence number on one day (measured 2026-09-30, `ZAB` issued two `206`s), and the service then answers one of them; `aviation.list_cwas` holds both.
     ///
     /// See <https://www.weather.gov/documentation/services-web-api#/default/cwa>.
     pub async fn get_cwa(

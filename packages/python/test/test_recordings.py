@@ -407,7 +407,12 @@ def cwa(result: Any) -> None:
   is_advisory_area(result['geometry'], **FORT_WORTH)
   listed = recorded_payload('aviation.list_cwas', 'fort_worth')['features']
   assert asked['cwsu_id'] == example_request('aviation.list_cwas', 'fort_worth')['cwsu_id']
-  assert advisory['id'] in {feature['properties']['id'] for feature in listed}
+  # The list keeps a week. The service answers 500 for most single advisories (see the
+  # endpoint's notes), so a re-recording can renew the list and keep an older advisory here;
+  # one from inside the list's week must be in it.
+  oldest = min(datetime.fromisoformat(feature['properties']['issueTime']) for feature in listed)
+  if advisory['issueTime'] >= oldest:
+    assert advisory['id'] in {feature['properties']['id'] for feature in listed}
 
 
 def sigmets_by_sequence(result: Any) -> None:

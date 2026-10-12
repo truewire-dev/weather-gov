@@ -26,6 +26,7 @@ that half and leaves the description alone.
 
 import json
 import sys
+import time
 import urllib.error
 import urllib.request
 from datetime import datetime, timedelta, timezone
@@ -56,7 +57,12 @@ SIGMETS_ON_DATE = AVIATION / 'list_sigmets_for_atsu_on_date/examples/anchorage.r
 SIGMET = AVIATION / 'get_sigmet/examples/anchorage_latest.request.json'
 
 
-def fetch(url: str) -> dict:
+ATTEMPTS = 4
+"""How many times one request is sent. The service answers a few percent of requests with a
+500 that the same request, sent again, answers with a 200."""
+
+
+def fetch(url: str, attempts: int = ATTEMPTS) -> dict:
   request = urllib.request.Request(
     url,
     headers={
@@ -64,8 +70,15 @@ def fetch(url: str) -> dict:
       'User-Agent': f'truewire-weather-gov ({CONTACT})',
     },
   )
-  with urllib.request.urlopen(request, timeout=30) as response:
-    return json.load(response)
+  for attempt in range(1, attempts + 1):
+    try:
+      with urllib.request.urlopen(request, timeout=30) as response:
+        return json.load(response)
+    except urllib.error.HTTPError as error:
+      if error.code < 500 or attempt == attempts:
+        raise
+      time.sleep(2 * attempt)
+  raise AssertionError('unreachable')
 
 
 def rewrite(path: Path, changes: dict) -> None:
@@ -111,11 +124,34 @@ def newest_with_area(url: str, what: str) -> dict:
 
 
 def refresh_cwa() -> None:
-  """Point the single-advisory example at the newest one its unit's list holds."""
+  """Point the single-advisory example at the newest one its unit's list holds that the
+  service will answer for.
+
+  Most will not: on 2026-10-12, 221 of the 223 advisories eight units listed answered 500 at
+  their own URL, every one issued since 2026-10-06. So each listed advisory with an outline
+  is asked for in turn, newest first, twice at most, and the first that answers is taken.
+  If none does, the example keeps its advisory, and this step fails.
+  """
   cwsu = json.loads(CWAS.read_text())['request']['cwsu_id']
-  advisory = newest_with_area(f'https://api.weather.gov/aviation/cwsus/{cwsu}/cwas', f'CWSU {cwsu}')
-  issued = datetime.fromisoformat(advisory['issueTime'])
-  rewrite(CWA, {'cwsu_id': cwsu, 'date': f'{issued:%Y-%m-%d}', 'sequence': advisory['sequence']})
+  listed = [
+    feature['properties']
+    for feature in fetch(f'https://api.weather.gov/aviation/cwsus/{cwsu}/cwas')['features']
+    if feature['geometry'] is not None
+  ]
+  for advisory in listed:
+    try:
+      fetch(advisory['id'], attempts=2)
+    except urllib.error.HTTPError as error:
+      if error.code < 500:
+        raise
+      continue
+    issued = datetime.fromisoformat(advisory['issueTime'])
+    rewrite(CWA, {'cwsu_id': cwsu, 'date': f'{issued:%Y-%m-%d}', 'sequence': advisory['sequence']})
+    return
+  raise SystemExit(
+    f'CWSU {cwsu} lists {len(listed)} advisories with an outline, and the service answers 500 '
+    'for every one of them; the example keeps its advisory'
+  )
 
 
 def refresh_sigmet() -> None:

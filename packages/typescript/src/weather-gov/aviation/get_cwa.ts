@@ -19,14 +19,14 @@ export const Request: Codec<Request> = t.object({
   sequence: t.integer,
 })
 
-/** One Center Weather Advisory, with its area. A unit occasionally gives two advisories one sequence number on one day (measured 2026-09-30, `ZAB` issued two `206`s), and the service then answers one of them; `aviation.list_cwas` holds both. */
+/** One Center Weather Advisory, with its area. Since 2026-10-06 the service has answered HTTP 500 for most advisories, including ones `aviation.list_cwas` lists; that list holds the same advisories, text and area included. A unit occasionally gives two advisories one sequence number on one day (measured 2026-09-30, `ZAB` issued two `206`s), and the service then answers one of them; `aviation.list_cwas` holds both. */
 export class GetCwa {
   constructor(readonly core: HttpEndpoint<DefaultMeta>) {}
 
   /** With `validate: false`: the parsed body as it came, typed `unknown`. */
   getCwa(request: Request, options: CallOptions & { validate: false }): Promise<unknown>
   /**
-   * One Center Weather Advisory, with its area. A unit occasionally gives two advisories one sequence number on one day (measured 2026-09-30, `ZAB` issued two `206`s), and the service then answers one of them; `aviation.list_cwas` holds both.
+   * One Center Weather Advisory, with its area. Since 2026-10-06 the service has answered HTTP 500 for most advisories, including ones `aviation.list_cwas` lists; that list holds the same advisories, text and area included. A unit occasionally gives two advisories one sequence number on one day (measured 2026-09-30, `ZAB` issued two `206`s), and the service then answers one of them; `aviation.list_cwas` holds both.
    *
    * @see https://www.weather.gov/documentation/services-web-api#/default/cwa
    */
