@@ -510,7 +510,17 @@ describe('recorded examples replay through the generated client', () => {
     expect(utcDay(advisory.issueTime)).toBe(CWA.date)
     expect(advisory.text).toBeTruthy()
     isAdvisoryArea(feature.geometry, FORT_WORTH)
-    expect(recordedIds('aviation/list_cwas/examples/fort_worth.response.json')).toContain(advisory.id)
+    // The list keeps a week. The service answers 500 for most single advisories (see the
+    // endpoint's notes), so a re-recording can renew the list and keep an older advisory
+    // here; one from inside the list's week must be in it.
+    const listed = 'aviation/list_cwas/examples/fort_worth.response.json'
+    const full = path.join(projectRoot, 'spec/endpoints', listed)
+    const issued = (JSON.parse(readFileSync(full, 'utf8')) as {
+      payload: { features: { properties: { issueTime: string } }[] }
+    }).payload.features.map(feature => Date.parse(feature.properties.issueTime))
+    if (advisory.issueTime.getTime() >= Math.min(...issued)) {
+      expect(recordedIds(listed)).toContain(advisory.id)
+    }
   })
 
   it('aviation.listSigmets by sequence alone reaches back through the week', async () => {

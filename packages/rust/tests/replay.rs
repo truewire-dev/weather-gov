@@ -706,8 +706,9 @@ fn date(value: &Value) -> truewire_core::DateIso {
     truewire_core::serde_json::from_value(value.clone()).expect("a YYYY-MM-DD date")
 }
 
-/// The ids a recorded collection holds, for a test that checks one recording against another.
-fn recorded_ids(file: &str) -> Vec<String> {
+/// The features of a recorded collection, for a test that checks one recording against
+/// another.
+fn recorded_features(file: &str) -> Vec<Value> {
     let path = project_root().join("spec/endpoints").join(file);
     let text = std::fs::read_to_string(&path)
         .unwrap_or_else(|e| panic!("could not read {}: {e}", path.display()));
@@ -715,6 +716,12 @@ fn recorded_ids(file: &str) -> Vec<String> {
     value["payload"]["features"]
         .as_array()
         .expect("features")
+        .clone()
+}
+
+/// The ids a recorded collection holds.
+fn recorded_feature_ids(file: &str) -> Vec<String> {
+    recorded_features(file)
         .iter()
         .map(|feature| {
             feature["properties"]["id"]
@@ -856,9 +863,25 @@ async fn aviation_cwas_list_the_week_and_get_cwa_finds_one_of_them() {
     );
     assert!(!advisory.text.is_empty());
     is_advisory_area(feature.geometry.as_ref().expect("an outline"), FORT_WORTH);
-    assert!(
-        recorded_ids("aviation/list_cwas/examples/fort_worth.response.json").contains(&advisory.id)
-    );
+    // The list keeps a week. The service answers 500 for most single advisories (see the
+    // endpoint's notes), so a re-recording can renew the list and keep an older advisory
+    // here; one from inside the list's week must be in it.
+    let listed = "aviation/list_cwas/examples/fort_worth.response.json";
+    let oldest = recorded_features(listed)
+        .iter()
+        .map(|feature| {
+            let issued = feature["properties"]["issueTime"]
+                .as_str()
+                .expect("an issue time");
+            truewire_core::chrono::DateTime::parse_from_rfc3339(issued)
+                .expect("an RFC 3339 time")
+                .timestamp()
+        })
+        .min()
+        .expect("a listed advisory");
+    if advisory.issue_time.timestamp() >= oldest {
+        assert!(recorded_feature_ids(listed).contains(&advisory.id));
+    }
 }
 
 #[tokio::test]
@@ -940,7 +963,7 @@ async fn aviation_sigmets_of_one_unit_narrow_to_a_day_and_a_minute() {
         .expect("list_sigmets_for_atsu_on_date");
     assert!(!page.features.is_empty());
     let recorded_week =
-        recorded_ids("aviation/list_sigmets_for_atsu/examples/anchorage.response.json");
+        recorded_feature_ids("aviation/list_sigmets_for_atsu/examples/anchorage.response.json");
     for feature in &page.features {
         let sigmet = is_sigmet_of(feature, atsu);
         assert_eq!(sigmet.issue_time.format("%Y-%m-%d").to_string(), day);
