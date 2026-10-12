@@ -6,7 +6,12 @@ reach the wire. The mock server is the wire.
 """
 
 import json
+import threading
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.error import HTTPError
+from urllib.parse import parse_qs, urlsplit
+from urllib.request import urlopen
 
 import pytest
 from truewire_core.exceptions import ApiError, BadRequest
@@ -14,6 +19,8 @@ from truewire_core.exceptions import ApiError, BadRequest
 from weather_gov.core import raise_for_status, unwrap, user_agent
 
 PROJECT = Path(__file__).resolve().parents[3]
+
+CONTACT = 'tests@truewire.dev'
 
 
 class TestUserAgent:
@@ -72,6 +79,10 @@ class TestErrors:
     with pytest.raises(BadRequest, match='Bad Request'):
       raise_for_status('GET', '/points/1,2', 400, '{"detail": "Bad Request", "status": 400}')
 
+  def test_a_422_is_a_bad_request_like_a_400(self):
+    with pytest.raises(BadRequest, match=r'GET /radar/queues/rds: HTTP 422'):
+      raise_for_status('GET', '/radar/queues/rds', 422, '{}')
+
   def test_a_non_json_body_still_produces_a_useful_message(self):
     with pytest.raises(ApiError, match='<html>'):
       raise_for_status('GET', '/points/1,2', 502, '<html>gateway</html>')
@@ -85,11 +96,23 @@ class TestOnTheWire:
   """Through the mock server, so the URL the client builds is the URL that is matched."""
 
   @pytest.mark.asyncio
-  async def test_a_repeated_filter_travels_as_repeated_keys(self, client):
-    """`state=['WA']` has to reach the wire as `?state=WA`, not as `?state=%5B'WA'%5D`.
-    The mock matches the recorded query exactly, so a wrong rendering 422s here."""
-    page = await client.stations.list_stations(state=['WA'], limit=20)
-    assert len(page['features']) == 20
+  async def test_a_list_filter_travels_as_one_comma_separated_item(self, client):
+    """`id=['KSEA', 'KPDX']` has to reach the wire as `?id=KSEA,KPDX`. The service keeps
+    only the last of a repeated key, so `?id=KSEA&id=KPDX` would answer with KPDX alone.
+    The endpoint declares `match.query_arrays: "comma"`, so the mock 422s any other form."""
+    page = await client.stations.list_stations(id=['KSEA', 'KPDX'])
+    returned = sorted(f['properties']['stationIdentifier'] for f in page['features'])
+    assert returned == ['KPDX', 'KSEA']
+
+  def test_the_mock_refuses_repeated_keys_for_the_same_call(self, mock_servers):
+    """The control for the test above: the recording it replays does not also match the
+    repeated form, so that test fails if the core goes back to sending it."""
+    base = mock_servers.http_base_url
+    with urlopen(f'{base}/stations?id=KSEA,KPDX') as response:
+      assert response.status == 200
+    with pytest.raises(HTTPError) as refused:
+      urlopen(f'{base}/stations?id=KSEA&id=KPDX')
+    assert refused.value.code == 422
 
   @pytest.mark.asyncio
   async def test_a_colon_in_a_path_is_not_percent_encoded(self, client):
@@ -115,3 +138,68 @@ class TestOnTheWire:
     page = await client.alerts.get_active_alerts(status=['actual'], severity=['Severe'])
     assert page['type'] == 'FeatureCollection'
     assert page['features'][0]['properties']['severity'] == 'Severe'
+
+
+class TestWhatNoRecordingCovers:
+  """Parameters and endpoints the service fails on today, so no recording reaches them.
+
+  The mock serves only what was recorded, so these go to a local server that records the
+  request line and answers a canned body. What is asserted is what the client sends, never
+  what the service would answer.
+  """
+
+  @pytest.fixture
+  def wire(self):
+    seen: list[str] = []
+
+    class Handler(BaseHTTPRequestHandler):
+      def do_GET(self):
+        seen.append(self.path)
+        body = b'{"@graph": []}'
+        self.send_response(200)
+        self.send_header('Content-Type', 'application/ld+json')
+        self.send_header('Content-Length', str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+      def log_message(self, format, *args):
+        pass
+
+    server = ThreadingHTTPServer(('127.0.0.1', 0), Handler)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    yield f'http://127.0.0.1:{server.server_address[1]}', seen
+    server.shutdown()
+    server.server_close()
+
+  @pytest.mark.asyncio
+  async def test_created_reaches_the_queue_request_unchanged(self, wire):
+    """`created` answered 503 on every try on 2026-10-01, so it has no example; it is
+    documented, so the request keeps it and sends it as given."""
+    from weather_gov import Weather
+
+    base_url, seen = wire
+    interval = '2026-09-30T23:00:00Z/PT10M'
+    async with Weather.new(contact=CONTACT, base_url=base_url) as client:
+      await client.radar.get_queue(host='rds', created=interval, limit=5)
+    (sent,) = seen
+    url = urlsplit(sent)
+    assert url.path == '/radar/queues/rds'
+    assert parse_qs(url.query) == {'created': [interval], 'limit': ['5']}
+
+  @pytest.mark.asyncio
+  async def test_the_profiler_is_called_with_its_documented_request(self, wire):
+    """`radar.get_profiler` is unverified: every profiler answered 404. The method still
+    sends what the OpenAPI documents, and returns whatever comes back unconstrained."""
+    from weather_gov import Weather
+
+    base_url, seen = wire
+    async with Weather.new(contact=CONTACT, base_url=base_url) as client:
+      body = await client.radar.get_profiler(
+        station_id='TLKA2', time='2026-09-30T23:00:00Z/PT1H', interval='PT1H'
+      )
+    assert body == {'@graph': []}
+    (sent,) = seen
+    url = urlsplit(sent)
+    assert url.path == '/radar/profilers/TLKA2'
+    assert parse_qs(url.query) == {'time': ['2026-09-30T23:00:00Z/PT1H'], 'interval': ['PT1H']}

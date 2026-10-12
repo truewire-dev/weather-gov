@@ -1,0 +1,6 @@
+{
+  "description": "The first LDM ingest server",
+  "request": {
+    "server_id": "ldm1"
+  }
+}

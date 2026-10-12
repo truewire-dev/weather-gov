@@ -1,0 +1,6 @@
+{
+  "description": "The Seattle radar's alarm log",
+  "request": {
+    "station_id": "KATX"
+  }
+}

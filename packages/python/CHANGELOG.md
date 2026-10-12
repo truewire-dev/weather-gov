@@ -4,6 +4,13 @@
 
 Generated with truewire 0.11.
 
+- **Changed: a 422 raises `BadRequest`, like a 400.** It raised plain `ApiError`, while
+  the TypeScript client has raised `BadRequest` for both since its own fix.
+- **Fixed: a list filter with more than one value kept only the last.** The service reads
+  `id=KSEA,KPDX` and keeps only the last of `id=KSEA&id=KPDX`, and the client sent the
+  second form, so `stations.list_stations(id=['KSEA', 'KPDX'])` answered with KPDX alone.
+  Every list filter now travels as one comma-separated item: `alerts.get_active_alerts`,
+  `stations.list_stations`, `zones.list_zones` and `zones.list_zones_by_type`.
 - **Breaking: `stations.get_observations_paged` walks the whole span.** The endpoint
   declares `seek` pagination anchored to `end` instead of `window` (ADR 0013). A full page
   now moves `end` back to the oldest observation it held and asks again, where it used to
@@ -17,6 +24,14 @@ Generated with truewire 0.11.
   group (`list_zones`, `list_zones_by_type`, `get_zone`, `get_forecast` and
   `list_transmitters`), and `stations.list_stations_for_zone`,
   `stations.list_stations_for_gridpoint` and `stations.get_observations_for_zone`.
+- **Eight more endpoints: a new `radar` group.** `list_stations`, `get_station` and
+  `list_station_alarms` for the radars themselves; `list_servers`, `get_server`, `get_queue`
+  and `list_spgds` for the network that distributes their data; and `get_profiler`, which
+  has no recording: every profiler answered 404 on 2026-10-01, so it returns `Any`. `get_queue`
+  and `list_spgds` take an ISO 8601 interval as a string, `get_queue`'s `created` included. The SPG reports send their times as
+  Unix seconds in strings, which arrive here as `datetime`, and their counts as `int` and
+  `Decimal`. `get_queue`'s `host`, in the request and on every product, is one shared
+  `Literal`, `weather_gov.schemas.RadarHost`.
 - **`ObservationCollection` and `StationCollection` are shared schemas.** Each is returned
   by more than one endpoint now, so they moved from `weather_gov.stations.get_observations`
   and `weather_gov.stations.list_stations` to `weather_gov.schemas`, with

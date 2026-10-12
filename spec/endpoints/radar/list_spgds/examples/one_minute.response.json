@@ -1,0 +1,1662 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": {
+      "@version": "1.1"
+    },
+    "@graph": [
+      {
+        "@type": "wx:RadarSPGDS",
+        "id": "spgds2",
+        "timestamp": "2026-09-30T12:00:46Z",
+        "dataflow": {
+          "state": "1",
+          "stateSince": "1790130866",
+          "stateValid": "1790769506"
+        },
+        "connectQ": {
+          "state": "1",
+          "stateSince": "1790130817",
+          "stateValid": "1790769563"
+        },
+        "appRunning": {
+          "state": "1",
+          "stateSince": "1785423997",
+          "stateValid": "1790769601"
+        },
+        "ldm": {
+          "conns": "46",
+          "connsValid": "1790769601"
+        },
+        "secondHD": {
+          "state": "1",
+          "stateSince": "1774975561",
+          "stateValid": "1790769601",
+          "pctUsed": "59",
+          "pctUsedValid": "1790769563"
+        },
+        "spgdsUpSince": {
+          "upSince": "1784732987",
+          "upSinceValid": "1790769601"
+        },
+        "throughput": {
+          "in": "5535391.0",
+          "inDateTime": "1790769332",
+          "inValid": "1790769503",
+          "out": "32547962.0",
+          "outDateTime": "1790769270",
+          "outValid": "1790769563"
+        },
+        "spg": {
+          "TADW": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790530105",
+            "swimDataStateValid": "1790769505",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1788470543",
+            "ldmPingStateValid": "1790769457"
+          },
+          "TATL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790130864",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1788649643",
+            "ldmPingStateValid": "1790769457"
+          },
+          "TBNA": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790130864",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790100744",
+            "ldmPingStateValid": "1790769457"
+          },
+          "TBOS": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790286205",
+            "swimDataStateValid": "1790769505",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790168544",
+            "ldmPingStateValid": "1790769457"
+          },
+          "TBWI": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1790687964",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1788592644",
+            "ldmPingStateValid": "1790769457"
+          },
+          "TCLT": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790641884",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789402344",
+            "ldmPingStateValid": "1790769457"
+          },
+          "TCMH": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790702702",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790257044",
+            "ldmPingStateValid": "1790769457"
+          },
+          "TCVG": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790130864",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787931144",
+            "ldmPingStateValid": "1790769457"
+          },
+          "TDAL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790697302",
+            "swimDataStateValid": "1790769505",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790091444",
+            "ldmPingStateValid": "1790769458"
+          },
+          "TDAY": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790286205",
+            "swimDataStateValid": "1790769505",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787931144",
+            "ldmPingStateValid": "1790769458"
+          },
+          "TDCA": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790200864",
+            "swimDataStateValid": "1790769505",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787070744",
+            "ldmPingStateValid": "1790769458"
+          },
+          "TDEN": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790701802",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789846344",
+            "ldmPingStateValid": "1790769458"
+          },
+          "TDFW": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790660244",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790091445",
+            "ldmPingStateValid": "1790769458"
+          },
+          "TDJT": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790398345",
+            "swimDataStateValid": "1790769505",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790279245",
+            "ldmPingStateValid": "1790769458"
+          },
+          "TDTW": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790130864",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789497745",
+            "ldmPingStateValid": "1790769458"
+          },
+          "TEWR": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790221044",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789361245",
+            "ldmPingStateValid": "1790769458"
+          },
+          "TFLL": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1789221144",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790279245",
+            "ldmPingStateValid": "1790769459"
+          },
+          "THOU": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790130866",
+            "swimDataStateValid": "1790769506",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787070745",
+            "ldmPingStateValid": "1790769459"
+          },
+          "TIAD": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790286003",
+            "swimDataStateValid": "1790769505",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787070745",
+            "ldmPingStateValid": "1790769459"
+          },
+          "TIAH": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790130865",
+            "swimDataStateValid": "1790769505",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790182946",
+            "ldmPingStateValid": "1790769459"
+          },
+          "TICH": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1790754205",
+            "swimDataStateValid": "1790769505",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789537046",
+            "ldmPingStateValid": "1790769459"
+          },
+          "TIDS": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790130864",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790344046",
+            "ldmPingStateValid": "1790769459"
+          },
+          "TJFK": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790374201",
+            "swimDataStateValid": "1790769503",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790344046",
+            "ldmPingStateValid": "1790769459"
+          },
+          "TLAS": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790286001",
+            "swimDataStateValid": "1790769503",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790754746",
+            "ldmPingStateValid": "1790769460"
+          },
+          "TLVE": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790263704",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790622146",
+            "ldmPingStateValid": "1790769460"
+          },
+          "TMCI": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790695502",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790401946",
+            "ldmPingStateValid": "1790769460"
+          },
+          "TMCO": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790675544",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787070747",
+            "ldmPingStateValid": "1790769460"
+          },
+          "TMDW": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790130864",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787070747",
+            "ldmPingStateValid": "1790769460"
+          },
+          "TMEM": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1790258664",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790312260",
+            "ldmPingStateValid": "1790769460"
+          },
+          "TMIA": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790398345",
+            "swimDataStateValid": "1790769505",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790279247",
+            "ldmPingStateValid": "1790769460"
+          },
+          "TMKE": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790130864",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1785789148",
+            "ldmPingStateValid": "1790769460"
+          },
+          "TMSP": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790747004",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1784171255",
+            "ldmPingStateValid": "1790769461"
+          },
+          "TMSY": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790706865",
+            "swimDataStateValid": "1790769505",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1785848247",
+            "ldmPingStateValid": "1790769461"
+          },
+          "TOKC": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790702544",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1785336747",
+            "ldmPingStateValid": "1790769461"
+          },
+          "TORD": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790710463",
+            "swimDataStateValid": "1790769503",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787059047",
+            "ldmPingStateValid": "1790769461"
+          },
+          "TPHL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790688145",
+            "swimDataStateValid": "1790769505",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1788410548",
+            "ldmPingStateValid": "1790769461"
+          },
+          "TPHX": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790274303",
+            "swimDataStateValid": "1790769505",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790541748",
+            "ldmPingStateValid": "1790769461"
+          },
+          "TPIT": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790614165",
+            "swimDataStateValid": "1790769505",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789534348",
+            "ldmPingStateValid": "1790769461"
+          },
+          "TRDU": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790260106",
+            "swimDataStateValid": "1790769506",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790597549",
+            "ldmPingStateValid": "1790769461"
+          },
+          "TSDF": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1786629865",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789481848",
+            "ldmPingStateValid": "1790769461"
+          },
+          "TSJU": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790130863",
+            "swimDataStateValid": "1790769503",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1780428154",
+            "ldmPingStateValid": "1790769462"
+          },
+          "TSLC": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1789770144",
+            "swimDataStateValid": "1790769504",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790533351",
+            "ldmPingStateValid": "1790769462"
+          },
+          "TSTL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790286203",
+            "swimDataStateValid": "1790769503",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790625462",
+            "ldmPingStateValid": "1790769462"
+          },
+          "TTPA": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790675545",
+            "swimDataStateValid": "1790769505",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789121248",
+            "ldmPingStateValid": "1790769462"
+          },
+          "TTUL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790579605",
+            "swimDataStateValid": "1790769505",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790091449",
+            "ldmPingStateValid": "1790769462"
+          },
+          "TOK2": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790702545",
+            "swimDataStateValid": "1790769505",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1785775942",
+            "ldmPingStateValid": "1790769462"
+          }
+        }
+      },
+      {
+        "@type": "wx:RadarSPGDS",
+        "id": "spgds1",
+        "timestamp": "2026-09-30T12:00:43Z",
+        "dataflow": {
+          "state": "1",
+          "stateSince": "1787640003",
+          "stateValid": "1790769483"
+        },
+        "connectQ": {
+          "state": "1",
+          "stateSince": "1787639977",
+          "stateValid": "1790769568"
+        },
+        "appRunning": {
+          "state": "1",
+          "stateSince": "1785423748",
+          "stateValid": "1790769601"
+        },
+        "ldm": {
+          "conns": "46",
+          "connsValid": "1790769601"
+        },
+        "secondHD": {
+          "state": "1",
+          "stateSince": "1774973401",
+          "stateValid": "1790769601",
+          "pctUsed": "58",
+          "pctUsedValid": "1790769568"
+        },
+        "spgdsUpSince": {
+          "upSince": "1784732973",
+          "upSinceValid": "1790769601"
+        },
+        "throughput": {
+          "in": "5506032.0",
+          "inDateTime": "1790769312",
+          "inValid": "1790769480",
+          "out": "32784056.0",
+          "outDateTime": "1790769309",
+          "outValid": "1790769568"
+        },
+        "spg": {
+          "TADW": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790542503",
+            "swimDataStateValid": "1790769482",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790344048",
+            "ldmPingStateValid": "1790769475"
+          },
+          "TATL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790542348",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790344048",
+            "ldmPingStateValid": "1790769475"
+          },
+          "TBNA": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543239",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790344048",
+            "ldmPingStateValid": "1790769475"
+          },
+          "TBOS": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790542682",
+            "swimDataStateValid": "1790769482",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790344048",
+            "ldmPingStateValid": "1790769475"
+          },
+          "TBWI": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1790687959",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787070748",
+            "ldmPingStateValid": "1790769476"
+          },
+          "TCLT": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790614348",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789402349",
+            "ldmPingStateValid": "1790769476"
+          },
+          "TCMH": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790702701",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790257038",
+            "ldmPingStateValid": "1790769476"
+          },
+          "TCVG": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790603358",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787931149",
+            "ldmPingStateValid": "1790769476"
+          },
+          "TDAL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790616679",
+            "swimDataStateValid": "1790769482",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790091439",
+            "ldmPingStateValid": "1790769476"
+          },
+          "TDAY": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790599203",
+            "swimDataStateValid": "1790769482",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787931149",
+            "ldmPingStateValid": "1790769476"
+          },
+          "TDCA": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543240",
+            "swimDataStateValid": "1790769482",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790699276",
+            "ldmPingStateValid": "1790769476"
+          },
+          "TDEN": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790701802",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789835839",
+            "ldmPingStateValid": "1790769476"
+          },
+          "TDFW": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790660239",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790091439",
+            "ldmPingStateValid": "1790769476"
+          },
+          "TDJT": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543239",
+            "swimDataStateValid": "1790769482",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790279249",
+            "ldmPingStateValid": "1790769477"
+          },
+          "TDTW": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790711358",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789497749",
+            "ldmPingStateValid": "1790769477"
+          },
+          "TEWR": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543238",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789361249",
+            "ldmPingStateValid": "1790769477"
+          },
+          "TFLL": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1789221149",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790279250",
+            "ldmPingStateValid": "1790769477"
+          },
+          "THOU": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790544870",
+            "swimDataStateValid": "1790769483",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1788092550",
+            "ldmPingStateValid": "1790769477"
+          },
+          "TIAD": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1789934670",
+            "swimDataStateValid": "1790769482",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787070750",
+            "ldmPingStateValid": "1790769477"
+          },
+          "TIAH": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543240",
+            "swimDataStateValid": "1790769482",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787070750",
+            "ldmPingStateValid": "1790769477"
+          },
+          "TICH": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1790754199",
+            "swimDataStateValid": "1790769482",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789537040",
+            "ldmPingStateValid": "1790769477"
+          },
+          "TIDS": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543068",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790312278",
+            "ldmPingStateValid": "1790769478"
+          },
+          "TJFK": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790374202",
+            "swimDataStateValid": "1790769480",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789361250",
+            "ldmPingStateValid": "1790769478"
+          },
+          "TLAS": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790541978",
+            "swimDataStateValid": "1790769480",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790754751",
+            "ldmPingStateValid": "1790769478"
+          },
+          "TLVE": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790542502",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790365040",
+            "ldmPingStateValid": "1790769478"
+          },
+          "TMCI": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790695681",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790401951",
+            "ldmPingStateValid": "1790769478"
+          },
+          "TMCO": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790675549",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1785333751",
+            "ldmPingStateValid": "1790769478"
+          },
+          "TMDW": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543239",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787059051",
+            "ldmPingStateValid": "1790769478"
+          },
+          "TMEM": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1790258668",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790312279",
+            "ldmPingStateValid": "1790769479"
+          },
+          "TMIA": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543070",
+            "swimDataStateValid": "1790769482",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790279251",
+            "ldmPingStateValid": "1790769479"
+          },
+          "TMKE": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790542681",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1784171230",
+            "ldmPingStateValid": "1790769479"
+          },
+          "TMSP": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790769303",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1784725928",
+            "ldmPingStateValid": "1790769479"
+          },
+          "TMSY": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790623503",
+            "swimDataStateValid": "1790769482",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1785827252",
+            "ldmPingStateValid": "1790769479"
+          },
+          "TOKC": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790542501",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1785336752",
+            "ldmPingStateValid": "1790769479"
+          },
+          "TORD": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790710468",
+            "swimDataStateValid": "1790769480",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787059053",
+            "ldmPingStateValid": "1790769479"
+          },
+          "TPHL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790688150",
+            "swimDataStateValid": "1790769482",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1788410552",
+            "ldmPingStateValid": "1790769479"
+          },
+          "TPHX": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543240",
+            "swimDataStateValid": "1790769482",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790541753",
+            "ldmPingStateValid": "1790769479"
+          },
+          "TPIT": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790614160",
+            "swimDataStateValid": "1790769482",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789534352",
+            "ldmPingStateValid": "1790769480"
+          },
+          "TRDU": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543070",
+            "swimDataStateValid": "1790769483",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790597553",
+            "ldmPingStateValid": "1790769480"
+          },
+          "TSDF": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1786629859",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789482480",
+            "ldmPingStateValid": "1790769480"
+          },
+          "TSJU": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543238",
+            "swimDataStateValid": "1790769480",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1784171231",
+            "ldmPingStateValid": "1790769480"
+          },
+          "TSLC": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1789770148",
+            "swimDataStateValid": "1790769481",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790236680",
+            "ldmPingStateValid": "1790769480"
+          },
+          "TSTL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543238",
+            "swimDataStateValid": "1790769480",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790625480",
+            "ldmPingStateValid": "1790769480"
+          },
+          "TTPA": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790675550",
+            "swimDataStateValid": "1790769482",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790014354",
+            "ldmPingStateValid": "1790769480"
+          },
+          "TTUL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790579599",
+            "swimDataStateValid": "1790769482",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790091443",
+            "ldmPingStateValid": "1790769480"
+          },
+          "TOK2": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790542502",
+            "swimDataStateValid": "1790769482",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1785775353",
+            "ldmPingStateValid": "1790769480"
+          }
+        }
+      },
+      {
+        "@type": "wx:RadarSPGDS",
+        "id": "spgds3",
+        "timestamp": "2026-09-30T12:00:43Z",
+        "dataflow": {
+          "state": "1",
+          "stateSince": "1787640004",
+          "stateValid": "1790769496"
+        },
+        "connectQ": {
+          "state": "1",
+          "stateSince": "1787639953",
+          "stateValid": "1790769553"
+        },
+        "appRunning": {
+          "state": "1",
+          "stateSince": "1775147664",
+          "stateValid": "1790769601"
+        },
+        "ldm": {
+          "conns": "45",
+          "connsValid": "1790769601"
+        },
+        "secondHD": {
+          "state": "1",
+          "stateSince": "1775147664",
+          "stateValid": "1790769601",
+          "pctUsed": "59",
+          "pctUsedValid": "1790769553"
+        },
+        "spgdsUpSince": {
+          "upSince": "1785850837",
+          "upSinceValid": "1790769601"
+        },
+        "throughput": {
+          "in": "5615608.0",
+          "inDateTime": "1790769383",
+          "inValid": "1790769493",
+          "out": "33079296.0",
+          "outDateTime": "1790769398",
+          "outValid": "1790769553"
+        },
+        "spg": {
+          "TADW": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790530095",
+            "swimDataStateValid": "1790769495",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1785850920",
+            "ldmPingStateValid": "1790769433"
+          },
+          "TATL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790694602",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1788649633",
+            "ldmPingStateValid": "1790769433"
+          },
+          "TBNA": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790521802",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790180834",
+            "ldmPingStateValid": "1790769433"
+          },
+          "TBOS": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543235",
+            "swimDataStateValid": "1790769495",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787770933",
+            "ldmPingStateValid": "1790769433"
+          },
+          "TBWI": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1790687954",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1785850920",
+            "ldmPingStateValid": "1790769433"
+          },
+          "TCLT": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790641874",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789402333",
+            "ldmPingStateValid": "1790769433"
+          },
+          "TCMH": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790702701",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790257034",
+            "ldmPingStateValid": "1790769433"
+          },
+          "TCVG": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790603354",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787931134",
+            "ldmPingStateValid": "1790769434"
+          },
+          "TDAL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790616675",
+            "swimDataStateValid": "1790769495",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790091434",
+            "ldmPingStateValid": "1790769434"
+          },
+          "TDAY": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790599202",
+            "swimDataStateValid": "1790769495",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787931134",
+            "ldmPingStateValid": "1790769434"
+          },
+          "TDCA": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790693535",
+            "swimDataStateValid": "1790769495",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1786432634",
+            "ldmPingStateValid": "1790769434"
+          },
+          "TDEN": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790701802",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790529134",
+            "ldmPingStateValid": "1790769434"
+          },
+          "TDFW": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790660234",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790091434",
+            "ldmPingStateValid": "1790769434"
+          },
+          "TDJT": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790689035",
+            "swimDataStateValid": "1790769495",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790279234",
+            "ldmPingStateValid": "1790769434"
+          },
+          "TDTW": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543234",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789497734",
+            "ldmPingStateValid": "1790769434"
+          },
+          "TEWR": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543234",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789646234",
+            "ldmPingStateValid": "1790769434"
+          },
+          "TFLL": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1789221134",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790279234",
+            "ldmPingStateValid": "1790769434"
+          },
+          "THOU": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543236",
+            "swimDataStateValid": "1790769496",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790317334",
+            "ldmPingStateValid": "1790769434"
+          },
+          "TIAD": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790259375",
+            "swimDataStateValid": "1790769495",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789024634",
+            "ldmPingStateValid": "1790769434"
+          },
+          "TIAH": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790616675",
+            "swimDataStateValid": "1790769495",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1777383133",
+            "ldmPingStateValid": "1790769434"
+          },
+          "TICH": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1790754195",
+            "swimDataStateValid": "1790769495",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790655434",
+            "ldmPingStateValid": "1790769434"
+          },
+          "TIDS": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790428034",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790325134",
+            "ldmPingStateValid": "1790769435"
+          },
+          "TJFK": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543233",
+            "swimDataStateValid": "1790769493",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789402935",
+            "ldmPingStateValid": "1790769435"
+          },
+          "TLAS": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790185574",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790754735",
+            "ldmPingStateValid": "1790769435"
+          },
+          "TLVE": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790263694",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790365035",
+            "ldmPingStateValid": "1790769435"
+          },
+          "TMCI": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790695502",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790401936",
+            "ldmPingStateValid": "1790769435"
+          },
+          "TMCO": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790675534",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1785333733",
+            "ldmPingStateValid": "1790769435"
+          },
+          "TMDW": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1789087934",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787059035",
+            "ldmPingStateValid": "1790769435"
+          },
+          "TMEM": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1790258834",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790325135",
+            "ldmPingStateValid": "1790769435"
+          },
+          "TMIA": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790398335",
+            "swimDataStateValid": "1790769495",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790279235",
+            "ldmPingStateValid": "1790769435"
+          },
+          "TMKE": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790694434",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1776956834",
+            "ldmPingStateValid": "1790769435"
+          },
+          "TMSP": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790746994",
+            "swimDataStateValid": "1790769495",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1783364255",
+            "ldmPingStateValid": "1790769435"
+          },
+          "TMSY": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790623503",
+            "swimDataStateValid": "1790769495",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1785827234",
+            "ldmPingStateValid": "1790769435"
+          },
+          "TOKC": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543234",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1785336735",
+            "ldmPingStateValid": "1790769435"
+          },
+          "TORD": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790710453",
+            "swimDataStateValid": "1790769493",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787059036",
+            "ldmPingStateValid": "1790769435"
+          },
+          "TPHL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790688135",
+            "swimDataStateValid": "1790769495",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1788410536",
+            "ldmPingStateValid": "1790769435"
+          },
+          "TPHX": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790542696",
+            "swimDataStateValid": "1790769495",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790542037",
+            "ldmPingStateValid": "1790769436"
+          },
+          "TPIT": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790614155",
+            "swimDataStateValid": "1790769495",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789534336",
+            "ldmPingStateValid": "1790769436"
+          },
+          "TRDU": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543236",
+            "swimDataStateValid": "1790769496",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790597536",
+            "ldmPingStateValid": "1790769436"
+          },
+          "TSDF": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1786629855",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789074736",
+            "ldmPingStateValid": "1790769436"
+          },
+          "TSJU": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1787667373",
+            "swimDataStateValid": "1790769493",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789150036",
+            "ldmPingStateValid": "1790769436"
+          },
+          "TSLC": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1789770302",
+            "swimDataStateValid": "1790769494",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790236937",
+            "ldmPingStateValid": "1790769436"
+          },
+          "TSTL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790542693",
+            "swimDataStateValid": "1790769493",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790625436",
+            "ldmPingStateValid": "1790769436"
+          },
+          "TTPA": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790675535",
+            "swimDataStateValid": "1790769495",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790219836",
+            "ldmPingStateValid": "1790769436"
+          },
+          "TTUL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790579595",
+            "swimDataStateValid": "1790769495",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790091436",
+            "ldmPingStateValid": "1790769436"
+          },
+          "TOK2": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790543235",
+            "swimDataStateValid": "1790769495",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787070739",
+            "ldmPingStateValid": "1790769436"
+          }
+        }
+      },
+      {
+        "@type": "wx:RadarSPGDS",
+        "id": "spgds4",
+        "timestamp": "2026-09-30T12:00:27Z",
+        "dataflow": {
+          "state": "1",
+          "stateSince": "1790130862",
+          "stateValid": "1790769502"
+        },
+        "connectQ": {
+          "state": "1",
+          "stateSince": "1790130799",
+          "stateValid": "1790769559"
+        },
+        "appRunning": {
+          "state": "1",
+          "stateSince": "1785424357",
+          "stateValid": "1790769601"
+        },
+        "ldm": {
+          "conns": "45",
+          "connsValid": "1790769601"
+        },
+        "secondHD": {
+          "state": "1",
+          "stateSince": "1775156401",
+          "stateValid": "1790769601",
+          "pctUsed": "59",
+          "pctUsedValid": "1790769559"
+        },
+        "spgdsUpSince": {
+          "upSince": "1785852572",
+          "upSinceValid": "1790769601"
+        },
+        "throughput": {
+          "in": "5541900.0",
+          "inDateTime": "1790769318",
+          "inValid": "1790769499",
+          "out": "32901694.0",
+          "outDateTime": "1790769339",
+          "outValid": "1790769559"
+        },
+        "spg": {
+          "TADW": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790530101",
+            "swimDataStateValid": "1790769501",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787779039",
+            "ldmPingStateValid": "1790769439"
+          },
+          "TATL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790514602",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1788649639",
+            "ldmPingStateValid": "1790769439"
+          },
+          "TBNA": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790130860",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1778529157",
+            "ldmPingStateValid": "1790769439"
+          },
+          "TBOS": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790286201",
+            "swimDataStateValid": "1790769501",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787770939",
+            "ldmPingStateValid": "1790769439"
+          },
+          "TBWI": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1790687960",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1785332557",
+            "ldmPingStateValid": "1790769439"
+          },
+          "TCLT": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790641880",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789402339",
+            "ldmPingStateValid": "1790769439"
+          },
+          "TCMH": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790702702",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790257039",
+            "ldmPingStateValid": "1790769439"
+          },
+          "TCVG": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790527580",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787931131",
+            "ldmPingStateValid": "1790769439"
+          },
+          "TDAL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790641881",
+            "swimDataStateValid": "1790769501",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790091440",
+            "ldmPingStateValid": "1790769440"
+          },
+          "TDAY": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790286201",
+            "swimDataStateValid": "1790769501",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787931131",
+            "ldmPingStateValid": "1790769440"
+          },
+          "TDCA": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790441541",
+            "swimDataStateValid": "1790769501",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790101940",
+            "ldmPingStateValid": "1790769440"
+          },
+          "TDEN": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790701801",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790541441",
+            "ldmPingStateValid": "1790769440"
+          },
+          "TDFW": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790660240",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790091440",
+            "ldmPingStateValid": "1790769440"
+          },
+          "TDJT": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790398341",
+            "swimDataStateValid": "1790769501",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790279240",
+            "ldmPingStateValid": "1790769440"
+          },
+          "TDTW": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790599580",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789497740",
+            "ldmPingStateValid": "1790769440"
+          },
+          "TEWR": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790695880",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789402940",
+            "ldmPingStateValid": "1790769440"
+          },
+          "TFLL": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1789221140",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790279240",
+            "ldmPingStateValid": "1790769440"
+          },
+          "THOU": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790130862",
+            "swimDataStateValid": "1790769502",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1777380158",
+            "ldmPingStateValid": "1790769440"
+          },
+          "TIAD": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790286003",
+            "swimDataStateValid": "1790769501",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1785332558",
+            "ldmPingStateValid": "1790769440"
+          },
+          "TIAH": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790130861",
+            "swimDataStateValid": "1790769501",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1777383158",
+            "ldmPingStateValid": "1790769440"
+          },
+          "TICH": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1790754201",
+            "swimDataStateValid": "1790769501",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789537040",
+            "ldmPingStateValid": "1790769441"
+          },
+          "TIDS": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790130860",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790325140",
+            "ldmPingStateValid": "1790769441"
+          },
+          "TJFK": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790374201",
+            "swimDataStateValid": "1790769499",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789402342",
+            "ldmPingStateValid": "1790769441"
+          },
+          "TLAS": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790286001",
+            "swimDataStateValid": "1790769499",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790754741",
+            "ldmPingStateValid": "1790769441"
+          },
+          "TLVE": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790263700",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790365041",
+            "ldmPingStateValid": "1790769442"
+          },
+          "TMCI": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790695502",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790401941",
+            "ldmPingStateValid": "1790769442"
+          },
+          "TMCO": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790675540",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790014341",
+            "ldmPingStateValid": "1790769442"
+          },
+          "TMDW": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790130860",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787059032",
+            "ldmPingStateValid": "1790769442"
+          },
+          "TMEM": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1790258840",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789129041",
+            "ldmPingStateValid": "1790769442"
+          },
+          "TMIA": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790398341",
+            "swimDataStateValid": "1790769501",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790279241",
+            "ldmPingStateValid": "1790769442"
+          },
+          "TMKE": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790130860",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1776956859",
+            "ldmPingStateValid": "1790769442"
+          },
+          "TMSP": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790747000",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1783364260",
+            "ldmPingStateValid": "1790769442"
+          },
+          "TMSY": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790623502",
+            "swimDataStateValid": "1790769501",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1785827259",
+            "ldmPingStateValid": "1790769442"
+          },
+          "TOKC": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790515340",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1785336751",
+            "ldmPingStateValid": "1790769442"
+          },
+          "TORD": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790710459",
+            "swimDataStateValid": "1790769499",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787059033",
+            "ldmPingStateValid": "1790769442"
+          },
+          "TPHL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790688141",
+            "swimDataStateValid": "1790769501",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1788410542",
+            "ldmPingStateValid": "1790769442"
+          },
+          "TPHX": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790348842",
+            "swimDataStateValid": "1790769501",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790541744",
+            "ldmPingStateValid": "1790769442"
+          },
+          "TPIT": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790614161",
+            "swimDataStateValid": "1790769501",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789534342",
+            "ldmPingStateValid": "1790769442"
+          },
+          "TRDU": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790260102",
+            "swimDataStateValid": "1790769502",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790597542",
+            "ldmPingStateValid": "1790769442"
+          },
+          "TSDF": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1786629861",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1789482442",
+            "ldmPingStateValid": "1790769443"
+          },
+          "TSJU": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790130859",
+            "swimDataStateValid": "1790769499",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1780428160",
+            "ldmPingStateValid": "1790769443"
+          },
+          "TSLC": {
+            "swimDataState": "0",
+            "swimDataStateSince": "1789770140",
+            "swimDataStateValid": "1790769500",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790236942",
+            "ldmPingStateValid": "1790769443"
+          },
+          "TSTL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790286199",
+            "swimDataStateValid": "1790769499",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790625442",
+            "ldmPingStateValid": "1790769443"
+          },
+          "TTPA": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790675541",
+            "swimDataStateValid": "1790769501",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787735242",
+            "ldmPingStateValid": "1790769443"
+          },
+          "TTUL": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790579601",
+            "swimDataStateValid": "1790769501",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1790091442",
+            "ldmPingStateValid": "1790769443"
+          },
+          "TOK2": {
+            "swimDataState": "1",
+            "swimDataStateSince": "1790515341",
+            "swimDataStateValid": "1790769501",
+            "ldmPingState": "1",
+            "ldmPingStateSince": "1787070745",
+            "ldmPingStateValid": "1790769443"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/radar_station_alarms",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/radar/stations/{station_id}/alarms",
+    "method": "GET",
+    "description": "The alarm log of one radar: each alarm the radar raised or cleared, newest first. JSON-LD: the alarms come as a `@graph`.",
+    "request": {
+      "title": "ListRadarStationAlarmsRequest",
+      "type": "object",
+      "description": "Which radar.",
+      "properties": {
+        "station_id": {
+          "type": "string",
+          "description": "Station identifier, such as `KATX`. A profiler, or any radar with no log, answers an empty `@graph`."
+        }
+      },
+      "required": [
+        "station_id"
+      ]
+    },
+    "response": {
+      "title": "RadarAlarmCollection",
+      "type": "object",
+      "description": "The alarms, as a JSON-LD graph.",
+      "properties": {
+        "@id": {
+          "type": "string",
+          "description": "URL of this alarm log."
+        },
+        "@graph": {
+          "type": "array",
+          "description": "The alarms, newest first.",
+          "items": {
+            "title": "RadarAlarm",
+            "type": "object",
+            "description": "One alarm message.",
+            "properties": {
+              "@type": {
+                "type": "string",
+                "enum": [
+                  "wx:RadarStationAlarm"
+                ],
+                "description": "Always `wx:RadarStationAlarm`."
+              },
+              "stationId": {
+                "type": "string",
+                "description": "The radar, such as `KATX`."
+              },
+              "status": {
+                "type": "string",
+                "description": "Alarm class. Undocumented, so not enumerated; on 2026-10-01 the 208 radars' logs held `cleared`, `required`, `secondary`, `mandatory` and `inoperative`."
+              },
+              "activeChannel": {
+                "type": "integer",
+                "description": "Redundant channel the alarm came from: `0`, `1` or `2` on 2026-10-01."
+              },
+              "message": {
+                "type": "string",
+                "description": "The alarm text, such as `RPG LINK INITIALIZATION ERROR`."
+              },
+              "timestamp": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the alarm was raised or cleared."
+              }
+            },
+            "required": [
+              "@type",
+              "stationId",
+              "status",
+              "activeChannel",
+              "message",
+              "timestamp"
+            ]
+          }
+        }
+      },
+      "required": [
+        "@graph"
+      ]
+    }
+  },
+  "notes": [
+    "The service does not page or filter the log, and answers 400 to any query parameter. Logs run from none to tens of thousands of entries (36,000 for one radar on 2026-10-01, of 79,000 across all 208)."
+  ]
+}

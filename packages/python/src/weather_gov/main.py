@@ -5,6 +5,7 @@ from .forecast import Forecast
 from .offices import Offices
 from .points import Points
 from .products import Products
+from .radar import Radar
 from .radio import Radio
 from .stations import Stations
 from .zones import Zones
@@ -62,6 +63,15 @@ class Weather(ClientBase):
       - [Upstream docs](https://www.weather.gov/documentation/services-web-api#/default/product_types)
     """
     return Products(client=self.client)
+
+  @cached_property
+  def radar(self) -> Radar:
+    """The radar network: the NEXRAD, TDWR and profiler radars, their status and alarms, and the servers and queues that distribute their Level II data.
+
+    References:
+      - [Upstream docs](https://www.weather.gov/documentation/services-web-api#/default/radar_stations)
+    """
+    return Radar(client=self.client)
 
   @cached_property
   def radio(self) -> Radio:

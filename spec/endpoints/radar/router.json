@@ -1,0 +1,5 @@
+{
+  "description": "The radar network: the NEXRAD, TDWR and profiler radars, their status and alarms, and the servers and queues that distribute their Level II data.",
+  "upstream": "https://www.weather.gov/documentation/services-web-api#/default/radar_stations",
+  "core": "default"
+}

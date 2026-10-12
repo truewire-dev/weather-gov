@@ -8,7 +8,7 @@
  * shape rather than by inheritance.
  */
 import {
-  ApiError, BadRequest, HttpClient, RateLimited,
+  ApiError, BadRequest, HttpClient, RateLimited, parseJsonText,
   type HttpCall, type HttpEndpoint,
 } from '@truewire/core'
 import type { DefaultMeta } from '../meta.js'
@@ -42,13 +42,16 @@ export function userAgent(contact: string): string {
  *
  * The service answers errors in RFC 7807 problem detail, and a bad parameter adds a
  * `parameterErrors` list naming exactly which one and why. That list is the most useful
- * thing in the body, so it is what the message leads with when it is there.
+ * thing in the body, so it is what the message leads with when it is there. The error
+ * carries the status and the decoded body (`undefined` when the body is not JSON), so a
+ * caller branches on `err.status` rather than on the message. A 400 and a 422 are both
+ * `BadRequest`: the service rejected what was asked.
  */
 export function raiseForStatus(method: string, path: string, status: number, text: string): never {
   let reason = text.slice(0, 300)
   let body: unknown
   try {
-    body = JSON.parse(text)
+    body = parseJsonText(text)
   } catch {
     body = undefined
   }
@@ -69,9 +72,10 @@ export function raiseForStatus(method: string, path: string, status: number, tex
     else if (typeof title === 'string') reason = title
   }
   const message = `${method} ${path}: HTTP ${status}: ${reason}`
-  if (status === 400) throw new BadRequest(message)
-  if (status === 429) throw new RateLimited(message)
-  throw new ApiError(message)
+  const options = { status, body }
+  if (status === 400 || status === 422) throw new BadRequest(message, options)
+  if (status === 429) throw new RateLimited(message, options)
+  throw new ApiError(message, options)
 }
 
 /**
@@ -145,7 +149,7 @@ export class Transport implements HttpEndpoint<DefaultMeta> {
     const text = await response.text()
     if (response.status >= 400) raiseForStatus(method, path, response.status, text)
     if (call.responseCodec === undefined) return undefined as Res
-    const body: unknown = text === '' ? undefined : JSON.parse(text)
+    const body: unknown = text === '' ? undefined : parseJsonText(text)
     const value = unwrap(body, call.meta.payload)
     return (call.validate ?? this.validate) ? call.responseCodec.parse(value) : (value as Res)
   }
@@ -156,8 +160,9 @@ export class Transport implements HttpEndpoint<DefaultMeta> {
  *
  * Two details this API forces:
  *
- * - A list-valued filter (`state`, `severity`) travels as repeated keys, which is what the
- *   service reads and what `truewire mock` matches.
+ * - A list-valued filter (`state`, `severity`) travels as one comma-separated item
+ *   (`?state=WA,OR`). The service keeps only the last of a repeated key, so
+ *   `?state=WA&state=OR` would answer for Oregon alone. An empty list sends nothing.
  * - A path value is percent-encoded, with `:` left alone. It is a legal path character
  *   (RFC 3986 `pchar`), an alert id is `urn:oid:...`, and the service publishes that id
  *   inside the URL it hands back -- so encoding it would send a URL the API never printed.
@@ -176,11 +181,16 @@ function fill(
       path = path.replace(`{${name}}`, encodePathValue(String(value)))
       continue
     }
-    for (const item of Array.isArray(value) ? value : [value]) {
-      query.append(name, typeof item === 'object' ? JSON.stringify(item) : String(item))
-    }
+    const items = Array.isArray(value) ? value : [value]
+    if (items.length === 0) continue
+    query.append(name, items.map(queryText).join(','))
   }
   return { path, query }
+}
+
+/** One query value as text: an object as JSON, anything else as `String()` spells it. */
+function queryText(item: unknown): string {
+  return typeof item === 'object' ? JSON.stringify(item) : String(item)
 }
 
 /** `encodeURIComponent`, but keeping the `:` that an alert identifier is built from. */

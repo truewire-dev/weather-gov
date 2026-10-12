@@ -2,6 +2,12 @@
 
 ## 0.3.0 (unreleased)
 
+- **Fixed: a list filter with more than one value kept only the last.** The service reads
+  `id=KSEA,KPDX` and keeps only the last of `id=KSEA&id=KPDX`, and the client sent the
+  second form, so `stations.list_stations` given the ids `KSEA` and `KPDX` answered with
+  KPDX alone. Every list filter now travels as one comma-separated item:
+  `alerts.get_active_alerts`, `stations.list_stations`, `zones.list_zones` and
+  `zones.list_zones_by_type`.
 - **`stations.get_observations_paged` walks a whole span of observations.** The endpoint
   declares `seek` pagination anchored to `end` (ADR 0013): a full page moves `end` back to
   the oldest observation it held and asks again, never past your own `start`. It takes a
@@ -46,3 +52,15 @@
   `zones::list_transmitters`, since the `radio` endpoints return them too.
   `TransmitterCollection` gains `pagination: Option<CollectionPagination>`, which only
   `radio.list_transmitters` sends.
+- **Eight more endpoints: a new `radar` group.** `list_stations`, `get_station` and
+  `list_station_alarms` for the radars themselves; `list_servers`, `get_server`, `get_queue`
+  and `list_spgds` for the network that distributes their data; and `get_profiler`, which
+  has no recording: every profiler answered 404 on 2026-10-01, so it returns
+  `serde_json::Value`. `get_queue` and `list_spgds` take an ISO 8601 interval as a
+  `String`, `get_queue`'s `created` included. The SPG reports' Unix seconds sent
+  as strings are `TimestampSecondsString`, which needs the truewire-core this crate is
+  generated against, not crates.io 0.1. `get_queue`'s `host` is one shared enum,
+  `types::RadarHost`, in the request and on every product, so `product.host == request.host`
+  compiles; unreleased main had two, `get_queue::RequestHost` and
+  `get_queue::RadarQueueProductHost`. `radar::get_queue::Request` requires its `host`, so it
+  has no `Default`: name every field.
