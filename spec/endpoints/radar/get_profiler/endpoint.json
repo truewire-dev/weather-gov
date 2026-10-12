@@ -1,0 +1,47 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/radar_profiler",
+  "meta": {},
+  "unverified": {
+    "reason": "runtime_error",
+    "detail": "Every call answers a JSON 404 (`Not Found`), never the documented `application/ld+json` body. On 2026-10-01 that held for all four profilers `radar.list_stations` lists (TLKA2, ROCO2, AWPA2, HWPA2) and eleven other profiler ids; the Lead's TLKA2 call answered 404 (correlationId 3f15c782), and so did TLKA2 (3f3e9686) and ROCO2 (8689ea5) again later that day. The OpenAPI still documents the path, so it is built from the documentation, with an unconstrained response because no body has ever been seen to describe."
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/radar/profilers/{station_id}",
+    "method": "GET",
+    "description": "Metadata about one radar wind profiler, as JSON-LD. Unverified: every profiler answered 404 on 2026-10-01, so the response is not described.",
+    "request": {
+      "title": "GetRadarProfilerRequest",
+      "type": "object",
+      "description": "Which profiler, and over what time.",
+      "properties": {
+        "station_id": {
+          "type": "string",
+          "description": "Profiler station identifier, such as `TLKA2`. `radar.list_stations` with a `station_type` of `Profiler` lists them."
+        },
+        "time": {
+          "type": "string",
+          "description": "Time interval, in ISO 8601: `start/end`, `start/duration` or `duration/end`, either end may be `NOW`, such as `2026-09-30T23:00:00Z/PT1H`."
+        },
+        "interval": {
+          "type": "string",
+          "description": "Averaging interval, as an ISO 8601 duration such as `PT1H`."
+        }
+      },
+      "required": [
+        "station_id"
+      ]
+    },
+    "response": {
+      "title": "RadarProfiler",
+      "description": "Whatever JSON-LD the service sends. Left unconstrained: the OpenAPI declares an empty schema, and no call has answered anything but 404."
+    }
+  },
+  "notes": [
+    "Unverified rather than excluded (ADR 0001): the path is documented, answers JSON, and is not a binary surface. A 404 is a runtime failure, not a removal, so the method exists and will work if the service starts answering.",
+    "No example: the 404 bodies are never saved as recordings. When a call answers 200, `truewire capture` records it and drops the `unverified` block."
+  ]
+}

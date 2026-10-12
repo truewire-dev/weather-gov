@@ -182,7 +182,7 @@ GET /alerts/active: HTTP 400: query.zone[0]: Does not match the regex pattern
 
 ## What is covered
 
-Twenty-six endpoints, in eight groups:
+Twenty-seven endpoints, in eight groups:
 
 | Group | Endpoints |
 | --- | --- |
@@ -193,15 +193,17 @@ Twenty-six endpoints, in eight groups:
 | `offices` | `get_office` |
 | `products` | `list_product_types` |
 | `zones` | `list_zones`, `list_zones_by_type`, `get_zone`, `get_forecast`, `list_transmitters` |
-| `radar` | `list_stations`, `get_station`, `list_station_alarms`, `list_servers`, `get_server`, `get_queue`, `list_spgds` |
+| `radar` | `list_stations`, `get_station`, `list_station_alarms`, `list_servers`, `get_server`, `get_queue`, `list_spgds`, `get_profiler` (no recording) |
 
 Three response vocabularies, because the API uses three: GeoJSON for most of it, schema.org for the offices, JSON-LD for the product types, the radio transmitters and the radar network's servers, queues and alarms. The spec describes each as it actually arrives.
 
-The same twenty-six endpoints in [TypeScript](packages/typescript/README.md) and [Rust](packages/rust/README.md), from this one spec. The three clients are equivalent, `stations.get_observations_paged` included.
+The same twenty-seven endpoints in [TypeScript](packages/typescript/README.md) and [Rust](packages/rust/README.md), from this one spec. The three clients are equivalent, `stations.get_observations_paged` included.
 
 ## Recordings
 
-Every endpoint carries the request half of at least one example — the exact parameters the tests and the recording script replay — and every one of them has a recorded response. All twenty-six, with no exceptions and no endpoint declaring a missing credential, because there are no credentials to miss.
+Every endpoint but one carries the request half of at least one example — the exact parameters the tests and the recording script replay — and every one of them has a recorded response. Twenty-six of twenty-seven, and no endpoint declares a missing credential, because there are no credentials to miss.
+
+The one is `radar.get_profiler`. The service documents it, but on 2026-10-01 every profiler answered a JSON 404, so its spec says why it has no recording rather than leaving it out. It is built from the documentation, with a response left unconstrained because no body has been seen to describe, and its 404s are never saved as examples. Likewise `radar.get_queue` takes the documented `created` filter, which answered 503 on every try that day, so no example uses it.
 
 The response halves are recorded from the live API through this same generated client, so a recording is the wire body the client saw and the response types are proven against it, never written by hand.
 

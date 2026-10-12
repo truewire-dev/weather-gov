@@ -44,6 +44,8 @@ class Request(TypedDict):
   """Most products to return, 1 to 50,000. Without it, 500."""
   arrived: NotRequired[str]
   """Only products that arrived in this ISO 8601 interval: `start/end`, `start/duration` or `duration/end`, either end may be `NOW`, such as `2026-09-30T23:00:00Z/PT10M`. The answer starts at the interval's start, so a `limit` keeps the oldest. Without it, about the last two minutes. The service keeps about a week."""
+  created: NotRequired[str]
+  """Only products the radar created in this ISO 8601 interval, in the same forms as `arrived`. Every request with it answered 503 on 2026-10-01 (`An upstream data source is temporarily unavailable`)."""
   published: NotRequired[str]
   """Only products published in this ISO 8601 interval, in the same forms as `arrived`."""
   station: NotRequired[str]
@@ -79,6 +81,7 @@ class GetQueue(Endpoint):
     *,
     limit: int | None = None,
     arrived: str | None = None,
+    created: str | None = None,
     published: str | None = None,
     station: str | None = None,
     type: str | None = None,
@@ -93,6 +96,7 @@ class GetQueue(Endpoint):
     *,
     limit: int | None = None,
     arrived: str | None = None,
+    created: str | None = None,
     published: str | None = None,
     station: str | None = None,
     type: str | None = None,
@@ -106,6 +110,7 @@ class GetQueue(Endpoint):
     *,
     limit: int | None = None,
     arrived: str | None = None,
+    created: str | None = None,
     published: str | None = None,
     station: str | None = None,
     type: str | None = None,
@@ -119,6 +124,7 @@ class GetQueue(Endpoint):
       host: Distribution host: `rds` or `tds`.
       limit: Most products to return, 1 to 50,000. Without it, 500.
       arrived: Only products that arrived in this ISO 8601 interval: `start/end`, `start/duration` or `duration/end`, either end may be `NOW`, such as `2026-09-30T23:00:00Z/PT10M`. The answer starts at the interval's start, so a `limit` keeps the oldest. Without it, about the last two minutes. The service keeps about a week.
+      created: Only products the radar created in this ISO 8601 interval, in the same forms as `arrived`. Every request with it answered 503 on 2026-10-01 (`An upstream data source is temporarily unavailable`).
       published: Only products published in this ISO 8601 interval, in the same forms as `arrived`.
       station: Only this radar's products, such as `KATX`. An unknown one answers an empty `@graph`.
       type: Only this kind of product. Undocumented; `start`, `intermediate`, `end` and `model` on 2026-10-01, which are the parts of a Level II volume.
@@ -134,6 +140,8 @@ class GetQueue(Endpoint):
       request['limit'] = limit
     if arrived is not None:
       request['arrived'] = arrived
+    if created is not None:
+      request['created'] = created
     if published is not None:
       request['published'] = published
     if station is not None:

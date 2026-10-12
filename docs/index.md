@@ -3,7 +3,7 @@
 The [US National Weather Service API](https://www.weather.gov/documentation/services-web-api)
 serves the forecasts, the hourly forecasts, the raw gridded data behind both, observations
 from every reporting station, and every watch, warning and advisory in effect. This client
-covers twenty-six of its endpoints, in Python, TypeScript and Rust, generated from one spec.
+covers twenty-seven of its endpoints, in Python, TypeScript and Rust, generated from one spec.
 
 | Call | What it returns |
 | --- | --- |

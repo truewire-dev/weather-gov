@@ -1,6 +1,6 @@
 # Reference
 
-Eight groups, twenty-six endpoints, every one recorded against the live API. Each signature is
+Eight groups, twenty-seven endpoints, every one but `radar.get_profiler` recorded against the live API. Each signature is
 generated from the endpoint's schema, so the types in your editor are the reference: every
 field carries its description, and every method's docstring links the service's own page
 for the endpoint.
@@ -85,11 +85,15 @@ comma-separated.
 | `get_server` | `GET /radar/servers/{server_id}` | whole: one server |
 | `get_queue` | `GET /radar/queues/{host}` | whole: the Level II products through one host's queue, in JSON-LD |
 | `list_spgds` | `GET /radar/spgds` | whole: status reports from the SPG data servers, in JSON-LD |
+| `get_profiler` | `GET /radar/profilers/{station_id}` | whole, untyped: whatever the service sends for one wind profiler |
 
 `get_queue` and `list_spgds` take ISO 8601 intervals as strings, such as
 `2026-09-30T23:00:00Z/PT10M`, and the service keeps about a week of either. The SPG
 reports send their times as Unix seconds in strings; the clients parse them into real
-times. `GET /radar/profilers/{stationId}` is not here: it answers 404 for every profiler.
+times. Seven of the eight are recorded. `get_profiler` has never answered: every
+profiler answered 404 on 2026-10-01, so it has no example and its response has no fields
+to describe. `get_queue`'s `created` filter answered 503 that day; the client sends it,
+but no example uses it.
 
 ## In each language
 
