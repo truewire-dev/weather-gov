@@ -12,7 +12,7 @@ pub type RadarProfiler = serde_json::Value;
 /// Which profiler, and over what time.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct Request {
-    /// Profiler station identifier, such as `TLKA2`. `radar.list_stations` with a `station_type` of `Profiler` lists them.
+    /// Profiler station identifier, such as `TLKA2`. `radar.list_stations` with a `stationType` of `Profiler` lists them.
     pub station_id: String,
     /// Time interval, in ISO 8601: `start/end`, `start/duration` or `duration/end`, either end may be `NOW`, such as `2026-09-30T23:00:00Z/PT1H`.
     #[serde(default, skip_serializing_if = "Option::is_none")]

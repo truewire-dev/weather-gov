@@ -2,6 +2,7 @@
 from truewire_core.types import TimestampIso
 from typing_extensions import Any, Literal, NotRequired, TypedDict, overload
 from weather_gov.core import Endpoint
+from weather_gov.schemas import RadarHost
 
 
 RadarQueueProductKeywords = TypedDict(
@@ -15,7 +16,7 @@ RadarQueueProductKeywords = TypedDict(
 class RadarQueueProduct(RadarQueueProductKeywords):
   """One Level II product in the queue."""
 
-  host: Literal['rds', 'tds']
+  host: RadarHost
   """The distribution host."""
   arrivalTime: TimestampIso
   """When the product arrived at the host."""
@@ -38,7 +39,7 @@ class RadarQueueProduct(RadarQueueProductKeywords):
 class Request(TypedDict):
   """Which host, and which products. `host` is required; every filter after it is optional."""
 
-  host: Literal['rds', 'tds']
+  host: RadarHost
   """Distribution host: `rds` or `tds`."""
   limit: NotRequired[int]
   """Most products to return, 1 to 50,000. Without it, 500."""
@@ -77,7 +78,7 @@ class GetQueue(Endpoint):
   @overload
   async def get_queue(
     self,
-    host: Literal['rds', 'tds'],
+    host: RadarHost,
     *,
     limit: int | None = None,
     arrived: str | None = None,
@@ -92,7 +93,7 @@ class GetQueue(Endpoint):
   @overload
   async def get_queue(
     self,
-    host: Literal['rds', 'tds'],
+    host: RadarHost,
     *,
     limit: int | None = None,
     arrived: str | None = None,
@@ -106,7 +107,7 @@ class GetQueue(Endpoint):
   ) -> RadarQueue: ...
   async def get_queue(
     self,
-    host: Literal['rds', 'tds'],
+    host: RadarHost,
     *,
     limit: int | None = None,
     arrived: str | None = None,
@@ -121,7 +122,7 @@ class GetQueue(Endpoint):
     """The Level II products that passed through one distribution host's LDM queue, oldest first from the start of the interval. JSON-LD: the products come as a `@graph`.
 
     Args:
-      host: Distribution host: `rds` or `tds`.
+      host:
       limit: Most products to return, 1 to 50,000. Without it, 500.
       arrived: Only products that arrived in this ISO 8601 interval: `start/end`, `start/duration` or `duration/end`, either end may be `NOW`, such as `2026-09-30T23:00:00Z/PT10M`. The answer starts at the interval's start, so a `limit` keeps the oldest. Without it, about the last two minutes. The service keeps about a week.
       created: Only products the radar created in this ISO 8601 interval, in the same forms as `arrived`. Every request with it answered 503 on 2026-10-01 (`An upstream data source is temporarily unavailable`).

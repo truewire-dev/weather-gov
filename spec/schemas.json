@@ -1297,6 +1297,15 @@
     ],
     "description": "The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses)."
   },
+  "RadarHost": {
+    "title": "RadarHost",
+    "type": "string",
+    "enum": [
+      "rds",
+      "tds"
+    ],
+    "description": "A distribution host of the radar network: `rds` or `tds`. `radar.get_queue` takes one and names it on every product."
+  },
   "RadarServer": {
     "title": "RadarServer",
     "type": "object",

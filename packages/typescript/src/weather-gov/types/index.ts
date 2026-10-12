@@ -148,6 +148,10 @@ export const QuantitativeValue: Codec<QuantitativeValue> = t.object({
   minValue: t.optional(t.number),
 })
 
+export type RadarHost = 'rds' | 'tds'
+
+export const RadarHost: Codec<RadarHost> = t.literal('rds', 'tds')
+
 /** Packet counters of one network interface. */
 export interface RadarNetworkInterface {
   /** Interface name, such as `eth0`. */

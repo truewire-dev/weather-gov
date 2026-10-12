@@ -180,6 +180,14 @@ pub struct QuantitativeValue {
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum RadarHost {
+    #[serde(rename = "rds")]
+    Rds,
+    #[serde(rename = "tds")]
+    Tds,
+}
+
 /// Packet counters of one network interface.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct RadarNetworkInterface {

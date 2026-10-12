@@ -46,5 +46,8 @@
   `serde_json::Value`. `get_queue` and `list_spgds` take an ISO 8601 interval as a
   `String`, `get_queue`'s `created` included. The SPG reports' Unix seconds sent
   as strings are `TimestampSecondsString`, which needs the truewire-core this crate is
-  generated against, not crates.io 0.1. `radar::get_queue::Request` requires its `host`
-  enum, so it has no `Default`: name every field.
+  generated against, not crates.io 0.1. `get_queue`'s `host` is one shared enum,
+  `types::RadarHost`, in the request and on every product, so `product.host == request.host`
+  compiles; unreleased main had two, `get_queue::RequestHost` and
+  `get_queue::RadarQueueProductHost`. `radar::get_queue::Request` requires its `host`, so it
+  has no `Default`: name every field.

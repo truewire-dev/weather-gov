@@ -15,11 +15,7 @@
       "description": "Which host, and which products. `host` is required; every filter after it is optional.",
       "properties": {
         "host": {
-          "type": "string",
-          "enum": [
-            "rds",
-            "tds"
-          ],
+          "$ref": "RadarHost",
           "description": "Distribution host: `rds` or `tds`."
         },
         "limit": {
@@ -87,11 +83,7 @@
                 "description": "Always `wx:RadarQueue`."
               },
               "host": {
-                "type": "string",
-                "enum": [
-                  "rds",
-                  "tds"
-                ],
+                "$ref": "RadarHost",
                 "description": "The distribution host."
               },
               "arrivalTime": {
