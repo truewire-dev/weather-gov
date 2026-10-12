@@ -989,12 +989,14 @@ async fn radar_alarms_and_queue() {
     let limit = asked["limit"].as_i64().expect("a limit");
     assert_eq!(asked["host"], "rds");
     let (start, end) = interval(arrived);
+    // The request and every product share one host enum, so the two compare directly.
+    let host = weather_gov::types::RadarHost::Rds;
     // A required enum field leaves the request with no `Default`, so every field is named.
     let queue = client
         .radar
         .get_queue(
             weather_gov::radar::get_queue::Request {
-                host: weather_gov::radar::get_queue::RequestHost::Rds,
+                host,
                 limit: Some(limit),
                 arrived: Some(arrived.to_string()),
                 created: None,
@@ -1016,6 +1018,7 @@ async fn radar_alarms_and_queue() {
         "oldest first"
     );
     for product in &queue.graph {
+        assert_eq!(product.host, host);
         assert_eq!(product.station_id, station);
         assert!(start <= *product.arrival_time && *product.arrival_time < end);
         assert!(product.creation_time <= product.arrival_time);

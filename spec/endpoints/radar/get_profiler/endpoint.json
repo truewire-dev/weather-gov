@@ -20,7 +20,7 @@
       "properties": {
         "station_id": {
           "type": "string",
-          "description": "Profiler station identifier, such as `TLKA2`. `radar.list_stations` with a `station_type` of `Profiler` lists them."
+          "description": "Profiler station identifier, such as `TLKA2`. `radar.list_stations` narrowed to `Profiler` lists them."
         },
         "time": {
           "type": "string",

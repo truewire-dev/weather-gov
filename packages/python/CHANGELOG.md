@@ -28,7 +28,8 @@ Generated with truewire 0.11.
   has no recording: every profiler answered 404 on 2026-10-01, so it returns `Any`. `get_queue`
   and `list_spgds` take an ISO 8601 interval as a string, `get_queue`'s `created` included. The SPG reports send their times as
   Unix seconds in strings, which arrive here as `datetime`, and their counts as `int` and
-  `Decimal`.
+  `Decimal`. `get_queue`'s `host`, in the request and on every product, is one shared
+  `Literal`, `weather_gov.schemas.RadarHost`.
 - **`ObservationCollection` and `StationCollection` are shared schemas.** Each is returned
   by more than one endpoint now, so they moved from `weather_gov.stations.get_observations`
   and `weather_gov.stations.list_stations` to `weather_gov.schemas`, with

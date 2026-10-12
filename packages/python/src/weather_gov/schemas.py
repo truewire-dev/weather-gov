@@ -106,6 +106,9 @@ class QuantitativeValue(TypedDict):
   """Lower end, where the value is a range rather than a point."""
 
 
+RadarHost = Literal['rds', 'tds']
+
+
 class RadarNetworkInterface(TypedDict):
   """Packet counters of one network interface."""
 

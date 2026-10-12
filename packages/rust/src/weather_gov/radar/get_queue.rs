@@ -8,19 +8,12 @@ use truewire_core::{
 };
 
 use crate::meta::DefaultMeta;
+use crate::types::RadarHost;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum RadarQueueProductType {
     #[serde(rename = "wx:RadarQueue")]
     WxRadarQueue,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub enum RadarQueueProductHost {
-    #[serde(rename = "rds")]
-    Rds,
-    #[serde(rename = "tds")]
-    Tds,
 }
 
 /// One Level II product in the queue.
@@ -30,7 +23,7 @@ pub struct RadarQueueProduct {
     #[serde(rename = "@type")]
     pub type_: RadarQueueProductType,
     /// The distribution host.
-    pub host: RadarQueueProductHost,
+    pub host: RadarHost,
     /// When the product arrived at the host.
     #[serde(rename = "arrivalTime")]
     pub arrival_time: TimestampIso,
@@ -58,19 +51,11 @@ pub struct RadarQueueProduct {
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
-pub enum RequestHost {
-    #[serde(rename = "rds")]
-    Rds,
-    #[serde(rename = "tds")]
-    Tds,
-}
-
 /// Which host, and which products. `host` is required; every filter after it is optional.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Request {
     /// Distribution host: `rds` or `tds`.
-    pub host: RequestHost,
+    pub host: RadarHost,
     /// Most products to return, 1 to 50,000. Without it, 500.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub limit: Option<i64>,

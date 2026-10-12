@@ -8,7 +8,7 @@ export const RadarProfiler: Codec<RadarProfiler> = t.unknown
 
 /** Which profiler, and over what time. */
 export interface Request {
-  /** Profiler station identifier, such as `TLKA2`. `radar.list_stations` with a `station_type` of `Profiler` lists them. */
+  /** Profiler station identifier, such as `TLKA2`. `radar.list_stations` narrowed to `Profiler` lists them. */
   station_id: string
   /** Time interval, in ISO 8601: `start/end`, `start/duration` or `duration/end`, either end may be `NOW`, such as `2026-09-30T23:00:00Z/PT1H`. */
   time?: string

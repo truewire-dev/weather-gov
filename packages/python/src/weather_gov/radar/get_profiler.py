@@ -10,7 +10,7 @@ class Request(TypedDict):
   """Which profiler, and over what time."""
 
   station_id: str
-  """Profiler station identifier, such as `TLKA2`. `radar.list_stations` with a `station_type` of `Profiler` lists them."""
+  """Profiler station identifier, such as `TLKA2`. `radar.list_stations` narrowed to `Profiler` lists them."""
   time: NotRequired[str]
   """Time interval, in ISO 8601: `start/end`, `start/duration` or `duration/end`, either end may be `NOW`, such as `2026-09-30T23:00:00Z/PT1H`."""
   interval: NotRequired[str]
@@ -49,7 +49,7 @@ class GetProfiler(Endpoint):
     """Metadata about one radar wind profiler, as JSON-LD. Unverified: every profiler answered 404 on 2026-10-01, so the response is not described.
 
     Args:
-      station_id: Profiler station identifier, such as `TLKA2`. `radar.list_stations` with a `station_type` of `Profiler` lists them.
+      station_id: Profiler station identifier, such as `TLKA2`. `radar.list_stations` narrowed to `Profiler` lists them.
       time: Time interval, in ISO 8601: `start/end`, `start/duration` or `duration/end`, either end may be `NOW`, such as `2026-09-30T23:00:00Z/PT1H`.
       interval: Averaging interval, as an ISO 8601 duration such as `PT1H`.
       validate: Override this call's response validation; falls back to the client-level default when omitted. `False` returns the parsed body as it came, typed `Any`.
