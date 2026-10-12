@@ -148,6 +148,140 @@ export const QuantitativeValue: Codec<QuantitativeValue> = t.object({
   minValue: t.optional(t.number),
 })
 
+/** Packet counters of one network interface. */
+export interface RadarNetworkInterface {
+  /** Interface name, such as `eth0`. */
+  interface: string
+  /** Whether the interface is up. */
+  active: boolean
+  /** Packets sent without error. */
+  transNoError: number
+  /** Packets that failed to send. */
+  transError: number
+  /** Outgoing packets dropped. */
+  transDropped: number
+  /** Outgoing overruns. */
+  transOverrun: number
+  /** Packets received without error. */
+  recvNoError: number
+  /** Packets received with an error. */
+  recvError: number
+  /** Incoming packets dropped. */
+  recvDropped: number
+  /** Incoming overruns. */
+  recvOverrun: number
+}
+
+export const RadarNetworkInterface: Codec<RadarNetworkInterface> = t.object({
+  interface: t.string,
+  active: t.boolean,
+  transNoError: t.integer,
+  transError: t.integer,
+  transDropped: t.integer,
+  transOverrun: t.integer,
+  recvNoError: t.integer,
+  recvError: t.integer,
+  recvDropped: t.integer,
+  recvOverrun: t.integer,
+})
+
+/** The last command the server ran and received. Only `ldm` servers send it. */
+export interface RadarServerCommand {
+  /** Last command run, such as `LDM Start`. */
+  lastExecuted: string
+  /** When it ran. */
+  lastExecutedTime: TimestampIso
+  /** When the server last received NEXRAD data. */
+  lastNexradDataTime: TimestampIso
+  /** Last command received. */
+  lastReceived: string
+  /** When it was received. */
+  lastReceivedTime: TimestampIso
+  /** When this block was collected. */
+  timestamp: TimestampIso
+}
+
+export const RadarServerCommand: Codec<RadarServerCommand> = t.object({
+  lastExecuted: t.string,
+  lastExecutedTime: t.dateTime,
+  lastNexradDataTime: t.dateTime,
+  lastReceived: t.string,
+  lastReceivedTime: t.dateTime,
+  timestamp: t.dateTime,
+})
+
+/** Host load and resources. */
+export interface RadarServerHardware {
+  /** When this block was collected. */
+  timestamp: TimestampIso
+  /** Idle CPU, in percent. */
+  cpuIdle: number
+  /** Disk I/O utilisation, in percent. */
+  ioUtilization: number
+  /** Disk used, in percent. */
+  disk: number
+  /** One-minute load average. */
+  load1: number
+  /** Five-minute load average. */
+  load5: number
+  /** Fifteen-minute load average. */
+  load15: number
+  /** Memory used, in percent. */
+  memory: number
+  /** When the host last booted: a time, despite the name, not a duration. */
+  uptime: TimestampIso
+}
+
+export const RadarServerHardware: Codec<RadarServerHardware> = t.object({
+  timestamp: t.dateTime,
+  cpuIdle: t.number,
+  ioUtilization: t.number,
+  disk: t.number,
+  load1: t.number,
+  load5: t.number,
+  load15: t.number,
+  memory: t.number,
+  uptime: t.dateTime,
+})
+
+/** The server's LDM product queue. */
+export interface RadarServerLdm {
+  /** When this block was collected. */
+  timestamp: TimestampIso
+  /** Arrival of the newest product in the queue. */
+  latestProduct: TimestampIso
+  /** Arrival of the oldest product still in the queue. */
+  oldestProduct: TimestampIso
+  /** Size of the queue, in bytes. */
+  storageSize: number
+  /** Products in the queue. */
+  count: number
+  /** Whether LDM is running. */
+  active: boolean
+}
+
+export const RadarServerLdm: Codec<RadarServerLdm> = t.object({
+  timestamp: t.dateTime,
+  latestProduct: t.dateTime,
+  oldestProduct: t.dateTime,
+  storageSize: t.integer,
+  count: t.integer,
+  active: t.boolean,
+})
+
+/** Which hosts the server could reach at its last ping round. */
+export interface RadarServerPing {
+  /** Ping results by group of targets: `client` (downstream data clients, such as `ncep`), `ldm` and `server` (other servers, by name), `radar` (radar stations, by identifier) and `misc` (interfaces and routers, such as `eth0`). A group the server does not ping is absent. */
+  targets: Record<string, Record<string, boolean> | boolean[]>
+  /** When the ping round ran. */
+  timestamp: TimestampIso
+}
+
+export const RadarServerPing: Codec<RadarServerPing> = t.object({
+  targets: t.record(t.union(t.record(t.boolean), t.array(t.boolean))),
+  timestamp: t.dateTime,
+})
+
 /** One zone: a public forecast, county, fire-weather or marine area. */
 export interface Zone {
   /** Canonical URL of the zone. */
@@ -370,6 +504,112 @@ export const GridSeries: Codec<GridSeries> = t.object({
   values: t.array(GridValue),
 })
 
+/** How far behind real time the radar's Level II data reaches the LDM host named by `host`. Every field is null for a radar with no Level II feed, such as a profiler. */
+export interface RadarLatency {
+  /** Latency of the latest data. */
+  current: QuantitativeValue | null
+  /** Average latency. */
+  average: QuantitativeValue | null
+  /** Highest recent latency. */
+  max: QuantitativeValue | null
+  /** When the host last received Level II data. */
+  levelTwoLastReceivedTime: TimestampIso | null
+  /** When the highest latency was seen. */
+  maxLatencyTime: TimestampIso | null
+  /** Monitoring host that reported the latency. */
+  reportingHost: string | null
+  /** LDM host the latency is measured at. */
+  host: string | null
+}
+
+export const RadarLatency: Codec<RadarLatency> = t.object({
+  current: t.nullable(QuantitativeValue),
+  average: t.nullable(QuantitativeValue),
+  max: t.nullable(QuantitativeValue),
+  levelTwoLastReceivedTime: t.nullable(t.dateTime),
+  maxLatencyTime: t.nullable(t.dateTime),
+  reportingHost: t.nullable(t.string),
+  host: t.nullable(t.string),
+})
+
+/** The status fields. A TDWR sends fewer of them than a WSR-88D. */
+export interface RadarRdaStatus {
+  /** Level II resolution version. */
+  resolutionVersion?: number | null
+  /** Level II data path, such as `Default`. */
+  nl2Path: string
+  /** Scan strategy in use, such as `R35` (clear air) or `R212` (precipitation). */
+  volumeCoveragePattern: string
+  /** Who controls the radar, such as `RPG (Remote) Only`. */
+  controlStatus: string
+  /** Software build, such as `24.1`. */
+  buildNumber: number
+  /** Classes of active alarm, `|`-separated, such as `Transmitter|Communication`, or `No Alarms`. */
+  alarmSummary: string
+  /** Operating mode, such as `Operational` or `Maintenance`. */
+  mode: string
+  /** Power source state, such as `Utility PWR Available`. WSR-88D only. */
+  generatorState?: string
+  /** Whether super-resolution scanning is on. WSR-88D only. */
+  superResolutionStatus?: string
+  /** Whether the radar needs maintenance, such as `RDA - On-Line`. */
+  operabilityStatus: string
+  /** RDA state, such as `Operate` or `Standby`. */
+  status: string
+  /** Average transmitter power. WSR-88D only. */
+  averageTransmitterPower?: QuantitativeValue
+  /** Reflectivity calibration correction. WSR-88D only. */
+  reflectivityCalibrationCorrection?: QuantitativeValue
+}
+
+export const RadarRdaStatus: Codec<RadarRdaStatus> = t.object({
+  resolutionVersion: t.optional(t.nullable(t.integer)),
+  nl2Path: t.string,
+  volumeCoveragePattern: t.string,
+  controlStatus: t.string,
+  buildNumber: t.number,
+  alarmSummary: t.string,
+  mode: t.string,
+  generatorState: t.optional(t.string),
+  superResolutionStatus: t.optional(t.string),
+  operabilityStatus: t.string,
+  status: t.string,
+  averageTransmitterPower: t.optional(QuantitativeValue),
+  reflectivityCalibrationCorrection: t.optional(QuantitativeValue),
+})
+
+/** A periodic engineering report from the radar: its performance check or its adaptation (calibration) data. */
+export interface RadarReport {
+  /** When the report was made. */
+  timestamp?: TimestampIso | null
+  /** Monitoring host that collected it, such as `rdss` or `tdss`. */
+  reportingHost: string
+  /** The readings, by name. Their set depends on the kind of radar and is not documented, so they are a map rather than fields; a TDWR sends `[]`. */
+  properties: Record<string, QuantitativeValue | string | number> | string[]
+}
+
+export const RadarReport: Codec<RadarReport> = t.object({
+  timestamp: t.optional(t.nullable(t.dateTime)),
+  reportingHost: t.string,
+  properties: t.union(t.record(t.union(QuantitativeValue, t.string, t.number)), t.array(t.string)),
+})
+
+/** Traffic counters of the server's two network interfaces. */
+export interface RadarServerNetwork {
+  /** When this block was collected. */
+  timestamp: TimestampIso
+  /** The first interface. */
+  eth0: RadarNetworkInterface
+  /** The second interface. */
+  eth1: RadarNetworkInterface
+}
+
+export const RadarServerNetwork: Codec<RadarServerNetwork> = t.object({
+  timestamp: t.dateTime,
+  eth0: RadarNetworkInterface,
+  eth1: RadarNetworkInterface,
+})
+
 /** One observation station. */
 export interface Station {
   /** Station identifier, such as `KSEA`. This is what `stations.get_observations` takes. */
@@ -565,6 +805,74 @@ export const Observation: Codec<Observation> = t.object({
   cloudLayers: t.array(CloudLayer),
 })
 
+/** Status of the Radar Data Acquisition unit: the radar itself. */
+export interface RadarRda {
+  /** When the status was reported. */
+  timestamp: TimestampIso
+  /** Monitoring host that reported it, such as `rdss` or `tdss`. */
+  reportingHost: string
+  properties: RadarRdaStatus
+}
+
+export const RadarRda: Codec<RadarRda> = t.object({
+  timestamp: t.dateTime,
+  reportingHost: t.string,
+  properties: RadarRdaStatus,
+})
+
+/** One server of the radar data distribution network, and its health at `collectionTime`. */
+export interface RadarServer {
+  /** URL of this server. */
+  '@id': string
+  /** Always `wx:RadarServer`. */
+  '@type': 'wx:RadarServer'
+  /** Server name, such as `ldm1` or `rds`. `radar.get_server` takes it. */
+  id: string
+  /** Role of the server. Undocumented; `ldm` (an LDM ingest server) and `distribution` (`rds`, `tds`) on 2026-10-01. */
+  type: string
+  /** Whether the server is in service. Only `ldm` servers send it. */
+  active?: boolean
+  /** Whether the server is the primary of its pair. Only `ldm` servers send it. */
+  primary?: boolean
+  /** Whether the server aggregates the others' feeds. Only `ldm` servers send it. */
+  aggregate?: boolean
+  /** Whether the server is locked against changes. Only `ldm` servers send it. */
+  locked?: boolean
+  /** Whether the server sees the radar network as up. Only `ldm` servers send it. */
+  radarNetworkUp?: boolean
+  /** When this health report was collected. */
+  collectionTime: TimestampIso
+  /** Monitoring host that reported it, such as `rdss` or `tdss`. */
+  reportingHost: string
+  /** Host the server ingests from, such as `dns`. */
+  ingestHost: string
+  ping: RadarServerPing
+  command?: RadarServerCommand
+  hardware: RadarServerHardware
+  ldm: RadarServerLdm
+  network: RadarServerNetwork
+}
+
+export const RadarServer: Codec<RadarServer> = t.object({
+  '@id': t.string,
+  '@type': t.literal('wx:RadarServer'),
+  id: t.string,
+  type: t.string,
+  active: t.optional(t.boolean),
+  primary: t.optional(t.boolean),
+  aggregate: t.optional(t.boolean),
+  locked: t.optional(t.boolean),
+  radarNetworkUp: t.optional(t.boolean),
+  collectionTime: t.dateTime,
+  reportingHost: t.string,
+  ingestHost: t.string,
+  ping: RadarServerPing,
+  command: t.optional(RadarServerCommand),
+  hardware: RadarServerHardware,
+  ldm: RadarServerLdm,
+  network: RadarServerNetwork,
+})
+
 /** One station, in the GeoJSON feature the API wraps it in. */
 export interface StationFeature {
   /** Canonical URL of this station. */
@@ -616,6 +924,45 @@ export const ObservationFeature: Codec<ObservationFeature> = t.object({
   properties: Observation,
 })
 
+/** One radar: what kind it is, how far behind its data runs, and how its hardware is doing. */
+export interface RadarStation {
+  /** URL of this radar. */
+  '@id': string
+  /** Always `wx:RadarStation`. */
+  '@type'?: 'wx:RadarStation'
+  /** Station identifier, such as `KATX`. `radar.get_station` takes it. */
+  id: string
+  /** Where the radar is, such as `Seattle`. */
+  name: string
+  /** Kind of radar. Undocumented; `WSR-88D` (NEXRAD), `TDWR` (terminal Doppler) and `Profiler` on 2026-10-01. `radar.list_stations` filters on it. */
+  stationType: string
+  /** Height of the radar above sea level. */
+  elevation?: QuantitativeValue
+  /** Time zone, such as `GMT`. */
+  timeZone?: string
+  latency: RadarLatency
+  /** Status of the radar itself. */
+  rda: RadarRda | null
+  /** The latest performance check. Only `radar.get_station` sends it. */
+  performance?: RadarReport | null
+  /** The radar's adaptation (calibration) data. Only `radar.get_station` sends it. */
+  adaptation?: RadarReport | null
+}
+
+export const RadarStation: Codec<RadarStation> = t.object({
+  '@id': t.string,
+  '@type': t.optional(t.literal('wx:RadarStation')),
+  id: t.string,
+  name: t.string,
+  stationType: t.string,
+  elevation: t.optional(QuantitativeValue),
+  timeZone: t.optional(t.string),
+  latency: RadarLatency,
+  rda: t.nullable(RadarRda),
+  performance: t.optional(t.nullable(RadarReport)),
+  adaptation: t.optional(t.nullable(RadarReport)),
+})
+
 /** Stations, as a GeoJSON feature collection. */
 export interface StationCollection {
   /** Always `FeatureCollection`. */
@@ -647,4 +994,23 @@ export const ObservationCollection: Codec<ObservationCollection> = t.object({
   type: t.literal('FeatureCollection'),
   features: t.array(ObservationFeature),
   pagination: t.optional(ObservationPagination),
+})
+
+/** One radar, in the GeoJSON feature the API wraps it in. */
+export interface RadarStationFeature {
+  /** URL of this radar. */
+  id: string
+  /** Always `Feature`. */
+  type: 'Feature'
+  /** Where the radar is. */
+  geometry: PointGeometry
+  /** The radar itself. */
+  properties: RadarStation
+}
+
+export const RadarStationFeature: Codec<RadarStationFeature> = t.object({
+  id: t.string,
+  type: t.literal('Feature'),
+  geometry: PointGeometry,
+  properties: RadarStation,
 })

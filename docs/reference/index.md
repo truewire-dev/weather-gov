@@ -1,6 +1,6 @@
 # Reference
 
-Seven groups, nineteen endpoints, every one recorded against the live API. Each signature is
+Eight groups, twenty-six endpoints, every one recorded against the live API. Each signature is
 generated from the endpoint's schema, so the types in your editor are the reference: every
 field carries its description, and every method's docstring links the service's own page
 for the endpoint.
@@ -73,6 +73,23 @@ service spells them: `actual`, but `Severe`, `Immediate` and `Likely`.
 
 Array filters take one value each until TRU-495: the service reads several only
 comma-separated.
+
+## `radar`
+
+| Endpoint | Upstream | Returns |
+| --- | --- | --- |
+| `list_stations` | `GET /radar/stations` | whole: every radar, with its latency and status |
+| `get_station` | `GET /radar/stations/{station_id}` | whole: one radar, with its maintenance reports |
+| `list_station_alarms` | `GET /radar/stations/{station_id}/alarms` | whole: a radar's alarm log, newest first, in JSON-LD |
+| `list_servers` | `GET /radar/servers` | whole: the data distribution servers and their health, in JSON-LD |
+| `get_server` | `GET /radar/servers/{server_id}` | whole: one server |
+| `get_queue` | `GET /radar/queues/{host}` | whole: the Level II products through one host's queue, in JSON-LD |
+| `list_spgds` | `GET /radar/spgds` | whole: status reports from the SPG data servers, in JSON-LD |
+
+`get_queue` and `list_spgds` take ISO 8601 intervals as strings, such as
+`2026-09-30T23:00:00Z/PT10M`, and the service keeps about a week of either. The SPG
+reports send their times as Unix seconds in strings; the clients parse them into real
+times. `GET /radar/profilers/{stationId}` is not here: it answers 404 for every profiler.
 
 ## In each language
 

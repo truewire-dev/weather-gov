@@ -1296,5 +1296,729 @@
       "county"
     ],
     "description": "The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses)."
+  },
+  "RadarServer": {
+    "title": "RadarServer",
+    "type": "object",
+    "description": "One server of the radar data distribution network, and its health at `collectionTime`.",
+    "properties": {
+      "@id": {
+        "type": "string",
+        "description": "URL of this server."
+      },
+      "@type": {
+        "type": "string",
+        "enum": [
+          "wx:RadarServer"
+        ],
+        "description": "Always `wx:RadarServer`."
+      },
+      "id": {
+        "type": "string",
+        "description": "Server name, such as `ldm1` or `rds`. `radar.get_server` takes it."
+      },
+      "type": {
+        "type": "string",
+        "description": "Role of the server. Undocumented; `ldm` (an LDM ingest server) and `distribution` (`rds`, `tds`) on 2026-10-01."
+      },
+      "active": {
+        "type": "boolean",
+        "description": "Whether the server is in service. Only `ldm` servers send it."
+      },
+      "primary": {
+        "type": "boolean",
+        "description": "Whether the server is the primary of its pair. Only `ldm` servers send it."
+      },
+      "aggregate": {
+        "type": "boolean",
+        "description": "Whether the server aggregates the others' feeds. Only `ldm` servers send it."
+      },
+      "locked": {
+        "type": "boolean",
+        "description": "Whether the server is locked against changes. Only `ldm` servers send it."
+      },
+      "radarNetworkUp": {
+        "type": "boolean",
+        "description": "Whether the server sees the radar network as up. Only `ldm` servers send it."
+      },
+      "collectionTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When this health report was collected."
+      },
+      "reportingHost": {
+        "type": "string",
+        "description": "Monitoring host that reported it, such as `rdss` or `tdss`."
+      },
+      "ingestHost": {
+        "type": "string",
+        "description": "Host the server ingests from, such as `dns`."
+      },
+      "ping": {
+        "title": "RadarServerPing",
+        "type": "object",
+        "description": "Which hosts the server could reach at its last ping round.",
+        "properties": {
+          "targets": {
+            "type": "object",
+            "description": "Ping results by group of targets: `client` (downstream data clients, such as `ncep`), `ldm` and `server` (other servers, by name), `radar` (radar stations, by identifier) and `misc` (interfaces and routers, such as `eth0`). A group the server does not ping is absent.",
+            "additionalProperties": {
+              "description": "Whether each target in the group answered, by target name. The service sends an empty group as `[]`, not `{}`.",
+              "anyOf": [
+                {
+                  "type": "object",
+                  "description": "Target name to whether it answered.",
+                  "additionalProperties": {
+                    "type": "boolean",
+                    "description": "Whether this target answered."
+                  }
+                },
+                {
+                  "type": "array",
+                  "maxItems": 0,
+                  "description": "An empty group: `[]`, never with entries.",
+                  "items": {
+                    "type": "boolean",
+                    "description": "Never present: the array is always empty."
+                  }
+                }
+              ]
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the ping round ran."
+          }
+        },
+        "required": [
+          "targets",
+          "timestamp"
+        ]
+      },
+      "command": {
+        "title": "RadarServerCommand",
+        "type": "object",
+        "description": "The last command the server ran and received. Only `ldm` servers send it.",
+        "properties": {
+          "lastExecuted": {
+            "type": "string",
+            "description": "Last command run, such as `LDM Start`."
+          },
+          "lastExecutedTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When it ran."
+          },
+          "lastNexradDataTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the server last received NEXRAD data."
+          },
+          "lastReceived": {
+            "type": "string",
+            "description": "Last command received."
+          },
+          "lastReceivedTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When it was received."
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When this block was collected."
+          }
+        },
+        "required": [
+          "lastExecuted",
+          "lastExecutedTime",
+          "lastNexradDataTime",
+          "lastReceived",
+          "lastReceivedTime",
+          "timestamp"
+        ]
+      },
+      "hardware": {
+        "title": "RadarServerHardware",
+        "type": "object",
+        "description": "Host load and resources.",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When this block was collected."
+          },
+          "cpuIdle": {
+            "type": "number",
+            "description": "Idle CPU, in percent."
+          },
+          "ioUtilization": {
+            "type": "number",
+            "description": "Disk I/O utilisation, in percent."
+          },
+          "disk": {
+            "type": "number",
+            "description": "Disk used, in percent."
+          },
+          "load1": {
+            "type": "number",
+            "description": "One-minute load average."
+          },
+          "load5": {
+            "type": "number",
+            "description": "Five-minute load average."
+          },
+          "load15": {
+            "type": "number",
+            "description": "Fifteen-minute load average."
+          },
+          "memory": {
+            "type": "number",
+            "description": "Memory used, in percent."
+          },
+          "uptime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the host last booted: a time, despite the name, not a duration."
+          }
+        },
+        "required": [
+          "timestamp",
+          "cpuIdle",
+          "ioUtilization",
+          "disk",
+          "load1",
+          "load5",
+          "load15",
+          "memory",
+          "uptime"
+        ]
+      },
+      "ldm": {
+        "title": "RadarServerLdm",
+        "type": "object",
+        "description": "The server's LDM product queue.",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When this block was collected."
+          },
+          "latestProduct": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Arrival of the newest product in the queue."
+          },
+          "oldestProduct": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Arrival of the oldest product still in the queue."
+          },
+          "storageSize": {
+            "type": "integer",
+            "description": "Size of the queue, in bytes."
+          },
+          "count": {
+            "type": "integer",
+            "description": "Products in the queue."
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Whether LDM is running."
+          }
+        },
+        "required": [
+          "timestamp",
+          "latestProduct",
+          "oldestProduct",
+          "storageSize",
+          "count",
+          "active"
+        ]
+      },
+      "network": {
+        "title": "RadarServerNetwork",
+        "type": "object",
+        "description": "Traffic counters of the server's two network interfaces.",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When this block was collected."
+          },
+          "eth0": {
+            "$ref": "RadarNetworkInterface",
+            "description": "The first interface."
+          },
+          "eth1": {
+            "$ref": "RadarNetworkInterface",
+            "description": "The second interface."
+          }
+        },
+        "required": [
+          "timestamp",
+          "eth0",
+          "eth1"
+        ]
+      }
+    },
+    "required": [
+      "@id",
+      "@type",
+      "id",
+      "type",
+      "collectionTime",
+      "reportingHost",
+      "ingestHost",
+      "ping",
+      "hardware",
+      "ldm",
+      "network"
+    ]
+  },
+  "RadarNetworkInterface": {
+    "title": "RadarNetworkInterface",
+    "type": "object",
+    "description": "Packet counters of one network interface.",
+    "properties": {
+      "interface": {
+        "type": "string",
+        "description": "Interface name, such as `eth0`."
+      },
+      "active": {
+        "type": "boolean",
+        "description": "Whether the interface is up."
+      },
+      "transNoError": {
+        "type": "integer",
+        "description": "Packets sent without error."
+      },
+      "transError": {
+        "type": "integer",
+        "description": "Packets that failed to send."
+      },
+      "transDropped": {
+        "type": "integer",
+        "description": "Outgoing packets dropped."
+      },
+      "transOverrun": {
+        "type": "integer",
+        "description": "Outgoing overruns."
+      },
+      "recvNoError": {
+        "type": "integer",
+        "description": "Packets received without error."
+      },
+      "recvError": {
+        "type": "integer",
+        "description": "Packets received with an error."
+      },
+      "recvDropped": {
+        "type": "integer",
+        "description": "Incoming packets dropped."
+      },
+      "recvOverrun": {
+        "type": "integer",
+        "description": "Incoming overruns."
+      }
+    },
+    "required": [
+      "interface",
+      "active",
+      "transNoError",
+      "transError",
+      "transDropped",
+      "transOverrun",
+      "recvNoError",
+      "recvError",
+      "recvDropped",
+      "recvOverrun"
+    ]
+  },
+  "RadarReport": {
+    "title": "RadarReport",
+    "type": "object",
+    "description": "A periodic engineering report from the radar: its performance check or its adaptation (calibration) data.",
+    "properties": {
+      "timestamp": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the report was made."
+          },
+          {
+            "type": "null",
+            "description": "Not stated: every TDWR answers null."
+          }
+        ],
+        "description": "When the report was made."
+      },
+      "reportingHost": {
+        "type": "string",
+        "description": "Monitoring host that collected it, such as `rdss` or `tdss`."
+      },
+      "properties": {
+        "description": "The readings, by name. Their set depends on the kind of radar and is not documented, so they are a map rather than fields; a TDWR sends `[]`.",
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "Reading name to reading.",
+            "additionalProperties": {
+              "description": "One reading: a measurement with its unit, or a bare status string or number.",
+              "anyOf": [
+                {
+                  "$ref": "QuantitativeValue",
+                  "description": "A measurement, such as `transmitterPeakPower`."
+                },
+                {
+                  "type": "string",
+                  "description": "A status, such as `OK`, or a time the report states as text, such as `performanceCheckTime`."
+                },
+                {
+                  "type": "number",
+                  "description": "A bare count or ratio, such as `linearity`."
+                }
+              ]
+            }
+          },
+          {
+            "type": "array",
+            "maxItems": 0,
+            "description": "No readings: `[]`, never with entries.",
+            "items": {
+              "type": "string",
+              "description": "Never present: the array is always empty."
+            }
+          }
+        ]
+      }
+    },
+    "required": [
+      "reportingHost",
+      "properties"
+    ]
+  },
+  "RadarStation": {
+    "title": "RadarStation",
+    "type": "object",
+    "description": "One radar: what kind it is, how far behind its data runs, and how its hardware is doing.",
+    "properties": {
+      "@id": {
+        "type": "string",
+        "description": "URL of this radar."
+      },
+      "@type": {
+        "type": "string",
+        "enum": [
+          "wx:RadarStation"
+        ],
+        "description": "Always `wx:RadarStation`."
+      },
+      "id": {
+        "type": "string",
+        "description": "Station identifier, such as `KATX`. `radar.get_station` takes it."
+      },
+      "name": {
+        "type": "string",
+        "description": "Where the radar is, such as `Seattle`."
+      },
+      "stationType": {
+        "type": "string",
+        "description": "Kind of radar. Undocumented; `WSR-88D` (NEXRAD), `TDWR` (terminal Doppler) and `Profiler` on 2026-10-01. `radar.list_stations` filters on it."
+      },
+      "elevation": {
+        "$ref": "QuantitativeValue",
+        "description": "Height of the radar above sea level."
+      },
+      "timeZone": {
+        "type": "string",
+        "description": "Time zone, such as `GMT`."
+      },
+      "latency": {
+        "title": "RadarLatency",
+        "type": "object",
+        "description": "How far behind real time the radar's Level II data reaches the LDM host named by `host`. Every field is null for a radar with no Level II feed, such as a profiler.",
+        "properties": {
+          "current": {
+            "anyOf": [
+              {
+                "$ref": "QuantitativeValue",
+                "description": "Latency of the latest data, in `nwsUnit:s`."
+              },
+              {
+                "type": "null",
+                "description": "No Level II feed."
+              }
+            ],
+            "description": "Latency of the latest data."
+          },
+          "average": {
+            "anyOf": [
+              {
+                "$ref": "QuantitativeValue",
+                "description": "Average latency, in `nwsUnit:s`."
+              },
+              {
+                "type": "null",
+                "description": "No Level II feed."
+              }
+            ],
+            "description": "Average latency."
+          },
+          "max": {
+            "anyOf": [
+              {
+                "$ref": "QuantitativeValue",
+                "description": "Highest recent latency, in `nwsUnit:s`."
+              },
+              {
+                "type": "null",
+                "description": "No Level II feed."
+              }
+            ],
+            "description": "Highest recent latency."
+          },
+          "levelTwoLastReceivedTime": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the host last received Level II data."
+              },
+              {
+                "type": "null",
+                "description": "No Level II feed."
+              }
+            ],
+            "description": "When the host last received Level II data."
+          },
+          "maxLatencyTime": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the highest latency was seen."
+              },
+              {
+                "type": "null",
+                "description": "No Level II feed."
+              }
+            ],
+            "description": "When the highest latency was seen."
+          },
+          "reportingHost": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Monitoring host that reported the latency, such as `rdss` or `tdss`."
+              },
+              {
+                "type": "null",
+                "description": "No Level II feed."
+              }
+            ],
+            "description": "Monitoring host that reported the latency."
+          },
+          "host": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "LDM host the latency is measured at, such as `ldm4`. The `host` parameter picks it."
+              },
+              {
+                "type": "null",
+                "description": "No Level II feed, or a `host` the service does not know."
+              }
+            ],
+            "description": "LDM host the latency is measured at."
+          }
+        },
+        "required": [
+          "current",
+          "average",
+          "max",
+          "levelTwoLastReceivedTime",
+          "maxLatencyTime",
+          "reportingHost",
+          "host"
+        ]
+      },
+      "rda": {
+        "anyOf": [
+          {
+            "title": "RadarRda",
+            "type": "object",
+            "description": "Status of the Radar Data Acquisition unit: the radar itself.",
+            "properties": {
+              "timestamp": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the status was reported."
+              },
+              "reportingHost": {
+                "type": "string",
+                "description": "Monitoring host that reported it, such as `rdss` or `tdss`."
+              },
+              "properties": {
+                "title": "RadarRdaStatus",
+                "type": "object",
+                "description": "The status fields. A TDWR sends fewer of them than a WSR-88D.",
+                "properties": {
+                  "resolutionVersion": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "description": "Level II resolution version, such as `6`."
+                      },
+                      {
+                        "type": "null",
+                        "description": "Not stated: every TDWR answers null."
+                      }
+                    ],
+                    "description": "Level II resolution version."
+                  },
+                  "nl2Path": {
+                    "type": "string",
+                    "description": "Level II data path, such as `Default`."
+                  },
+                  "volumeCoveragePattern": {
+                    "type": "string",
+                    "description": "Scan strategy in use, such as `R35` (clear air) or `R212` (precipitation)."
+                  },
+                  "controlStatus": {
+                    "type": "string",
+                    "description": "Who controls the radar, such as `RPG (Remote) Only`."
+                  },
+                  "buildNumber": {
+                    "type": "number",
+                    "description": "Software build, such as `24.1`."
+                  },
+                  "alarmSummary": {
+                    "type": "string",
+                    "description": "Classes of active alarm, `|`-separated, such as `Transmitter|Communication`, or `No Alarms`."
+                  },
+                  "mode": {
+                    "type": "string",
+                    "description": "Operating mode, such as `Operational` or `Maintenance`."
+                  },
+                  "generatorState": {
+                    "type": "string",
+                    "description": "Power source state, such as `Utility PWR Available`. WSR-88D only."
+                  },
+                  "superResolutionStatus": {
+                    "type": "string",
+                    "description": "Whether super-resolution scanning is on. WSR-88D only."
+                  },
+                  "operabilityStatus": {
+                    "type": "string",
+                    "description": "Whether the radar needs maintenance, such as `RDA - On-Line`."
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "RDA state, such as `Operate` or `Standby`."
+                  },
+                  "averageTransmitterPower": {
+                    "$ref": "QuantitativeValue",
+                    "description": "Average transmitter power. WSR-88D only."
+                  },
+                  "reflectivityCalibrationCorrection": {
+                    "$ref": "QuantitativeValue",
+                    "description": "Reflectivity calibration correction. WSR-88D only."
+                  }
+                },
+                "required": [
+                  "nl2Path",
+                  "volumeCoveragePattern",
+                  "controlStatus",
+                  "buildNumber",
+                  "alarmSummary",
+                  "mode",
+                  "operabilityStatus",
+                  "status"
+                ]
+              }
+            },
+            "required": [
+              "timestamp",
+              "reportingHost",
+              "properties"
+            ]
+          },
+          {
+            "type": "null",
+            "description": "No status: every profiler, and a radar that is down."
+          }
+        ],
+        "description": "Status of the radar itself."
+      },
+      "performance": {
+        "anyOf": [
+          {
+            "$ref": "RadarReport",
+            "description": "The latest performance check."
+          },
+          {
+            "type": "null",
+            "description": "No report: every profiler, and a radar that is down."
+          }
+        ],
+        "description": "The latest performance check. Only `radar.get_station` sends it."
+      },
+      "adaptation": {
+        "anyOf": [
+          {
+            "$ref": "RadarReport",
+            "description": "The radar's adaptation (calibration) data."
+          },
+          {
+            "type": "null",
+            "description": "No report: every profiler, and a radar that is down."
+          }
+        ],
+        "description": "The radar's adaptation (calibration) data. Only `radar.get_station` sends it."
+      }
+    },
+    "required": [
+      "@id",
+      "id",
+      "name",
+      "stationType",
+      "latency",
+      "rda"
+    ]
+  },
+  "RadarStationFeature": {
+    "title": "RadarStationFeature",
+    "type": "object",
+    "description": "One radar, in the GeoJSON feature the API wraps it in.",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "URL of this radar."
+      },
+      "type": {
+        "type": "string",
+        "enum": [
+          "Feature"
+        ],
+        "description": "Always `Feature`."
+      },
+      "geometry": {
+        "$ref": "PointGeometry",
+        "description": "Where the radar is."
+      },
+      "properties": {
+        "$ref": "RadarStation",
+        "description": "The radar itself."
+      }
+    },
+    "required": [
+      "id",
+      "type",
+      "geometry",
+      "properties"
+    ]
   }
 }

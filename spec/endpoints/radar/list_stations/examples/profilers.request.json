@@ -1,0 +1,8 @@
+{
+  "description": "The wind profilers, whose status and latency are all null",
+  "request": {
+    "stationType": [
+      "Profiler"
+    ]
+  }
+}
