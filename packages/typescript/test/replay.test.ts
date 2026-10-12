@@ -12,7 +12,7 @@
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { beforeAll, describe, expect, inject, it } from 'vitest'
-import { Weather } from '../src/weather-gov/core/index.js'
+import { type RadarHost, Weather } from '../src/weather-gov/core/index.js'
 import type {
   PointGeometry,
   PolygonGeometry,
@@ -40,7 +40,7 @@ const ZONE_STATIONS = recorded<{ zone_id: string }>(
   'stations/list_stations_for_zone/examples/seattle.request.json',
 )
 const SPGDS = recorded<{ published: string }>('radar/list_spgds/examples/one_minute.request.json')
-const QUEUE = recorded<{ host: 'rds' | 'tds'; station: string; arrived: string; limit: number }>(
+const QUEUE = recorded<{ host: RadarHost; station: string; arrived: string; limit: number }>(
   'radar/get_queue/examples/seattle_capped.request.json',
 )
 
