@@ -3,7 +3,7 @@ import { type CallOptions, type Codec, type HttpEndpoint, type TimestampIso, t }
 import type { DefaultMeta } from '../meta.js'
 import { ZoneCollection, ZoneKind } from '../types/index.js'
 
-/** Which type, and which of its zones. Give one value per array filter: the service reads several only comma-separated, and this client sends them as repeated keys, of which the service keeps the last. */
+/** Which type, and which of its zones. An array filter means "any of" and travels as one comma-separated query item. */
 export interface Request {
   /** The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses). */
   zone_type: ZoneKind

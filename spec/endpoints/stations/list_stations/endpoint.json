@@ -1,6 +1,9 @@
 {
   "docs": "https://www.weather.gov/documentation/services-web-api#/default/obs_stations",
   "meta": {},
+  "match": {
+    "query_arrays": "comma"
+  },
   "spec": {
     "kind": "rpc",
     "transports": [
@@ -16,7 +19,7 @@
       "properties": {
         "id": {
           "type": "array",
-          "description": "Station identifiers to return, such as `KSEA`. Sent as a repeated query key, one per identifier.",
+          "description": "Station identifiers to return, such as `KSEA`. Several travel as one comma-separated query item.",
           "items": {
             "type": "string",
             "description": "One station identifier."
@@ -24,7 +27,7 @@
         },
         "state": {
           "type": "array",
-          "description": "Two-letter state or marine-area codes to narrow to. Sent as a repeated query key.",
+          "description": "Two-letter state or marine-area codes to narrow to. Several travel as one comma-separated query item.",
           "items": {
             "type": "string",
             "description": "One state or marine-area code."
@@ -49,6 +52,7 @@
     }
   },
   "notes": [
-    "No `pagination` block, deliberately. The service pages this endpoint, but it hands the next page back as a whole URL (`pagination.next`) rather than as the bare `cursor` value the request takes. Truewire's `token` strategy reads a cursor out of the response and sends it as a parameter; it has no way to say \"take the `cursor` query parameter out of this URL\". Declaring `cursor.from: \"pagination.next\"` would send the entire URL as the cursor and page nothing. So the walk is left undeclared rather than declared wrong."
+    "No `pagination` block, deliberately. The service pages this endpoint, but it hands the next page back as a whole URL (`pagination.next`) rather than as the bare `cursor` value the request takes. Truewire's `token` strategy reads a cursor out of the response and sends it as a parameter; it has no way to say \"take the `cursor` query parameter out of this URL\". Declaring `cursor.from: \"pagination.next\"` would send the entire URL as the cursor and page nothing. So the walk is left undeclared rather than declared wrong.",
+    "The service reads an array filter comma-separated (the OpenAPI declares `explode: false`), and keeps only the last of repeated keys. Measured 2026-09-30: `/stations?id=KSEA,KPDX` returns both stations, `id=KSEA&id=KPDX` only `KPDX`. The core joins every array filter with commas, and `match.query_arrays` tells `truewire mock` to expect that form, so a core that sent repeated keys would fail every recording with two values. The `two_ids` example pins it."
   ]
 }

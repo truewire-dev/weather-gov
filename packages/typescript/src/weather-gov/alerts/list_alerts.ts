@@ -3,7 +3,7 @@ import { type CallOptions, type Codec, type HttpEndpoint, type TimestampIso, t }
 import type { DefaultMeta } from '../meta.js'
 import { AlertCollection } from '../types/index.js'
 
-/** How to narrow the alerts. Every filter is optional; the array-valued ones are sent as repeated query keys and mean "any of". `area`, `point`, `region`, `region_type` and `zone` exclude each other: send at most one. */
+/** How to narrow the alerts. Every filter is optional; the array-valued ones mean "any of" and travel as one comma-separated query item. `area`, `point`, `region`, `region_type` and `zone` exclude each other: send at most one. */
 export interface Request {
   /** Earliest `sent` time to include. The service keeps about the last seven days of alerts. */
   start?: TimestampIso
@@ -17,7 +17,7 @@ export interface Request {
   event?: string[]
   /** Three-letter event codes to include, such as `SVR` (severe thunderstorm warning). */
   code?: string[]
-  /** Two-letter state, territory or marine-area codes to narrow to, such as `WA` or `PZ`. Sent as a repeated query key. Left un-enumerated deliberately: the service's own 400 lists only the marine half of what it accepts, and a guessed enum would reject the states. */
+  /** Two-letter state, territory or marine-area codes to narrow to, such as `WA` or `PZ`. Left un-enumerated deliberately: the service's own 400 lists only the marine half of what it accepts, and a guessed enum would reject the states. */
   area?: string[]
   /** A `latitude,longitude` pair; returns the alerts covering that point. */
   point?: string

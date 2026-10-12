@@ -1,6 +1,9 @@
 {
   "docs": "https://www.weather.gov/documentation/services-web-api#/default/alerts_query",
   "meta": {},
+  "match": {
+    "query_arrays": "comma"
+  },
   "spec": {
     "kind": "rpc",
     "transports": [
@@ -12,7 +15,7 @@
     "request": {
       "title": "ListAlertsRequest",
       "type": "object",
-      "description": "How to narrow the alerts. Every filter is optional; the array-valued ones are sent as repeated query keys and mean \"any of\". `area`, `point`, `region`, `region_type` and `zone` exclude each other: send at most one.",
+      "description": "How to narrow the alerts. Every filter is optional; the array-valued ones mean \"any of\" and travel as one comma-separated query item. `area`, `point`, `region`, `region_type` and `zone` exclude each other: send at most one.",
       "properties": {
         "start": {
           "type": "string",
@@ -70,7 +73,7 @@
         },
         "area": {
           "type": "array",
-          "description": "Two-letter state, territory or marine-area codes to narrow to, such as `WA` or `PZ`. Sent as a repeated query key. Left un-enumerated deliberately: the service's own 400 lists only the marine half of what it accepts, and a guessed enum would reject the states.",
+          "description": "Two-letter state, territory or marine-area codes to narrow to, such as `WA` or `PZ`. Left un-enumerated deliberately: the service's own 400 lists only the marine half of what it accepts, and a guessed enum would reject the states.",
           "items": {
             "type": "string",
             "description": "One state or marine-area code."
@@ -177,6 +180,7 @@
     }
   },
   "notes": [
+    "The service reads an array filter comma-separated (the OpenAPI declares `explode: false`), and keeps only the last of repeated keys, as `alerts.get_active_alerts` does. Measured 2026-10-12 over 2026-10-10T15:00Z to 2026-10-11T15:00Z: `area=WA,OR` returns 33 alerts titled \"... for Washington, Oregon\", `area=WA&area=OR` the 18 of `area=OR` alone, titled \"... for Oregon\". The core joins every array filter with commas, and `match.query_arrays` tells `truewire mock` to expect that form.",
     "No `pagination` block: `pagination.next` is a whole URL, and the token strategy cannot extract its query value. Use a standard URL parser (Python: parse_qs(urlsplit(next_url).query); TypeScript: new URL(nextUrl).searchParams; Rust: Url::query_pairs) to percent-decode the cursor exactly once. Resend every original filter and limit with that cursor: the next URL can omit them. Stop on an empty page or absent next cursor, never merely a short non-empty page. Python review measured 100 rows, then 76 with a next link, then empty.",
     "A `seek` walk over `start`/`end` is plausible but undeclared. The window bounds `sent` and the service answers newest first by it (measured 2026-09-30: all 177 actual alerts of 00:00 to 06:00Z on 2026-09-29 were sent inside the window, in descending order), but `sent` repeats (two alerts at 05:57Z in the first five rows), so the walk would need `unique: false`, and its anchor has not been measured.",
     "The deprecated `active` flag is left out; the OpenAPI marks it deprecated and points at `alerts.get_active_alerts`.",
