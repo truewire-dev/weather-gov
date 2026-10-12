@@ -79,6 +79,10 @@ class TestErrors:
     with pytest.raises(BadRequest, match='Bad Request'):
       raise_for_status('GET', '/points/1,2', 400, '{"detail": "Bad Request", "status": 400}')
 
+  def test_a_422_is_a_bad_request_like_a_400(self):
+    with pytest.raises(BadRequest, match=r'GET /radar/queues/rds: HTTP 422'):
+      raise_for_status('GET', '/radar/queues/rds', 422, '{}')
+
   def test_a_non_json_body_still_produces_a_useful_message(self):
     with pytest.raises(ApiError, match='<html>'):
       raise_for_status('GET', '/points/1,2', 502, '<html>gateway</html>')
