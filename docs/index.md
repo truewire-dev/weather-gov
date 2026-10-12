@@ -77,7 +77,7 @@ package's README. No key is needed, only a contact: [API keys](api-keys.md) expl
 | Language | Package | Import |
 | --- | --- | --- |
 | Python 3.11+ | `pip install truewire-weather-gov` | `weather_gov` |
-| TypeScript, Node 20+ | `npm install @truewire/weather-gov` | `@truewire/weather-gov` |
+| TypeScript, Node 22+ | `npm install @truewire/weather-gov` | `@truewire/weather-gov` |
 | Rust | `truewire-weather-gov` on crates.io | `weather_gov` |
 
 PyPI also has an unrelated `weather-gov` package that imports as `weather_gov`. The two
