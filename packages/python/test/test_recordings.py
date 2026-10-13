@@ -596,7 +596,9 @@ def radar_two_kinds(result: Any) -> None:
 
 def radar_station(result: Any) -> None:
   """One NEXRAD radar, whole: the feature, its latency in seconds, and the maintenance
-  reports only this endpoint sends."""
+  reports only this endpoint sends. Between reports a WSR-88D sends a report as `[]` with a
+  null `timestamp`, as a TDWR always does (KATX did on 2026-10-13), so a re-recording may
+  catch either."""
   asked = example_request('radar.get_station', 'seattle')
   radar = result['properties']
   assert radar['id'] == asked['station_id'] and radar['stationType'] == 'WSR-88D'
@@ -607,10 +609,15 @@ def radar_station(result: Any) -> None:
   assert radar['rda']['properties']['volumeCoveragePattern']
   for report in (radar['performance'], radar['adaptation']):
     readings = report['properties']
+    if readings == []:
+      assert report['timestamp'] is None
+      continue
     assert isinstance(readings, dict) and readings
     measured = [r for r in readings.values() if isinstance(r, dict)]
     assert measured and all('unitCode' in r for r in measured)
-  assert radar['performance']['properties']['transmitterPeakPower']['unitCode'] == 'wmoUnit:kW'
+  performance = radar['performance']['properties']
+  if performance:
+    assert performance['transmitterPeakPower']['unitCode'] == 'wmoUnit:kW'
 
 
 def radar_alarms(result: Any) -> None:
