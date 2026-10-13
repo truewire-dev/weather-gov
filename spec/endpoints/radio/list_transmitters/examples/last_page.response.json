@@ -1,0 +1,4810 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": {
+      "@version": "1.1"
+    },
+    "@graph": [
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KAD94",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KAD94",
+        "transmitterFrequency": "162.450",
+        "siteName": "Yosemite",
+        "siteCity": "Turtleback Dome",
+        "siteState": "CA",
+        "sameCodes": [
+          "006043"
+        ],
+        "counties": [
+          "CAC043"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WWG56",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WWG56",
+        "transmitterFrequency": "162.500",
+        "siteName": "Youngstown",
+        "siteCity": "Youngstown",
+        "siteState": "OH",
+        "sameCodes": [
+          "042073",
+          "042085",
+          "039019",
+          "039029",
+          "039099",
+          "039133",
+          "039151",
+          "039155"
+        ],
+        "counties": [
+          "PAC073",
+          "PAC085",
+          "OHC019",
+          "OHC029",
+          "OHC099",
+          "OHC133",
+          "OHC151",
+          "OHC155"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/WXL87",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "WXL87",
+        "transmitterFrequency": "162.550",
+        "siteName": "Yuma",
+        "siteCity": "Black Mtn.",
+        "siteState": "CA",
+        "sameCodes": [
+          "006065",
+          "006025",
+          "004027"
+        ],
+        "counties": [
+          "CAC065",
+          "CAC025",
+          "AZC027"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      },
+      {
+        "@id": "https://api.weather.gov/radio/KZZ91",
+        "@type": "wx:Transmitter",
+        "setId": "nwr-transmitters-20251021123534-sozfyxcq",
+        "callSign": "KZZ91",
+        "transmitterFrequency": "162.450",
+        "siteName": "Zarembo Island",
+        "siteCity": "Zarembo Island",
+        "siteState": "AK",
+        "sameCodes": [
+          "002280"
+        ],
+        "counties": [
+          "AKC280"
+        ]
+      }
+    ]
+  }
+}

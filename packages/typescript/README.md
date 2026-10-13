@@ -176,7 +176,7 @@ Passing `validate: false` to `Weather.new` makes that the default for the whole 
 
 ## What is covered
 
-The same thirty-four endpoints as the Python client, in the same nine groups, from the same spec: `points`, `forecast`, `stations`, `alerts`, `offices`, `products`, `zones`, `glossary`, `radar`. The method names are camelCase here and snake_case there; nothing else differs.
+The same forty-three endpoints as the Python client, in the same ten groups, from the same spec: `points`, `forecast`, `stations`, `alerts`, `offices`, `products`, `zones`, `radio`, `glossary`, `radar`. The method names are camelCase here and snake_case there; nothing else differs.
 
 ## Tests
 

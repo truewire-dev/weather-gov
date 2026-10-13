@@ -55,6 +55,15 @@ Generated with truewire 0.11.
   The old path still imports at runtime, but type checkers flag it, so import it from
   `weather_gov.schemas`. It gains an optional `pagination.next`, which only
   `alerts.list_alerts` sends.
+- **Nine more endpoints: one station, one observation, TAFs, office news, and radio.**
+  `stations.get_station`, `stations.get_observation` (the observation at an exact
+  timestamp) and `stations.list_tafs`; `offices.get_briefing`, `offices.list_headlines`,
+  `offices.get_headline` and `offices.list_weather_stories`; and a new `radio` group,
+  `list_transmitters` and `get_transmitter`.
+- **`Transmitter` and `TransmitterCollection` are shared schemas**, since the `radio`
+  endpoints return them too: import them from `weather_gov.schemas`, not
+  `weather_gov.zones.list_transmitters`. `TransmitterCollection` gains an optional
+  `pagination`, which only `radio.list_transmitters` sends.
 
 ## 0.1.0
 

@@ -1,0 +1,6 @@
+{
+  "description": "The terminal aerodrome forecasts for Seattle-Tacoma airport",
+  "request": {
+    "station_id": "KSEA"
+  }
+}

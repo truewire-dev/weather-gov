@@ -1,0 +1,5 @@
+{
+  "description": "NOAA Weather Radio: the transmitters that broadcast forecasts and warnings, and the counties each one serves.",
+  "upstream": "https://www.weather.gov/documentation/services-web-api#/default/transmitters",
+  "core": "default"
+}
