@@ -44,6 +44,15 @@ Generated with truewire 0.11.
   `list_sigmets`, `list_sigmets_for_atsu`, `list_sigmets_for_atsu_on_date` and
   `get_sigmet` for SIGMETs and AIRMETs. Their outlines are an `AdvisoryPolygon`, whose
   positions are latitude first, unlike every other geometry in this API.
+- **Nine more endpoints: one station, one observation, TAFs, office news, and radio.**
+  `stations.get_station`, `stations.get_observation` (the observation at an exact
+  timestamp) and `stations.list_tafs`; `offices.get_briefing`, `offices.list_headlines`,
+  `offices.get_headline` and `offices.list_weather_stories`; and a new `radio` group,
+  `list_transmitters` and `get_transmitter`.
+- **`Transmitter` and `TransmitterCollection` are shared schemas**, since the `radio`
+  endpoints return them too: import them from `weather_gov.schemas`, not
+  `weather_gov.zones.list_transmitters`. `TransmitterCollection` gains an optional
+  `pagination`, which only `radio.list_transmitters` sends.
 
 ## 0.1.0
 

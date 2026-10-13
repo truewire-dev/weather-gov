@@ -1,0 +1,39 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/office_headline",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/offices/{office_id}/headlines/{headline_id}",
+    "method": "GET",
+    "description": "One news headline an office has posted.",
+    "request": {
+      "title": "GetHeadlineRequest",
+      "type": "object",
+      "description": "Which office, and which headline.",
+      "properties": {
+        "office_id": {
+          "type": "string",
+          "description": "Three-letter office code, such as `AKQ`. `points.get_point` returns it as `gridId`."
+        },
+        "headline_id": {
+          "type": "string",
+          "description": "Headline id, such as `058e41fd34b935b395e9aaf0fe175dc9`. `offices.list_headlines` returns it as `id`."
+        }
+      },
+      "required": [
+        "office_id",
+        "headline_id"
+      ]
+    },
+    "response": {
+      "$ref": "OfficeHeadline",
+      "description": "The headline."
+    }
+  },
+  "notes": [
+    "`refresh_examples.py` repoints the example to the first headline `offices.list_headlines` records for the same office before every re-recording, since an office retires its headlines."
+  ]
+}

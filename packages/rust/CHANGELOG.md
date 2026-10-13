@@ -45,6 +45,19 @@
   `get_sigmet` for SIGMETs and AIRMETs. Their outlines are a `types::AdvisoryPolygon`, whose
   positions are latitude first, unlike every other geometry in this API.
   A unit is named by the shared enum `types::CwsuId`.
+- **Nine more endpoints: one station, one observation, TAFs, office news, and radio.**
+  `stations.get_station`, `stations.get_observation` (the observation at an exact
+  timestamp) and `stations.list_tafs`; `offices.get_briefing`, `offices.list_headlines`,
+  `offices.get_headline` and `offices.list_weather_stories`; and a new `radio` group,
+  `list_transmitters` and `get_transmitter`. `types::OfficeHeadline.id2` is the headline
+  token passed to `offices.get_headline`; `types::OfficeHeadline.id` is its URL
+  (wire `@id`). `types::Zone.id2` is the zone code; `types::Zone.id` is its URL
+  (wire `@id`). The [Rust names](../../CHANGELOG.md#rust-names) table lists every
+  JSON-LD field name truewire 0.11 derives.
+- **`Transmitter` and `TransmitterCollection` are in `weather_gov::types`**, not
+  `zones::list_transmitters`, since the `radio` endpoints return them too.
+  `TransmitterCollection` gains `pagination: Option<CollectionPagination>`, which only
+  `radio.list_transmitters` sends.
 - **Eight more endpoints: a new `radar` group.** `list_stations`, `get_station` and
   `list_station_alarms` for the radars themselves; `list_servers`, `get_server`, `get_queue`
   and `list_spgds` for the network that distributes their data; and `get_profiler`, which

@@ -1,0 +1,110 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/office_weatherstory",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/offices/{office_id}/weatherstories",
+    "method": "GET",
+    "description": "The weather stories an office has active: the forecast graphics on the front of its website, each with its text.",
+    "request": {
+      "title": "ListWeatherStoriesRequest",
+      "type": "object",
+      "description": "Which office.",
+      "properties": {
+        "office_id": {
+          "type": "string",
+          "description": "Three-letter office code, such as `AKQ`. `points.get_point` returns it as `gridId`."
+        }
+      },
+      "required": [
+        "office_id"
+      ]
+    },
+    "response": {
+      "title": "WeatherStoryCollection",
+      "type": "object",
+      "description": "The office's active weather stories.",
+      "properties": {
+        "stories": {
+          "type": "array",
+          "description": "The stories. Empty for an office that has none active.",
+          "items": {
+            "title": "WeatherStory",
+            "type": "object",
+            "description": "One weather story: a graphic, and the text that goes with it.",
+            "properties": {
+              "officeId": {
+                "type": "string",
+                "description": "Code of the office that issued it, such as `AKQ`."
+              },
+              "startTime": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the story took effect."
+              },
+              "endTime": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When it stops being current."
+              },
+              "updateTime": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When it was last updated."
+              },
+              "title": {
+                "type": "string",
+                "description": "Title, such as `Today's Forecast`."
+              },
+              "description": {
+                "type": "string",
+                "description": "The story as plain text."
+              },
+              "altText": {
+                "type": "string",
+                "description": "Alternative text for the graphic."
+              },
+              "priority": {
+                "type": "boolean",
+                "description": "Whether the office flagged it as a priority."
+              },
+              "order": {
+                "type": "integer",
+                "description": "Where the office places it among its stories, lowest first."
+              },
+              "download": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "URL of the graphic. The service answers only an image there, so no endpoint here fetches it. Null on a few stories: 3 of 252 across every office on 2026-09-30."
+              }
+            },
+            "required": [
+              "officeId",
+              "startTime",
+              "endTime",
+              "updateTime",
+              "title",
+              "description",
+              "altText",
+              "priority",
+              "order",
+              "download"
+            ]
+          }
+        }
+      },
+      "required": [
+        "stories"
+      ]
+    }
+  }
+}

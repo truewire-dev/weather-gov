@@ -2,6 +2,7 @@
 """Shapes shared by two or more endpoints under the client root, generated from `spec/schemas.json`."""
 
 from typing_extensions import Literal, NotRequired, TypedDict
+from decimal import Decimal
 from truewire_core.types import TimestampIso
 
 
@@ -137,6 +138,35 @@ class ObservationPagination(TypedDict):
 
   next: NotRequired[str]
   """URL of the next page. Absent on the last one."""
+
+
+OfficeHeadlineKeywords = TypedDict('OfficeHeadlineKeywords', {'@id': str})
+"""
+- `@id`: URL of the headline.
+"""
+
+
+class OfficeHeadline(OfficeHeadlineKeywords):
+  """One news headline an office has posted: a title and a link, usually to a page or a PDF on the office's own site."""
+
+  id: str
+  """Headline id, such as `058e41fd34b935b395e9aaf0fe175dc9`. This is what `offices.get_headline` takes."""
+  office: str
+  """URL of the office that posted it."""
+  important: bool
+  """Whether the office flagged it as important."""
+  issuanceTime: TimestampIso
+  """When it was posted."""
+  link: str
+  """Where the headline points."""
+  name: str
+  """The office's own short name for it, such as `latestbrief`."""
+  title: str
+  """Headline text."""
+  summary: str | None
+  """Longer summary. Null on most headlines: 113 of 149 across every office on 2026-09-30."""
+  content: str
+  """The headline as an HTML fragment: an `<a>` around `title`, its `href` percent-encoded."""
 
 
 class PointGeometry(TypedDict):
@@ -301,6 +331,36 @@ class Sigmet(TypedDict):
   """Start of the period the message is valid for."""
   end: TimestampIso
   """End of the period the message is valid for."""
+
+
+TransmitterKeywords = TypedDict(
+  'TransmitterKeywords', {'@id': str, '@type': NotRequired[Literal['wx:Transmitter']]}
+)
+"""
+  - `@id`: URL of the transmitter.
+  - `@type`: Always `wx:Transmitter`.
+"""
+
+
+class Transmitter(TransmitterKeywords):
+  """One NOAA Weather Radio transmitter."""
+
+  setId: NotRequired[str]
+  """Which release of the transmitter list this came from."""
+  callSign: str
+  """Call sign, such as `KHB60`."""
+  transmitterFrequency: Decimal
+  """Frequency in MHz, such as `162.550`."""
+  siteName: NotRequired[str]
+  """Name of the transmitter, such as `Seattle`."""
+  siteCity: NotRequired[str]
+  """Where the transmitter stands."""
+  siteState: NotRequired[str]
+  """Two-letter state of the site."""
+  sameCodes: NotRequired[list[str]]
+  """SAME codes of the counties it broadcasts for: `0`, the FIPS state, the FIPS county, such as `053033`."""
+  counties: list[str]
+  """County zone codes it broadcasts for, such as `WAC033`, in the order of `sameCodes`."""
 
 
 ZoneKeywords = TypedDict('ZoneKeywords', {'@id': str, '@type': NotRequired[Literal['wx:Zone']]})
@@ -544,7 +604,7 @@ class RadarReport(TypedDict):
   reportingHost: str
   """Monitoring host that collected it, such as `rdss` or `tdss`."""
   properties: dict[str, QuantitativeValue | str | float] | list[str]
-  """The readings, by name. Their set depends on the kind of radar and is not documented, so they are a map rather than fields; a TDWR sends `[]`."""
+  """The readings, by name. Their set depends on the kind of radar and is not documented, so they are a map rather than fields. Any radar may send `[]` with a null `timestamp`: a TDWR always, a WSR-88D between reports (24 to 95 of 159 at a time on 2026-10-13)."""
 
 
 class RadarServerNetwork(TypedDict):
@@ -594,6 +654,21 @@ class Station(TypedDict):
   """How far the station is from the grid cell asked about. Only `stations.list_stations_for_gridpoint` sends it."""
   bearing: NotRequired[QuantitativeValue]
   """Direction from the grid cell to the station, in degrees clockwise from true north. Only `stations.list_stations_for_gridpoint` sends it."""
+
+
+TransmitterCollectionKeywords = TypedDict(
+  'TransmitterCollectionKeywords', {'@graph': list[Transmitter]}
+)
+"""
+- `@graph`: The transmitters. Each one arrives many times over, identical: 64 copies of each on 2026-09-30.
+"""
+
+
+class TransmitterCollection(TransmitterCollectionKeywords):
+  """NOAA Weather Radio transmitters, as a JSON-LD graph."""
+
+  pagination: NotRequired[CollectionPagination]
+  """Where the next page is. Only `radio.list_transmitters` sends it, and not on its last page."""
 
 
 class ZoneFeature(TypedDict):
@@ -844,6 +919,7 @@ class StationCollection(TypedDict):
   observationStations: NotRequired[list[str]]
   """The same stations as bare URLs, in the same order."""
   pagination: NotRequired[CollectionPagination]
+  """Where the next page is."""
 
 
 class ObservationCollection(TypedDict):

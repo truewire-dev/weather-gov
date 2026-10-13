@@ -1,0 +1,58 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": {
+      "@version": "1.1"
+    },
+    "@graph": [
+      {
+        "@id": "https://api.weather.gov/offices/AKQ/headlines/8c67c3a1e638b30d1d9dd1524ab53330",
+        "id": "8c67c3a1e638b30d1d9dd1524ab53330",
+        "office": "https://api.weather.gov/offices/AKQ",
+        "important": false,
+        "issuanceTime": "2026-09-29T23:55:00+00:00",
+        "link": "https://www.weather.gov/akq/Sep23262026_NoreasterSummary",
+        "name": "sep23262026_noreaster",
+        "title": "NWS Wakefield Nor'Easter/Coastal Flooding Summary Page",
+        "summary": null,
+        "content": "<a href=\"www.weather.gov%2Fakq%2FSep23262026_NoreasterSummary\">NWS Wakefield Nor'Easter/Coastal Flooding Summary Page</a>"
+      },
+      {
+        "@id": "https://api.weather.gov/offices/AKQ/headlines/058e41fd34b935b395e9aaf0fe175dc9",
+        "id": "058e41fd34b935b395e9aaf0fe175dc9",
+        "office": "https://api.weather.gov/offices/AKQ",
+        "important": false,
+        "issuanceTime": "2026-08-03T14:11:00+00:00",
+        "link": "https://www.weather.gov/media/akq/DssPacket.pdf",
+        "name": "latestbrief",
+        "title": "NWS Wakefield Main Daily Briefing (PDF updated by 930 am)",
+        "summary": null,
+        "content": "<a href=\"https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fakq%2FDssPacket.pdf\">NWS Wakefield Main Daily Briefing (PDF updated by 930 am)</a>"
+      },
+      {
+        "@id": "https://api.weather.gov/offices/AKQ/headlines/5de9717c98fa014a521f67130574e8fd",
+        "id": "5de9717c98fa014a521f67130574e8fd",
+        "office": "https://api.weather.gov/offices/AKQ",
+        "important": false,
+        "issuanceTime": "2026-08-03T14:14:00+00:00",
+        "link": "https://www.weather.gov/media/akq/DSSBuilder/MarineBriefing.pdf",
+        "name": "marinebriefing",
+        "title": "Daily Marine Briefing (PDF Updated by 930 am)",
+        "summary": null,
+        "content": "<a href=\"https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fakq%2FDSSBuilder%2FMarineBriefing.pdf\">Daily Marine Briefing (PDF Updated by 930 am)</a>"
+      },
+      {
+        "@id": "https://api.weather.gov/offices/AKQ/headlines/ec80f11bc319d3877242b440909b076e",
+        "id": "ec80f11bc319d3877242b440909b076e",
+        "office": "https://api.weather.gov/offices/AKQ",
+        "important": false,
+        "issuanceTime": "2026-08-27T08:29:00+00:00",
+        "link": "https://www.weather.gov/beach/akq",
+        "name": "ripforecast",
+        "title": "Beach and Rip Current Forecasts - Know Before You Go",
+        "summary": null,
+        "content": "<a href=\"https%3A%2F%2Fwww.weather.gov%2Fbeach%2Fakq\">Beach and Rip Current Forecasts - Know Before You Go</a>"
+      }
+    ]
+  }
+}
