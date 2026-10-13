@@ -5,11 +5,15 @@ use std::sync::Arc;
 use truewire_core::HttpEndpoint;
 
 use crate::alerts::Alerts;
+use crate::aviation::Aviation;
 use crate::forecast::Forecast;
+use crate::glossary::Glossary;
 use crate::meta::DefaultMeta;
 use crate::offices::Offices;
 use crate::points::Points;
 use crate::products::Products;
+use crate::radar::Radar;
+use crate::radio::Radio;
 use crate::stations::Stations;
 use crate::zones::Zones;
 
@@ -20,14 +24,22 @@ use crate::zones::Zones;
 pub struct Weather {
     /// Watches, warnings and advisories in effect.
     pub alerts: Alerts,
+    /// Aviation weather: the Center Weather Service Units at the FAA's en-route centers and the advisories they issue, and the SIGMETs and AIRMETs that warn aircraft in flight of significant weather.
+    pub aviation: Aviation,
     /// Forecasts for one grid cell: the twice-daily narrative, the hourly series, and the raw gridded data both are rendered from.
     pub forecast: Forecast,
+    /// The service's glossary of weather terms and abbreviations.
+    pub glossary: Glossary,
     /// The weather forecast offices that issue everything else here.
     pub offices: Offices,
     /// Turning a latitude/longitude into the grid the rest of the API is addressed by.
     pub points: Points,
     /// The text products the service publishes, by type.
     pub products: Products,
+    /// The radar network: the NEXRAD, TDWR and profiler radars, their status and alarms, and the servers and queues that distribute their Level II data.
+    pub radar: Radar,
+    /// NOAA Weather Radio: the transmitters that broadcast forecasts and warnings, and the counties each one serves.
+    pub radio: Radio,
     /// Observation stations and what they have reported.
     pub stations: Stations,
     /// Forecast, county, fire-weather and marine zones: the areas forecasts, alerts and radio broadcasts are issued for.
@@ -44,10 +56,14 @@ impl Weather {
         let core: Arc<dyn HttpEndpoint<DefaultMeta>> = Arc::new(core);
         Self {
             alerts: Alerts::new(core.clone()),
+            aviation: Aviation::new(core.clone()),
             forecast: Forecast::new(core.clone()),
+            glossary: Glossary::new(core.clone()),
             offices: Offices::new(core.clone()),
             points: Points::new(core.clone()),
             products: Products::new(core.clone()),
+            radar: Radar::new(core.clone()),
+            radio: Radio::new(core.clone()),
             stations: Stations::new(core.clone()),
             zones: Zones::new(core),
         }

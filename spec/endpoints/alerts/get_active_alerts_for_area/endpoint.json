@@ -1,0 +1,31 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/alerts_active_area",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/alerts/active/area/{area}",
+    "method": "GET",
+    "description": "The alerts in effect for one state, territory or marine area. The same as `alerts.get_active_alerts` narrowed by `area`, with the area in the path. Takes no other filter, so drills and test messages come back too; `alerts.get_active_alerts` with `status: [\"actual\"]` leaves them out.",
+    "request": {
+      "title": "GetActiveAlertsForAreaRequest",
+      "type": "object",
+      "description": "Which area.",
+      "properties": {
+        "area": {
+          "type": "string",
+          "description": "Two-letter state, territory or marine-area code, such as `WA` or `PZ`. Un-enumerated for the reason `alerts.get_active_alerts` gives for `area`."
+        }
+      },
+      "required": [
+        "area"
+      ]
+    },
+    "response": {
+      "$ref": "AlertCollection",
+      "description": "The alerts in effect for the area, as a GeoJSON feature collection. Empty when there are none."
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # Reference
 
-Seven groups, twenty-seven endpoints, every one recorded against the live API. Each signature is
+Eleven groups, fifty-eight endpoints, every one but `radar.get_profiler` recorded against the live API. Each signature is
 generated from the endpoint's schema, so the types in your editor are the reference: every
 field carries its description, and every method's docstring links the service's own page
 for the endpoint.
@@ -33,17 +33,28 @@ for the endpoint.
 | `list_stations_for_zone` | `GET /zones/forecast/{zone_id}/stations` | whole: the stations in a public zone |
 | `list_stations_for_gridpoint` | `GET /gridpoints/{office}/{grid_x},{grid_y}/stations` | whole: stations nearest a grid cell, with distance and bearing |
 | `get_observations_for_zone` | `GET /zones/forecast/{zone_id}/observations` | whole: every station of a zone, merged newest first |
+| `get_station` | `GET /stations/{station_id}` | whole: one station, with its location |
+| `get_observation` | `GET /stations/{station_id}/observations/{time}` | unwrapped: the observation at exactly `time` |
+| `list_tafs` | `GET /stations/{station_id}/tafs` | whole: an airport's terminal aerodrome forecasts, in JSON-LD |
 
 `get_observations` has a paged twin, `get_observations_paged`, which walks a whole span
 by moving `end` ([Walk a span of observations](../how-to/walk-observations.md)).
 `get_observations_for_zone` has none: its stations report on the same minutes and its
 `end` is exclusive, so a walk would skip rows. Walk each station instead.
+`get_observation` takes the exact `timestamp` of an observation the station reported: a
+moment between two answers 404.
 
 ## `alerts`
 
 | Endpoint | Upstream | Returns |
 | --- | --- | --- |
 | `get_active_alerts` | `GET /alerts/active` | whole: a feature collection of alerts |
+| `get_active_alerts_for_zone` | `GET /alerts/active/zone/{zone_id}` | whole: the same, for one zone |
+| `get_active_alerts_for_area` | `GET /alerts/active/area/{area}` | whole: the same, for one state or marine area |
+| `get_active_alerts_for_region` | `GET /alerts/active/region/{region}` | whole: the same, for one marine region |
+| `count_active_alerts` | `GET /alerts/active/count` | whole: counts by land, marine, region, area and zone |
+| `list_alerts` | `GET /alerts` | whole: the last week of alerts, in effect or not, by `cursor` |
+| `list_alert_types` | `GET /alerts/types` | whole: every event name alerts are issued under |
 | `get_alert` | `GET /alerts/{id}` | whole: one alert, with its polygon when it has one |
 
 `status`, `region`, `severity`, `urgency` and `certainty` are enumerations spelled as the
@@ -54,6 +65,10 @@ service spells them: `actual`, but `Severe`, `Immediate` and `Likely`.
 | Endpoint | Upstream | Returns |
 | --- | --- | --- |
 | `get_office` | `GET /offices/{office_id}` | whole: one office, in schema.org JSON-LD |
+| `get_briefing` | `GET /offices/{office_id}/briefing` | whole: the office's active briefing, or null |
+| `list_headlines` | `GET /offices/{office_id}/headlines` | whole: the office's news headlines, in JSON-LD |
+| `get_headline` | `GET /offices/{office_id}/headlines/{headline_id}` | whole: one headline |
+| `list_weather_stories` | `GET /offices/{office_id}/weatherstories` | whole: the office's active weather stories |
 
 ## `products`
 
@@ -83,8 +98,64 @@ repeat to the minute, so a walk would skip products.
 | `get_forecast` | `GET /zones/{zone_type}/{zone_id}/forecast` | unwrapped: a public zone's text forecast |
 | `list_transmitters` | `GET /zones/{zone_type}/{zone_id}/radio` | whole: a county's weather radio transmitters, in JSON-LD |
 
-Array filters take one value each until TRU-495: the service reads several only
-comma-separated.
+An array filter takes several values and means "any of". The clients send them as one
+comma-separated item, the only form the service reads: it keeps only the last of a
+repeated key.
+
+## `radio`
+
+| Endpoint | Upstream | Returns |
+| --- | --- | --- |
+| `list_transmitters` | `GET /radio` | whole: one page of every weather radio transmitter, in JSON-LD |
+| `get_transmitter` | `GET /radio/{call_sign}` | whole: one transmitter |
+
+`radio.list_transmitters` pages by a whole URL in `pagination.next`, so it has no paged
+twin: pass the `cursor` from that URL to fetch the next page yourself.
+
+## `aviation`
+
+| Endpoint | Upstream | Returns |
+| --- | --- | --- |
+| `get_cwsu` | `GET /aviation/cwsus/{cwsu_id}` | whole: one Center Weather Service Unit, in schema.org |
+| `list_cwas` | `GET /aviation/cwsus/{cwsu_id}/cwas` | whole: the unit's advisories of about the last week, newest first |
+| `get_cwa` | `GET /aviation/cwsus/{cwsu_id}/cwas/{date}/{sequence}` | whole: one Center Weather Advisory, with its outline |
+| `list_sigmets` | `GET /aviation/sigmets` | whole: SIGMETs and AIRMETs of about the last week, filtered, newest first |
+| `list_sigmets_for_atsu` | `GET /aviation/sigmets/{atsu}` | whole: the same, from one unit |
+| `list_sigmets_for_atsu_on_date` | `GET /aviation/sigmets/{atsu}/{date}` | whole: the same, from one unit on one UTC date |
+| `get_sigmet` | `GET /aviation/sigmets/{atsu}/{date}/{time}` | whole: one SIGMET or AIRMET, with its outline |
+
+The outlines put latitude first, the reverse of every other geometry in this API, and are
+not wrapped at the antimeridian. Nothing here pages: a list answers everything it matched.
+`list_sigmets` has no `atsu` or `end` filter, though the service documents both: it
+redirects the first and does not apply the second as an upper bound. The endpoints'
+`notes` hold the measurements.
+
+## `glossary`
+
+| Endpoint | Upstream | Returns |
+| --- | --- | --- |
+| `list_terms` | `GET /glossary` | whole: every term with its definition, in JSON-LD, about 900 KB |
+
+## `radar`
+
+| Endpoint | Upstream | Returns |
+| --- | --- | --- |
+| `list_stations` | `GET /radar/stations` | whole: every radar, with its latency and status |
+| `get_station` | `GET /radar/stations/{station_id}` | whole: one radar, with its maintenance reports |
+| `list_station_alarms` | `GET /radar/stations/{station_id}/alarms` | whole: a radar's alarm log, newest first, in JSON-LD |
+| `list_servers` | `GET /radar/servers` | whole: the data distribution servers and their health, in JSON-LD |
+| `get_server` | `GET /radar/servers/{server_id}` | whole: one server |
+| `get_queue` | `GET /radar/queues/{host}` | whole: the Level II products through one host's queue, in JSON-LD |
+| `list_spgds` | `GET /radar/spgds` | whole: status reports from the SPG data servers, in JSON-LD |
+| `get_profiler` | `GET /radar/profilers/{station_id}` | whole, untyped: whatever the service sends for one wind profiler |
+
+`get_queue` and `list_spgds` take ISO 8601 intervals as strings, such as
+`2026-09-30T23:00:00Z/PT10M`, and the service keeps about a week of either. The SPG
+reports send their times as Unix seconds in strings; the clients parse them into real
+times. Seven of the eight are recorded. `get_profiler` has never answered: every
+profiler answered 404 on 2026-10-01, so it has no example and its response has no fields
+to describe. `get_queue`'s `created` filter answered 503 that day; the client sends it,
+but no example uses it.
 
 ## In each language
 

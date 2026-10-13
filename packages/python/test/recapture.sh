@@ -12,7 +12,8 @@
 # The request half of each example (`examples/<id>.request.json`) is the source of truth:
 # this script replays exactly those, so re-recording keeps the same ids and descriptions
 # and only the responses move. Some of them go stale on their own and are repaired first --
-# see `refresh_examples.py`.
+# see `refresh_examples.py`. The few that cannot be repaired are listed in
+# `frozen_examples.txt`, and keep the response they were captured with.
 #
 # One example failing does not stop the rest. A live API will always have one endpoint
 # having a bad day, and a recording run should bank what it was given and report the
@@ -41,16 +42,33 @@ capture_example() {
   truewire capture "$function" --id "$id" -d "$description" --request "$parameters" --new "contact=$CONTACT"
 }
 
+frozen=packages/python/test/frozen_examples.txt
+kept=0
+
 for request in spec/endpoints/*/*/examples/*.request.json; do
-  if capture_example "$request"; then
-    recorded=$((recorded + 1))
+  if grep -qxF "$request" "$frozen"; then
+    echo "kept $request: listed in $frozen"
+    kept=$((kept + 1))
     continue
   fi
-  failed="$failed $request"
+  # The service answers a few percent of requests with a 500 that the same request, sent
+  # again, answers normally, and `truewire capture` sends once. A request whose half was
+  # repointed and then not recorded leaves the old response beside the new request, which
+  # fails the gates, so a 500 is worth two resends.
+  attempt=1
+  until capture_example "$request"; do
+    if [ "$attempt" -ge 3 ]; then
+      failed="$failed $request"
+      continue 2
+    fi
+    attempt=$((attempt + 1))
+    sleep $((attempt * 2))
+  done
+  recorded=$((recorded + 1))
 done
 
 echo
-echo "recorded $recorded example(s)"
+echo "recorded $recorded example(s), kept $kept frozen"
 if [ -n "$failed" ]; then
   echo 'these did not record:'
   for request in $failed; do echo "  $request"; done

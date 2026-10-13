@@ -1,0 +1,6 @@
+{
+  "description": "Each day's first eastern convective SIGMET",
+  "request": {
+    "sequence": "1E"
+  }
+}

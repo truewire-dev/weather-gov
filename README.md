@@ -182,25 +182,31 @@ GET /alerts/active: HTTP 400: query.zone[0]: Does not match the regex pattern
 
 ## What is covered
 
-Twenty-seven endpoints, in seven groups:
+Fifty-eight endpoints, in eleven groups:
 
 | Group | Endpoints |
 | --- | --- |
 | `points` | `get_point` |
 | `forecast` | `get_forecast`, `get_hourly_forecast`, `get_grid_data` |
-| `stations` | `list_stations`, `list_stations_for_zone`, `list_stations_for_gridpoint`, `get_observations`, `get_observations_for_zone`, `get_latest_observation` |
-| `alerts` | `get_active_alerts`, `get_alert` |
-| `offices` | `get_office` |
+| `stations` | `list_stations`, `list_stations_for_zone`, `list_stations_for_gridpoint`, `get_station`, `get_observations`, `get_observations_for_zone`, `get_observation`, `get_latest_observation`, `list_tafs` |
+| `alerts` | `get_active_alerts`, `get_active_alerts_for_zone`, `get_active_alerts_for_area`, `get_active_alerts_for_region`, `count_active_alerts`, `list_alerts`, `list_alert_types`, `get_alert` |
+| `offices` | `get_office`, `get_briefing`, `list_headlines`, `get_headline`, `list_weather_stories` |
 | `products` | `list_product_types`, `list_products`, `get_product`, `list_products_by_type`, `list_products_by_type_and_location`, `get_latest_product`, `list_locations`, `list_locations_for_type`, `list_types_for_location` |
 | `zones` | `list_zones`, `list_zones_by_type`, `get_zone`, `get_forecast`, `list_transmitters` |
+| `radio` | `list_transmitters`, `get_transmitter` |
+| `aviation` | `get_cwsu`, `list_cwas`, `get_cwa`, `list_sigmets`, `list_sigmets_for_atsu`, `list_sigmets_for_atsu_on_date`, `get_sigmet` |
+| `glossary` | `list_terms` |
+| `radar` | `list_stations`, `get_station`, `list_station_alarms`, `list_servers`, `get_server`, `get_queue`, `list_spgds`, `get_profiler` (no recording) |
 
-Three response vocabularies, because the API uses three: GeoJSON for most of it, schema.org for the offices, JSON-LD for the product types and the radio transmitters. The spec describes each as it actually arrives.
+Three response vocabularies, because the API uses three: GeoJSON for most of it, schema.org for the offices and the aviation weather units, JSON-LD for the product types, the radio transmitters, the terminal aerodrome forecasts, the offices' briefings, headlines and weather stories, the glossary, and the radar network's servers, queues and alarms. The spec describes each as it actually arrives, down to the aviation outlines, which put latitude first where the rest of the API puts longitude first.
 
-The same twenty-seven endpoints in [TypeScript](packages/typescript/README.md) and [Rust](packages/rust/README.md), from this one spec. The three clients are equivalent, `stations.get_observations_paged` included.
+The same fifty-eight endpoints in [TypeScript](packages/typescript/README.md) and [Rust](packages/rust/README.md), from this one spec. The three clients are equivalent, `stations.get_observations_paged` included.
 
 ## Recordings
 
-Every endpoint carries the request half of at least one example — the exact parameters the tests and the recording script replay — and every one of them has a recorded response. All twenty-seven, with no exceptions and no endpoint declaring a missing credential, because there are no credentials to miss.
+Every endpoint but one carries the request half of at least one example — the exact parameters the tests and the recording script replay — and every one of them has a recorded response. Fifty-seven of fifty-eight, and no endpoint declares a missing credential, because there are no credentials to miss.
+
+The one is `radar.get_profiler`. The service documents it, but on 2026-10-01 every profiler answered a JSON 404, so its spec says why it has no recording rather than leaving it out. It is built from the documentation, with a response left unconstrained because no body has been seen to describe, and its 404s are never saved as examples. Likewise `radar.get_queue` takes the documented `created` filter, which answered 503 on every try that day, so no example uses it.
 
 The response halves are recorded from the live API through this same generated client, so a recording is the wire body the client saw and the response types are proven against it, never written by hand.
 
@@ -209,8 +215,16 @@ Some examples go stale on their own, and [`packages/python/test/refresh_examples
 - The service keeps about a week of observations and then drops them, so an old window records as an empty `FeatureCollection` — a 200 with nothing in it, which records exactly as happily as a full one. `stations.get_observations_for_zone` reads the same week, so its window moves with the station's.
 - Alerts expire, usually within hours, and `alerts.get_alert` names one by identifier. The replacement is read from whatever is severe and in effect right now.
 - The service keeps text products for a week or two, so the window of `products.list_products` moves with the observations', and `products.get_product` is repointed to Seattle's latest area forecast discussion.
+- The same goes for the zone, area and region the `get_active_alerts_for_*` examples name, which move to a place `alerts.count_active_alerts` still counts an alert in, and for the six-hour window of `alerts.list_alerts`, which moves with the observations'.
+- `alerts.list_alerts`' second page carries the cursor its first page answers, which expires with the window, so it is read again from the service for the moved window. `alerts.get_alert`'s `null_description` moves to the newest alert in the service's week whose description is an explicit null.
+- The service keeps about a week of aviation advisories, and `aviation.get_cwa`, `aviation.get_sigmet` and `aviation.list_sigmets_for_atsu_on_date` name a day. Each is moved to the newest message of the unit its list example records.
+- `stations.get_observation` names one observation by its exact timestamp, which ages out with the rest of the week. It moves to the newest METAR in the same settled window.
+- `offices.get_headline` names a headline by id, and offices retire them. It moves to the first headline the office lists now; `offices.get_briefing`'s `active` example moves to an office with a briefing out, when its own has none.
+- `radio.list_transmitters` records the last page, the smallest of about 131, and its cursor moves if the list does. A cursor past the end records an empty `@graph` with a 200, so the refresh finds the last page again.
 
-The tests read what the refresh moves — the window, the identifier, the product id, the row count — from the examples rather than from constants, so a repair is not a failure.
+One example cannot be repaired: `alerts.get_alert`'s `null_response`, an alert whose `response` is an explicit null, which may not exist in the service's week at all. It is listed in [`packages/python/test/frozen_examples.txt`](packages/python/test/frozen_examples.txt), is not re-recorded, and keeps the response it was captured with.
+
+The tests read what the refresh moves — the window, the identifier, the place, the product id, the row count — from the examples rather than from constants, so a repair is not a failure.
 
 - [`packages/python/test/recapture.sh`](packages/python/test/recapture.sh) re-records everything. Run it locally, or through the [Record workflow](.github/workflows/record.yml) (Actions, "Record", run workflow), which records on a runner, pushes to a `record/<run id>` branch and opens a pull request. It also runs weekly on its own, because a recording goes stale whether or not anyone is looking.
 - Tests replay the recordings through the client against `truewire mock`, which serves them over real HTTP; nothing in the tests touches the network.

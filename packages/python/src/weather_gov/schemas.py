@@ -2,7 +2,20 @@
 """Shapes shared by two or more endpoints under the client root, generated from `spec/schemas.json`."""
 
 from typing_extensions import Literal, NotRequired, TypedDict
+from decimal import Decimal
 from truewire_core.types import TimestampIso
+
+
+class AdvisoryPolygon(TypedDict):
+  """The area an aviation advisory covers. Shaped like a GeoJSON `Polygon`, but each position is latitude first (`AdvisoryPosition`), so a GeoJSON library draws it transposed."""
+
+  type: Literal['Polygon']
+  """Always `Polygon`."""
+  coordinates: list[list[tuple[float, float]]]
+  """Linear rings; the first is the outer boundary. Each ring repeats its first position as its last."""
+
+
+AdvisoryPosition = tuple[float, float]
 
 
 class AlertGeocode(TypedDict):
@@ -12,6 +25,13 @@ class AlertGeocode(TypedDict):
   """SAME (Specific Area Message Encoding) codes, one per county."""
   UGC: NotRequired[list[str]]
   """UGC (Universal Geographic Code) zone codes."""
+
+
+class AlertPagination(TypedDict):
+  """Present on `alerts.list_alerts` only: where the next page is."""
+
+  next: str
+  """URL containing the next cursor, which must be percent-decoded with a URL parser. Resend the original filters and limit. Stop on an empty page or absent next cursor, not on a short non-empty page."""
 
 
 class AlertReference(TypedDict):
@@ -25,11 +45,81 @@ class AlertReference(TypedDict):
   """When the referenced alert was sent."""
 
 
+class CenterWeatherAdvisory(TypedDict):
+  """A Center Weather Advisory: a short-fused warning of weather hazardous to aircraft inside one en-route center's airspace."""
+
+  id: str
+  """Canonical URL of the advisory, ending in its issue date and sequence number: the arguments `aviation.get_cwa` takes."""
+  issueTime: TimestampIso
+  """When the advisory was issued."""
+  cwsu: Literal[
+    'ZAB',
+    'ZAN',
+    'ZAU',
+    'ZBW',
+    'ZDC',
+    'ZDV',
+    'ZFA',
+    'ZFW',
+    'ZHU',
+    'ZID',
+    'ZJX',
+    'ZKC',
+    'ZLA',
+    'ZLC',
+    'ZMA',
+    'ZME',
+    'ZMP',
+    'ZNY',
+    'ZOA',
+    'ZOB',
+    'ZSE',
+    'ZTL',
+  ]
+  """Three-letter code of a Center Weather Service Unit: the NWS meteorologists posted at one FAA air route traffic control center, and named after it (`ZSE` is Seattle Center)."""
+  sequence: int
+  """Sequence number within the day: the hundreds digit numbers a hazard and the rest counts the advisories about it (`101`, `102`, then `201` for a second hazard). Not always unique: measured 2026-09-30, `ZAB` issued two `206`s that day."""
+  start: TimestampIso
+  """Start of the period the advisory is valid for."""
+  end: TimestampIso
+  """End of the period the advisory is valid for."""
+  observedProperty: str | None
+  """What the advisory was issued for, as a code URL; null on a few."""
+  text: str
+  """The advisory itself, in the abbreviated plain language of aviation weather (`AREA TS MOV LTL TOPS TO FL280`)."""
+
+
 class CollectionPagination(TypedDict):
   """Where the next page is. A whole URL, not a bare cursor -- which is why no endpoint returning this declares a pagination strategy."""
 
   next: NotRequired[str]
   """URL of the next page, cursor already in the query string. Absent on the last page."""
+
+
+CwsuId = Literal[
+  'ZAB',
+  'ZAN',
+  'ZAU',
+  'ZBW',
+  'ZDC',
+  'ZDV',
+  'ZFA',
+  'ZFW',
+  'ZHU',
+  'ZID',
+  'ZJX',
+  'ZKC',
+  'ZLA',
+  'ZLC',
+  'ZMA',
+  'ZME',
+  'ZMP',
+  'ZNY',
+  'ZOA',
+  'ZOB',
+  'ZSE',
+  'ZTL',
+]
 
 
 class GridValue(TypedDict):
@@ -55,6 +145,35 @@ class ObservationPagination(TypedDict):
 
   next: NotRequired[str]
   """URL of the next page. Absent on the last one."""
+
+
+OfficeHeadlineKeywords = TypedDict('OfficeHeadlineKeywords', {'@id': str})
+"""
+- `@id`: URL of the headline.
+"""
+
+
+class OfficeHeadline(OfficeHeadlineKeywords):
+  """One news headline an office has posted: a title and a link, usually to a page or a PDF on the office's own site."""
+
+  id: str
+  """Headline id, such as `058e41fd34b935b395e9aaf0fe175dc9`. This is what `offices.get_headline` takes."""
+  office: str
+  """URL of the office that posted it."""
+  important: bool
+  """Whether the office flagged it as important."""
+  issuanceTime: TimestampIso
+  """When it was posted."""
+  link: str
+  """Where the headline points."""
+  name: str
+  """The office's own short name for it, such as `latestbrief`."""
+  title: str
+  """Headline text."""
+  summary: str | None
+  """Longer summary. Null on most headlines: 113 of 149 across every office on 2026-09-30."""
+  content: str
+  """The headline as an HTML fragment: an `<a>` around `title`, its `href` percent-encoded."""
 
 
 class PointGeometry(TypedDict):
@@ -145,6 +264,151 @@ class QuantitativeValue(TypedDict):
   """Upper end, where the value is a range rather than a point."""
   minValue: NotRequired[float]
   """Lower end, where the value is a range rather than a point."""
+
+
+RadarHost = Literal['rds', 'tds']
+
+
+class RadarNetworkInterface(TypedDict):
+  """Packet counters of one network interface."""
+
+  interface: str
+  """Interface name, such as `eth0`."""
+  active: bool
+  """Whether the interface is up."""
+  transNoError: int
+  """Packets sent without error."""
+  transError: int
+  """Packets that failed to send."""
+  transDropped: int
+  """Outgoing packets dropped."""
+  transOverrun: int
+  """Outgoing overruns."""
+  recvNoError: int
+  """Packets received without error."""
+  recvError: int
+  """Packets received with an error."""
+  recvDropped: int
+  """Incoming packets dropped."""
+  recvOverrun: int
+  """Incoming overruns."""
+
+
+class RadarServerCommand(TypedDict):
+  """The last command the server ran and received. Only `ldm` servers send it."""
+
+  lastExecuted: str
+  """Last command run, such as `LDM Start`."""
+  lastExecutedTime: TimestampIso
+  """When it ran."""
+  lastNexradDataTime: TimestampIso
+  """When the server last received NEXRAD data."""
+  lastReceived: str
+  """Last command received."""
+  lastReceivedTime: TimestampIso
+  """When it was received."""
+  timestamp: TimestampIso
+  """When this block was collected."""
+
+
+class RadarServerHardware(TypedDict):
+  """Host load and resources."""
+
+  timestamp: TimestampIso
+  """When this block was collected."""
+  cpuIdle: float
+  """Idle CPU, in percent."""
+  ioUtilization: float
+  """Disk I/O utilisation, in percent."""
+  disk: float
+  """Disk used, in percent."""
+  load1: float
+  """One-minute load average."""
+  load5: float
+  """Five-minute load average."""
+  load15: float
+  """Fifteen-minute load average."""
+  memory: float
+  """Memory used, in percent."""
+  uptime: TimestampIso
+  """When the host last booted: a time, despite the name, not a duration."""
+
+
+class RadarServerLdm(TypedDict):
+  """The server's LDM product queue."""
+
+  timestamp: TimestampIso
+  """When this block was collected."""
+  latestProduct: TimestampIso
+  """Arrival of the newest product in the queue."""
+  oldestProduct: TimestampIso
+  """Arrival of the oldest product still in the queue."""
+  storageSize: int
+  """Size of the queue, in bytes."""
+  count: int
+  """Products in the queue."""
+  active: bool
+  """Whether LDM is running."""
+
+
+class RadarServerPing(TypedDict):
+  """Which hosts the server could reach at its last ping round."""
+
+  targets: dict[str, dict[str, bool] | list[bool]]
+  """Ping results by group of targets: `client` (downstream data clients, such as `ncep`), `ldm` and `server` (other servers, by name), `radar` (radar stations, by identifier) and `misc` (interfaces and routers, such as `eth0`). A group the server does not ping is absent."""
+  timestamp: TimestampIso
+  """When the ping round ran."""
+
+
+class Sigmet(TypedDict):
+  """A SIGMET or AIRMET: a warning to aircraft in flight of significant weather (convection, turbulence, icing, obscured mountains) over an area, issued by an air traffic services unit."""
+
+  id: str
+  """URL of the message, ending in its issuing unit, UTC issue date and `HHMM` issue time: the arguments `aviation.get_sigmet` takes. Not unique: every message a unit issues in the same minute shares it."""
+  issueTime: TimestampIso
+  """When the message was issued."""
+  fir: str | None
+  """Flight information region the message covers; null on some."""
+  atsu: str
+  """The air traffic services unit that issued it, such as `KKCI` (the Aviation Weather Center) or `ANC` (Anchorage)."""
+  sequence: str | None
+  """Sequence identifier; null on some."""
+  phenomenon: str | None
+  """The hazard, as a WMO code URL; null on more than half."""
+  start: TimestampIso
+  """Start of the period the message is valid for."""
+  end: TimestampIso
+  """End of the period the message is valid for."""
+
+
+TransmitterKeywords = TypedDict(
+  'TransmitterKeywords', {'@id': str, '@type': NotRequired[Literal['wx:Transmitter']]}
+)
+"""
+  - `@id`: URL of the transmitter.
+  - `@type`: Always `wx:Transmitter`.
+"""
+
+
+class Transmitter(TransmitterKeywords):
+  """One NOAA Weather Radio transmitter."""
+
+  setId: NotRequired[str]
+  """Which release of the transmitter list this came from."""
+  callSign: str
+  """Call sign, such as `KHB60`."""
+  transmitterFrequency: Decimal
+  """Frequency in MHz, such as `162.550`."""
+  siteName: NotRequired[str]
+  """Name of the transmitter, such as `Seattle`."""
+  siteCity: NotRequired[str]
+  """Where the transmitter stands."""
+  siteState: NotRequired[str]
+  """Two-letter state of the site."""
+  sameCodes: NotRequired[list[str]]
+  """SAME codes of the counties it broadcasts for: `0`, the FIPS state, the FIPS county, such as `053033`."""
+  counties: list[str]
+  """County zone codes it broadcasts for, such as `WAC033`, in the order of `sameCodes`."""
 
 
 ZoneKeywords = TypedDict('ZoneKeywords', {'@id': str, '@type': NotRequired[Literal['wx:Zone']]})
@@ -247,21 +511,33 @@ class Alert(TypedDict):
   """The issuing office, such as `NWS Seattle WA`."""
   headline: NotRequired[str | None]
   """One-line summary with the times spelled out."""
-  description: str
-  """The full text of the alert."""
+  description: str | None
+  """The full text of the alert. Null when the issuing system supplies no value."""
   instruction: NotRequired[str | None]
   """What the public is being told to do."""
   response: NotRequired[
     Literal[
       'Shelter', 'Evacuate', 'Prepare', 'Execute', 'Avoid', 'Monitor', 'AllClear', 'Assess', 'None'
     ]
+    | None
   ]
-  """The recommended action."""
+  """The recommended action. Null when the issuing system supplies no value."""
   parameters: NotRequired[dict[str, list[str]]]
   """Free-form parameters the issuing system attached: `NWSheadline`, `VTEC`, `AWIPSidentifier` and others. Every value is a list, even when it holds one item."""
 
 
 AlertGeometry = PolygonGeometry | MultiPolygonGeometry | None
+
+
+class CenterWeatherAdvisoryFeature(TypedDict):
+  """One Center Weather Advisory, in the GeoJSON feature the API wraps it in. The feature has no `id` of its own; the advisory's URL is `properties.id`."""
+
+  type: Literal['Feature']
+  """Always `Feature`."""
+  geometry: AdvisoryPolygon | None
+  """The area the advisory covers, latitude first; null on some."""
+  properties: CenterWeatherAdvisory
+  """The advisory itself."""
 
 
 class CloudLayer(TypedDict):
@@ -341,6 +617,89 @@ class ProductTypeCollection(ProductTypeCollectionKeywords):
   """Product types, in a JSON-LD graph -- the third response vocabulary this API uses, after GeoJSON and schema.org."""
 
 
+class RadarLatency(TypedDict):
+  """How far behind real time the radar's Level II data reaches the LDM host named by `host`. Every field is null for a radar with no Level II feed, such as a profiler."""
+
+  current: QuantitativeValue | None
+  """Latency of the latest data."""
+  average: QuantitativeValue | None
+  """Average latency."""
+  max: QuantitativeValue | None
+  """Highest recent latency."""
+  levelTwoLastReceivedTime: TimestampIso | None
+  """When the host last received Level II data."""
+  maxLatencyTime: TimestampIso | None
+  """When the highest latency was seen."""
+  reportingHost: str | None
+  """Monitoring host that reported the latency."""
+  host: str | None
+  """LDM host the latency is measured at."""
+
+
+class RadarRdaStatus(TypedDict):
+  """The status fields. A TDWR sends fewer of them than a WSR-88D."""
+
+  resolutionVersion: NotRequired[int | None]
+  """Level II resolution version."""
+  nl2Path: str
+  """Level II data path, such as `Default`."""
+  volumeCoveragePattern: str
+  """Scan strategy in use, such as `R35` (clear air) or `R212` (precipitation)."""
+  controlStatus: str
+  """Who controls the radar, such as `RPG (Remote) Only`."""
+  buildNumber: float
+  """Software build, such as `24.1`."""
+  alarmSummary: str
+  """Classes of active alarm, `|`-separated, such as `Transmitter|Communication`, or `No Alarms`."""
+  mode: str
+  """Operating mode, such as `Operational` or `Maintenance`."""
+  generatorState: NotRequired[str]
+  """Power source state, such as `Utility PWR Available`. WSR-88D only."""
+  superResolutionStatus: NotRequired[str]
+  """Whether super-resolution scanning is on. WSR-88D only."""
+  operabilityStatus: str
+  """Whether the radar needs maintenance, such as `RDA - On-Line`."""
+  status: str
+  """RDA state, such as `Operate` or `Standby`."""
+  averageTransmitterPower: NotRequired[QuantitativeValue]
+  """Average transmitter power. WSR-88D only."""
+  reflectivityCalibrationCorrection: NotRequired[QuantitativeValue]
+  """Reflectivity calibration correction. WSR-88D only."""
+
+
+class RadarReport(TypedDict):
+  """A periodic engineering report from the radar: its performance check or its adaptation (calibration) data."""
+
+  timestamp: NotRequired[TimestampIso | None]
+  """When the report was made."""
+  reportingHost: str
+  """Monitoring host that collected it, such as `rdss` or `tdss`."""
+  properties: dict[str, QuantitativeValue | str | float] | list[str]
+  """The readings, by name. Their set depends on the kind of radar and is not documented, so they are a map rather than fields. Any radar may send `[]` with a null `timestamp`: a TDWR always, a WSR-88D between reports (24 to 95 of 159 at a time on 2026-10-13)."""
+
+
+class RadarServerNetwork(TypedDict):
+  """Traffic counters of the server's two network interfaces."""
+
+  timestamp: TimestampIso
+  """When this block was collected."""
+  eth0: RadarNetworkInterface
+  """The first interface."""
+  eth1: RadarNetworkInterface
+  """The second interface."""
+
+
+class SigmetFeature(TypedDict):
+  """One SIGMET or AIRMET, in the GeoJSON feature the API wraps it in. The feature has no `id` of its own; the message's URL is `properties.id`."""
+
+  type: Literal['Feature']
+  """Always `Feature`."""
+  geometry: AdvisoryPolygon | None
+  """The area the message covers, latitude first; null on some."""
+  properties: Sigmet
+  """The message itself."""
+
+
 class Station(TypedDict):
   """One observation station."""
 
@@ -366,6 +725,21 @@ class Station(TypedDict):
   """How far the station is from the grid cell asked about. Only `stations.list_stations_for_gridpoint` sends it."""
   bearing: NotRequired[QuantitativeValue]
   """Direction from the grid cell to the station, in degrees clockwise from true north. Only `stations.list_stations_for_gridpoint` sends it."""
+
+
+TransmitterCollectionKeywords = TypedDict(
+  'TransmitterCollectionKeywords', {'@graph': list[Transmitter]}
+)
+"""
+- `@graph`: The transmitters. Each one arrives many times over, identical: 64 copies of each on 2026-09-30.
+"""
+
+
+class TransmitterCollection(TransmitterCollectionKeywords):
+  """NOAA Weather Radio transmitters, as a JSON-LD graph."""
+
+  pagination: NotRequired[CollectionPagination]
+  """Where the next page is. Only `radio.list_transmitters` sends it, and not on its last page."""
 
 
 class ZoneFeature(TypedDict):
@@ -395,6 +769,15 @@ class AlertFeature(TypedDict):
   """The area an alert covers, when it was drawn as a polygon rather than named as zones."""
   properties: Alert
   """The alert itself."""
+
+
+class CenterWeatherAdvisoryCollection(TypedDict):
+  """Center Weather Advisories, as a GeoJSON feature collection, newest first. The service keeps about a week of them and answers all of them at once: there is no paging."""
+
+  type: Literal['FeatureCollection']
+  """Always `FeatureCollection`."""
+  features: list[CenterWeatherAdvisoryFeature]
+  """The advisories; empty when the unit issued none this week."""
 
 
 class GridpointForecast(TypedDict):
@@ -473,6 +856,64 @@ class Observation(TypedDict):
   """Reported cloud layers, lowest first."""
 
 
+class RadarRda(TypedDict):
+  """Status of the Radar Data Acquisition unit: the radar itself."""
+
+  timestamp: TimestampIso
+  """When the status was reported."""
+  reportingHost: str
+  """Monitoring host that reported it, such as `rdss` or `tdss`."""
+  properties: RadarRdaStatus
+
+
+RadarServerKeywords = TypedDict(
+  'RadarServerKeywords', {'@id': str, '@type': Literal['wx:RadarServer']}
+)
+"""
+  - `@id`: URL of this server.
+  - `@type`: Always `wx:RadarServer`.
+"""
+
+
+class RadarServer(RadarServerKeywords):
+  """One server of the radar data distribution network, and its health at `collectionTime`."""
+
+  id: str
+  """Server name, such as `ldm1` or `rds`. `radar.get_server` takes it."""
+  type: str
+  """Role of the server. Undocumented; `ldm` (an LDM ingest server) and `distribution` (`rds`, `tds`) on 2026-10-01."""
+  active: NotRequired[bool]
+  """Whether the server is in service. Only `ldm` servers send it."""
+  primary: NotRequired[bool]
+  """Whether the server is the primary of its pair. Only `ldm` servers send it."""
+  aggregate: NotRequired[bool]
+  """Whether the server aggregates the others' feeds. Only `ldm` servers send it."""
+  locked: NotRequired[bool]
+  """Whether the server is locked against changes. Only `ldm` servers send it."""
+  radarNetworkUp: NotRequired[bool]
+  """Whether the server sees the radar network as up. Only `ldm` servers send it."""
+  collectionTime: TimestampIso
+  """When this health report was collected."""
+  reportingHost: str
+  """Monitoring host that reported it, such as `rdss` or `tdss`."""
+  ingestHost: str
+  """Host the server ingests from, such as `dns`."""
+  ping: RadarServerPing
+  command: NotRequired[RadarServerCommand]
+  hardware: RadarServerHardware
+  ldm: RadarServerLdm
+  network: RadarServerNetwork
+
+
+class SigmetCollection(TypedDict):
+  """SIGMETs and AIRMETs, as a GeoJSON feature collection, newest first. The service keeps about a week of them and answers everything that matched at once: there is no paging."""
+
+  type: Literal['FeatureCollection']
+  """Always `FeatureCollection`."""
+  features: list[SigmetFeature]
+  """The messages."""
+
+
 class StationFeature(TypedDict):
   """One station, in the GeoJSON feature the API wraps it in."""
 
@@ -495,6 +936,20 @@ class ZoneCollection(TypedDict):
   """The zones."""
 
 
+class AlertCollection(TypedDict):
+  """Alerts as a GeoJSON feature collection."""
+
+  type: Literal['FeatureCollection']
+  """Always `FeatureCollection`."""
+  features: list[AlertFeature]
+  """The alerts."""
+  title: NotRequired[str]
+  """Human-readable title of the collection."""
+  updated: NotRequired[TimestampIso]
+  """When the collection was assembled."""
+  pagination: NotRequired[AlertPagination]
+
+
 class ObservationFeature(TypedDict):
   """One observation, in the GeoJSON feature the API wraps it in."""
 
@@ -508,6 +963,37 @@ class ObservationFeature(TypedDict):
   """The observation itself."""
 
 
+RadarStationKeywords = TypedDict(
+  'RadarStationKeywords', {'@id': str, '@type': NotRequired[Literal['wx:RadarStation']]}
+)
+"""
+  - `@id`: URL of this radar.
+  - `@type`: Always `wx:RadarStation`.
+"""
+
+
+class RadarStation(RadarStationKeywords):
+  """One radar: what kind it is, how far behind its data runs, and how its hardware is doing."""
+
+  id: str
+  """Station identifier, such as `KATX`. `radar.get_station` takes it."""
+  name: str
+  """Where the radar is, such as `Seattle`."""
+  stationType: str
+  """Kind of radar. Undocumented; `WSR-88D` (NEXRAD), `TDWR` (terminal Doppler) and `Profiler` on 2026-10-01. `radar.list_stations` filters on it."""
+  elevation: NotRequired[QuantitativeValue]
+  """Height of the radar above sea level."""
+  timeZone: NotRequired[str]
+  """Time zone, such as `GMT`."""
+  latency: RadarLatency
+  rda: RadarRda | None
+  """Status of the radar itself."""
+  performance: NotRequired[RadarReport | None]
+  """The latest performance check. Only `radar.get_station` sends it."""
+  adaptation: NotRequired[RadarReport | None]
+  """The radar's adaptation (calibration) data. Only `radar.get_station` sends it."""
+
+
 class StationCollection(TypedDict):
   """Stations, as a GeoJSON feature collection."""
 
@@ -518,6 +1004,7 @@ class StationCollection(TypedDict):
   observationStations: NotRequired[list[str]]
   """The same stations as bare URLs, in the same order."""
   pagination: NotRequired[CollectionPagination]
+  """Where the next page is."""
 
 
 class ObservationCollection(TypedDict):
@@ -528,3 +1015,16 @@ class ObservationCollection(TypedDict):
   features: list[ObservationFeature]
   """The observations, newest first."""
   pagination: NotRequired[ObservationPagination]
+
+
+class RadarStationFeature(TypedDict):
+  """One radar, in the GeoJSON feature the API wraps it in."""
+
+  id: str
+  """URL of this radar."""
+  type: Literal['Feature']
+  """Always `Feature`."""
+  geometry: PointGeometry
+  """Where the radar is."""
+  properties: RadarStation
+  """The radar itself."""

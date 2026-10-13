@@ -1,0 +1,5 @@
+{
+  "description": "Aviation weather: the Center Weather Service Units at the FAA's en-route centers and the advisories they issue, and the SIGMETs and AIRMETs that warn aircraft in flight of significant weather.",
+  "upstream": "https://www.weather.gov/documentation/services-web-api#/default/sigmetQuery",
+  "core": "default"
+}

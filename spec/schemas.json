@@ -714,8 +714,15 @@
         "description": "One-line summary with the times spelled out."
       },
       "description": {
-        "type": "string",
-        "description": "The full text of the alert."
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "description": "The full text of the alert. Null when the issuing system supplies no value."
       },
       "instruction": {
         "anyOf": [
@@ -731,19 +738,26 @@
         "description": "What the public is being told to do."
       },
       "response": {
-        "type": "string",
-        "enum": [
-          "Shelter",
-          "Evacuate",
-          "Prepare",
-          "Execute",
-          "Avoid",
-          "Monitor",
-          "AllClear",
-          "Assess",
-          "None"
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "Shelter",
+              "Evacuate",
+              "Prepare",
+              "Execute",
+              "Avoid",
+              "Monitor",
+              "AllClear",
+              "Assess",
+              "None"
+            ]
+          },
+          {
+            "type": "null"
+          }
         ],
-        "description": "The recommended action."
+        "description": "The recommended action. Null when the issuing system supplies no value."
       },
       "parameters": {
         "type": "object",
@@ -1072,15 +1086,8 @@
         }
       },
       "pagination": {
-        "title": "CollectionPagination",
-        "type": "object",
-        "description": "Where the next page is. A whole URL, not a bare cursor -- which is why no endpoint returning this declares a pagination strategy.",
-        "properties": {
-          "next": {
-            "type": "string",
-            "description": "URL of the next page, cursor already in the query string. Absent on the last page."
-          }
-        }
+        "$ref": "CollectionPagination",
+        "description": "Where the next page is."
       }
     },
     "required": [
@@ -1431,6 +1438,1295 @@
     },
     "required": [
       "locations"
+    ]
+  },
+  "AlertCollection": {
+    "title": "AlertCollection",
+    "type": "object",
+    "description": "Alerts as a GeoJSON feature collection.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "FeatureCollection"
+        ],
+        "description": "Always `FeatureCollection`."
+      },
+      "features": {
+        "type": "array",
+        "description": "The alerts.",
+        "items": {
+          "$ref": "AlertFeature",
+          "description": "One alert."
+        }
+      },
+      "title": {
+        "type": "string",
+        "description": "Human-readable title of the collection."
+      },
+      "updated": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When the collection was assembled."
+      },
+      "pagination": {
+        "title": "AlertPagination",
+        "type": "object",
+        "description": "Present on `alerts.list_alerts` only: where the next page is.",
+        "properties": {
+          "next": {
+            "type": "string",
+            "description": "URL containing the next cursor, which must be percent-decoded with a URL parser. Resend the original filters and limit. Stop on an empty page or absent next cursor, not on a short non-empty page."
+          }
+        },
+        "required": [
+          "next"
+        ]
+      }
+    },
+    "required": [
+      "type",
+      "features"
+    ]
+  },
+  "RadarHost": {
+    "title": "RadarHost",
+    "type": "string",
+    "enum": [
+      "rds",
+      "tds"
+    ],
+    "description": "A distribution host of the radar network: `rds` or `tds`. `radar.get_queue` takes one and names it on every product."
+  },
+  "RadarServer": {
+    "title": "RadarServer",
+    "type": "object",
+    "description": "One server of the radar data distribution network, and its health at `collectionTime`.",
+    "properties": {
+      "@id": {
+        "type": "string",
+        "description": "URL of this server."
+      },
+      "@type": {
+        "type": "string",
+        "enum": [
+          "wx:RadarServer"
+        ],
+        "description": "Always `wx:RadarServer`."
+      },
+      "id": {
+        "type": "string",
+        "description": "Server name, such as `ldm1` or `rds`. `radar.get_server` takes it."
+      },
+      "type": {
+        "type": "string",
+        "description": "Role of the server. Undocumented; `ldm` (an LDM ingest server) and `distribution` (`rds`, `tds`) on 2026-10-01."
+      },
+      "active": {
+        "type": "boolean",
+        "description": "Whether the server is in service. Only `ldm` servers send it."
+      },
+      "primary": {
+        "type": "boolean",
+        "description": "Whether the server is the primary of its pair. Only `ldm` servers send it."
+      },
+      "aggregate": {
+        "type": "boolean",
+        "description": "Whether the server aggregates the others' feeds. Only `ldm` servers send it."
+      },
+      "locked": {
+        "type": "boolean",
+        "description": "Whether the server is locked against changes. Only `ldm` servers send it."
+      },
+      "radarNetworkUp": {
+        "type": "boolean",
+        "description": "Whether the server sees the radar network as up. Only `ldm` servers send it."
+      },
+      "collectionTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When this health report was collected."
+      },
+      "reportingHost": {
+        "type": "string",
+        "description": "Monitoring host that reported it, such as `rdss` or `tdss`."
+      },
+      "ingestHost": {
+        "type": "string",
+        "description": "Host the server ingests from, such as `dns`."
+      },
+      "ping": {
+        "title": "RadarServerPing",
+        "type": "object",
+        "description": "Which hosts the server could reach at its last ping round.",
+        "properties": {
+          "targets": {
+            "type": "object",
+            "description": "Ping results by group of targets: `client` (downstream data clients, such as `ncep`), `ldm` and `server` (other servers, by name), `radar` (radar stations, by identifier) and `misc` (interfaces and routers, such as `eth0`). A group the server does not ping is absent.",
+            "additionalProperties": {
+              "description": "Whether each target in the group answered, by target name. The service sends an empty group as `[]`, not `{}`.",
+              "anyOf": [
+                {
+                  "type": "object",
+                  "description": "Target name to whether it answered.",
+                  "additionalProperties": {
+                    "type": "boolean",
+                    "description": "Whether this target answered."
+                  }
+                },
+                {
+                  "type": "array",
+                  "maxItems": 0,
+                  "description": "An empty group: `[]`, never with entries.",
+                  "items": {
+                    "type": "boolean",
+                    "description": "Never present: the array is always empty."
+                  }
+                }
+              ]
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the ping round ran."
+          }
+        },
+        "required": [
+          "targets",
+          "timestamp"
+        ]
+      },
+      "command": {
+        "title": "RadarServerCommand",
+        "type": "object",
+        "description": "The last command the server ran and received. Only `ldm` servers send it.",
+        "properties": {
+          "lastExecuted": {
+            "type": "string",
+            "description": "Last command run, such as `LDM Start`."
+          },
+          "lastExecutedTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When it ran."
+          },
+          "lastNexradDataTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the server last received NEXRAD data."
+          },
+          "lastReceived": {
+            "type": "string",
+            "description": "Last command received."
+          },
+          "lastReceivedTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When it was received."
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When this block was collected."
+          }
+        },
+        "required": [
+          "lastExecuted",
+          "lastExecutedTime",
+          "lastNexradDataTime",
+          "lastReceived",
+          "lastReceivedTime",
+          "timestamp"
+        ]
+      },
+      "hardware": {
+        "title": "RadarServerHardware",
+        "type": "object",
+        "description": "Host load and resources.",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When this block was collected."
+          },
+          "cpuIdle": {
+            "type": "number",
+            "description": "Idle CPU, in percent."
+          },
+          "ioUtilization": {
+            "type": "number",
+            "description": "Disk I/O utilisation, in percent."
+          },
+          "disk": {
+            "type": "number",
+            "description": "Disk used, in percent."
+          },
+          "load1": {
+            "type": "number",
+            "description": "One-minute load average."
+          },
+          "load5": {
+            "type": "number",
+            "description": "Five-minute load average."
+          },
+          "load15": {
+            "type": "number",
+            "description": "Fifteen-minute load average."
+          },
+          "memory": {
+            "type": "number",
+            "description": "Memory used, in percent."
+          },
+          "uptime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the host last booted: a time, despite the name, not a duration."
+          }
+        },
+        "required": [
+          "timestamp",
+          "cpuIdle",
+          "ioUtilization",
+          "disk",
+          "load1",
+          "load5",
+          "load15",
+          "memory",
+          "uptime"
+        ]
+      },
+      "ldm": {
+        "title": "RadarServerLdm",
+        "type": "object",
+        "description": "The server's LDM product queue.",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When this block was collected."
+          },
+          "latestProduct": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Arrival of the newest product in the queue."
+          },
+          "oldestProduct": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Arrival of the oldest product still in the queue."
+          },
+          "storageSize": {
+            "type": "integer",
+            "description": "Size of the queue, in bytes."
+          },
+          "count": {
+            "type": "integer",
+            "description": "Products in the queue."
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Whether LDM is running."
+          }
+        },
+        "required": [
+          "timestamp",
+          "latestProduct",
+          "oldestProduct",
+          "storageSize",
+          "count",
+          "active"
+        ]
+      },
+      "network": {
+        "title": "RadarServerNetwork",
+        "type": "object",
+        "description": "Traffic counters of the server's two network interfaces.",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When this block was collected."
+          },
+          "eth0": {
+            "$ref": "RadarNetworkInterface",
+            "description": "The first interface."
+          },
+          "eth1": {
+            "$ref": "RadarNetworkInterface",
+            "description": "The second interface."
+          }
+        },
+        "required": [
+          "timestamp",
+          "eth0",
+          "eth1"
+        ]
+      }
+    },
+    "required": [
+      "@id",
+      "@type",
+      "id",
+      "type",
+      "collectionTime",
+      "reportingHost",
+      "ingestHost",
+      "ping",
+      "hardware",
+      "ldm",
+      "network"
+    ]
+  },
+  "RadarNetworkInterface": {
+    "title": "RadarNetworkInterface",
+    "type": "object",
+    "description": "Packet counters of one network interface.",
+    "properties": {
+      "interface": {
+        "type": "string",
+        "description": "Interface name, such as `eth0`."
+      },
+      "active": {
+        "type": "boolean",
+        "description": "Whether the interface is up."
+      },
+      "transNoError": {
+        "type": "integer",
+        "description": "Packets sent without error."
+      },
+      "transError": {
+        "type": "integer",
+        "description": "Packets that failed to send."
+      },
+      "transDropped": {
+        "type": "integer",
+        "description": "Outgoing packets dropped."
+      },
+      "transOverrun": {
+        "type": "integer",
+        "description": "Outgoing overruns."
+      },
+      "recvNoError": {
+        "type": "integer",
+        "description": "Packets received without error."
+      },
+      "recvError": {
+        "type": "integer",
+        "description": "Packets received with an error."
+      },
+      "recvDropped": {
+        "type": "integer",
+        "description": "Incoming packets dropped."
+      },
+      "recvOverrun": {
+        "type": "integer",
+        "description": "Incoming overruns."
+      }
+    },
+    "required": [
+      "interface",
+      "active",
+      "transNoError",
+      "transError",
+      "transDropped",
+      "transOverrun",
+      "recvNoError",
+      "recvError",
+      "recvDropped",
+      "recvOverrun"
+    ]
+  },
+  "RadarReport": {
+    "title": "RadarReport",
+    "type": "object",
+    "description": "A periodic engineering report from the radar: its performance check or its adaptation (calibration) data.",
+    "properties": {
+      "timestamp": {
+        "anyOf": [
+          {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the report was made."
+          },
+          {
+            "type": "null",
+            "description": "Not stated: every TDWR, and a WSR-88D between reports."
+          }
+        ],
+        "description": "When the report was made."
+      },
+      "reportingHost": {
+        "type": "string",
+        "description": "Monitoring host that collected it, such as `rdss` or `tdss`."
+      },
+      "properties": {
+        "description": "The readings, by name. Their set depends on the kind of radar and is not documented, so they are a map rather than fields. Any radar may send `[]` with a null `timestamp`: a TDWR always, a WSR-88D between reports (24 to 95 of 159 at a time on 2026-10-13).",
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "Reading name to reading.",
+            "additionalProperties": {
+              "description": "One reading: a measurement with its unit, or a bare status string or number.",
+              "anyOf": [
+                {
+                  "$ref": "QuantitativeValue",
+                  "description": "A measurement, such as `transmitterPeakPower`."
+                },
+                {
+                  "type": "string",
+                  "description": "A status, such as `OK`, or a time the report states as text, such as `performanceCheckTime`."
+                },
+                {
+                  "type": "number",
+                  "description": "A bare count or ratio, such as `linearity`."
+                }
+              ]
+            }
+          },
+          {
+            "type": "array",
+            "maxItems": 0,
+            "description": "No readings: `[]`, never with entries.",
+            "items": {
+              "type": "string",
+              "description": "Never present: the array is always empty."
+            }
+          }
+        ]
+      }
+    },
+    "required": [
+      "reportingHost",
+      "properties"
+    ]
+  },
+  "RadarStation": {
+    "title": "RadarStation",
+    "type": "object",
+    "description": "One radar: what kind it is, how far behind its data runs, and how its hardware is doing.",
+    "properties": {
+      "@id": {
+        "type": "string",
+        "description": "URL of this radar."
+      },
+      "@type": {
+        "type": "string",
+        "enum": [
+          "wx:RadarStation"
+        ],
+        "description": "Always `wx:RadarStation`."
+      },
+      "id": {
+        "type": "string",
+        "description": "Station identifier, such as `KATX`. `radar.get_station` takes it."
+      },
+      "name": {
+        "type": "string",
+        "description": "Where the radar is, such as `Seattle`."
+      },
+      "stationType": {
+        "type": "string",
+        "description": "Kind of radar. Undocumented; `WSR-88D` (NEXRAD), `TDWR` (terminal Doppler) and `Profiler` on 2026-10-01. `radar.list_stations` filters on it."
+      },
+      "elevation": {
+        "$ref": "QuantitativeValue",
+        "description": "Height of the radar above sea level."
+      },
+      "timeZone": {
+        "type": "string",
+        "description": "Time zone, such as `GMT`."
+      },
+      "latency": {
+        "title": "RadarLatency",
+        "type": "object",
+        "description": "How far behind real time the radar's Level II data reaches the LDM host named by `host`. Every field is null for a radar with no Level II feed, such as a profiler.",
+        "properties": {
+          "current": {
+            "anyOf": [
+              {
+                "$ref": "QuantitativeValue",
+                "description": "Latency of the latest data, in `nwsUnit:s`."
+              },
+              {
+                "type": "null",
+                "description": "No Level II feed."
+              }
+            ],
+            "description": "Latency of the latest data."
+          },
+          "average": {
+            "anyOf": [
+              {
+                "$ref": "QuantitativeValue",
+                "description": "Average latency, in `nwsUnit:s`."
+              },
+              {
+                "type": "null",
+                "description": "No Level II feed."
+              }
+            ],
+            "description": "Average latency."
+          },
+          "max": {
+            "anyOf": [
+              {
+                "$ref": "QuantitativeValue",
+                "description": "Highest recent latency, in `nwsUnit:s`."
+              },
+              {
+                "type": "null",
+                "description": "No Level II feed."
+              }
+            ],
+            "description": "Highest recent latency."
+          },
+          "levelTwoLastReceivedTime": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the host last received Level II data."
+              },
+              {
+                "type": "null",
+                "description": "No Level II feed."
+              }
+            ],
+            "description": "When the host last received Level II data."
+          },
+          "maxLatencyTime": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the highest latency was seen."
+              },
+              {
+                "type": "null",
+                "description": "No Level II feed."
+              }
+            ],
+            "description": "When the highest latency was seen."
+          },
+          "reportingHost": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "Monitoring host that reported the latency, such as `rdss` or `tdss`."
+              },
+              {
+                "type": "null",
+                "description": "No Level II feed."
+              }
+            ],
+            "description": "Monitoring host that reported the latency."
+          },
+          "host": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "LDM host the latency is measured at, such as `ldm4`. The `host` parameter picks it."
+              },
+              {
+                "type": "null",
+                "description": "No Level II feed, or a `host` the service does not know."
+              }
+            ],
+            "description": "LDM host the latency is measured at."
+          }
+        },
+        "required": [
+          "current",
+          "average",
+          "max",
+          "levelTwoLastReceivedTime",
+          "maxLatencyTime",
+          "reportingHost",
+          "host"
+        ]
+      },
+      "rda": {
+        "anyOf": [
+          {
+            "title": "RadarRda",
+            "type": "object",
+            "description": "Status of the Radar Data Acquisition unit: the radar itself.",
+            "properties": {
+              "timestamp": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the status was reported."
+              },
+              "reportingHost": {
+                "type": "string",
+                "description": "Monitoring host that reported it, such as `rdss` or `tdss`."
+              },
+              "properties": {
+                "title": "RadarRdaStatus",
+                "type": "object",
+                "description": "The status fields. A TDWR sends fewer of them than a WSR-88D.",
+                "properties": {
+                  "resolutionVersion": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "description": "Level II resolution version, such as `6`."
+                      },
+                      {
+                        "type": "null",
+                        "description": "Not stated: every TDWR answers null."
+                      }
+                    ],
+                    "description": "Level II resolution version."
+                  },
+                  "nl2Path": {
+                    "type": "string",
+                    "description": "Level II data path, such as `Default`."
+                  },
+                  "volumeCoveragePattern": {
+                    "type": "string",
+                    "description": "Scan strategy in use, such as `R35` (clear air) or `R212` (precipitation)."
+                  },
+                  "controlStatus": {
+                    "type": "string",
+                    "description": "Who controls the radar, such as `RPG (Remote) Only`."
+                  },
+                  "buildNumber": {
+                    "type": "number",
+                    "description": "Software build, such as `24.1`."
+                  },
+                  "alarmSummary": {
+                    "type": "string",
+                    "description": "Classes of active alarm, `|`-separated, such as `Transmitter|Communication`, or `No Alarms`."
+                  },
+                  "mode": {
+                    "type": "string",
+                    "description": "Operating mode, such as `Operational` or `Maintenance`."
+                  },
+                  "generatorState": {
+                    "type": "string",
+                    "description": "Power source state, such as `Utility PWR Available`. WSR-88D only."
+                  },
+                  "superResolutionStatus": {
+                    "type": "string",
+                    "description": "Whether super-resolution scanning is on. WSR-88D only."
+                  },
+                  "operabilityStatus": {
+                    "type": "string",
+                    "description": "Whether the radar needs maintenance, such as `RDA - On-Line`."
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "RDA state, such as `Operate` or `Standby`."
+                  },
+                  "averageTransmitterPower": {
+                    "$ref": "QuantitativeValue",
+                    "description": "Average transmitter power. WSR-88D only."
+                  },
+                  "reflectivityCalibrationCorrection": {
+                    "$ref": "QuantitativeValue",
+                    "description": "Reflectivity calibration correction. WSR-88D only."
+                  }
+                },
+                "required": [
+                  "nl2Path",
+                  "volumeCoveragePattern",
+                  "controlStatus",
+                  "buildNumber",
+                  "alarmSummary",
+                  "mode",
+                  "operabilityStatus",
+                  "status"
+                ]
+              }
+            },
+            "required": [
+              "timestamp",
+              "reportingHost",
+              "properties"
+            ]
+          },
+          {
+            "type": "null",
+            "description": "No status: every profiler, and a radar that is down."
+          }
+        ],
+        "description": "Status of the radar itself."
+      },
+      "performance": {
+        "anyOf": [
+          {
+            "$ref": "RadarReport",
+            "description": "The latest performance check."
+          },
+          {
+            "type": "null",
+            "description": "No report: every profiler, and a radar that is down."
+          }
+        ],
+        "description": "The latest performance check. Only `radar.get_station` sends it."
+      },
+      "adaptation": {
+        "anyOf": [
+          {
+            "$ref": "RadarReport",
+            "description": "The radar's adaptation (calibration) data."
+          },
+          {
+            "type": "null",
+            "description": "No report: every profiler, and a radar that is down."
+          }
+        ],
+        "description": "The radar's adaptation (calibration) data. Only `radar.get_station` sends it."
+      }
+    },
+    "required": [
+      "@id",
+      "id",
+      "name",
+      "stationType",
+      "latency",
+      "rda"
+    ]
+  },
+  "RadarStationFeature": {
+    "title": "RadarStationFeature",
+    "type": "object",
+    "description": "One radar, in the GeoJSON feature the API wraps it in.",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "URL of this radar."
+      },
+      "type": {
+        "type": "string",
+        "enum": [
+          "Feature"
+        ],
+        "description": "Always `Feature`."
+      },
+      "geometry": {
+        "$ref": "PointGeometry",
+        "description": "Where the radar is."
+      },
+      "properties": {
+        "$ref": "RadarStation",
+        "description": "The radar itself."
+      }
+    },
+    "required": [
+      "id",
+      "type",
+      "geometry",
+      "properties"
+    ]
+  },
+  "CwsuId": {
+    "title": "CwsuId",
+    "type": "string",
+    "description": "Three-letter code of a Center Weather Service Unit: the NWS meteorologists posted at one FAA air route traffic control center, and named after it (`ZSE` is Seattle Center).",
+    "enum": [
+      "ZAB",
+      "ZAN",
+      "ZAU",
+      "ZBW",
+      "ZDC",
+      "ZDV",
+      "ZFA",
+      "ZFW",
+      "ZHU",
+      "ZID",
+      "ZJX",
+      "ZKC",
+      "ZLA",
+      "ZLC",
+      "ZMA",
+      "ZME",
+      "ZMP",
+      "ZNY",
+      "ZOA",
+      "ZOB",
+      "ZSE",
+      "ZTL"
+    ]
+  },
+  "AdvisoryPosition": {
+    "title": "AdvisoryPosition",
+    "type": "array",
+    "description": "A corner of an aviation advisory's outline: latitude first, then longitude. The reverse of GeoJSON's order, and of `Position` everywhere else in this API. Measured 2026-09-30: of the 1,173 polygons the SIGMET and CWA lists held, none had a first value outside [-90, 90].",
+    "minItems": 2,
+    "maxItems": 2,
+    "prefixItems": [
+      {
+        "title": "latitude",
+        "type": "number",
+        "description": "Latitude, decimal degrees north of the equator."
+      },
+      {
+        "title": "longitude",
+        "type": "number",
+        "description": "Longitude, decimal degrees east of the prime meridian. Not wrapped at the antimeridian: an area across it runs past -180 (measured 2026-09-30, -190.7 on an Anchorage AIRMET over the Aleutians)."
+      }
+    ]
+  },
+  "AdvisoryPolygon": {
+    "title": "AdvisoryPolygon",
+    "type": "object",
+    "description": "The area an aviation advisory covers. Shaped like a GeoJSON `Polygon`, but each position is latitude first (`AdvisoryPosition`), so a GeoJSON library draws it transposed.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "Polygon"
+        ],
+        "description": "Always `Polygon`."
+      },
+      "coordinates": {
+        "type": "array",
+        "description": "Linear rings; the first is the outer boundary. Each ring repeats its first position as its last.",
+        "items": {
+          "type": "array",
+          "description": "One linear ring.",
+          "items": {
+            "$ref": "AdvisoryPosition",
+            "description": "One corner of the ring."
+          }
+        }
+      }
+    },
+    "required": [
+      "type",
+      "coordinates"
+    ]
+  },
+  "CenterWeatherAdvisory": {
+    "title": "CenterWeatherAdvisory",
+    "type": "object",
+    "description": "A Center Weather Advisory: a short-fused warning of weather hazardous to aircraft inside one en-route center's airspace.",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Canonical URL of the advisory, ending in its issue date and sequence number: the arguments `aviation.get_cwa` takes."
+      },
+      "issueTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When the advisory was issued."
+      },
+      "cwsu": {
+        "$ref": "CwsuId",
+        "description": "The unit that issued it."
+      },
+      "sequence": {
+        "type": "integer",
+        "description": "Sequence number within the day: the hundreds digit numbers a hazard and the rest counts the advisories about it (`101`, `102`, then `201` for a second hazard). Not always unique: measured 2026-09-30, `ZAB` issued two `206`s that day."
+      },
+      "start": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Start of the period the advisory is valid for."
+      },
+      "end": {
+        "type": "string",
+        "format": "date-time",
+        "description": "End of the period the advisory is valid for."
+      },
+      "observedProperty": {
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "A code URL under `https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/`, such as `.../Tstm` for thunderstorms or `.../Icing`."
+          },
+          {
+            "type": "null",
+            "description": "No basis stated."
+          }
+        ],
+        "description": "What the advisory was issued for, as a code URL; null on a few."
+      },
+      "text": {
+        "type": "string",
+        "description": "The advisory itself, in the abbreviated plain language of aviation weather (`AREA TS MOV LTL TOPS TO FL280`)."
+      }
+    },
+    "required": [
+      "id",
+      "issueTime",
+      "cwsu",
+      "sequence",
+      "start",
+      "end",
+      "observedProperty",
+      "text"
+    ]
+  },
+  "CenterWeatherAdvisoryFeature": {
+    "title": "CenterWeatherAdvisoryFeature",
+    "type": "object",
+    "description": "One Center Weather Advisory, in the GeoJSON feature the API wraps it in. The feature has no `id` of its own; the advisory's URL is `properties.id`.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "Feature"
+        ],
+        "description": "Always `Feature`."
+      },
+      "geometry": {
+        "anyOf": [
+          {
+            "$ref": "AdvisoryPolygon",
+            "description": "The area the advisory covers."
+          },
+          {
+            "type": "null",
+            "description": "No outline. Measured 2026-09-30, every such advisory described an isolated storm by its diameter in `text` instead."
+          }
+        ],
+        "description": "The area the advisory covers, latitude first; null on some."
+      },
+      "properties": {
+        "$ref": "CenterWeatherAdvisory",
+        "description": "The advisory itself."
+      }
+    },
+    "required": [
+      "type",
+      "geometry",
+      "properties"
+    ]
+  },
+  "CenterWeatherAdvisoryCollection": {
+    "title": "CenterWeatherAdvisoryCollection",
+    "type": "object",
+    "description": "Center Weather Advisories, as a GeoJSON feature collection, newest first. The service keeps about a week of them and answers all of them at once: there is no paging.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "FeatureCollection"
+        ],
+        "description": "Always `FeatureCollection`."
+      },
+      "features": {
+        "type": "array",
+        "description": "The advisories; empty when the unit issued none this week.",
+        "items": {
+          "$ref": "CenterWeatherAdvisoryFeature",
+          "description": "One advisory."
+        }
+      }
+    },
+    "required": [
+      "type",
+      "features"
+    ]
+  },
+  "Sigmet": {
+    "title": "Sigmet",
+    "type": "object",
+    "description": "A SIGMET or AIRMET: a warning to aircraft in flight of significant weather (convection, turbulence, icing, obscured mountains) over an area, issued by an air traffic services unit.",
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "URL of the message, ending in its issuing unit, UTC issue date and `HHMM` issue time: the arguments `aviation.get_sigmet` takes. Not unique: every message a unit issues in the same minute shares it."
+      },
+      "issueTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When the message was issued."
+      },
+      "fir": {
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "ICAO code of the flight information region, such as `KZMA`."
+          },
+          {
+            "type": "null",
+            "description": "Not stated, as on every message from `ANC`, `FAI`, `JNU` and `HNL` measured 2026-09-30."
+          }
+        ],
+        "description": "Flight information region the message covers; null on some."
+      },
+      "atsu": {
+        "type": "string",
+        "description": "The air traffic services unit that issued it, such as `KKCI` (the Aviation Weather Center) or `ANC` (Anchorage)."
+      },
+      "sequence": {
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "The unit's own series and number, such as `12E` (the Aviation Weather Center's 12th eastern convective SIGMET of the day) or `0000`."
+          },
+          {
+            "type": "null",
+            "description": "Not stated."
+          }
+        ],
+        "description": "Sequence identifier; null on some."
+      },
+      "phenomenon": {
+        "anyOf": [
+          {
+            "type": "string",
+            "description": "A WMO code URL, such as `http://codes.wmo.int/49-2/SigWxPhenomena/EMBD_TS` (embedded thunderstorms) or `.../AirWxPhenomena/MT_OBSC` (mountains obscured)."
+          },
+          {
+            "type": "null",
+            "description": "Not stated."
+          }
+        ],
+        "description": "The hazard, as a WMO code URL; null on more than half."
+      },
+      "start": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Start of the period the message is valid for."
+      },
+      "end": {
+        "type": "string",
+        "format": "date-time",
+        "description": "End of the period the message is valid for."
+      }
+    },
+    "required": [
+      "id",
+      "issueTime",
+      "fir",
+      "atsu",
+      "sequence",
+      "phenomenon",
+      "start",
+      "end"
+    ]
+  },
+  "SigmetFeature": {
+    "title": "SigmetFeature",
+    "type": "object",
+    "description": "One SIGMET or AIRMET, in the GeoJSON feature the API wraps it in. The feature has no `id` of its own; the message's URL is `properties.id`.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "Feature"
+        ],
+        "description": "Always `Feature`."
+      },
+      "geometry": {
+        "anyOf": [
+          {
+            "$ref": "AdvisoryPolygon",
+            "description": "The area the message covers."
+          },
+          {
+            "type": "null",
+            "description": "No outline."
+          }
+        ],
+        "description": "The area the message covers, latitude first; null on some."
+      },
+      "properties": {
+        "$ref": "Sigmet",
+        "description": "The message itself."
+      }
+    },
+    "required": [
+      "type",
+      "geometry",
+      "properties"
+    ]
+  },
+  "SigmetCollection": {
+    "title": "SigmetCollection",
+    "type": "object",
+    "description": "SIGMETs and AIRMETs, as a GeoJSON feature collection, newest first. The service keeps about a week of them and answers everything that matched at once: there is no paging.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "FeatureCollection"
+        ],
+        "description": "Always `FeatureCollection`."
+      },
+      "features": {
+        "type": "array",
+        "description": "The messages.",
+        "items": {
+          "$ref": "SigmetFeature",
+          "description": "One message."
+        }
+      }
+    },
+    "required": [
+      "type",
+      "features"
+    ]
+  },
+  "CollectionPagination": {
+    "title": "CollectionPagination",
+    "type": "object",
+    "description": "Where the next page is. A whole URL, not a bare cursor -- which is why no endpoint returning this declares a pagination strategy.",
+    "properties": {
+      "next": {
+        "type": "string",
+        "description": "URL of the next page, cursor already in the query string. Absent on the last page."
+      }
+    }
+  },
+  "Transmitter": {
+    "title": "Transmitter",
+    "type": "object",
+    "description": "One NOAA Weather Radio transmitter.",
+    "properties": {
+      "@id": {
+        "type": "string",
+        "description": "URL of the transmitter."
+      },
+      "@type": {
+        "type": "string",
+        "enum": [
+          "wx:Transmitter"
+        ],
+        "description": "Always `wx:Transmitter`."
+      },
+      "setId": {
+        "type": "string",
+        "description": "Which release of the transmitter list this came from."
+      },
+      "callSign": {
+        "type": "string",
+        "description": "Call sign, such as `KHB60`."
+      },
+      "transmitterFrequency": {
+        "type": "string",
+        "format": "decimal-string",
+        "description": "Frequency in MHz, such as `162.550`."
+      },
+      "siteName": {
+        "type": "string",
+        "description": "Name of the transmitter, such as `Seattle`."
+      },
+      "siteCity": {
+        "type": "string",
+        "description": "Where the transmitter stands."
+      },
+      "siteState": {
+        "type": "string",
+        "description": "Two-letter state of the site."
+      },
+      "sameCodes": {
+        "type": "array",
+        "description": "SAME codes of the counties it broadcasts for: `0`, the FIPS state, the FIPS county, such as `053033`.",
+        "items": {
+          "type": "string",
+          "description": "One SAME code."
+        }
+      },
+      "counties": {
+        "type": "array",
+        "description": "County zone codes it broadcasts for, such as `WAC033`, in the order of `sameCodes`.",
+        "items": {
+          "type": "string",
+          "description": "One county zone code."
+        }
+      }
+    },
+    "required": [
+      "@id",
+      "callSign",
+      "transmitterFrequency",
+      "counties"
+    ]
+  },
+  "TransmitterCollection": {
+    "title": "TransmitterCollection",
+    "type": "object",
+    "description": "NOAA Weather Radio transmitters, as a JSON-LD graph.",
+    "properties": {
+      "@graph": {
+        "type": "array",
+        "description": "The transmitters. Each one arrives many times over, identical: 64 copies of each on 2026-09-30.",
+        "items": {
+          "$ref": "Transmitter",
+          "description": "One transmitter."
+        }
+      },
+      "pagination": {
+        "$ref": "CollectionPagination",
+        "description": "Where the next page is. Only `radio.list_transmitters` sends it, and not on its last page."
+      }
+    },
+    "required": [
+      "@graph"
+    ]
+  },
+  "OfficeHeadline": {
+    "title": "OfficeHeadline",
+    "type": "object",
+    "description": "One news headline an office has posted: a title and a link, usually to a page or a PDF on the office's own site.",
+    "properties": {
+      "@id": {
+        "type": "string",
+        "description": "URL of the headline."
+      },
+      "id": {
+        "type": "string",
+        "description": "Headline id, such as `058e41fd34b935b395e9aaf0fe175dc9`. This is what `offices.get_headline` takes."
+      },
+      "office": {
+        "type": "string",
+        "description": "URL of the office that posted it."
+      },
+      "important": {
+        "type": "boolean",
+        "description": "Whether the office flagged it as important."
+      },
+      "issuanceTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When it was posted."
+      },
+      "link": {
+        "type": "string",
+        "description": "Where the headline points."
+      },
+      "name": {
+        "type": "string",
+        "description": "The office's own short name for it, such as `latestbrief`."
+      },
+      "title": {
+        "type": "string",
+        "description": "Headline text."
+      },
+      "summary": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "description": "Longer summary. Null on most headlines: 113 of 149 across every office on 2026-09-30."
+      },
+      "content": {
+        "type": "string",
+        "description": "The headline as an HTML fragment: an `<a>` around `title`, its `href` percent-encoded."
+      }
+    },
+    "required": [
+      "@id",
+      "id",
+      "office",
+      "important",
+      "issuanceTime",
+      "link",
+      "name",
+      "title",
+      "summary",
+      "content"
     ]
   }
 }

@@ -5,7 +5,28 @@
 use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
-use truewire_core::{serde_json, TimestampIso};
+use truewire_core::{serde_json, DecimalString, TimestampIso};
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum AdvisoryPolygonType {
+    Polygon,
+}
+
+/// The area an aviation advisory covers. Shaped like a GeoJSON `Polygon`, but each position is latitude first (`AdvisoryPosition`), so a GeoJSON library draws it transposed.
+#[allow(clippy::type_complexity)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct AdvisoryPolygon {
+    /// Always `Polygon`.
+    #[serde(rename = "type")]
+    pub type_: AdvisoryPolygonType,
+    /// Linear rings; the first is the outer boundary. Each ring repeats its first position as its last.
+    pub coordinates: Vec<Vec<(f64, f64)>>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+pub type AdvisoryPosition = (f64, f64);
 
 /// The areas covered, as codes rather than prose.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
@@ -16,6 +37,16 @@ pub struct AlertGeocode {
     /// UGC (Universal Geographic Code) zone codes.
     #[serde(rename = "UGC", default, skip_serializing_if = "Option::is_none")]
     pub ugc: Option<Vec<String>>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+/// Present on `alerts.list_alerts` only: where the next page is.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+pub struct AlertPagination {
+    /// URL containing the next cursor, which must be percent-decoded with a URL parser. Resend the original filters and limit. Stop on an empty page or absent next cursor, not on a short non-empty page.
+    pub next: String,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -37,6 +68,80 @@ pub struct AlertReference {
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum CenterWeatherAdvisoryCwsu {
+    #[serde(rename = "ZAB")]
+    Zab,
+    #[serde(rename = "ZAN")]
+    Zan,
+    #[serde(rename = "ZAU")]
+    Zau,
+    #[serde(rename = "ZBW")]
+    Zbw,
+    #[serde(rename = "ZDC")]
+    Zdc,
+    #[serde(rename = "ZDV")]
+    Zdv,
+    #[serde(rename = "ZFA")]
+    Zfa,
+    #[serde(rename = "ZFW")]
+    Zfw,
+    #[serde(rename = "ZHU")]
+    Zhu,
+    #[serde(rename = "ZID")]
+    Zid,
+    #[serde(rename = "ZJX")]
+    Zjx,
+    #[serde(rename = "ZKC")]
+    Zkc,
+    #[serde(rename = "ZLA")]
+    Zla,
+    #[serde(rename = "ZLC")]
+    Zlc,
+    #[serde(rename = "ZMA")]
+    Zma,
+    #[serde(rename = "ZME")]
+    Zme,
+    #[serde(rename = "ZMP")]
+    Zmp,
+    #[serde(rename = "ZNY")]
+    Zny,
+    #[serde(rename = "ZOA")]
+    Zoa,
+    #[serde(rename = "ZOB")]
+    Zob,
+    #[serde(rename = "ZSE")]
+    Zse,
+    #[serde(rename = "ZTL")]
+    Ztl,
+}
+
+/// A Center Weather Advisory: a short-fused warning of weather hazardous to aircraft inside one en-route center's airspace.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct CenterWeatherAdvisory {
+    /// Canonical URL of the advisory, ending in its issue date and sequence number: the arguments `aviation.get_cwa` takes.
+    pub id: String,
+    /// When the advisory was issued.
+    #[serde(rename = "issueTime")]
+    pub issue_time: TimestampIso,
+    /// Three-letter code of a Center Weather Service Unit: the NWS meteorologists posted at one FAA air route traffic control center, and named after it (`ZSE` is Seattle Center).
+    pub cwsu: CenterWeatherAdvisoryCwsu,
+    /// Sequence number within the day: the hundreds digit numbers a hazard and the rest counts the advisories about it (`101`, `102`, then `201` for a second hazard). Not always unique: measured 2026-09-30, `ZAB` issued two `206`s that day.
+    pub sequence: i64,
+    /// Start of the period the advisory is valid for.
+    pub start: TimestampIso,
+    /// End of the period the advisory is valid for.
+    pub end: TimestampIso,
+    /// What the advisory was issued for, as a code URL; null on a few.
+    #[serde(rename = "observedProperty")]
+    pub observed_property: Option<String>,
+    /// The advisory itself, in the abbreviated plain language of aviation weather (`AREA TS MOV LTL TOPS TO FL280`).
+    pub text: String,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
 /// Where the next page is. A whole URL, not a bare cursor -- which is why no endpoint returning this declares a pagination strategy.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct CollectionPagination {
@@ -46,6 +151,54 @@ pub struct CollectionPagination {
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum CwsuId {
+    #[serde(rename = "ZAB")]
+    Zab,
+    #[serde(rename = "ZAN")]
+    Zan,
+    #[serde(rename = "ZAU")]
+    Zau,
+    #[serde(rename = "ZBW")]
+    Zbw,
+    #[serde(rename = "ZDC")]
+    Zdc,
+    #[serde(rename = "ZDV")]
+    Zdv,
+    #[serde(rename = "ZFA")]
+    Zfa,
+    #[serde(rename = "ZFW")]
+    Zfw,
+    #[serde(rename = "ZHU")]
+    Zhu,
+    #[serde(rename = "ZID")]
+    Zid,
+    #[serde(rename = "ZJX")]
+    Zjx,
+    #[serde(rename = "ZKC")]
+    Zkc,
+    #[serde(rename = "ZLA")]
+    Zla,
+    #[serde(rename = "ZLC")]
+    Zlc,
+    #[serde(rename = "ZMA")]
+    Zma,
+    #[serde(rename = "ZME")]
+    Zme,
+    #[serde(rename = "ZMP")]
+    Zmp,
+    #[serde(rename = "ZNY")]
+    Zny,
+    #[serde(rename = "ZOA")]
+    Zoa,
+    #[serde(rename = "ZOB")]
+    Zob,
+    #[serde(rename = "ZSE")]
+    Zse,
+    #[serde(rename = "ZTL")]
+    Ztl,
 }
 
 /// One value of a gridded series, and the interval it holds over.
@@ -86,6 +239,37 @@ pub struct ObservationPagination {
     /// URL of the next page. Absent on the last one.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub next: Option<String>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+/// One news headline an office has posted: a title and a link, usually to a page or a PDF on the office's own site.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct OfficeHeadline {
+    /// URL of the headline.
+    #[serde(rename = "@id")]
+    pub id: String,
+    /// Headline id, such as `058e41fd34b935b395e9aaf0fe175dc9`. This is what `offices.get_headline` takes.
+    #[serde(rename = "id")]
+    pub id2: String,
+    /// URL of the office that posted it.
+    pub office: String,
+    /// Whether the office flagged it as important.
+    pub important: bool,
+    /// When it was posted.
+    #[serde(rename = "issuanceTime")]
+    pub issuance_time: TimestampIso,
+    /// Where the headline points.
+    pub link: String,
+    /// The office's own short name for it, such as `latestbrief`.
+    pub name: String,
+    /// Headline text.
+    pub title: String,
+    /// Longer summary. Null on most headlines: 113 of 149 across every office on 2026-09-30.
+    pub summary: Option<String>,
+    /// The headline as an HTML fragment: an `<a>` around `title`, its `href` percent-encoded.
+    pub content: String,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -235,6 +419,216 @@ pub struct QuantitativeValue {
     /// Lower end, where the value is a range rather than a point.
     #[serde(rename = "minValue", default, skip_serializing_if = "Option::is_none")]
     pub min_value: Option<f64>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum RadarHost {
+    #[serde(rename = "rds")]
+    Rds,
+    #[serde(rename = "tds")]
+    Tds,
+}
+
+/// Packet counters of one network interface.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+pub struct RadarNetworkInterface {
+    /// Interface name, such as `eth0`.
+    pub interface: String,
+    /// Whether the interface is up.
+    pub active: bool,
+    /// Packets sent without error.
+    #[serde(rename = "transNoError")]
+    pub trans_no_error: i64,
+    /// Packets that failed to send.
+    #[serde(rename = "transError")]
+    pub trans_error: i64,
+    /// Outgoing packets dropped.
+    #[serde(rename = "transDropped")]
+    pub trans_dropped: i64,
+    /// Outgoing overruns.
+    #[serde(rename = "transOverrun")]
+    pub trans_overrun: i64,
+    /// Packets received without error.
+    #[serde(rename = "recvNoError")]
+    pub recv_no_error: i64,
+    /// Packets received with an error.
+    #[serde(rename = "recvError")]
+    pub recv_error: i64,
+    /// Incoming packets dropped.
+    #[serde(rename = "recvDropped")]
+    pub recv_dropped: i64,
+    /// Incoming overruns.
+    #[serde(rename = "recvOverrun")]
+    pub recv_overrun: i64,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+/// The last command the server ran and received. Only `ldm` servers send it.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct RadarServerCommand {
+    /// Last command run, such as `LDM Start`.
+    #[serde(rename = "lastExecuted")]
+    pub last_executed: String,
+    /// When it ran.
+    #[serde(rename = "lastExecutedTime")]
+    pub last_executed_time: TimestampIso,
+    /// When the server last received NEXRAD data.
+    #[serde(rename = "lastNexradDataTime")]
+    pub last_nexrad_data_time: TimestampIso,
+    /// Last command received.
+    #[serde(rename = "lastReceived")]
+    pub last_received: String,
+    /// When it was received.
+    #[serde(rename = "lastReceivedTime")]
+    pub last_received_time: TimestampIso,
+    /// When this block was collected.
+    pub timestamp: TimestampIso,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+/// Host load and resources.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct RadarServerHardware {
+    /// When this block was collected.
+    pub timestamp: TimestampIso,
+    /// Idle CPU, in percent.
+    #[serde(rename = "cpuIdle")]
+    pub cpu_idle: f64,
+    /// Disk I/O utilisation, in percent.
+    #[serde(rename = "ioUtilization")]
+    pub io_utilization: f64,
+    /// Disk used, in percent.
+    pub disk: f64,
+    /// One-minute load average.
+    pub load1: f64,
+    /// Five-minute load average.
+    pub load5: f64,
+    /// Fifteen-minute load average.
+    pub load15: f64,
+    /// Memory used, in percent.
+    pub memory: f64,
+    /// When the host last booted: a time, despite the name, not a duration.
+    pub uptime: TimestampIso,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+/// The server's LDM product queue.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct RadarServerLdm {
+    /// When this block was collected.
+    pub timestamp: TimestampIso,
+    /// Arrival of the newest product in the queue.
+    #[serde(rename = "latestProduct")]
+    pub latest_product: TimestampIso,
+    /// Arrival of the oldest product still in the queue.
+    #[serde(rename = "oldestProduct")]
+    pub oldest_product: TimestampIso,
+    /// Size of the queue, in bytes.
+    #[serde(rename = "storageSize")]
+    pub storage_size: i64,
+    /// Products in the queue.
+    pub count: i64,
+    /// Whether LDM is running.
+    pub active: bool,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[allow(clippy::large_enum_variant)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum RadarServerPingTargetsValue {
+    /// Target name to whether it answered.
+    Map(HashMap<String, bool>),
+    /// An empty group: `[]`, never with entries.
+    BooleanList(Vec<bool>),
+}
+
+/// Which hosts the server could reach at its last ping round.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct RadarServerPing {
+    /// Ping results by group of targets: `client` (downstream data clients, such as `ncep`), `ldm` and `server` (other servers, by name), `radar` (radar stations, by identifier) and `misc` (interfaces and routers, such as `eth0`). A group the server does not ping is absent.
+    pub targets: HashMap<String, RadarServerPingTargetsValue>,
+    /// When the ping round ran.
+    pub timestamp: TimestampIso,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+/// A SIGMET or AIRMET: a warning to aircraft in flight of significant weather (convection, turbulence, icing, obscured mountains) over an area, issued by an air traffic services unit.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct Sigmet {
+    /// URL of the message, ending in its issuing unit, UTC issue date and `HHMM` issue time: the arguments `aviation.get_sigmet` takes. Not unique: every message a unit issues in the same minute shares it.
+    pub id: String,
+    /// When the message was issued.
+    #[serde(rename = "issueTime")]
+    pub issue_time: TimestampIso,
+    /// Flight information region the message covers; null on some.
+    pub fir: Option<String>,
+    /// The air traffic services unit that issued it, such as `KKCI` (the Aviation Weather Center) or `ANC` (Anchorage).
+    pub atsu: String,
+    /// Sequence identifier; null on some.
+    pub sequence: Option<String>,
+    /// The hazard, as a WMO code URL; null on more than half.
+    pub phenomenon: Option<String>,
+    /// Start of the period the message is valid for.
+    pub start: TimestampIso,
+    /// End of the period the message is valid for.
+    pub end: TimestampIso,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum TransmitterType {
+    #[serde(rename = "wx:Transmitter")]
+    WxTransmitter,
+}
+
+/// One NOAA Weather Radio transmitter.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+pub struct Transmitter {
+    /// URL of the transmitter.
+    #[serde(rename = "@id")]
+    pub id: String,
+    /// Always `wx:Transmitter`.
+    #[serde(rename = "@type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<TransmitterType>,
+    /// Which release of the transmitter list this came from.
+    #[serde(rename = "setId", default, skip_serializing_if = "Option::is_none")]
+    pub set_id: Option<String>,
+    /// Call sign, such as `KHB60`.
+    #[serde(rename = "callSign")]
+    pub call_sign: String,
+    /// Frequency in MHz, such as `162.550`.
+    #[serde(rename = "transmitterFrequency")]
+    pub transmitter_frequency: DecimalString,
+    /// Name of the transmitter, such as `Seattle`.
+    #[serde(rename = "siteName", default, skip_serializing_if = "Option::is_none")]
+    pub site_name: Option<String>,
+    /// Where the transmitter stands.
+    #[serde(rename = "siteCity", default, skip_serializing_if = "Option::is_none")]
+    pub site_city: Option<String>,
+    /// Two-letter state of the site.
+    #[serde(rename = "siteState", default, skip_serializing_if = "Option::is_none")]
+    pub site_state: Option<String>,
+    /// SAME codes of the counties it broadcasts for: `0`, the FIPS state, the FIPS county, such as `053033`.
+    #[serde(rename = "sameCodes", default, skip_serializing_if = "Option::is_none")]
+    pub same_codes: Option<Vec<String>>,
+    /// County zone codes it broadcasts for, such as `WAC033`, in the order of `sameCodes`.
+    pub counties: Vec<String>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -502,15 +896,16 @@ pub struct Alert {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[serde(with = "truewire_core::validation::double_option")]
     pub headline: Option<Option<String>>,
-    /// The full text of the alert.
-    pub description: String,
+    /// The full text of the alert. Null when the issuing system supplies no value.
+    pub description: Option<String>,
     /// What the public is being told to do.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[serde(with = "truewire_core::validation::double_option")]
     pub instruction: Option<Option<String>>,
-    /// The recommended action.
+    /// The recommended action. Null when the issuing system supplies no value.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub response: Option<AlertResponse>,
+    #[serde(with = "truewire_core::validation::double_option")]
+    pub response: Option<Option<AlertResponse>>,
     /// Free-form parameters the issuing system attached: `NWSheadline`, `VTEC`, `AWIPSidentifier` and others. Every value is a list, even when it holds one item.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub parameters: Option<HashMap<String, Vec<String>>>,
@@ -530,6 +925,26 @@ pub enum AlertGeometryValue {
 }
 
 pub type AlertGeometry = Option<AlertGeometryValue>;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum CenterWeatherAdvisoryFeatureType {
+    Feature,
+}
+
+/// One Center Weather Advisory, in the GeoJSON feature the API wraps it in. The feature has no `id` of its own; the advisory's URL is `properties.id`.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct CenterWeatherAdvisoryFeature {
+    /// Always `Feature`.
+    #[serde(rename = "type")]
+    pub type_: CenterWeatherAdvisoryFeatureType,
+    /// The area the advisory covers, latitude first; null on some.
+    pub geometry: Option<AdvisoryPolygon>,
+    /// The advisory itself.
+    pub properties: CenterWeatherAdvisory,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum CloudLayerAmount {
@@ -668,6 +1083,170 @@ pub struct ProductTypeCollection {
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
+/// How far behind real time the radar's Level II data reaches the LDM host named by `host`. Every field is null for a radar with no Level II feed, such as a profiler.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+pub struct RadarLatency {
+    /// Latency of the latest data.
+    pub current: Option<QuantitativeValue>,
+    /// Average latency.
+    pub average: Option<QuantitativeValue>,
+    /// Highest recent latency.
+    pub max: Option<QuantitativeValue>,
+    /// When the host last received Level II data.
+    #[serde(rename = "levelTwoLastReceivedTime")]
+    pub level_two_last_received_time: Option<TimestampIso>,
+    /// When the highest latency was seen.
+    #[serde(rename = "maxLatencyTime")]
+    pub max_latency_time: Option<TimestampIso>,
+    /// Monitoring host that reported the latency.
+    #[serde(rename = "reportingHost")]
+    pub reporting_host: Option<String>,
+    /// LDM host the latency is measured at.
+    pub host: Option<String>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+/// The status fields. A TDWR sends fewer of them than a WSR-88D.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+pub struct RadarRdaStatus {
+    /// Level II resolution version.
+    #[serde(
+        rename = "resolutionVersion",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    #[serde(with = "truewire_core::validation::double_option")]
+    pub resolution_version: Option<Option<i64>>,
+    /// Level II data path, such as `Default`.
+    #[serde(rename = "nl2Path")]
+    pub nl2_path: String,
+    /// Scan strategy in use, such as `R35` (clear air) or `R212` (precipitation).
+    #[serde(rename = "volumeCoveragePattern")]
+    pub volume_coverage_pattern: String,
+    /// Who controls the radar, such as `RPG (Remote) Only`.
+    #[serde(rename = "controlStatus")]
+    pub control_status: String,
+    /// Software build, such as `24.1`.
+    #[serde(rename = "buildNumber")]
+    pub build_number: f64,
+    /// Classes of active alarm, `|`-separated, such as `Transmitter|Communication`, or `No Alarms`.
+    #[serde(rename = "alarmSummary")]
+    pub alarm_summary: String,
+    /// Operating mode, such as `Operational` or `Maintenance`.
+    pub mode: String,
+    /// Power source state, such as `Utility PWR Available`. WSR-88D only.
+    #[serde(
+        rename = "generatorState",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub generator_state: Option<String>,
+    /// Whether super-resolution scanning is on. WSR-88D only.
+    #[serde(
+        rename = "superResolutionStatus",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub super_resolution_status: Option<String>,
+    /// Whether the radar needs maintenance, such as `RDA - On-Line`.
+    #[serde(rename = "operabilityStatus")]
+    pub operability_status: String,
+    /// RDA state, such as `Operate` or `Standby`.
+    pub status: String,
+    /// Average transmitter power. WSR-88D only.
+    #[serde(
+        rename = "averageTransmitterPower",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub average_transmitter_power: Option<QuantitativeValue>,
+    /// Reflectivity calibration correction. WSR-88D only.
+    #[serde(
+        rename = "reflectivityCalibrationCorrection",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub reflectivity_calibration_correction: Option<QuantitativeValue>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[allow(clippy::large_enum_variant)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum RadarReportPropertiesMapValue {
+    /// A measurement, such as `transmitterPeakPower`.
+    QuantitativeValue(QuantitativeValue),
+    /// A status, such as `OK`, or a time the report states as text, such as `performanceCheckTime`.
+    String(String),
+    /// A bare count or ratio, such as `linearity`.
+    Number(f64),
+}
+
+#[allow(clippy::large_enum_variant)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum RadarReportProperties {
+    /// Reading name to reading.
+    Map(HashMap<String, RadarReportPropertiesMapValue>),
+    /// No readings: `[]`, never with entries.
+    StringList(Vec<String>),
+}
+
+/// A periodic engineering report from the radar: its performance check or its adaptation (calibration) data.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct RadarReport {
+    /// When the report was made.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(with = "truewire_core::validation::double_option")]
+    pub timestamp: Option<Option<TimestampIso>>,
+    /// Monitoring host that collected it, such as `rdss` or `tdss`.
+    #[serde(rename = "reportingHost")]
+    pub reporting_host: String,
+    /// The readings, by name. Their set depends on the kind of radar and is not documented, so they are a map rather than fields. Any radar may send `[]` with a null `timestamp`: a TDWR always, a WSR-88D between reports (24 to 95 of 159 at a time on 2026-10-13).
+    pub properties: RadarReportProperties,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+/// Traffic counters of the server's two network interfaces.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct RadarServerNetwork {
+    /// When this block was collected.
+    pub timestamp: TimestampIso,
+    /// The first interface.
+    pub eth0: RadarNetworkInterface,
+    /// The second interface.
+    pub eth1: RadarNetworkInterface,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum SigmetFeatureType {
+    Feature,
+}
+
+/// One SIGMET or AIRMET, in the GeoJSON feature the API wraps it in. The feature has no `id` of its own; the message's URL is `properties.id`.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct SigmetFeature {
+    /// Always `Feature`.
+    #[serde(rename = "type")]
+    pub type_: SigmetFeatureType,
+    /// The area the message covers, latitude first; null on some.
+    pub geometry: Option<AdvisoryPolygon>,
+    /// The message itself.
+    pub properties: Sigmet,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
 /// One observation station.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 pub struct Station {
@@ -711,6 +1290,20 @@ pub struct Station {
     /// Direction from the grid cell to the station, in degrees clockwise from true north. Only `stations.list_stations_for_gridpoint` sends it.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub bearing: Option<QuantitativeValue>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+/// NOAA Weather Radio transmitters, as a JSON-LD graph.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+pub struct TransmitterCollection {
+    /// The transmitters. Each one arrives many times over, identical: 64 copies of each on 2026-09-30.
+    #[serde(rename = "@graph")]
+    pub graph: Vec<Transmitter>,
+    /// Where the next page is. Only `radio.list_transmitters` sends it, and not on its last page.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pagination: Option<CollectionPagination>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -789,6 +1382,24 @@ pub struct AlertFeature {
     pub geometry: Option<Option<AlertFeatureGeometry>>,
     /// The alert itself.
     pub properties: Alert,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum CenterWeatherAdvisoryCollectionType {
+    FeatureCollection,
+}
+
+/// Center Weather Advisories, as a GeoJSON feature collection, newest first. The service keeps about a week of them and answers all of them at once: there is no paging.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct CenterWeatherAdvisoryCollection {
+    /// Always `FeatureCollection`.
+    #[serde(rename = "type")]
+    pub type_: CenterWeatherAdvisoryCollectionType,
+    /// The advisories; empty when the unit issued none this week.
+    pub features: Vec<CenterWeatherAdvisoryFeature>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -968,6 +1579,98 @@ pub struct Observation {
     pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
+/// Status of the Radar Data Acquisition unit: the radar itself.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct RadarRda {
+    /// When the status was reported.
+    pub timestamp: TimestampIso,
+    /// Monitoring host that reported it, such as `rdss` or `tdss`.
+    #[serde(rename = "reportingHost")]
+    pub reporting_host: String,
+    pub properties: RadarRdaStatus,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum RadarServerType {
+    #[serde(rename = "wx:RadarServer")]
+    WxRadarServer,
+}
+
+/// One server of the radar data distribution network, and its health at `collectionTime`.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct RadarServer {
+    /// URL of this server.
+    #[serde(rename = "@id")]
+    pub id: String,
+    /// Always `wx:RadarServer`.
+    #[serde(rename = "@type")]
+    pub type_: RadarServerType,
+    /// Server name, such as `ldm1` or `rds`. `radar.get_server` takes it.
+    #[serde(rename = "id")]
+    pub id2: String,
+    /// Role of the server. Undocumented; `ldm` (an LDM ingest server) and `distribution` (`rds`, `tds`) on 2026-10-01.
+    #[serde(rename = "type")]
+    pub type_2: String,
+    /// Whether the server is in service. Only `ldm` servers send it.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub active: Option<bool>,
+    /// Whether the server is the primary of its pair. Only `ldm` servers send it.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub primary: Option<bool>,
+    /// Whether the server aggregates the others' feeds. Only `ldm` servers send it.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub aggregate: Option<bool>,
+    /// Whether the server is locked against changes. Only `ldm` servers send it.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub locked: Option<bool>,
+    /// Whether the server sees the radar network as up. Only `ldm` servers send it.
+    #[serde(
+        rename = "radarNetworkUp",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub radar_network_up: Option<bool>,
+    /// When this health report was collected.
+    #[serde(rename = "collectionTime")]
+    pub collection_time: TimestampIso,
+    /// Monitoring host that reported it, such as `rdss` or `tdss`.
+    #[serde(rename = "reportingHost")]
+    pub reporting_host: String,
+    /// Host the server ingests from, such as `dns`.
+    #[serde(rename = "ingestHost")]
+    pub ingest_host: String,
+    pub ping: RadarServerPing,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub command: Option<RadarServerCommand>,
+    pub hardware: RadarServerHardware,
+    pub ldm: RadarServerLdm,
+    pub network: RadarServerNetwork,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum SigmetCollectionType {
+    FeatureCollection,
+}
+
+/// SIGMETs and AIRMETs, as a GeoJSON feature collection, newest first. The service keeps about a week of them and answers everything that matched at once: there is no paging.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct SigmetCollection {
+    /// Always `FeatureCollection`.
+    #[serde(rename = "type")]
+    pub type_: SigmetCollectionType,
+    /// The messages.
+    pub features: Vec<SigmetFeature>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum StationFeatureType {
     Feature,
@@ -1010,6 +1713,32 @@ pub struct ZoneCollection {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum AlertCollectionType {
+    FeatureCollection,
+}
+
+/// Alerts as a GeoJSON feature collection.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct AlertCollection {
+    /// Always `FeatureCollection`.
+    #[serde(rename = "type")]
+    pub type_: AlertCollectionType,
+    /// The alerts.
+    pub features: Vec<AlertFeature>,
+    /// Human-readable title of the collection.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
+    /// When the collection was assembled.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub updated: Option<TimestampIso>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pagination: Option<AlertPagination>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ObservationFeatureType {
     Feature,
 }
@@ -1027,6 +1756,51 @@ pub struct ObservationFeature {
     pub geometry: Option<PointGeometry>,
     /// The observation itself.
     pub properties: Observation,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum RadarStationType {
+    #[serde(rename = "wx:RadarStation")]
+    WxRadarStation,
+}
+
+/// One radar: what kind it is, how far behind its data runs, and how its hardware is doing.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+pub struct RadarStation {
+    /// URL of this radar.
+    #[serde(rename = "@id")]
+    pub id: String,
+    /// Always `wx:RadarStation`.
+    #[serde(rename = "@type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<RadarStationType>,
+    /// Station identifier, such as `KATX`. `radar.get_station` takes it.
+    #[serde(rename = "id")]
+    pub id2: String,
+    /// Where the radar is, such as `Seattle`.
+    pub name: String,
+    /// Kind of radar. Undocumented; `WSR-88D` (NEXRAD), `TDWR` (terminal Doppler) and `Profiler` on 2026-10-01. `radar.list_stations` filters on it.
+    #[serde(rename = "stationType")]
+    pub station_type: String,
+    /// Height of the radar above sea level.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub elevation: Option<QuantitativeValue>,
+    /// Time zone, such as `GMT`.
+    #[serde(rename = "timeZone", default, skip_serializing_if = "Option::is_none")]
+    pub time_zone: Option<String>,
+    pub latency: RadarLatency,
+    /// Status of the radar itself.
+    pub rda: Option<RadarRda>,
+    /// The latest performance check. Only `radar.get_station` sends it.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(with = "truewire_core::validation::double_option")]
+    pub performance: Option<Option<RadarReport>>,
+    /// The radar's adaptation (calibration) data. Only `radar.get_station` sends it.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[serde(with = "truewire_core::validation::double_option")]
+    pub adaptation: Option<Option<RadarReport>>,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,
@@ -1052,6 +1826,7 @@ pub struct StationCollection {
         skip_serializing_if = "Option::is_none"
     )]
     pub observation_stations: Option<Vec<String>>,
+    /// Where the next page is.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub pagination: Option<CollectionPagination>,
     /// Keys the spec does not document, kept as they came.
@@ -1074,6 +1849,28 @@ pub struct ObservationCollection {
     pub features: Vec<ObservationFeature>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub pagination: Option<ObservationPagination>,
+    /// Keys the spec does not document, kept as they came.
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum RadarStationFeatureType {
+    Feature,
+}
+
+/// One radar, in the GeoJSON feature the API wraps it in.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct RadarStationFeature {
+    /// URL of this radar.
+    pub id: String,
+    /// Always `Feature`.
+    #[serde(rename = "type")]
+    pub type_: RadarStationFeatureType,
+    /// Where the radar is.
+    pub geometry: PointGeometry,
+    /// The radar itself.
+    pub properties: RadarStation,
     /// Keys the spec does not document, kept as they came.
     #[serde(flatten)]
     pub extra: serde_json::Map<String, serde_json::Value>,

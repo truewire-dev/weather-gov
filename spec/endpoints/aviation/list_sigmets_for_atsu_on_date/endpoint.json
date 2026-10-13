@@ -1,0 +1,40 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/sigmetsByATSUByDate",
+  "meta": {},
+  "notes": [
+    "No `pagination` block: the service answers everything it matched in one response, with no page link or cursor (measured 2026-09-30, 1,059 SIGMETs in one 1.5 MB body)."
+  ],
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/aviation/sigmets/{atsu}/{date}",
+    "method": "GET",
+    "description": "The SIGMETs and AIRMETs one unit issued on one UTC date, newest first.",
+    "request": {
+      "title": "ListSigmetsForAtsuOnDateRequest",
+      "type": "object",
+      "description": "Which unit, and which day.",
+      "properties": {
+        "atsu": {
+          "type": "string",
+          "description": "Air traffic services unit, such as `KKCI` (the Aviation Weather Center, which issues the SIGMETs for the contiguous US) or `ANC` (Anchorage). Three or four capital letters."
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "UTC date the messages were issued. The service keeps about a week; an older date answers an empty collection."
+        }
+      },
+      "required": [
+        "atsu",
+        "date"
+      ]
+    },
+    "response": {
+      "$ref": "SigmetCollection",
+      "description": "The messages."
+    }
+  }
+}

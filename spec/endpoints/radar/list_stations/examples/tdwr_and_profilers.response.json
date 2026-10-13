@@ -1,0 +1,2668 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": [
+      "https://geojson.org/geojson-ld/geojson-context.jsonld",
+      {
+        "@version": "1.1",
+        "wmoUnit": "https://codes.wmo.int/common/unit/",
+        "nwsUnit": "https://api.weather.gov/ontology/unit/"
+      }
+    ],
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "id": "https://api.weather.gov/radar/stations/TEWR",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.27,
+            40.593
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TEWR",
+          "@type": "wx:RadarStation",
+          "id": "TEWR",
+          "name": "Newark",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 41.45278
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.083871
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.15
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 7
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:59+00:00",
+            "maxLatencyTime": "2026-10-11T22:04:12+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:34:18+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L80",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TDAY",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -84.123,
+            40.022
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TDAY",
+          "@type": "wx:RadarStation",
+          "id": "TDAY",
+          "name": "Dayton",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 310.59118
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.030889
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.06
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:57+00:00",
+            "maxLatencyTime": "2026-10-11T22:00:43+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:36:57+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TCVG",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -84.58,
+            38.898
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TCVG",
+          "@type": "wx:RadarStation",
+          "id": "TCVG",
+          "name": "Covington",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 320.95438
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.029772
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.06
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:59+00:00",
+            "maxLatencyTime": "2026-10-11T22:04:50+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:34:57+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TMSY",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -90.403,
+            30.022
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TMSY",
+          "@type": "wx:RadarStation",
+          "id": "TMSY",
+          "name": "New Orleans",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 30.17518
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.027822
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.08
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:54+00:00",
+            "maxLatencyTime": "2026-10-11T22:04:17+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:34:28+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TIAH",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -95.567,
+            30.065
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TIAH",
+          "@type": "wx:RadarStation",
+          "id": "TIAH",
+          "name": "Houston International",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 77.11438
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.022885
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.09
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 9
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T17:52:49+00:00",
+            "maxLatencyTime": "2026-10-11T17:04:15+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T17:46:59+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TADW",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -76.845,
+            38.695
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TADW",
+          "@type": "wx:RadarStation",
+          "id": "TADW",
+          "name": "Andrews Air Force Base",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 105.46078
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.103674
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.07
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 1
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:59+00:00",
+            "maxLatencyTime": "2026-10-11T22:03:21+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:33:30+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L80",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TDJT",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -80.273,
+            26.688
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TDJT",
+          "@type": "wx:RadarStation",
+          "id": "TDJT",
+          "name": "Trump International",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 40.53838
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.184757
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.15
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 2
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:59+00:00",
+            "maxLatencyTime": "2026-10-11T22:09:11+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:35:23+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L80",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TOKC",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -97.51,
+            35.276
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TOKC",
+          "@type": "wx:RadarStation",
+          "id": "TOKC",
+          "name": "Oklahoma City",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 398.67838
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.003526
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.01
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:40:00+00:00",
+            "maxLatencyTime": "2026-10-11T22:02:50+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:37:20+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/ROCO2",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -97.45,
+            35.23
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/ROCO2",
+          "@type": "wx:RadarStation",
+          "id": "ROCO2",
+          "name": "Norman",
+          "stationType": "Profiler",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 363.3
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": null,
+            "average": null,
+            "max": null,
+            "levelTwoLastReceivedTime": null,
+            "maxLatencyTime": null,
+            "reportingHost": null,
+            "host": null
+          },
+          "rda": null
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TMKE",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -88.046,
+            42.819
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TMKE",
+          "@type": "wx:RadarStation",
+          "id": "TMKE",
+          "name": "Milwaukee",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 284.37838
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.030023
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.07
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:56+00:00",
+            "maxLatencyTime": "2026-10-11T22:00:16+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:35:47+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TLAS",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -115.007,
+            36.144
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TLAS",
+          "@type": "wx:RadarStation",
+          "id": "TLAS",
+          "name": "Las Vegas",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 627.27838
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.105001
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.14
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 4
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:58+00:00",
+            "maxLatencyTime": "2026-10-11T22:00:17+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:36:21+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L80",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/HWPA2",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -151.46,
+            59.65
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/HWPA2",
+          "@type": "wx:RadarStation",
+          "id": "HWPA2",
+          "name": "Homer",
+          "stationType": "Profiler",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 7.6
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": null,
+            "average": null,
+            "max": null,
+            "levelTwoLastReceivedTime": null,
+            "maxLatencyTime": null,
+            "reportingHost": null,
+            "host": null
+          },
+          "rda": null
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TIDS",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -86.436,
+            39.637
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TIDS",
+          "@type": "wx:RadarStation",
+          "id": "TIDS",
+          "name": "Indianapolis",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 258.16558
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.031629
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.08
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 1
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:56+00:00",
+            "maxLatencyTime": "2026-10-11T22:02:21+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:38:59+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TMCO",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -81.326,
+            28.344
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TMCO",
+          "@type": "wx:RadarStation",
+          "id": "TMCO",
+          "name": "Orlando International",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 51.51118
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.035675
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.09
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 1
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:56+00:00",
+            "maxLatencyTime": "2026-10-11T22:04:52+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:35:02+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TLVE",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -82.008,
+            41.29
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TLVE",
+          "@type": "wx:RadarStation",
+          "id": "TLVE",
+          "name": "Cleveland,OH",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 283.76878
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.024464
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.08
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 10
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:54+00:00",
+            "maxLatencyTime": "2026-10-11T22:03:14+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:33:25+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TORD",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -87.858,
+            41.797
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TORD",
+          "@type": "wx:RadarStation",
+          "id": "TORD",
+          "name": "Chicago O'Hare",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 226.77118
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.028358
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.07
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:56+00:00",
+            "maxLatencyTime": "2026-10-11T22:04:18+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:34:28+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TBNA",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -86.662,
+            35.98
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TBNA",
+          "@type": "wx:RadarStation",
+          "id": "TBNA",
+          "name": "Nashville",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 249.02158
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.085359
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.08
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 1
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:40:01+00:00",
+            "maxLatencyTime": "2026-10-11T22:05:59+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:36:41+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TATL",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -84.262,
+            33.647
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TATL",
+          "@type": "wx:RadarStation",
+          "id": "TATL",
+          "name": "Atlanta",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 327.65998
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.041616
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.05
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:57+00:00",
+            "maxLatencyTime": "2026-10-11T22:05:01+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:35:13+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/THOU",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -95.242,
+            29.516
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/THOU",
+          "@type": "wx:RadarStation",
+          "id": "THOU",
+          "name": "Houston Hobby",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 35.66158
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.02663
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.07
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:58+00:00",
+            "maxLatencyTime": "2026-10-11T22:05:56+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:36:04+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TTUL",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -95.827,
+            36.071
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TTUL",
+          "@type": "wx:RadarStation",
+          "id": "TTUL",
+          "name": "Tulsa",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 250.85038
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.033788
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.16
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 10
+            },
+            "levelTwoLastReceivedTime": "2026-10-04T03:25:47+00:00",
+            "maxLatencyTime": "2026-10-04T03:03:57+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-04T03:25:46+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "Communication",
+              "operabilityStatus": "RDA - Inoperable",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TMDW",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -87.73,
+            41.651
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TMDW",
+          "@type": "wx:RadarStation",
+          "id": "TMDW",
+          "name": "Chicago Midway",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 232.56238
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.081178
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.06
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:40:00+00:00",
+            "maxLatencyTime": "2026-10-11T22:01:34+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:37:40+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TDTW",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -83.515,
+            42.111
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TDTW",
+          "@type": "wx:RadarStation",
+          "id": "TDTW",
+          "name": "Detroit",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 235.30558
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.066808
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.24
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 9
+            },
+            "levelTwoLastReceivedTime": "2026-10-09T12:05:58+00:00",
+            "maxLatencyTime": "2026-10-09T12:00:33+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-09T12:00:43+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/AWPA2",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -149.78,
+            61.15
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/AWPA2",
+          "@type": "wx:RadarStation",
+          "id": "AWPA2",
+          "name": "Anchorage",
+          "stationType": "Profiler",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 97
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": null,
+            "average": null,
+            "max": null,
+            "levelTwoLastReceivedTime": null,
+            "maxLatencyTime": null,
+            "reportingHost": null,
+            "host": null
+          },
+          "rda": null
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TTPA",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -82.518,
+            27.86
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TTPA",
+          "@type": "wx:RadarStation",
+          "id": "TTPA",
+          "name": "Tampa Bay",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 28.34638
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.031887
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.03
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-05T15:01:50+00:00",
+            "maxLatencyTime": "2026-10-05T15:01:48+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-05T15:01:48+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "Communication",
+              "operabilityStatus": "RDA - Inoperable",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TCLT",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -80.885,
+            35.337
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TCLT",
+          "@type": "wx:RadarStation",
+          "id": "TCLT",
+          "name": "Charlotte",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 265.48078
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.072223
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.05
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:59+00:00",
+            "maxLatencyTime": "2026-10-11T22:01:19+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:37:28+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TMSP",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -92.933,
+            44.871
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TMSP",
+          "@type": "wx:RadarStation",
+          "id": "TMSP",
+          "name": "Minneapolis",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 341.68078
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.09592
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.07
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:58+00:00",
+            "maxLatencyTime": "2026-10-11T22:01:00+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:37:09+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TPIT",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -80.486,
+            40.501
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TPIT",
+          "@type": "wx:RadarStation",
+          "id": "TPIT",
+          "name": "Pittsburgh",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 422.45278
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.022737
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.05
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 1
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:56+00:00",
+            "maxLatencyTime": "2026-10-11T22:05:12+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:35:25+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TPHX",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -112.163,
+            33.421
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TPHX",
+          "@type": "wx:RadarStation",
+          "id": "TPHX",
+          "name": "Phoenix",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 331.92718
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.132213
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.13
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 6
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:40:00+00:00",
+            "maxLatencyTime": "2026-10-11T22:04:01+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:34:06+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L80",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TRDU",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -78.697,
+            36.002
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TRDU",
+          "@type": "wx:RadarStation",
+          "id": "TRDU",
+          "name": "Raleigh Durham",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 156.97198
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.072948
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.05
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:40:01+00:00",
+            "maxLatencyTime": "2026-10-11T22:00:58+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:37:10+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TBOS",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -70.933,
+            42.158
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TBOS",
+          "@type": "wx:RadarStation",
+          "id": "TBOS",
+          "name": "Boston",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 80.46718
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.11718
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.14
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 6
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:49+00:00",
+            "maxLatencyTime": "2026-10-11T22:00:44+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:36:50+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L80",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TDCA",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -76.962,
+            38.759
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TDCA",
+          "@type": "wx:RadarStation",
+          "id": "TDCA",
+          "name": "Washington National",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 105.15598
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.020992
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.08
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 1
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:40:01+00:00",
+            "maxLatencyTime": "2026-10-11T22:00:33+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:36:41+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L80",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TMIA",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -80.491,
+            25.758
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TMIA",
+          "@type": "wx:RadarStation",
+          "id": "TMIA",
+          "name": "Miami",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 38.09998
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.113098
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.15
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:58+00:00",
+            "maxLatencyTime": "2026-10-11T22:04:46+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:34:51+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L80",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TPHL",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -75.069,
+            39.949
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TPHL",
+          "@type": "wx:RadarStation",
+          "id": "TPHL",
+          "name": "Philadelphia",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 46.63438
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.061783
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.09
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 1
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:56+00:00",
+            "maxLatencyTime": "2026-10-11T22:12:51+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:34:20+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L80",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TCMH",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -82.715,
+            40.006
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TCMH",
+          "@type": "wx:RadarStation",
+          "id": "TCMH",
+          "name": "Columbus,OH",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 349.91038
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.030991
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.08
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 8
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:57+00:00",
+            "maxLatencyTime": "2026-10-11T22:05:17+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:35:25+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TSJU",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -66.179,
+            18.474
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TSJU",
+          "@type": "wx:RadarStation",
+          "id": "TSJU",
+          "name": "San Juan",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 47.85358
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.228523
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.17
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 3
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:55+00:00",
+            "maxLatencyTime": "2026-10-11T22:02:33+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:38:37+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L80",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TMCI",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -94.742,
+            39.498
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TMCI",
+          "@type": "wx:RadarStation",
+          "id": "TMCI",
+          "name": "Kansas City",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 332.23198
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.022875
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.09
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 9
+            },
+            "levelTwoLastReceivedTime": "2026-10-10T07:53:18+00:00",
+            "maxLatencyTime": "2026-10-10T07:01:32+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-10T07:49:41+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TSTL",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -90.489,
+            38.805
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TSTL",
+          "@type": "wx:RadarStation",
+          "id": "TSTL",
+          "name": "St. Louis",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 197.20558
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.019209
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.06
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:59+00:00",
+            "maxLatencyTime": "2026-10-11T22:03:12+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:33:22+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TBWI",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -76.63,
+            39.09
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TBWI",
+          "@type": "wx:RadarStation",
+          "id": "TBWI",
+          "name": "Baltimore/Wash",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 90.52558
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.021045
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.07
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 1
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:59+00:00",
+            "maxLatencyTime": "2026-10-11T22:04:06+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:34:13+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L80",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TDEN",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -104.526,
+            39.728
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TDEN",
+          "@type": "wx:RadarStation",
+          "id": "TDEN",
+          "name": "Denver",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 1737.66478
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.018968
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.06
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:57+00:00",
+            "maxLatencyTime": "2026-10-11T22:04:28+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:34:35+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TLKA2",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -150.42,
+            62.31
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TLKA2",
+          "@type": "wx:RadarStation",
+          "id": "TLKA2",
+          "name": "Talkeetna",
+          "stationType": "Profiler",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 151
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": null,
+            "average": null,
+            "max": null,
+            "levelTwoLastReceivedTime": null,
+            "maxLatencyTime": null,
+            "reportingHost": null,
+            "host": null
+          },
+          "rda": null
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TMEM",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -89.993,
+            34.896
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TMEM",
+          "@type": "wx:RadarStation",
+          "id": "TMEM",
+          "name": "Memphis",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 147.21838
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.233113
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.09
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:40:00+00:00",
+            "maxLatencyTime": "2026-10-11T22:01:15+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:37:51+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TJFK",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -73.881,
+            40.589
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TJFK",
+          "@type": "wx:RadarStation",
+          "id": "TJFK",
+          "name": "New York City",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 34.13758
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.083772
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.15
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 8
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:40:00+00:00",
+            "maxLatencyTime": "2026-10-11T22:03:52+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:34:00+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L80",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TDFW",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -96.918,
+            33.065
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TDFW",
+          "@type": "wx:RadarStation",
+          "id": "TDFW",
+          "name": "Dallas/Ft. Worth",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 178.30798
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.022231
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.06
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:41+00:00",
+            "maxLatencyTime": "2026-10-11T22:03:41+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:33:50+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TSLC",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -111.93,
+            40.967
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TSLC",
+          "@type": "wx:RadarStation",
+          "id": "TSLC",
+          "name": "Salt Lake City",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 1309.11598
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.085225
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.12
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 5
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:40:01+00:00",
+            "maxLatencyTime": "2026-10-11T22:03:01+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:33:06+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L80",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TDAL",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -96.968,
+            32.926
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TDAL",
+          "@type": "wx:RadarStation",
+          "id": "TDAL",
+          "name": "Dallas Love Field",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 189.58558
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.081035
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.07
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:59+00:00",
+            "maxLatencyTime": "2026-10-11T22:05:44+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:36:21+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TFLL",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -80.344,
+            26.143
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TFLL",
+          "@type": "wx:RadarStation",
+          "id": "TFLL",
+          "name": "Fort Lauderdale",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 36.57598
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.031963
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.1
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 8
+            },
+            "levelTwoLastReceivedTime": "2026-09-12T13:49:02+00:00",
+            "maxLatencyTime": "2026-09-12T13:01:04+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-09-12T13:43:10+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TIAD",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -77.529,
+            39.084
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TIAD",
+          "@type": "wx:RadarStation",
+          "id": "TIAD",
+          "name": "Dulles",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 144.17038
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.101356
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.09
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 1
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:40:00+00:00",
+            "maxLatencyTime": "2026-10-11T22:01:26+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:37:33+00:00",
+            "reportingHost": "rdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L80",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TICH",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -97.437,
+            37.507
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TICH",
+          "@type": "wx:RadarStation",
+          "id": "TICH",
+          "name": "Witchita",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 411.78478
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.098861
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.1
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 10
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:39:54+00:00",
+            "maxLatencyTime": "2026-10-11T22:00:42+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:36:54+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/radar/stations/TSDF",
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -85.61,
+            38.046
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/radar/stations/TSDF",
+          "@type": "wx:RadarStation",
+          "id": "TSDF",
+          "name": "Louisville,KY",
+          "stationType": "TDWR",
+          "elevation": {
+            "unitCode": "wmoUnit:m",
+            "value": 222.80878
+          },
+          "timeZone": "GMT",
+          "latency": {
+            "current": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.029748
+            },
+            "average": {
+              "unitCode": "nwsUnit:s",
+              "value": 0.07
+            },
+            "max": {
+              "unitCode": "nwsUnit:s",
+              "value": 0
+            },
+            "levelTwoLastReceivedTime": "2026-10-11T22:40:01+00:00",
+            "maxLatencyTime": "2026-10-11T22:04:43+00:00",
+            "reportingHost": "tdss",
+            "host": "ldm4"
+          },
+          "rda": {
+            "timestamp": "2026-10-11T22:34:56+00:00",
+            "reportingHost": "tdss",
+            "properties": {
+              "resolutionVersion": null,
+              "nl2Path": "Default",
+              "volumeCoveragePattern": "L90",
+              "buildNumber": 2,
+              "alarmSummary": "No Alarms",
+              "operabilityStatus": "RDA - On-line",
+              "status": "Operate",
+              "controlStatus": "Local Only",
+              "mode": "Operational"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

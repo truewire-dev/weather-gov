@@ -12,12 +12,14 @@
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { beforeAll, describe, expect, inject, it } from 'vitest'
-import { Weather } from '../src/weather-gov/core/index.js'
+import { DateIso, type RadarHost, Weather } from '../src/weather-gov/core/index.js'
 import type {
+  AdvisoryPolygon,
   PointGeometry,
   PolygonGeometry,
   Product,
   QuantitativeValue,
+  SigmetFeature,
   ZoneFeature,
 } from '../src/weather-gov/types/index.js'
 import { projectRoot } from './setup.js'
@@ -60,6 +62,146 @@ const ZONE_WINDOW = recorded<{ zone_id: string; start: string; end: string; limi
 )
 const ZONE_STATIONS = recorded<{ zone_id: string }>(
   'stations/list_stations_for_zone/examples/seattle.request.json',
+)
+const CWA = recorded<{ cwsu_id: 'ZFW'; date: string; sequence: number }>(
+  'aviation/get_cwa/examples/latest.request.json',
+)
+const SIGMET = recorded<{ atsu: string; date: string; time: string }>(
+  'aviation/get_sigmet/examples/anchorage_latest.request.json',
+)
+const SIGMETS_ON_DATE = recorded<{ atsu: string; date: string }>(
+  'aviation/list_sigmets_for_atsu_on_date/examples/anchorage.request.json',
+)
+
+/** The ids a recorded collection holds, for a test that checks one recording against another. */
+function recordedIds(file: string): string[] {
+  const full = path.join(projectRoot, 'spec/endpoints', file)
+  const payload = (JSON.parse(readFileSync(full, 'utf8')) as {
+    payload: { features: { properties: { id: string } }[] }
+  }).payload
+  return payload.features.map(feature => feature.properties.id)
+}
+
+type Box = { latitude: [number, number]; longitude: [number, number] }
+/** Fort Worth Center's airspace, generously: north Texas and its neighbours. */
+const FORT_WORTH: Box = { latitude: [25, 40], longitude: [-112, -88] }
+/** Alaska, with the Aleutians past the antimeridian: the service does not wrap -190 to 170. */
+const ALASKA: Box = { latitude: [45, 75], longitude: [-200, -125] }
+/**
+ * The eastern third of the contiguous US and the waters off it, where the `E` convective
+ * SIGMETs are issued; Miami's oceanic airspace reaches 12 N in the Caribbean.
+ */
+const EAST: Box = { latitude: [5, 50], longitude: [-100, -60] }
+
+/**
+ * An aviation outline: a closed polygon, latitude first -- the reverse of every other
+ * geometry in this API, which the box around the issuing unit's airspace proves.
+ */
+function isAdvisoryArea(geometry: AdvisoryPolygon | null, box: Box): void {
+  expect(geometry?.type).toBe('Polygon')
+  for (const ring of geometry!.coordinates) {
+    expect(ring.length).toBeGreaterThan(3)
+    expect(ring[ring.length - 1]).toEqual(ring[0])
+    for (const [latitude, longitude] of ring) {
+      expect(latitude).toBeGreaterThan(box.latitude[0])
+      expect(latitude).toBeLessThan(box.latitude[1])
+      expect(longitude).toBeGreaterThan(box.longitude[0])
+      expect(longitude).toBeLessThan(box.longitude[1])
+    }
+  }
+}
+
+function isNewestFirst(features: { properties: { issueTime: Date } }[]): void {
+  const issued = features.map(feature => feature.properties.issueTime.getTime())
+  expect([...issued].sort((a, b) => b - a)).toEqual(issued)
+}
+
+/** `YYYY-MM-DD` and `HHMM` of an instant, in UTC: how a SIGMET's URL names it. */
+function utcDay(date: Date): string {
+  return date.toISOString().slice(0, 10)
+}
+function utcMinute(date: Date): string {
+  return date.toISOString().slice(11, 16).replace(':', '')
+}
+
+/** A message from `atsu`, named by its UTC issue date and minute: the URL `getSigmet` takes. */
+function isSigmetOf(feature: SigmetFeature, atsu: string): SigmetFeature['properties'] {
+  const sigmet = feature.properties
+  expect(sigmet.atsu).toBe(atsu)
+  const issued = sigmet.issueTime
+  expect(sigmet.id.endsWith(`/sigmets/${atsu}/${utcDay(issued)}/${utcMinute(issued)}`)).toBe(true)
+  expect(sigmet.start.getTime()).toBeLessThanOrEqual(sigmet.end.getTime())
+  if (feature.geometry !== null) isAdvisoryArea(feature.geometry, ALASKA)
+  return sigmet
+}
+
+const ALERT_WINDOW = recorded<{ start: string; end: string; status: ['actual']; limit: number }>(
+  'alerts/list_alerts/examples/first_page.request.json',
+)
+const ZONE = recorded<{ zone_id: string }>('alerts/get_active_alerts_for_zone/examples/in_effect.request.json')
+const AREA = recorded<{ area: string }>('alerts/get_active_alerts_for_area/examples/in_effect.request.json')
+const REGION = recorded<{ region: 'AL' | 'AT' | 'GL' | 'GM' | 'PA' | 'PI' }>(
+  'alerts/get_active_alerts_for_region/examples/in_effect.request.json',
+)
+
+/** The marine areas each region groups, from the OpenAPI's `MarineRegionCode`. */
+const MARINE_REGIONS: Record<string, string[]> = {
+  AL: ['PK'],
+  AT: ['AM', 'AN'],
+  GL: ['LC', 'LE', 'LH', 'LM', 'LO', 'LS', 'SL'],
+  GM: ['GM'],
+  PA: ['PZ'],
+  PI: ['PH', 'PM', 'PS'],
+}
+
+/** Each alert's zone and county codes, after checking there is at least one alert. */
+function ugcCodes(page: {
+  type: string
+  features: { properties: { geocode?: { UGC?: string[] } } }[]
+}): string[][] {
+  expect(page.type).toBe('FeatureCollection')
+  expect(page.features.length, 'nothing was in effect there when this was recorded').toBeGreaterThan(0)
+  return page.features.map(feature => feature.properties.geocode!.UGC!)
+}
+
+const SPGDS = recorded<{ published: string }>('radar/list_spgds/examples/one_minute.request.json')
+const QUEUE = recorded<{ host: RadarHost; station: string; arrived: string; limit: number }>(
+  'radar/get_queue/examples/seattle_capped.request.json',
+)
+
+/** The start and end of a `start/duration` ISO 8601 interval, such as `2026-09-30T23:00:00Z/PT10M`. */
+function interval(value: string): [number, number] {
+  const [start, duration] = value.split('/')
+  const match = /^PT(?:(\d+)H)?(?:(\d+)M)?$/.exec(duration!)
+  expect(match).not.toBeNull()
+  const minutes = Number(match![1] ?? 0) * 60 + Number(match![2] ?? 0)
+  const from = Date.parse(start!)
+  return [from, from + minutes * 60_000]
+}
+
+/** A ping group: target name to whether it answered, or `[]` when there are none. */
+function isPingGroup(group: Record<string, boolean> | boolean[]): void {
+  if (Array.isArray(group)) expect(group).toEqual([])
+  else for (const answered of Object.values(group)) expect(typeof answered).toBe('boolean')
+}
+
+/** The response half of another recorded example, as it came off the wire. */
+function payload<T>(file: string): T {
+  const full = path.join(projectRoot, 'spec/endpoints', file)
+  return (JSON.parse(readFileSync(full, 'utf8')) as { payload: T }).payload
+}
+
+const OBSERVATION = recorded<{ station_id: string; time: string }>(
+  'stations/get_observation/examples/ksea_metar.request.json',
+)
+const BRIEFING = recorded<{ office_id: string }>(
+  'offices/get_briefing/examples/active.request.json',
+)
+const HEADLINE = recorded<{ office_id: string; headline_id: string }>(
+  'offices/get_headline/examples/wakefield.request.json',
+)
+const RADIO_PAGE = recorded<{ cursor: string }>(
+  'radio/list_transmitters/examples/last_page.request.json',
 )
 
 /** A `QuantitativeValue`: a unit, and a number or an honest null. */
@@ -242,6 +384,74 @@ describe('recorded examples replay through the generated client', () => {
     expect(ALERT.id).toContain(':')
     if (alert.geometry !== null && alert.geometry !== undefined) {
       expect(['Polygon', 'MultiPolygon']).toContain(alert.geometry.type)
+    }
+  })
+
+  it('alerts.listAlerts honours the limit and the window, newest first', async () => {
+    const page = await client.alerts.listAlerts({
+      start: new Date(ALERT_WINDOW.start),
+      end: new Date(ALERT_WINDOW.end),
+      status: ALERT_WINDOW.status,
+      limit: ALERT_WINDOW.limit,
+    })
+    expect(page.features.length).toBe(ALERT_WINDOW.limit)
+    const sent = page.features.map(feature => feature.properties.sent!.getTime())
+    expect([...sent].sort((a, b) => b - a)).toEqual(sent)
+    for (const moment of sent) {
+      expect(moment).toBeGreaterThanOrEqual(Date.parse(ALERT_WINDOW.start))
+      expect(moment).toBeLessThanOrEqual(Date.parse(ALERT_WINDOW.end))
+    }
+    for (const feature of page.features) expect(feature.properties.status).toBe('Actual')
+    expect(page.pagination!.next).toContain('cursor=')
+  })
+
+  it('alerts.countActiveAlerts: land and marine add up to the total', async () => {
+    const count = await client.alerts.countActiveAlerts({})
+    expect(count.total).toBe(count.land + count.marine)
+    // The regions need not add up to `marine`: the service has counted one over it.
+    for (const n of Object.values(count.regions)) expect(n).toBeGreaterThan(0)
+    for (const region of Object.keys(count.regions)) expect(Object.keys(MARINE_REGIONS)).toContain(region)
+    expect(Object.keys(count.zones).length).toBeGreaterThan(0)
+    expect(Object.keys(count.areas).length).toBeGreaterThan(0)
+  })
+
+  it('alerts.getActiveAlertsForZone returns alerts for the zone in the path', async () => {
+    // Not every alert names the zone: a county's alerts include ones for the forecast zones
+    // overlapping it. Each is held to the zone's state or marine area, one to the zone.
+    const zone = ugcCodes(await client.alerts.getActiveAlertsForZone({ zone_id: ZONE.zone_id }))
+    expect(zone.some(codes => codes.includes(ZONE.zone_id))).toBe(true)
+    for (const codes of zone) expect(codes.some(code => code.startsWith(ZONE.zone_id.slice(0, 2)))).toBe(true)
+  })
+
+  it('alerts.getActiveAlertsForArea returns alerts covering the area in the path', async () => {
+    for (const codes of ugcCodes(await client.alerts.getActiveAlertsForArea({ area: AREA.area }))) {
+      expect(codes.some(code => code.startsWith(AREA.area))).toBe(true)
+    }
+  })
+
+  it('alerts.getActiveAlertsForRegion returns alerts covering the region in the path', async () => {
+    const areas = MARINE_REGIONS[REGION.region]!
+    for (const codes of ugcCodes(await client.alerts.getActiveAlertsForRegion({ region: REGION.region }))) {
+      expect(codes.some(code => areas.includes(code.slice(0, 2)))).toBe(true)
+    }
+  })
+
+  it('alerts.listAlertTypes lists each event name once', async () => {
+    const types = (await client.alerts.listAlertTypes({})).eventTypes
+    expect(types.length).toBeGreaterThan(100)
+    expect(new Set(types).size).toBe(types.length)
+    for (const name of ['Tornado Warning', 'Severe Thunderstorm Warning', 'Winter Storm Watch']) {
+      expect(types).toContain(name)
+    }
+  })
+
+  it('glossary.listTerms returns the whole glossary in one response', async () => {
+    const terms = (await client.glossary.listTerms({})).glossary
+    expect(terms.length).toBeGreaterThan(3000)
+    expect(terms.some(entry => entry.term === '1-2-3 Rule')).toBe(true)
+    for (const entry of terms) {
+      expect(entry.term).toBeTruthy()
+      expect(entry.definition).toBeTruthy()
     }
   })
 
@@ -501,5 +711,351 @@ describe('recorded examples replay through the generated client', () => {
     expect(product.productCode).toBe('AFD')
     expect(product.issuingOffice).toBe('KSEW')
     expect(product.productText).toContain('AFDSEW')
+  })
+
+  it('stations.getStation keeps the whole feature: the geometry is the only place it is', async () => {
+    const station = await client.stations.getStation({ station_id: 'KSEA' })
+    expect(station.type).toBe('Feature')
+    expect(station.id).toBe('https://api.weather.gov/stations/KSEA')
+    isPoint(station.geometry)
+    const [longitude, latitude] = station.geometry!.coordinates
+    expect(Math.round(latitude)).toBe(47)
+    expect(Math.round(longitude)).toBe(-122)
+    expect(station.properties.stationIdentifier).toBe('KSEA')
+    expect(station.properties.timeZone).toBe('America/Los_Angeles')
+    isMeasurement(station.properties.elevation!, 'wmoUnit:m')
+    expect(station.properties.county!.endsWith('/zones/county/WAC033')).toBe(true)
+  })
+
+  it('stations.getObservation returns the observation at exactly the moment asked', async () => {
+    const observation = await client.stations.getObservation({
+      station_id: OBSERVATION.station_id,
+      time: new Date(OBSERVATION.time),
+    })
+    expect(observation.stationId).toBe(OBSERVATION.station_id)
+    expect(observation.timestamp.getTime()).toBe(new Date(OBSERVATION.time).getTime())
+    expect(observation.rawMessage!.startsWith(`${OBSERVATION.station_id} `)).toBe(true)
+    isMeasurement(observation.temperature, 'wmoUnit:degC')
+  })
+
+  it('stations.listTafs answers newest first, its WKT point latitude first', async () => {
+    const tafs = await client.stations.listTafs({ station_id: 'KSEA' })
+    const graph = tafs['@graph']
+    expect(graph.length).toBeGreaterThan(10)
+    const issued = graph.map(taf => taf.issueTime.getTime())
+    expect([...issued].sort((a, b) => b - a)).toEqual(issued)
+    for (const taf of graph) {
+      expect(taf.location).toBe('KSEA')
+      expect(taf.id.startsWith('https://api.weather.gov/stations/KSEA/tafs/')).toBe(true)
+      expect(taf.issueTime.getTime()).toBeLessThanOrEqual(taf.start.getTime())
+      expect(taf.start.getTime()).toBeLessThan(taf.end.getTime())
+    }
+    const [longitude, latitude] = payload<{ geometry: { coordinates: [number, number] } }>(
+      'stations/get_station/examples/ksea.response.json',
+    ).geometry.coordinates
+    const [first, second] = graph[0].geometry!.replace('POINT(', '').replace(')', '').split(' ')
+    expect([Number(first), Number(second)]).toEqual([
+      Math.round(latitude * 100) / 100,
+      Math.round(longitude * 100) / 100,
+    ])
+  })
+
+  it('offices.getBriefing returns an active briefing and the PDF it points at', async () => {
+    const { briefing } = await client.offices.getBriefing({ office_id: BRIEFING.office_id })
+    expect(briefing).not.toBeNull()
+    expect(briefing!.officeId).toBe(BRIEFING.office_id)
+    expect(briefing!.startTime.getTime()).toBeLessThan(briefing!.endTime.getTime())
+    expect(briefing!.download).toBe(
+      `https://api.weather.gov/offices/${BRIEFING.office_id}/briefing/download/${briefing!.id}`,
+    )
+  })
+
+  it('offices.getBriefing answers an honest null for an office with none out', async () => {
+    const { briefing } = await client.offices.getBriefing({ office_id: 'SEW' })
+    expect(briefing).toBeNull()
+  })
+
+  it('offices.listHeadlines links each headline, its HTML repeating its title', async () => {
+    const headlines = await client.offices.listHeadlines({ office_id: 'AKQ' })
+    const graph = headlines['@graph']
+    expect(graph.length).toBeGreaterThan(0)
+    for (const headline of graph) {
+      expect(headline.office).toBe('https://api.weather.gov/offices/AKQ')
+      expect(headline['@id']).toBe(`${headline.office}/headlines/${headline.id}`)
+      expect(headline.content).toContain(headline.title)
+      expect(headline.summary === null || typeof headline.summary === 'string').toBe(true)
+    }
+  })
+
+  it('offices.getHeadline returns the headline the office lists', async () => {
+    const headline = await client.offices.getHeadline(HEADLINE)
+    expect(headline.id).toBe(HEADLINE.headline_id)
+    const listed = payload<{ '@graph': { id: string; title: string; link: string }[] }>(
+      'offices/list_headlines/examples/wakefield.response.json',
+    )['@graph'].find(entry => entry.id === headline.id)!
+    expect(headline.title).toBe(listed.title)
+    expect(headline.link).toBe(listed.link)
+  })
+
+  it('offices.listWeatherStories returns each graphic with its text', async () => {
+    const { stories } = await client.offices.listWeatherStories({ office_id: 'AKQ' })
+    expect(stories.length).toBeGreaterThan(0)
+    for (const story of stories) {
+      expect(story.officeId).toBe('AKQ')
+      expect(story.title && story.description).toBeTruthy()
+      expect(story.startTime.getTime()).toBeLessThan(story.endTime.getTime())
+      if (story.download !== null) {
+        expect(
+          story.download.startsWith('https://api.weather.gov/offices/AKQ/weatherstories/download/'),
+        ).toBe(true)
+      }
+    }
+  })
+
+  it('radio.listTransmitters on the last page: short, no next page, repeats and all', async () => {
+    const page = await client.radio.listTransmitters({ cursor: RADIO_PAGE.cursor })
+    const graph = page['@graph']
+    expect(graph.length).toBeGreaterThan(0)
+    expect(graph.length).toBeLessThan(500)
+    expect(page.pagination).toBeUndefined()
+    const calls = graph.map(transmitter => transmitter.callSign)
+    expect(new Set(calls).size).toBeLessThan(calls.length)
+    for (const transmitter of graph) {
+      expect(transmitter['@id']).toBe(`https://api.weather.gov/radio/${transmitter.callSign}`)
+      expect(transmitter.sameCodes!.length).toBe(transmitter.counties.length)
+      expect(Number(transmitter.transmitterFrequency)).toBeGreaterThan(162)
+      expect(Number(transmitter.transmitterFrequency)).toBeLessThan(163)
+    }
+  })
+
+  it('radio.getTransmitter returns the one zones.listTransmitters found for the county', async () => {
+    const transmitter = await client.radio.getTransmitter({ call_sign: 'KHB60' })
+    expect(transmitter.callSign).toBe('KHB60')
+    expect(transmitter['@id']).toBe('https://api.weather.gov/radio/KHB60')
+    const county = payload<{
+      '@graph': { callSign: string; counties: string[]; transmitterFrequency: string }[]
+    }>('zones/list_transmitters/examples/king_county.response.json')['@graph'].find(
+      entry => entry.callSign === 'KHB60',
+    )!
+    expect(transmitter.counties).toEqual(county.counties)
+    expect(transmitter.transmitterFrequency).toBe(county.transmitterFrequency)
+  })
+
+  it('aviation.getCwsu is an organization, like an office, without its zones', async () => {
+    const unit = await client.aviation.getCwsu({ cwsu_id: 'ZSE' })
+    expect(unit.id).toBe('ZSE')
+    expect(unit.name).toBe('Seattle, WA')
+    expect(unit.address?.addressRegion).toBe('WA')
+    expect(unit.nwsRegion).toBe('wr')
+    expect('responsibleForecastZones' in unit).toBe(false)
+  })
+
+  it('aviation.listCwas answers the week newest first, each named by date and sequence', async () => {
+    const page = await client.aviation.listCwas({ cwsu_id: 'ZFW' })
+    expect(page.features.length).toBeGreaterThan(0)
+    isNewestFirst(page.features)
+    for (const feature of page.features) {
+      const advisory = feature.properties
+      expect(advisory.cwsu).toBe('ZFW')
+      expect(advisory.sequence).toBeGreaterThanOrEqual(101)
+      expect(advisory.start.getTime()).toBeLessThanOrEqual(advisory.end.getTime())
+      const suffix = `/cwsus/ZFW/cwas/${utcDay(advisory.issueTime)}/${advisory.sequence}`
+      expect(advisory.id.endsWith(suffix)).toBe(true)
+      if (feature.geometry !== null) isAdvisoryArea(feature.geometry, FORT_WORTH)
+    }
+  })
+
+  it('aviation.getCwa returns the advisory the list holds, area included', async () => {
+    const feature = await client.aviation.getCwa({ ...CWA, date: DateIso.of(CWA.date) })
+    const advisory = feature.properties
+    expect([advisory.cwsu, advisory.sequence]).toEqual([CWA.cwsu_id, CWA.sequence])
+    expect(utcDay(advisory.issueTime)).toBe(CWA.date)
+    expect(advisory.text).toBeTruthy()
+    isAdvisoryArea(feature.geometry, FORT_WORTH)
+    // The list keeps a week. The service answers 500 for most single advisories (see the
+    // endpoint's notes), so a re-recording can renew the list and keep an older advisory
+    // here; one from inside the list's week must be in it.
+    const listed = 'aviation/list_cwas/examples/fort_worth.response.json'
+    const full = path.join(projectRoot, 'spec/endpoints', listed)
+    const issued = (JSON.parse(readFileSync(full, 'utf8')) as {
+      payload: { features: { properties: { issueTime: string } }[] }
+    }).payload.features.map(feature => Date.parse(feature.properties.issueTime))
+    if (advisory.issueTime.getTime() >= Math.min(...issued)) {
+      expect(recordedIds(listed)).toContain(advisory.id)
+    }
+  })
+
+  it('aviation.listSigmets by sequence alone reaches back through the week', async () => {
+    const page = await client.aviation.listSigmets({ sequence: '1E' })
+    expect(page.features.length).toBeGreaterThan(0)
+    isNewestFirst(page.features)
+    expect(new Set(page.features.map(f => f.properties.sequence))).toEqual(new Set(['1E']))
+    expect(new Set(page.features.map(f => utcDay(f.properties.issueTime))).size).toBeGreaterThan(1)
+    for (const feature of page.features) {
+      expect(feature.properties.atsu).toBe('KKCI')
+      if (feature.geometry !== null) isAdvisoryArea(feature.geometry, EAST)
+    }
+  })
+
+  it('aviation.listSigmetsForAtsu answers one unit, newest first, over several days', async () => {
+    const page = await client.aviation.listSigmetsForAtsu({ atsu: 'ANC' })
+    expect(page.features.length).toBeGreaterThan(0)
+    isNewestFirst(page.features)
+    for (const feature of page.features) isSigmetOf(feature, 'ANC')
+    expect(new Set(page.features.map(f => utcDay(f.properties.issueTime))).size).toBeGreaterThan(1)
+  })
+
+  it('aviation.listSigmetsForAtsuOnDate answers that day only, all in the week', async () => {
+    const page = await client.aviation.listSigmetsForAtsuOnDate({
+      atsu: SIGMETS_ON_DATE.atsu,
+      date: DateIso.of(SIGMETS_ON_DATE.date),
+    })
+    expect(page.features.length).toBeGreaterThan(0)
+    isNewestFirst(page.features)
+    const week = recordedIds('aviation/list_sigmets_for_atsu/examples/anchorage.response.json')
+    for (const feature of page.features) {
+      const sigmet = isSigmetOf(feature, SIGMETS_ON_DATE.atsu)
+      expect(utcDay(sigmet.issueTime)).toBe(SIGMETS_ON_DATE.date)
+      expect(week).toContain(sigmet.id)
+    }
+  })
+
+  it('aviation.getSigmet returns the message the unit, date and minute name', async () => {
+    const feature = await client.aviation.getSigmet({ ...SIGMET, date: DateIso.of(SIGMET.date) })
+    const sigmet = isSigmetOf(feature, SIGMET.atsu)
+    expect([utcDay(sigmet.issueTime), utcMinute(sigmet.issueTime)]).toEqual([SIGMET.date, SIGMET.time])
+    expect(feature.geometry).not.toBeNull()
+  })
+
+  it('radar.listServers lists the LDM servers and the distribution hosts, empty groups as []', async () => {
+    const page = await client.radar.listServers()
+    const servers = new Map(page['@graph'].map(server => [server.id, server]))
+    for (const name of ['ldm1', 'rds', 'tds']) expect(servers.has(name)).toBe(true)
+    for (const [name, server] of servers) {
+      expect(server['@id'].endsWith(`/radar/servers/${name}`)).toBe(true)
+      expect(server.collectionTime).toBeInstanceOf(Date)
+      for (const group of Object.values(server.ping.targets)) isPingGroup(group)
+      if (server.type === 'ldm') {
+        expect(typeof server.active).toBe('boolean')
+        expect(server.command?.lastExecutedTime).toBeInstanceOf(Date)
+      } else {
+        expect(server.command).toBeUndefined()
+        expect(server.active).toBeUndefined()
+      }
+    }
+    expect(servers.get('rds')!.ping.targets['radar']).toEqual([])
+  })
+
+  it('radar.getServer returns one LDM server, its uptime a boot time', async () => {
+    const server = await client.radar.getServer({ server_id: 'ldm1' })
+    expect(server.id).toBe('ldm1')
+    expect(server.type).toBe('ldm')
+    expect(server.ldm.count).toBeGreaterThan(0)
+    expect(server.ldm.oldestProduct.getTime()).toBeLessThanOrEqual(server.ldm.latestProduct.getTime())
+    expect(server.hardware.uptime.getTime()).toBeLessThan(server.collectionTime.getTime())
+    expect(server.network.eth0.interface).toBe('eth0')
+    const radars = server.ping.targets['radar'] as Record<string, boolean>
+    expect(typeof radars['KATX']).toBe('boolean')
+  })
+
+  it('radar.listSpgds parses the Unix seconds and counts the service sends as strings', async () => {
+    const [start, end] = interval(SPGDS.published)
+    const page = await client.radar.listSpgds({ published: SPGDS.published })
+    const reports = page['@graph']
+    expect(reports.length).toBeGreaterThan(0)
+    for (const report of reports) {
+      expect(report.timestamp.getTime()).toBeGreaterThanOrEqual(start)
+      expect(report.timestamp.getTime()).toBeLessThanOrEqual(end)
+      for (const block of [report.dataflow, report.connectQ, report.appRunning]) {
+        expect(block.stateSince).toBeInstanceOf(Date)
+        expect(block.stateSince.getTime()).toBeLessThanOrEqual(block.stateValid.getTime())
+      }
+      expect(typeof report.ldm.conns).toBe('bigint')
+      expect(report.secondHD.pctUsed).toBeLessThanOrEqual(100n)
+      expect(Number(report.throughput.in)).toBeGreaterThanOrEqual(0)
+      expect(report.spgdsUpSince.upSince.getTime()).toBeLessThan(report.timestamp.getTime())
+      const sites = Object.values(report.spg)
+      expect(sites.length).toBeGreaterThan(0)
+      for (const site of sites) expect(site.ldmPingStateSince).toBeInstanceOf(Date)
+    }
+    const times = reports.map(report => report.timestamp.getTime())
+    expect([...times].sort((a, b) => b - a)).toEqual(times)
+  })
+
+  it('radar.listStations sends two kinds as one comma-separated item, and both come back', async () => {
+    // The service keeps only the last of a repeated key, so `?stationType=TDWR&stationType=Profiler`
+    // would answer with the profilers alone. The endpoint declares `match.query_arrays: "comma"`,
+    // so the mock 422s any form but `?stationType=TDWR,Profiler`.
+    const asked = recorded<{ stationType: string[] }>('radar/list_stations/examples/tdwr_and_profilers.request.json')
+    expect(asked.stationType).toHaveLength(2)
+    const page = await client.radar.listStations({ stationType: asked.stationType })
+    const kinds = new Set(page.features.map(feature => feature.properties.stationType))
+    expect(kinds).toEqual(new Set(asked.stationType))
+  })
+
+  it('radar.listStations narrows to the profilers, whose status and latency are null', async () => {
+    const page = await client.radar.listStations({ stationType: ['Profiler'] })
+    expect(page.features.length).toBeGreaterThan(0)
+    for (const feature of page.features) {
+      const radar = feature.properties
+      expect(radar.stationType).toBe('Profiler')
+      expect(feature.id).toBe(radar['@id'])
+      isPoint(feature.geometry)
+      expect(radar.rda).toBeNull()
+      for (const value of Object.values(radar.latency)) expect(value).toBeNull()
+      expect(radar.performance).toBeUndefined()
+      expect(radar.adaptation).toBeUndefined()
+    }
+  })
+
+  it('radar.getStation returns the whole feature, with its maintenance reports', async () => {
+    const feature = await client.radar.getStation({ station_id: 'KATX' })
+    const radar = feature.properties
+    expect(radar.id).toBe('KATX')
+    expect(radar.stationType).toBe('WSR-88D')
+    expect(feature.id).toBe(radar['@id'])
+    isPoint(feature.geometry)
+    expect(radar.latency.current?.unitCode).toBe('nwsUnit:s')
+    expect(radar.latency.levelTwoLastReceivedTime).toBeInstanceOf(Date)
+    expect(radar.rda?.properties.volumeCoveragePattern).toBeTruthy()
+    for (const report of [radar.performance, radar.adaptation]) {
+      const readings = report?.properties
+      expect(Array.isArray(readings)).toBe(false)
+      const measured = Object.values(readings as object).filter(r => typeof r === 'object')
+      expect(measured.length).toBeGreaterThan(0)
+      for (const reading of measured) expect(reading).toHaveProperty('unitCode')
+    }
+    const readings = radar.performance!.properties as Record<string, unknown>
+    expect((readings['transmitterPeakPower'] as QuantitativeValue).unitCode).toBe('wmoUnit:kW')
+  })
+
+  it('radar.listStationAlarms returns the radar\'s log, newest first', async () => {
+    const log = await client.radar.listStationAlarms({ station_id: 'KATX' })
+    const alarms = log['@graph']
+    expect(alarms.length).toBeGreaterThan(0)
+    expect(log['@id']?.endsWith('/radar/stations/KATX/alarms')).toBe(true)
+    for (const alarm of alarms) {
+      expect(alarm.stationId).toBe('KATX')
+      expect(alarm.message).toBeTruthy()
+    }
+    const times = alarms.map(alarm => alarm.timestamp.getTime())
+    expect([...times].sort((a, b) => b - a)).toEqual(times)
+  })
+
+  it('radar.getQueue keeps the oldest products from the start of the window', async () => {
+    const [start, end] = interval(QUEUE.arrived)
+    const queue = await client.radar.getQueue(QUEUE)
+    const products = queue['@graph']
+    expect(products).toHaveLength(QUEUE.limit)
+    const arrivals = products.map(product => product.arrivalTime.getTime())
+    expect([...arrivals].sort((a, b) => a - b)).toEqual(arrivals)
+    for (const product of products) {
+      expect(product.host).toBe(QUEUE.host)
+      expect(product.stationId).toBe(QUEUE.station)
+      expect(product.arrivalTime.getTime()).toBeGreaterThanOrEqual(start)
+      expect(product.arrivalTime.getTime()).toBeLessThan(end)
+      expect(product.creationTime.getTime()).toBeLessThanOrEqual(product.arrivalTime.getTime())
+      expect(product.size).toBeGreaterThan(0)
+    }
   })
 })

@@ -4,6 +4,14 @@
 
 Generated with truewire 0.11.
 
+- **Breaking: `Alert.description` and `Alert.response` may be `None`.** The service sends an
+  explicit null for both (about 40 descriptions a week, and the occasional Civil Emergency
+  Message's response), which 0.1.0 refused while validating. `description` is now
+  `str | None` and still always present; `response` is still optional and, when present,
+  may be `None`. Code that type-checked against 0.1.0, such as `alert['description'].lower()`,
+  now needs a `None` check, and pyright reports `reportOptionalMemberAccess` until it has one.
+- **Changed: a 422 raises `BadRequest`, like a 400.** It raised plain `ApiError`, while
+  the TypeScript client has raised `BadRequest` for both since its own fix.
 - **Fixed: a list filter with more than one value kept only the last.** The service reads
   `id=KSEA,KPDX` and keeps only the last of `id=KSEA&id=KPDX`, and the client sent the
   second form, so `stations.list_stations(id=['KSEA', 'KPDX'])` answered with KPDX alone.
@@ -22,6 +30,14 @@ Generated with truewire 0.11.
   group (`list_zones`, `list_zones_by_type`, `get_zone`, `get_forecast` and
   `list_transmitters`), and `stations.list_stations_for_zone`,
   `stations.list_stations_for_gridpoint` and `stations.get_observations_for_zone`.
+- **Eight more endpoints: a new `radar` group.** `list_stations`, `get_station` and
+  `list_station_alarms` for the radars themselves; `list_servers`, `get_server`, `get_queue`
+  and `list_spgds` for the network that distributes their data; and `get_profiler`, which
+  has no recording: every profiler answered 404 on 2026-10-01, so it returns `Any`. `get_queue`
+  and `list_spgds` take an ISO 8601 interval as a string, `get_queue`'s `created` included. The SPG reports send their times as
+  Unix seconds in strings, which arrive here as `datetime`, and their counts as `int` and
+  `Decimal`. `get_queue`'s `host`, in the request and on every product, is one shared
+  `Literal`, `weather_gov.schemas.RadarHost`.
 - **`ObservationCollection` and `StationCollection` are shared schemas.** Each is returned
   by more than one endpoint now, so they moved from `weather_gov.stations.get_observations`
   and `weather_gov.stations.list_stations` to `weather_gov.schemas`, with
@@ -41,6 +57,30 @@ Generated with truewire 0.11.
   `products.list_types_for_location` both return it, so it moved from
   `weather_gov.products.list_product_types` to `weather_gov.schemas`, with `ProductType`;
   the old import of `ProductTypeCollection` still works.
+- **Seven more endpoints: aviation weather.** A new `aviation` group: `get_cwsu`,
+  `list_cwas` and `get_cwa` for the Center Weather Service Units and their advisories, and
+  `list_sigmets`, `list_sigmets_for_atsu`, `list_sigmets_for_atsu_on_date` and
+  `get_sigmet` for SIGMETs and AIRMETs. Their outlines are an `AdvisoryPolygon`, whose
+  positions are latitude first, unlike every other geometry in this API.
+- **Seven more endpoints: the rest of the alerts API, and the glossary.**
+  `alerts.list_alerts` (the last week, in effect or not, by `cursor`),
+  `alerts.count_active_alerts`, `alerts.get_active_alerts_for_zone`, `_for_area` and
+  `_for_region`, `alerts.list_alert_types`, and `glossary.list_terms`.
+- **`AlertCollection` is a shared schema.** The four endpoints that return alerts in effect
+  and `alerts.list_alerts` all return it, so it moved from
+  `weather_gov.alerts.get_active_alerts` to `weather_gov.schemas`, with `AlertPagination`.
+  The old path still imports at runtime, but type checkers flag it, so import it from
+  `weather_gov.schemas`. It gains an optional `pagination.next`, which only
+  `alerts.list_alerts` sends.
+- **Nine more endpoints: one station, one observation, TAFs, office news, and radio.**
+  `stations.get_station`, `stations.get_observation` (the observation at an exact
+  timestamp) and `stations.list_tafs`; `offices.get_briefing`, `offices.list_headlines`,
+  `offices.get_headline` and `offices.list_weather_stories`; and a new `radio` group,
+  `list_transmitters` and `get_transmitter`.
+- **`Transmitter` and `TransmitterCollection` are shared schemas**, since the `radio`
+  endpoints return them too: import them from `weather_gov.schemas`, not
+  `weather_gov.zones.list_transmitters`. `TransmitterCollection` gains an optional
+  `pagination`, which only `radio.list_transmitters` sends.
 
 ## 0.1.0
 

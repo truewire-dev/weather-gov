@@ -1,0 +1,373 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": [
+      "https://geojson.org/geojson-ld/geojson-context.jsonld",
+      {
+        "@version": "1.1",
+        "wx": "https://api.weather.gov/ontology#",
+        "@vocab": "https://api.weather.gov/ontology#"
+      }
+    ],
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.a0200b10d092285517cc7cc748395014fbf7a48c.001.1",
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -112.37,
+                38.24
+              ],
+              [
+                -112.38,
+                38.25
+              ],
+              [
+                -112.34,
+                38.29
+              ],
+              [
+                -112.34,
+                38.32
+              ],
+              [
+                -112.33,
+                38.34
+              ],
+              [
+                -112.36,
+                38.36
+              ],
+              [
+                -112.35,
+                38.38
+              ],
+              [
+                -112.31,
+                38.39
+              ],
+              [
+                -112.29,
+                38.37
+              ],
+              [
+                -112.23,
+                38.4
+              ],
+              [
+                -112.21,
+                38.36
+              ],
+              [
+                -112.21,
+                38.23
+              ],
+              [
+                -112.37,
+                38.24
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.a0200b10d092285517cc7cc748395014fbf7a48c.001.1",
+          "@type": "wx:Alert",
+          "id": "urn:oid:2.49.0.1.840.0.a0200b10d092285517cc7cc748395014fbf7a48c.001.1",
+          "areaDesc": "Piute, UT",
+          "geocode": {
+            "SAME": [
+              "049031"
+            ],
+            "UGC": [
+              "UTC031"
+            ]
+          },
+          "affectedZones": [
+            "https://api.weather.gov/zones/county/UTC031"
+          ],
+          "references": [
+            {
+              "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.bb65ba033d70b127904bb83eca1bfc87449f0cf0.001.1",
+              "identifier": "urn:oid:2.49.0.1.840.0.bb65ba033d70b127904bb83eca1bfc87449f0cf0.001.1",
+              "sender": "w-nws.webmaster@noaa.gov",
+              "sent": "2026-09-28T21:43:00-06:00"
+            }
+          ],
+          "sent": "2026-09-28T23:57:00-06:00",
+          "effective": "2026-09-28T23:57:00-06:00",
+          "onset": "2026-09-28T23:57:00-06:00",
+          "expires": "2026-09-29T01:45:00-06:00",
+          "ends": "2026-09-29T01:45:00-06:00",
+          "status": "Actual",
+          "messageType": "Update",
+          "category": "Met",
+          "severity": "Severe",
+          "certainty": "Likely",
+          "urgency": "Immediate",
+          "event": "Flash Flood Warning",
+          "sender": "w-nws.webmaster@noaa.gov",
+          "senderName": "NWS Salt Lake City UT",
+          "headline": "Flash Flood Warning issued September 28 at 11:57PM MDT until September 29 at 1:45AM MDT by NWS Salt Lake City UT",
+          "description": "At 1157 PM MDT, local law enforcement reported heavy rain over the\nCottonwood Burn Scar in Piute County. Approximately 0.5 and 1 inch of\nrain has fallen. Flash flooding is already occurring with flows\nreported in City Creek. Excessive rainfall over the burn scar will\nresult in water and debris moving through the City Creek, Tenmile\nCreek, Gold Gulch, and Cottonwood Creek drainages. The debris flow\ncan consist of rock, mud, vegetation and other loose materials. This\nwater and debris may impact portions of Highway 89 between Junction\nand Marysvale.\n\nHAZARD...Life threatening flash flooding. Heavy rain producing flash\nflooding in and around the Cottonwood Burn Scar in Piute\nCounty.\n\nSOURCE...Law enforcement reported.\n\nIMPACT...Life threatening flash flooding of areas in and around the\nCottonwood Burn Scar in Piute County.\n\nSome locations that will experience flash flooding include...\nCottonwood Creek, Gold Gulch, Tenmile Creek, and City Creek near\nJunction.\n\nThis includes US Route 89 between mile markers 164 and 175.",
+          "instruction": "This is a life threatening situation. Heavy rainfall will cause\nextensive and severe flash flooding of creeks...streams...and ditches\nin the Cottonwood Burn Scar in Piute County. Severe debris flows can\nalso be anticipated across roads. Roads and driveways may be washed\naway in places. If you encounter flood waters...climb to safety.\n\nMove away from recently burned areas. Life-threatening flooding of\ncreeks, roads and normally dry washes is likely. The heavy rains will\nlikely trigger debris flows in steep terrain, especially in and\naround drainages such as City Creek, Tenmile Creek, Gold Gulch, and\nCottonwood Creek.\n\nTurn around, don't drown when encountering flooded roads. Most flood\ndeaths occur in vehicles.\n\nBe especially cautious at night when it is harder to recognize the\ndangers of flooding.",
+          "response": "Avoid",
+          "note": null,
+          "parameters": {
+            "AWIPSidentifier": [
+              "FFSSLC"
+            ],
+            "WMOidentifier": [
+              "WGUS75 KSLC 290557"
+            ],
+            "NWSheadline": [
+              "FLASH FLOOD WARNING FOR THE COTTONWOOD BURN SCAR - PIUTE COUNTY REMAINS IN EFFECT UNTIL 145 AM MDT TUESDAY FOR SOUTHWESTERN PIUTE COUNTY"
+            ],
+            "flashFloodDetection": [
+              "OBSERVED"
+            ],
+            "flashFloodDamageThreat": [
+              "CONSIDERABLE"
+            ],
+            "BLOCKCHANNEL": [
+              "EAS",
+              "NWEM",
+              "CMAS"
+            ],
+            "EAS-ORG": [
+              "WXR"
+            ],
+            "VTEC": [
+              "/O.CON.KSLC.FF.W.0139.000000T0000Z-260929T0745Z/"
+            ],
+            "eventEndingTime": [
+              "2026-09-29T01:45:00-06:00"
+            ]
+          },
+          "scope": "Public",
+          "code": "IPAWSv1.0",
+          "language": "en-US",
+          "web": "http://www.weather.gov",
+          "eventCode": {
+            "SAME": [
+              "FFS"
+            ],
+            "NationalWeatherService": [
+              "FFW"
+            ]
+          },
+          "replacedBy": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.a3a00f75021ead90da8757481068092859868cdb.001.1",
+          "replacedAt": "2026-09-29T01:43:00-06:00"
+        }
+      },
+      {
+        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.554a30a30b4854eefceba459773bc1f47551473b.001.1",
+        "type": "Feature",
+        "geometry": null,
+        "properties": {
+          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.554a30a30b4854eefceba459773bc1f47551473b.001.1",
+          "@type": "wx:Alert",
+          "id": "urn:oid:2.49.0.1.840.0.554a30a30b4854eefceba459773bc1f47551473b.001.1",
+          "areaDesc": "Waters from San Mateo point to the Mexican Border Extending 10 to 60 nm out including San Clemente Island",
+          "geocode": {
+            "SAME": [
+              "057745"
+            ],
+            "UGC": [
+              "PZZ745"
+            ]
+          },
+          "affectedZones": [
+            "https://api.weather.gov/zones/forecast/PZZ745"
+          ],
+          "references": [
+            {
+              "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.c5e83df9fae203eb3e625b77853f20c5f9cd4aa5.001.1",
+              "identifier": "urn:oid:2.49.0.1.840.0.c5e83df9fae203eb3e625b77853f20c5f9cd4aa5.001.1",
+              "sender": "w-nws.webmaster@noaa.gov",
+              "sent": "2026-09-28T17:52:00-07:00"
+            }
+          ],
+          "sent": "2026-09-28T22:57:00-07:00",
+          "effective": "2026-09-28T22:57:00-07:00",
+          "onset": "2026-09-28T22:57:00-07:00",
+          "expires": "2026-09-29T00:00:00-07:00",
+          "ends": "2026-09-28T23:00:00-07:00",
+          "status": "Actual",
+          "messageType": "Update",
+          "category": "Met",
+          "severity": "Minor",
+          "certainty": "Likely",
+          "urgency": "Expected",
+          "event": "Small Craft Advisory",
+          "sender": "w-nws.webmaster@noaa.gov",
+          "senderName": "NWS San Diego CA",
+          "headline": "Small Craft Advisory issued September 28 at 10:57PM PDT until September 28 at 11:00PM PDT by NWS San Diego CA",
+          "description": "Winds and choppy seas in the outer waters have diminished.",
+          "instruction": null,
+          "response": "Avoid",
+          "note": null,
+          "parameters": {
+            "AWIPSidentifier": [
+              "MWWSGX"
+            ],
+            "WMOidentifier": [
+              "WHUS76 KSGX 290557"
+            ],
+            "NWSheadline": [
+              "SMALL CRAFT ADVISORY WILL EXPIRE AT 11 PM PDT THIS EVENING"
+            ],
+            "BLOCKCHANNEL": [
+              "EAS",
+              "NWEM",
+              "CMAS"
+            ],
+            "VTEC": [
+              "/O.EXP.KSGX.SC.Y.0012.000000T0000Z-260929T0600Z/"
+            ],
+            "eventEndingTime": [
+              "2026-09-28T23:00:00-07:00"
+            ],
+            "expiredReferences": [
+              "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.25241747fc22e041f18ccd5eb451f5a5e935de83.001.1,2026-09-28T02:03:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.1278f839b267709e3ee1fed8c9c727f0a9b5b334.001.1,2026-09-27T20:05:00-07:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.6f90a7785df2214dfb3e8cecdb61ac0d80a7ddf1.001.1,2026-09-27T12:06:00-07:00"
+            ]
+          },
+          "scope": "Public",
+          "code": "IPAWSv1.0",
+          "language": "en-US",
+          "web": "http://www.weather.gov",
+          "eventCode": {
+            "SAME": [
+              "NWS"
+            ],
+            "NationalWeatherService": [
+              "SCY"
+            ]
+          }
+        }
+      },
+      {
+        "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.0f5d3a0e3e368f95c053ebf1a85cb77df8ffe4e3.001.1",
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                -100.92,
+                47.22
+              ],
+              [
+                -101.16,
+                47.65
+              ],
+              [
+                -100.58,
+                47.77
+              ],
+              [
+                -100.4,
+                47.32
+              ],
+              [
+                -100.92,
+                47.22
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.0f5d3a0e3e368f95c053ebf1a85cb77df8ffe4e3.001.1",
+          "@type": "wx:Alert",
+          "id": "urn:oid:2.49.0.1.840.0.0f5d3a0e3e368f95c053ebf1a85cb77df8ffe4e3.001.1",
+          "areaDesc": "Sheridan; Burleigh; Eastern McLean",
+          "geocode": {
+            "SAME": [
+              "038083",
+              "038015",
+              "038055"
+            ],
+            "UGC": [
+              "NDZ022",
+              "NDZ035",
+              "NDZ058"
+            ]
+          },
+          "affectedZones": [
+            "https://api.weather.gov/zones/forecast/NDZ022",
+            "https://api.weather.gov/zones/forecast/NDZ035",
+            "https://api.weather.gov/zones/forecast/NDZ058"
+          ],
+          "references": [],
+          "sent": "2026-09-29T00:47:00-05:00",
+          "effective": "2026-09-29T00:47:00-05:00",
+          "onset": "2026-09-29T00:47:00-05:00",
+          "expires": "2026-09-29T01:15:00-05:00",
+          "ends": null,
+          "status": "Actual",
+          "messageType": "Alert",
+          "category": "Met",
+          "severity": "Moderate",
+          "certainty": "Observed",
+          "urgency": "Expected",
+          "event": "Special Weather Statement",
+          "sender": "w-nws.webmaster@noaa.gov",
+          "senderName": "NWS Bismarck ND",
+          "headline": "Special Weather Statement issued September 29 at 12:47AM CDT by NWS Bismarck ND",
+          "description": "At 1247 AM CDT, Doppler radar was tracking a strong thunderstorm near\nTurtle Lake, or 30 miles east of Garrison, moving east at 25 mph.\n\nHAZARD...Wind gusts up to 30 mph and nickel size hail.\n\nSOURCE...Radar indicated.\n\nIMPACT...Gusty winds could knock down tree limbs and blow around\nunsecured objects. Minor damage to outdoor objects is\npossible.\n\nLocations impacted include...\nTurtle Lake, Mercer and New Johns Lake.",
+          "instruction": "Monitor the weather situation closely and be alert for threatening\nweather conditions.\n\nTorrential rainfall is also occurring with this storm and may lead to\nflash flooding. Do not drive your vehicle through flooded roadways.",
+          "response": "Execute",
+          "note": null,
+          "parameters": {
+            "AWIPSidentifier": [
+              "SPSBIS"
+            ],
+            "WMOidentifier": [
+              "WWUS83 KBIS 290547"
+            ],
+            "NWSheadline": [
+              "A STRONG THUNDERSTORM WILL IMPACT SOUTHEASTERN MCLEAN...NORTH CENTRAL BURLEIGH AND SOUTHWESTERN SHERIDAN COUNTIES UNTIL 115 AM CDT"
+            ],
+            "eventMotionDescription": [
+              "2026-09-29T05:47:00-00:00...storm...249DEG...20KT...47.49,-100.83"
+            ],
+            "maxWindGust": [
+              "30 MPH"
+            ],
+            "maxHailSize": [
+              "0.88"
+            ],
+            "BLOCKCHANNEL": [
+              "EAS",
+              "NWEM",
+              "CMAS"
+            ],
+            "EAS-ORG": [
+              "WXR"
+            ]
+          },
+          "scope": "Public",
+          "code": "IPAWSv1.0",
+          "language": "en-US",
+          "web": "http://www.weather.gov",
+          "eventCode": {
+            "SAME": [
+              "SPS"
+            ],
+            "NationalWeatherService": [
+              "SPS"
+            ]
+          }
+        }
+      }
+    ],
+    "title": "Watches, warnings, and advisories issued between Tue, Sep 29, 2026 12:00:00 AM +0000 and Tue, Sep 29, 2026 6:00:00 AM +0000",
+    "updated": "2026-09-30T06:42:45+00:00",
+    "pagination": {
+      "next": "https://api.weather.gov/alerts?start=2026-09-29T00:00:00Z&end=2026-09-29T06:00:00Z&status%5B0%5D=actual&limit=3&cursor=eyJ0IjoxNzkwNjYwODIwLCJpIjoidXJuOm9pZDoyLjQ5LjAuMS44NDAuMC4wZjVkM2EwZTNlMzY4Zjk1YzA1M2ViZjFhODVjYjc3ZGY4ZmZlNGUzLjAwMS4xIn0%3D"
+    }
+  }
+}

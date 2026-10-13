@@ -1,0 +1,6 @@
+{
+  "description": "The week's advisories from Fort Worth Center",
+  "request": {
+    "cwsu_id": "ZFW"
+  }
+}

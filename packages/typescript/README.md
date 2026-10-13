@@ -22,7 +22,7 @@ No account, no key, no quota. The service asks one thing of a caller: say who yo
 npm install @truewire/weather-gov
 ```
 
-Node 20 or newer, or any runtime with `fetch` and `URLSearchParams` — the transport is `fetch` and nothing else, so Deno, Bun and the browser work unchanged. `api.weather.gov` sends `Access-Control-Allow-Origin: *`, so a browser is a real target here rather than a theoretical one.
+Node 22 or newer, or any runtime with `fetch` and `URLSearchParams` — the transport is `fetch` and nothing else, so Deno, Bun and the browser work unchanged. `api.weather.gov` sends `Access-Control-Allow-Origin: *`, so a browser is a real target here rather than a theoretical one.
 
 ## Use
 
@@ -96,6 +96,8 @@ for (const layer of now.cloudLayers) {
 ```
 
 Note `now.timestamp.toISOString()`: a wire timestamp arrives as a `Date`, not as the string it travelled as. The spec declares the format and the codec does the conversion, in both directions — a `start` passed as a `Date` is rendered back to the ISO 8601 the service parses.
+
+A calendar date, such as the `date` of `aviation.getCwa`, is a `DateIso` rather than a plain string, so a date that is not one fails to compile rather than at the service. Make one with `DateIso.of('2026-10-11')`, imported from this package alongside `Weather`.
 
 ### The wrapper is gone where it carried nothing
 
@@ -176,7 +178,7 @@ Passing `validate: false` to `Weather.new` makes that the default for the whole 
 
 ## What is covered
 
-The same twenty-seven endpoints as the Python client, in the same seven groups, from the same spec: `points`, `forecast`, `stations`, `alerts`, `offices`, `products`, `zones`. The method names are camelCase here and snake_case there; nothing else differs.
+The same fifty-eight endpoints as the Python client, in the same eleven groups, from the same spec: `points`, `forecast`, `stations`, `alerts`, `offices`, `products`, `zones`, `radio`, `aviation`, `glossary`, `radar`. The method names are camelCase here and snake_case there; nothing else differs.
 
 ## Tests
 

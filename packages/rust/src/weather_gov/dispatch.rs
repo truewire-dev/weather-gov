@@ -7,7 +7,7 @@ use truewire_core::{decode, dump, serde_json, CallOptions, Error, Result};
 use crate::Weather;
 
 impl Weather {
-    /// Call the `rpc` endpoint `function` names (`alerts.get_active_alerts`) with a wire request: decoded into its `Request`, sent, and the typed response dumped back to a wire value.
+    /// Call the `rpc` endpoint `function` names (`alerts.count_active_alerts`) with a wire request: decoded into its `Request`, sent, and the typed response dumped back to a wire value.
     #[doc(hidden)]
     pub async fn call(
         &self,
@@ -16,14 +16,94 @@ impl Weather {
         options: CallOptions,
     ) -> Result<serde_json::Value> {
         match function {
+            "alerts.count_active_alerts" => {
+                let request = decode(request)?;
+                let response = self.alerts.count_active_alerts(request, options).await?;
+                dump(&response)
+            }
             "alerts.get_active_alerts" => {
                 let request = decode(request)?;
                 let response = self.alerts.get_active_alerts(request, options).await?;
                 dump(&response)
             }
+            "alerts.get_active_alerts_for_area" => {
+                let request = decode(request)?;
+                let response = self
+                    .alerts
+                    .get_active_alerts_for_area(request, options)
+                    .await?;
+                dump(&response)
+            }
+            "alerts.get_active_alerts_for_region" => {
+                let request = decode(request)?;
+                let response = self
+                    .alerts
+                    .get_active_alerts_for_region(request, options)
+                    .await?;
+                dump(&response)
+            }
+            "alerts.get_active_alerts_for_zone" => {
+                let request = decode(request)?;
+                let response = self
+                    .alerts
+                    .get_active_alerts_for_zone(request, options)
+                    .await?;
+                dump(&response)
+            }
             "alerts.get_alert" => {
                 let request = decode(request)?;
                 let response = self.alerts.get_alert(request, options).await?;
+                dump(&response)
+            }
+            "alerts.list_alert_types" => {
+                let request = decode(request)?;
+                let response = self.alerts.list_alert_types(request, options).await?;
+                dump(&response)
+            }
+            "alerts.list_alerts" => {
+                let request = decode(request)?;
+                let response = self.alerts.list_alerts(request, options).await?;
+                dump(&response)
+            }
+            "aviation.get_cwa" => {
+                let request = decode(request)?;
+                let response = self.aviation.get_cwa(request, options).await?;
+                dump(&response)
+            }
+            "aviation.get_cwsu" => {
+                let request = decode(request)?;
+                let response = self.aviation.get_cwsu(request, options).await?;
+                dump(&response)
+            }
+            "aviation.get_sigmet" => {
+                let request = decode(request)?;
+                let response = self.aviation.get_sigmet(request, options).await?;
+                dump(&response)
+            }
+            "aviation.list_cwas" => {
+                let request = decode(request)?;
+                let response = self.aviation.list_cwas(request, options).await?;
+                dump(&response)
+            }
+            "aviation.list_sigmets" => {
+                let request = decode(request)?;
+                let response = self.aviation.list_sigmets(request, options).await?;
+                dump(&response)
+            }
+            "aviation.list_sigmets_for_atsu" => {
+                let request = decode(request)?;
+                let response = self
+                    .aviation
+                    .list_sigmets_for_atsu(request, options)
+                    .await?;
+                dump(&response)
+            }
+            "aviation.list_sigmets_for_atsu_on_date" => {
+                let request = decode(request)?;
+                let response = self
+                    .aviation
+                    .list_sigmets_for_atsu_on_date(request, options)
+                    .await?;
                 dump(&response)
             }
             "forecast.get_forecast" => {
@@ -41,9 +121,34 @@ impl Weather {
                 let response = self.forecast.get_hourly_forecast(request, options).await?;
                 dump(&response)
             }
+            "glossary.list_terms" => {
+                let request = decode(request)?;
+                let response = self.glossary.list_terms(request, options).await?;
+                dump(&response)
+            }
+            "offices.get_briefing" => {
+                let request = decode(request)?;
+                let response = self.offices.get_briefing(request, options).await?;
+                dump(&response)
+            }
+            "offices.get_headline" => {
+                let request = decode(request)?;
+                let response = self.offices.get_headline(request, options).await?;
+                dump(&response)
+            }
             "offices.get_office" => {
                 let request = decode(request)?;
                 let response = self.offices.get_office(request, options).await?;
+                dump(&response)
+            }
+            "offices.list_headlines" => {
+                let request = decode(request)?;
+                let response = self.offices.list_headlines(request, options).await?;
+                dump(&response)
+            }
+            "offices.list_weather_stories" => {
+                let request = decode(request)?;
+                let response = self.offices.list_weather_stories(request, options).await?;
                 dump(&response)
             }
             "points.get_point" => {
@@ -108,12 +213,67 @@ impl Weather {
                     .await?;
                 dump(&response)
             }
+            "radar.get_profiler" => {
+                let request = decode(request)?;
+                let response = self.radar.get_profiler(request, options).await?;
+                dump(&response)
+            }
+            "radar.get_queue" => {
+                let request = decode(request)?;
+                let response = self.radar.get_queue(request, options).await?;
+                dump(&response)
+            }
+            "radar.get_server" => {
+                let request = decode(request)?;
+                let response = self.radar.get_server(request, options).await?;
+                dump(&response)
+            }
+            "radar.get_station" => {
+                let request = decode(request)?;
+                let response = self.radar.get_station(request, options).await?;
+                dump(&response)
+            }
+            "radar.list_servers" => {
+                let request = decode(request)?;
+                let response = self.radar.list_servers(request, options).await?;
+                dump(&response)
+            }
+            "radar.list_spgds" => {
+                let request = decode(request)?;
+                let response = self.radar.list_spgds(request, options).await?;
+                dump(&response)
+            }
+            "radar.list_station_alarms" => {
+                let request = decode(request)?;
+                let response = self.radar.list_station_alarms(request, options).await?;
+                dump(&response)
+            }
+            "radar.list_stations" => {
+                let request = decode(request)?;
+                let response = self.radar.list_stations(request, options).await?;
+                dump(&response)
+            }
+            "radio.get_transmitter" => {
+                let request = decode(request)?;
+                let response = self.radio.get_transmitter(request, options).await?;
+                dump(&response)
+            }
+            "radio.list_transmitters" => {
+                let request = decode(request)?;
+                let response = self.radio.list_transmitters(request, options).await?;
+                dump(&response)
+            }
             "stations.get_latest_observation" => {
                 let request = decode(request)?;
                 let response = self
                     .stations
                     .get_latest_observation(request, options)
                     .await?;
+                dump(&response)
+            }
+            "stations.get_observation" => {
+                let request = decode(request)?;
+                let response = self.stations.get_observation(request, options).await?;
                 dump(&response)
             }
             "stations.get_observations" => {
@@ -127,6 +287,11 @@ impl Weather {
                     .stations
                     .get_observations_for_zone(request, options)
                     .await?;
+                dump(&response)
+            }
+            "stations.get_station" => {
+                let request = decode(request)?;
+                let response = self.stations.get_station(request, options).await?;
                 dump(&response)
             }
             "stations.list_stations" => {
@@ -148,6 +313,11 @@ impl Weather {
                     .stations
                     .list_stations_for_zone(request, options)
                     .await?;
+                dump(&response)
+            }
+            "stations.list_tafs" => {
+                let request = decode(request)?;
+                let response = self.stations.list_tafs(request, options).await?;
                 dump(&response)
             }
             "zones.get_forecast" => {
@@ -188,13 +358,75 @@ impl Weather {
         options: CallOptions,
     ) -> Result<serde_json::Value> {
         match function {
+            "alerts.count_active_alerts" => {
+                let request = decode(request)?;
+                self.alerts.count_active_alerts_raw(request, options).await
+            }
             "alerts.get_active_alerts" => {
                 let request = decode(request)?;
                 self.alerts.get_active_alerts_raw(request, options).await
             }
+            "alerts.get_active_alerts_for_area" => {
+                let request = decode(request)?;
+                self.alerts
+                    .get_active_alerts_for_area_raw(request, options)
+                    .await
+            }
+            "alerts.get_active_alerts_for_region" => {
+                let request = decode(request)?;
+                self.alerts
+                    .get_active_alerts_for_region_raw(request, options)
+                    .await
+            }
+            "alerts.get_active_alerts_for_zone" => {
+                let request = decode(request)?;
+                self.alerts
+                    .get_active_alerts_for_zone_raw(request, options)
+                    .await
+            }
             "alerts.get_alert" => {
                 let request = decode(request)?;
                 self.alerts.get_alert_raw(request, options).await
+            }
+            "alerts.list_alert_types" => {
+                let request = decode(request)?;
+                self.alerts.list_alert_types_raw(request, options).await
+            }
+            "alerts.list_alerts" => {
+                let request = decode(request)?;
+                self.alerts.list_alerts_raw(request, options).await
+            }
+            "aviation.get_cwa" => {
+                let request = decode(request)?;
+                self.aviation.get_cwa_raw(request, options).await
+            }
+            "aviation.get_cwsu" => {
+                let request = decode(request)?;
+                self.aviation.get_cwsu_raw(request, options).await
+            }
+            "aviation.get_sigmet" => {
+                let request = decode(request)?;
+                self.aviation.get_sigmet_raw(request, options).await
+            }
+            "aviation.list_cwas" => {
+                let request = decode(request)?;
+                self.aviation.list_cwas_raw(request, options).await
+            }
+            "aviation.list_sigmets" => {
+                let request = decode(request)?;
+                self.aviation.list_sigmets_raw(request, options).await
+            }
+            "aviation.list_sigmets_for_atsu" => {
+                let request = decode(request)?;
+                self.aviation
+                    .list_sigmets_for_atsu_raw(request, options)
+                    .await
+            }
+            "aviation.list_sigmets_for_atsu_on_date" => {
+                let request = decode(request)?;
+                self.aviation
+                    .list_sigmets_for_atsu_on_date_raw(request, options)
+                    .await
             }
             "forecast.get_forecast" => {
                 let request = decode(request)?;
@@ -210,9 +442,31 @@ impl Weather {
                     .get_hourly_forecast_raw(request, options)
                     .await
             }
+            "glossary.list_terms" => {
+                let request = decode(request)?;
+                self.glossary.list_terms_raw(request, options).await
+            }
+            "offices.get_briefing" => {
+                let request = decode(request)?;
+                self.offices.get_briefing_raw(request, options).await
+            }
+            "offices.get_headline" => {
+                let request = decode(request)?;
+                self.offices.get_headline_raw(request, options).await
+            }
             "offices.get_office" => {
                 let request = decode(request)?;
                 self.offices.get_office_raw(request, options).await
+            }
+            "offices.list_headlines" => {
+                let request = decode(request)?;
+                self.offices.list_headlines_raw(request, options).await
+            }
+            "offices.list_weather_stories" => {
+                let request = decode(request)?;
+                self.offices
+                    .list_weather_stories_raw(request, options)
+                    .await
             }
             "points.get_point" => {
                 let request = decode(request)?;
@@ -262,11 +516,55 @@ impl Weather {
                     .list_types_for_location_raw(request, options)
                     .await
             }
+            "radar.get_profiler" => {
+                let request = decode(request)?;
+                self.radar.get_profiler_raw(request, options).await
+            }
+            "radar.get_queue" => {
+                let request = decode(request)?;
+                self.radar.get_queue_raw(request, options).await
+            }
+            "radar.get_server" => {
+                let request = decode(request)?;
+                self.radar.get_server_raw(request, options).await
+            }
+            "radar.get_station" => {
+                let request = decode(request)?;
+                self.radar.get_station_raw(request, options).await
+            }
+            "radar.list_servers" => {
+                let request = decode(request)?;
+                self.radar.list_servers_raw(request, options).await
+            }
+            "radar.list_spgds" => {
+                let request = decode(request)?;
+                self.radar.list_spgds_raw(request, options).await
+            }
+            "radar.list_station_alarms" => {
+                let request = decode(request)?;
+                self.radar.list_station_alarms_raw(request, options).await
+            }
+            "radar.list_stations" => {
+                let request = decode(request)?;
+                self.radar.list_stations_raw(request, options).await
+            }
+            "radio.get_transmitter" => {
+                let request = decode(request)?;
+                self.radio.get_transmitter_raw(request, options).await
+            }
+            "radio.list_transmitters" => {
+                let request = decode(request)?;
+                self.radio.list_transmitters_raw(request, options).await
+            }
             "stations.get_latest_observation" => {
                 let request = decode(request)?;
                 self.stations
                     .get_latest_observation_raw(request, options)
                     .await
+            }
+            "stations.get_observation" => {
+                let request = decode(request)?;
+                self.stations.get_observation_raw(request, options).await
             }
             "stations.get_observations" => {
                 let request = decode(request)?;
@@ -277,6 +575,10 @@ impl Weather {
                 self.stations
                     .get_observations_for_zone_raw(request, options)
                     .await
+            }
+            "stations.get_station" => {
+                let request = decode(request)?;
+                self.stations.get_station_raw(request, options).await
             }
             "stations.list_stations" => {
                 let request = decode(request)?;
@@ -293,6 +595,10 @@ impl Weather {
                 self.stations
                     .list_stations_for_zone_raw(request, options)
                     .await
+            }
+            "stations.list_tafs" => {
+                let request = decode(request)?;
+                self.stations.list_tafs_raw(request, options).await
             }
             "zones.get_forecast" => {
                 let request = decode(request)?;

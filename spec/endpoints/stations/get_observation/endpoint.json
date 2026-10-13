@@ -1,0 +1,73 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/station_observation_time",
+  "meta": {
+    "payload": "properties"
+  },
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/stations/{station_id}/observations/{time}",
+    "method": "GET",
+    "description": "The observation one station reported at one exact moment.",
+    "request": {
+      "title": "GetObservationRequest",
+      "type": "object",
+      "description": "Which station, and when.",
+      "properties": {
+        "station_id": {
+          "type": "string",
+          "description": "Station identifier, such as `KSEA`. `stations.list_stations` returns it as `stationIdentifier`."
+        },
+        "time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the observation was taken, to the second. It must be the `timestamp` of an observation the station reported: the service does not round to the nearest one, and answers 404 for a moment between two. It keeps about a week, and answers 404 for anything older."
+        }
+      },
+      "required": [
+        "station_id",
+        "time"
+      ]
+    },
+    "response": {
+      "title": "TimedObservationFeature",
+      "type": "object",
+      "description": "The observation, in the GeoJSON feature the API wraps it in. The geometry repeats the station's own coordinates, which `properties` already identifies, so the client hands back `properties`.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Canonical URL of this observation."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "Feature"
+          ],
+          "description": "Always `Feature`."
+        },
+        "geometry": {
+          "$ref": "PointGeometry",
+          "description": "Where the station is."
+        },
+        "properties": {
+          "$ref": "Observation",
+          "description": "The observation itself."
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "properties"
+      ]
+    }
+  },
+  "envelope": {
+    "payload": "properties"
+  },
+  "notes": [
+    "Measured 2026-09-30 at KSEA, which reports every five minutes and a METAR at :53: `20:53:00Z` and `21:05:00Z` answered, `20:30:00Z` answered 404, and so did `2026-09-23T21:00:00Z` while `2026-09-24T21:00:00Z` still answered. A `time` with an offset (`14:00:00-07:00`) names the same observation as its UTC form.",
+    "`refresh_examples.py` repoints the example to the newest METAR in the settled observation window before every re-recording, since the one it names ages out within a week."
+  ]
+}

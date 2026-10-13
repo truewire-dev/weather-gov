@@ -1,0 +1,31 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/transmitter",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/radio/{call_sign}",
+    "method": "GET",
+    "description": "One NOAA Weather Radio transmitter, by call sign.",
+    "request": {
+      "title": "GetTransmitterRequest",
+      "type": "object",
+      "description": "Which transmitter.",
+      "properties": {
+        "call_sign": {
+          "type": "string",
+          "description": "Call sign, such as `KHB60`. `radio.list_transmitters` and `zones.list_transmitters` return it as `callSign`."
+        }
+      },
+      "required": [
+        "call_sign"
+      ]
+    },
+    "response": {
+      "$ref": "Transmitter",
+      "description": "The transmitter."
+    }
+  }
+}

@@ -11,3 +11,4 @@ export { API, GEO_JSON, raiseForStatus, Transport, unwrap, userAgent, type Trans
 export * from '../types/index.js'
 export * from '../meta.js'
 export type { CallOptions } from '@truewire/core'
+export { DateIso } from '@truewire/core'

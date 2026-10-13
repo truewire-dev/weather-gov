@@ -16,7 +16,10 @@ use std::process::{Child, Command, Stdio};
 use truewire_core::serde_json::Value;
 use truewire_core::CallOptions;
 use weather_gov::core::CoreOptions;
-use weather_gov::types::{Product, QuantitativeValue};
+use weather_gov::types::{
+    Product, QuantitativeValue, RadarReportProperties, RadarReportPropertiesMapValue,
+    RadarServerPingTargetsValue,
+};
 use weather_gov::Weather;
 
 const CONTACT: &str = "tests@truewire.dev";
@@ -93,6 +96,15 @@ fn recorded(file: &str) -> Value {
         .unwrap_or_else(|e| panic!("could not read {}: {e}", path.display()));
     let value: Value = truewire_core::serde_json::from_str(&text).expect("valid json");
     value["request"].clone()
+}
+
+/// The response half of another recorded example, as it came off the wire.
+fn payload(file: &str) -> Value {
+    let path = project_root().join("spec/endpoints").join(file);
+    let text = std::fs::read_to_string(&path)
+        .unwrap_or_else(|e| panic!("could not read {}: {e}", path.display()));
+    let value: Value = truewire_core::serde_json::from_str(&text).expect("valid json");
+    value["payload"].clone()
 }
 
 /// A recorded ISO timestamp, read through the type's own `Deserialize`.
@@ -387,7 +399,7 @@ async fn offices_and_products_answer_in_their_own_vocabularies() {
 /// A zone feature: its URL is its code, and a list leaves the outline out.
 fn is_zone(feature: &weather_gov::types::ZoneFeature, geometry: bool) -> &weather_gov::types::Zone {
     let zone = &feature.properties;
-    // `@id` renders as `id` and the zone code as `id2`: generator naming, not the wire's.
+    // `@id` renders as `id` and the zone code as `id2` in truewire 0.11 (TRU-1046).
     assert_eq!(feature.id, zone.id);
     assert!(zone.id.ends_with(&format!("/{}", zone.id2)), "{}", zone.id);
     assert!(!zone.name.is_empty());
@@ -973,4 +985,1145 @@ async fn products_by_type_by_location_and_types_for_a_location() {
     assert_eq!(codes, sorted, "unique, ordered by code");
     assert!(codes.iter().any(|code| code == "AFD"));
     assert!(codes.len() > 10 && codes.len() < 300);
+}
+
+/// A recorded calendar date, read through the type's own `Deserialize`.
+fn date(value: &Value) -> truewire_core::DateIso {
+    truewire_core::serde_json::from_value(value.clone()).expect("a YYYY-MM-DD date")
+}
+
+/// The features of a recorded collection, for a test that checks one recording against
+/// another.
+fn recorded_features(file: &str) -> Vec<Value> {
+    let path = project_root().join("spec/endpoints").join(file);
+    let text = std::fs::read_to_string(&path)
+        .unwrap_or_else(|e| panic!("could not read {}: {e}", path.display()));
+    let value: Value = truewire_core::serde_json::from_str(&text).expect("valid json");
+    value["payload"]["features"]
+        .as_array()
+        .expect("features")
+        .clone()
+}
+
+/// The ids a recorded collection holds.
+fn recorded_feature_ids(file: &str) -> Vec<String> {
+    recorded_features(file)
+        .iter()
+        .map(|feature| {
+            feature["properties"]["id"]
+                .as_str()
+                .expect("an id")
+                .to_string()
+        })
+        .collect()
+}
+
+/// A latitude and a longitude range, exclusive.
+type Area = ((f64, f64), (f64, f64));
+/// Fort Worth Center's airspace, generously: north Texas and its neighbours.
+const FORT_WORTH: Area = ((25.0, 40.0), (-112.0, -88.0));
+/// Alaska, with the Aleutians past the antimeridian: the service does not wrap -190 to 170.
+const ALASKA: Area = ((45.0, 75.0), (-200.0, -125.0));
+/// The eastern third of the contiguous US and the waters off it, where the `E` convective
+/// SIGMETs are issued; Miami's oceanic airspace reaches 12 N in the Caribbean.
+const EAST: Area = ((5.0, 50.0), (-100.0, -60.0));
+
+/// An aviation outline: a closed polygon, latitude first -- the reverse of every other
+/// geometry in this API, which the box around the issuing unit's airspace proves.
+fn is_advisory_area(geometry: &weather_gov::types::AdvisoryPolygon, area: Area) {
+    let ((south, north), (west, east)) = area;
+    for ring in &geometry.coordinates {
+        assert!(ring.len() > 3);
+        assert_eq!(ring.first(), ring.last());
+        for &(latitude, longitude) in ring {
+            assert!(south < latitude && latitude < north, "{latitude}");
+            assert!(west < longitude && longitude < east, "{longitude}");
+        }
+    }
+}
+
+fn is_newest_first(issued: &[truewire_core::types::TimestampIso]) {
+    let mut sorted = issued.to_vec();
+    sorted.sort();
+    sorted.reverse();
+    assert_eq!(sorted, issued, "the service answers newest first");
+}
+
+/// A message from `atsu`, named by its UTC issue date and minute: the URL `get_sigmet` takes.
+fn is_sigmet_of<'a>(
+    feature: &'a weather_gov::types::SigmetFeature,
+    atsu: &str,
+) -> &'a weather_gov::types::Sigmet {
+    let sigmet = &feature.properties;
+    assert_eq!(sigmet.atsu, atsu);
+    let named = sigmet.issue_time.format("%Y-%m-%d/%H%M");
+    assert!(
+        sigmet.id.ends_with(&format!("/sigmets/{atsu}/{named}")),
+        "{}",
+        sigmet.id
+    );
+    assert!(sigmet.start <= sigmet.end);
+    if let Some(geometry) = &feature.geometry {
+        is_advisory_area(geometry, ALASKA);
+    }
+    sigmet
+}
+
+#[tokio::test]
+async fn aviation_get_cwsu_is_an_organization_without_an_offices_zones() {
+    use weather_gov::types::CwsuId;
+    let mock = start_mock();
+    let client = client(&mock);
+    let unit = client
+        .aviation
+        .get_cwsu(
+            weather_gov::aviation::get_cwsu::Request {
+                cwsu_id: CwsuId::Zse,
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_cwsu");
+    assert_eq!(unit.id, CwsuId::Zse);
+    assert_eq!(unit.name, "Seattle, WA");
+    let address = unit.address.as_ref().expect("an address");
+    assert_eq!(address.address_region.as_deref(), Some("WA"));
+    assert_eq!(unit.nws_region.as_deref(), Some("wr"));
+    assert!(!unit.extra.contains_key("responsibleForecastZones"));
+}
+
+#[tokio::test]
+async fn aviation_cwas_list_the_week_and_get_cwa_finds_one_of_them() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let page = client
+        .aviation
+        .list_cwas(
+            weather_gov::aviation::list_cwas::Request {
+                cwsu_id: weather_gov::types::CwsuId::Zfw,
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_cwas");
+    assert!(!page.features.is_empty());
+    let issued: Vec<_> = page
+        .features
+        .iter()
+        .map(|f| f.properties.issue_time)
+        .collect();
+    is_newest_first(&issued);
+    for feature in &page.features {
+        let advisory = &feature.properties;
+        assert!(advisory.sequence >= 101);
+        assert!(advisory.start <= advisory.end);
+        let day = advisory.issue_time.format("%Y-%m-%d");
+        let suffix = format!("/cwsus/ZFW/cwas/{day}/{}", advisory.sequence);
+        assert!(advisory.id.ends_with(&suffix), "{}", advisory.id);
+        if let Some(geometry) = &feature.geometry {
+            is_advisory_area(geometry, FORT_WORTH);
+        }
+    }
+
+    let asked = recorded("aviation/get_cwa/examples/latest.request.json");
+    let feature = client
+        .aviation
+        .get_cwa(
+            weather_gov::aviation::get_cwa::Request {
+                cwsu_id: truewire_core::serde_json::from_value(asked["cwsu_id"].clone())
+                    .expect("a CWSU"),
+                date: date(&asked["date"]),
+                sequence: asked["sequence"].as_i64().expect("a sequence"),
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_cwa");
+    let advisory = &feature.properties;
+    assert_eq!(Some(advisory.sequence), asked["sequence"].as_i64());
+    assert_eq!(
+        advisory.issue_time.format("%Y-%m-%d").to_string(),
+        asked["date"].as_str().expect("a date")
+    );
+    assert!(!advisory.text.is_empty());
+    is_advisory_area(feature.geometry.as_ref().expect("an outline"), FORT_WORTH);
+    // The list keeps a week. The service answers 500 for most single advisories (see the
+    // endpoint's notes), so a re-recording can renew the list and keep an older advisory
+    // here; one from inside the list's week must be in it.
+    let listed = "aviation/list_cwas/examples/fort_worth.response.json";
+    let oldest = recorded_features(listed)
+        .iter()
+        .map(|feature| {
+            let issued = feature["properties"]["issueTime"]
+                .as_str()
+                .expect("an issue time");
+            truewire_core::chrono::DateTime::parse_from_rfc3339(issued)
+                .expect("an RFC 3339 time")
+                .timestamp()
+        })
+        .min()
+        .expect("a listed advisory");
+    if advisory.issue_time.timestamp() >= oldest {
+        assert!(recorded_feature_ids(listed).contains(&advisory.id));
+    }
+}
+
+#[tokio::test]
+async fn aviation_list_sigmets_by_sequence_reaches_back_through_the_week() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let page = client
+        .aviation
+        .list_sigmets(
+            weather_gov::aviation::list_sigmets::Request {
+                sequence: Some("1E".to_string()),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_sigmets");
+    assert!(!page.features.is_empty());
+    let issued: Vec<_> = page
+        .features
+        .iter()
+        .map(|f| f.properties.issue_time)
+        .collect();
+    is_newest_first(&issued);
+    let days: std::collections::HashSet<_> = issued.iter().map(|t| t.date_naive()).collect();
+    assert!(days.len() > 1);
+    for feature in &page.features {
+        assert_eq!(feature.properties.sequence.as_deref(), Some("1E"));
+        assert_eq!(feature.properties.atsu, "KKCI");
+        if let Some(geometry) = &feature.geometry {
+            is_advisory_area(geometry, EAST);
+        }
+    }
+}
+
+#[tokio::test]
+async fn aviation_sigmets_of_one_unit_narrow_to_a_day_and_a_minute() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let week = client
+        .aviation
+        .list_sigmets_for_atsu(
+            weather_gov::aviation::list_sigmets_for_atsu::Request {
+                atsu: "ANC".to_string(),
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_sigmets_for_atsu");
+    assert!(!week.features.is_empty());
+    let issued: Vec<_> = week
+        .features
+        .iter()
+        .map(|f| f.properties.issue_time)
+        .collect();
+    is_newest_first(&issued);
+    for feature in &week.features {
+        is_sigmet_of(feature, "ANC");
+    }
+    let days: std::collections::HashSet<_> = issued.iter().map(|t| t.date_naive()).collect();
+    assert!(days.len() > 1);
+
+    let on_date =
+        recorded("aviation/list_sigmets_for_atsu_on_date/examples/anchorage.request.json");
+    let atsu = on_date["atsu"].as_str().expect("a unit");
+    let day = on_date["date"].as_str().expect("a date");
+    let page = client
+        .aviation
+        .list_sigmets_for_atsu_on_date(
+            weather_gov::aviation::list_sigmets_for_atsu_on_date::Request {
+                atsu: atsu.to_string(),
+                date: date(&on_date["date"]),
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_sigmets_for_atsu_on_date");
+    assert!(!page.features.is_empty());
+    let recorded_week =
+        recorded_feature_ids("aviation/list_sigmets_for_atsu/examples/anchorage.response.json");
+    for feature in &page.features {
+        let sigmet = is_sigmet_of(feature, atsu);
+        assert_eq!(sigmet.issue_time.format("%Y-%m-%d").to_string(), day);
+        assert!(recorded_week.contains(&sigmet.id));
+    }
+
+    let asked = recorded("aviation/get_sigmet/examples/anchorage_latest.request.json");
+    let feature = client
+        .aviation
+        .get_sigmet(
+            weather_gov::aviation::get_sigmet::Request {
+                atsu: asked["atsu"].as_str().expect("a unit").to_string(),
+                date: date(&asked["date"]),
+                time: asked["time"].as_str().expect("a time").to_string(),
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_sigmet");
+    let sigmet = is_sigmet_of(&feature, asked["atsu"].as_str().expect("a unit"));
+    let named = format!(
+        "{}/{}",
+        asked["date"].as_str().expect("a date"),
+        asked["time"].as_str().expect("a time")
+    );
+    assert_eq!(sigmet.issue_time.format("%Y-%m-%d/%H%M").to_string(), named);
+    assert!(feature.geometry.is_some());
+}
+
+#[tokio::test]
+async fn alerts_list_alerts_honours_the_limit_and_the_window_newest_first() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let window = recorded("alerts/list_alerts/examples/first_page.request.json");
+    let (start, end) = (timestamp(&window["start"]), timestamp(&window["end"]));
+    let limit = window["limit"].as_i64().expect("a limit");
+    let page = client
+        .alerts
+        .list_alerts(
+            weather_gov::alerts::list_alerts::Request {
+                start: Some(start),
+                end: Some(end),
+                status: Some(vec![
+                    weather_gov::alerts::list_alerts::RequestStatusItem::Actual,
+                ]),
+                limit: Some(limit),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_alerts");
+    assert_eq!(page.features.len() as i64, limit, "the limit was honoured");
+    let sent: Vec<_> = page.features.iter().map(|f| f.properties.sent).collect();
+    let mut sorted = sent.clone();
+    sorted.sort();
+    sorted.reverse();
+    assert_eq!(sent, sorted, "the service answers newest first by `sent`");
+    assert!(sent.iter().all(|moment| start <= *moment && *moment <= end));
+    assert!(page
+        .features
+        .iter()
+        .all(|f| f.properties.status == weather_gov::types::AlertStatus::Actual));
+    let next = page.pagination.expect("a pagination block").next;
+    assert!(next.contains("cursor="), "{next}");
+}
+
+#[tokio::test]
+async fn alerts_count_active_alerts_adds_up() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let count = client
+        .alerts
+        .count_active_alerts(
+            weather_gov::alerts::count_active_alerts::Request::default(),
+            CallOptions::default(),
+        )
+        .await
+        .expect("count_active_alerts");
+    assert_eq!(count.total, count.land + count.marine);
+    // The regions need not add up to `marine`: the service has counted one over it.
+    assert!(count.regions.values().all(|n| *n > 0));
+    assert!(count
+        .regions
+        .keys()
+        .all(|region| MARINE_REGIONS.iter().any(|(code, _)| code == region)));
+    assert!(!count.zones.is_empty() && !count.areas.is_empty());
+}
+
+/// The marine areas each region groups, from the OpenAPI's `MarineRegionCode`.
+const MARINE_REGIONS: [(&str, &[&str]); 6] = [
+    ("AL", &["PK"]),
+    ("AT", &["AM", "AN"]),
+    ("GL", &["LC", "LE", "LH", "LM", "LO", "LS", "SL"]),
+    ("GM", &["GM"]),
+    ("PA", &["PZ"]),
+    ("PI", &["PH", "PM", "PS"]),
+];
+
+/// Each alert's zone and county codes, after checking there is at least one alert.
+fn ugc_codes(page: &weather_gov::types::AlertCollection) -> Vec<Vec<String>> {
+    assert_eq!(
+        page.type_,
+        weather_gov::types::AlertCollectionType::FeatureCollection
+    );
+    assert!(
+        !page.features.is_empty(),
+        "nothing was in effect there when this was recorded"
+    );
+    page.features
+        .iter()
+        .map(|feature| {
+            feature
+                .properties
+                .geocode
+                .as_ref()
+                .and_then(|geocode| geocode.ugc.clone())
+                .expect("every alert carries its UGC codes")
+        })
+        .collect()
+}
+
+#[tokio::test]
+async fn alerts_for_a_zone_area_and_region_cover_the_place_in_the_path() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let zone = recorded("alerts/get_active_alerts_for_zone/examples/in_effect.request.json")
+        ["zone_id"]
+        .as_str()
+        .expect("a zone")
+        .to_string();
+    let page = client
+        .alerts
+        .get_active_alerts_for_zone(
+            weather_gov::alerts::get_active_alerts_for_zone::Request {
+                zone_id: zone.clone(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_active_alerts_for_zone");
+    let codes = ugc_codes(&page);
+    assert!(codes.iter().any(|alert| alert.contains(&zone)));
+    assert!(codes
+        .iter()
+        .all(|alert| alert.iter().any(|code| code.starts_with(&zone[..2]))));
+
+    let area = recorded("alerts/get_active_alerts_for_area/examples/in_effect.request.json")
+        ["area"]
+        .as_str()
+        .expect("an area")
+        .to_string();
+    let page = client
+        .alerts
+        .get_active_alerts_for_area(
+            weather_gov::alerts::get_active_alerts_for_area::Request {
+                area: area.clone(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_active_alerts_for_area");
+    assert!(ugc_codes(&page)
+        .iter()
+        .all(|alert| alert.iter().any(|code| code.starts_with(&area))));
+
+    let region = recorded("alerts/get_active_alerts_for_region/examples/in_effect.request.json")
+        ["region"]
+        .clone();
+    let code = region.as_str().expect("a region");
+    let (_, areas) = MARINE_REGIONS
+        .iter()
+        .find(|(region, _)| *region == code)
+        .unwrap_or_else(|| panic!("not a marine region: {code}"));
+    let page = client
+        .alerts
+        .get_active_alerts_for_region(
+            weather_gov::alerts::get_active_alerts_for_region::Request {
+                region: truewire_core::serde_json::from_value(region).expect("a region"),
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_active_alerts_for_region");
+    assert!(ugc_codes(&page)
+        .iter()
+        .all(|alert| alert.iter().any(|code| areas.contains(&&code[..2]))));
+}
+
+#[tokio::test]
+async fn alert_types_and_the_glossary_decode_whole() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let types = client
+        .alerts
+        .list_alert_types(
+            weather_gov::alerts::list_alert_types::Request::default(),
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_alert_types")
+        .event_types;
+    let unique: std::collections::HashSet<_> = types.iter().collect();
+    assert!(types.len() > 100);
+    assert_eq!(unique.len(), types.len());
+    for name in [
+        "Tornado Warning",
+        "Severe Thunderstorm Warning",
+        "Winter Storm Watch",
+    ] {
+        assert!(types.iter().any(|t| t == name), "{name}");
+    }
+
+    let terms = client
+        .glossary
+        .list_terms(
+            weather_gov::glossary::list_terms::Request::default(),
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_terms")
+        .glossary;
+    assert!(terms.len() > 3000);
+    assert!(terms.iter().any(|entry| entry.term == "1-2-3 Rule"));
+    assert!(terms
+        .iter()
+        .all(|entry| !entry.term.is_empty() && !entry.definition.is_empty()));
+}
+
+#[tokio::test]
+async fn stations_get_station_keeps_the_whole_feature() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let station = client
+        .stations
+        .get_station(
+            weather_gov::stations::get_station::Request {
+                station_id: "KSEA".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_station");
+    assert_eq!(station.id, "https://api.weather.gov/stations/KSEA");
+    // The geometry is the only place the station's coordinates are.
+    let (longitude, latitude) = station.geometry.as_ref().expect("a point").coordinates;
+    assert_eq!((latitude.round(), longitude.round()), (47.0, -122.0));
+    let properties = &station.properties;
+    assert_eq!(properties.station_identifier, "KSEA");
+    assert_eq!(properties.time_zone.as_deref(), Some("America/Los_Angeles"));
+    is_measurement(
+        properties.elevation.as_ref().expect("an elevation"),
+        Some("wmoUnit:m"),
+    );
+    assert!(properties
+        .county
+        .as_deref()
+        .expect("a county")
+        .ends_with("/zones/county/WAC033"));
+}
+
+#[tokio::test]
+async fn stations_get_observation_returns_the_observation_at_the_moment_asked() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let asked = recorded("stations/get_observation/examples/ksea_metar.request.json");
+    let station = asked["station_id"].as_str().expect("a station").to_string();
+    let observation = client
+        .stations
+        .get_observation(
+            weather_gov::stations::get_observation::Request {
+                station_id: station.clone(),
+                time: timestamp(&asked["time"]),
+                // No `..Default::default()`: a required timestamp has no default.
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_observation");
+    assert_eq!(observation.station_id.as_deref(), Some(station.as_str()));
+    assert_eq!(observation.timestamp, timestamp(&asked["time"]));
+    assert!(observation
+        .raw_message
+        .as_deref()
+        .expect("a METAR")
+        .starts_with(&format!("{station} ")));
+    is_measurement(&observation.temperature, Some("wmoUnit:degC"));
+}
+
+#[tokio::test]
+async fn stations_list_tafs_answers_newest_first_with_a_latitude_first_point() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let tafs = client
+        .stations
+        .list_tafs(
+            weather_gov::stations::list_tafs::Request {
+                station_id: "KSEA".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_tafs");
+    assert!(tafs.graph.len() > 10);
+    let issued: Vec<_> = tafs.graph.iter().map(|taf| taf.issue_time).collect();
+    let mut newest_first = issued.clone();
+    newest_first.sort_by(|a, b| b.cmp(a));
+    assert_eq!(issued, newest_first);
+    for taf in &tafs.graph {
+        assert_eq!(taf.location, "KSEA");
+        assert!(taf
+            .id
+            .starts_with("https://api.weather.gov/stations/KSEA/tafs/"));
+        assert!(taf.issue_time <= taf.start && taf.start < taf.end);
+    }
+    // Well-Known Text, latitude first: the reverse of the station's GeoJSON coordinates.
+    let coordinates = payload("stations/get_station/examples/ksea.response.json")["geometry"]
+        ["coordinates"]
+        .clone();
+    let longitude = coordinates[0].as_f64().expect("a longitude");
+    let latitude = coordinates[1].as_f64().expect("a latitude");
+    let point = tafs.graph[0].geometry.as_deref().expect("a point");
+    let numbers: Vec<f64> = point
+        .trim_start_matches("POINT(")
+        .trim_end_matches(')')
+        .split_whitespace()
+        .map(|number| number.parse().expect("a number"))
+        .collect();
+    let hundredths = |value: f64| (value * 100.0).round() / 100.0;
+    assert_eq!(numbers, vec![hundredths(latitude), hundredths(longitude)]);
+}
+
+#[tokio::test]
+async fn offices_get_briefing_returns_an_active_briefing_and_its_pdf() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let asked = recorded("offices/get_briefing/examples/active.request.json");
+    let office = asked["office_id"].as_str().expect("an office").to_string();
+    let active = client
+        .offices
+        .get_briefing(
+            weather_gov::offices::get_briefing::Request {
+                office_id: office.clone(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_briefing");
+    let briefing = active.briefing.expect("a briefing out");
+    assert_eq!(briefing.office_id, office);
+    assert!(briefing.start_time < briefing.end_time);
+    assert_eq!(
+        briefing.download,
+        format!(
+            "https://api.weather.gov/offices/{office}/briefing/download/{}",
+            briefing.id
+        )
+    );
+}
+
+#[tokio::test]
+async fn offices_get_briefing_answers_an_honest_null_for_an_office_with_none() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let active = client
+        .offices
+        .get_briefing(
+            weather_gov::offices::get_briefing::Request {
+                office_id: "SEW".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_briefing");
+    assert!(active.briefing.is_none());
+}
+
+#[tokio::test]
+async fn offices_list_headlines_links_each_headline() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let headlines = client
+        .offices
+        .list_headlines(
+            weather_gov::offices::list_headlines::Request {
+                office_id: "AKQ".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_headlines");
+    assert!(!headlines.graph.is_empty());
+    for headline in &headlines.graph {
+        assert_eq!(headline.office, "https://api.weather.gov/offices/AKQ");
+        // The URL and the token used by get_headline have distinct fields.
+        assert_eq!(
+            headline.id,
+            format!("{}/headlines/{}", headline.office, headline.id2)
+        );
+        assert!(headline.content.contains(&headline.title));
+    }
+}
+
+#[tokio::test]
+async fn offices_get_headline_returns_the_headline_the_office_lists() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let asked = recorded("offices/get_headline/examples/wakefield.request.json");
+    let id = asked["headline_id"]
+        .as_str()
+        .expect("a headline")
+        .to_string();
+    let headline = client
+        .offices
+        .get_headline(
+            weather_gov::offices::get_headline::Request {
+                office_id: asked["office_id"].as_str().expect("an office").to_string(),
+                headline_id: id.clone(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_headline");
+    assert_eq!(headline.id2, id);
+    let listed = payload("offices/list_headlines/examples/wakefield.response.json")["@graph"]
+        .as_array()
+        .expect("a graph")
+        .iter()
+        .find(|entry| entry["id"] == id.as_str())
+        .expect("the office lists it")
+        .clone();
+    assert_eq!(listed["title"], headline.title.as_str());
+    assert_eq!(listed["link"], headline.link.as_str());
+}
+
+#[tokio::test]
+async fn offices_list_weather_stories_returns_each_graphic_with_its_text() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let stories = client
+        .offices
+        .list_weather_stories(
+            weather_gov::offices::list_weather_stories::Request {
+                office_id: "AKQ".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_weather_stories")
+        .stories;
+    assert!(!stories.is_empty());
+    for story in &stories {
+        assert_eq!(story.office_id, "AKQ");
+        assert!(!story.title.is_empty() && !story.description.is_empty());
+        assert!(story.start_time < story.end_time);
+        if let Some(download) = &story.download {
+            assert!(download
+                .starts_with("https://api.weather.gov/offices/AKQ/weatherstories/download/"));
+        }
+    }
+}
+
+#[tokio::test]
+async fn radio_list_transmitters_last_page_is_short_with_no_next_page() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let asked = recorded("radio/list_transmitters/examples/last_page.request.json");
+    let page = client
+        .radio
+        .list_transmitters(
+            weather_gov::radio::list_transmitters::Request {
+                cursor: Some(asked["cursor"].as_str().expect("a cursor").to_string()),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_transmitters");
+    assert!(!page.graph.is_empty() && page.graph.len() < 500);
+    assert!(page.pagination.is_none());
+    let calls: std::collections::HashSet<_> = page.graph.iter().map(|t| &t.call_sign).collect();
+    assert!(calls.len() < page.graph.len());
+    for transmitter in &page.graph {
+        assert_eq!(
+            transmitter.id,
+            format!("https://api.weather.gov/radio/{}", transmitter.call_sign)
+        );
+        assert_eq!(
+            transmitter.same_codes.as_ref().map(Vec::len),
+            Some(transmitter.counties.len())
+        );
+        assert!(transmitter
+            .transmitter_frequency
+            .as_str()
+            .starts_with("162."));
+    }
+}
+
+#[tokio::test]
+async fn radio_get_transmitter_returns_the_one_the_county_lists() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let transmitter = client
+        .radio
+        .get_transmitter(
+            weather_gov::radio::get_transmitter::Request {
+                call_sign: "KHB60".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_transmitter");
+    assert_eq!(transmitter.call_sign, "KHB60");
+    assert_eq!(transmitter.id, "https://api.weather.gov/radio/KHB60");
+    let county = payload("zones/list_transmitters/examples/king_county.response.json")["@graph"]
+        .as_array()
+        .expect("a graph")
+        .iter()
+        .find(|entry| entry["callSign"] == "KHB60")
+        .expect("King County lists it")
+        .clone();
+    let counties: Vec<&str> = county["counties"]
+        .as_array()
+        .expect("counties")
+        .iter()
+        .map(|c| c.as_str().expect("a county"))
+        .collect();
+    assert_eq!(transmitter.counties, counties);
+    assert_eq!(
+        transmitter.transmitter_frequency.as_str(),
+        county["transmitterFrequency"]
+            .as_str()
+            .expect("a frequency")
+    );
+}
+
+/// The start and end of a `start/duration` ISO 8601 interval, such as
+/// `2026-09-30T23:00:00Z/PT10M`, as the radar examples ask.
+fn interval(
+    value: &str,
+) -> (
+    truewire_core::chrono::DateTime<truewire_core::chrono::Utc>,
+    truewire_core::chrono::DateTime<truewire_core::chrono::Utc>,
+) {
+    let (start, duration) = value.split_once('/').expect("a start/duration interval");
+    let start = *timestamp(&Value::String(start.to_string()));
+    let duration = duration.strip_prefix("PT").expect("a time duration");
+    let (hours, minutes) = match duration.split_once('H') {
+        Some((hours, rest)) => (hours.parse::<i64>().expect("hours"), rest),
+        None => (0, duration),
+    };
+    let minutes = minutes
+        .strip_suffix('M')
+        .map_or(0, |m| m.parse::<i64>().expect("minutes"));
+    let length = truewire_core::chrono::Duration::minutes(hours * 60 + minutes);
+    (start, start + length)
+}
+
+/// A ping group: target name to whether it answered, or `[]` when there are none.
+fn is_empty_ping_group(group: &RadarServerPingTargetsValue) -> bool {
+    match group {
+        RadarServerPingTargetsValue::Map(_) => false,
+        RadarServerPingTargetsValue::BooleanList(list) => {
+            assert!(list.is_empty(), "a ping group list is always empty");
+            true
+        }
+    }
+}
+
+#[tokio::test]
+async fn radar_servers_and_one_server() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let page = client
+        .radar
+        .list_servers(
+            weather_gov::radar::list_servers::Request::default(),
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_servers");
+    let names: Vec<_> = page
+        .graph
+        .iter()
+        .map(|server| server.id2.as_str())
+        .collect();
+    for name in ["ldm1", "rds", "tds"] {
+        assert!(names.contains(&name), "{name} in {names:?}");
+    }
+    let mut empty_groups = 0;
+    for server in &page.graph {
+        assert!(server
+            .id
+            .ends_with(&format!("/radar/servers/{}", server.id2)));
+        empty_groups += server
+            .ping
+            .targets
+            .values()
+            .filter(|group| is_empty_ping_group(group))
+            .count();
+        if server.type_2 == "ldm" {
+            assert!(server.active.is_some() && server.command.is_some());
+        } else {
+            assert!(server.active.is_none() && server.command.is_none());
+        }
+    }
+    // The service's empty map is `[]`: the reason the ping groups are a union at all.
+    assert!(empty_groups > 0);
+    let rds = page.graph.iter().find(|s| s.id2 == "rds").expect("rds");
+    assert!(is_empty_ping_group(&rds.ping.targets["radar"]));
+
+    let server = client
+        .radar
+        .get_server(
+            weather_gov::radar::get_server::Request {
+                server_id: "ldm1".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_server");
+    assert_eq!(server.id2, "ldm1");
+    assert_eq!(server.type_2, "ldm");
+    assert!(server.ldm.count > 0);
+    assert!(server.ldm.oldest_product <= server.ldm.latest_product);
+    assert!(server.hardware.uptime < server.collection_time);
+    assert_eq!(server.network.eth0.interface, "eth0");
+    match &server.ping.targets["radar"] {
+        RadarServerPingTargetsValue::Map(radars) => assert!(radars.contains_key("KATX")),
+        RadarServerPingTargetsValue::BooleanList(_) => panic!("an LDM server pings the radars"),
+    }
+}
+
+#[tokio::test]
+async fn radar_spgds_parses_the_numeral_strings() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let asked = recorded("radar/list_spgds/examples/one_minute.request.json");
+    let published = asked["published"].as_str().expect("an interval");
+    let (start, end) = interval(published);
+    let page = client
+        .radar
+        .list_spgds(
+            weather_gov::radar::list_spgds::Request {
+                published: Some(published.to_string()),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_spgds");
+    assert!(!page.graph.is_empty());
+    for report in &page.graph {
+        assert!(start <= *report.timestamp && *report.timestamp <= end);
+        // Unix seconds sent as strings, parsed into real times by the declared format.
+        for (since, valid) in [
+            (&report.dataflow.state_since, &report.dataflow.state_valid),
+            (&report.connect_q.state_since, &report.connect_q.state_valid),
+            (
+                &report.app_running.state_since,
+                &report.app_running.state_valid,
+            ),
+        ] {
+            assert!(since.0 <= valid.0);
+        }
+        let used: i64 = report
+            .second_hd
+            .pct_used
+            .0
+            .to_string()
+            .parse()
+            .expect("a count");
+        assert!((0..=100).contains(&used));
+        assert!(
+            report
+                .throughput
+                .in_
+                .as_str()
+                .parse::<f64>()
+                .expect("a rate")
+                >= 0.0
+        );
+        assert!(*report.spgds_up_since.up_since < *report.timestamp);
+        assert!(!report.spg.is_empty());
+    }
+    let times: Vec<_> = page.graph.iter().map(|report| *report.timestamp).collect();
+    assert!(
+        times.windows(2).all(|pair| pair[0] >= pair[1]),
+        "newest first"
+    );
+}
+
+#[tokio::test]
+async fn radar_list_stations_sends_two_kinds_as_one_comma_separated_item() {
+    let mock = start_mock();
+    let client = client(&mock);
+    // The service keeps only the last of a repeated key, so
+    // `?stationType=TDWR&stationType=Profiler` would answer with the profilers alone. The
+    // endpoint declares `match.query_arrays: "comma"`, so the mock refuses any form but
+    // `?stationType=TDWR,Profiler`.
+    let asked: Vec<String> =
+        recorded("radar/list_stations/examples/tdwr_and_profilers.request.json")["stationType"]
+            .as_array()
+            .expect("a recorded `stationType` list")
+            .iter()
+            .map(|kind| kind.as_str().expect("a string kind").to_string())
+            .collect();
+    assert_eq!(
+        asked.len(),
+        2,
+        "the example records two values in one filter"
+    );
+    let page = client
+        .radar
+        .list_stations(
+            weather_gov::radar::list_stations::Request {
+                station_type: Some(asked.clone()),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_stations");
+    let mut kinds: Vec<_> = page
+        .features
+        .iter()
+        .map(|feature| feature.properties.station_type.clone())
+        .collect();
+    kinds.sort();
+    kinds.dedup();
+    let mut expected = asked;
+    expected.sort();
+    assert_eq!(kinds, expected);
+}
+
+#[tokio::test]
+async fn radar_stations_profilers_and_one_radar() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let page = client
+        .radar
+        .list_stations(
+            weather_gov::radar::list_stations::Request {
+                station_type: Some(vec!["Profiler".to_string()]),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_stations");
+    assert!(!page.features.is_empty());
+    for feature in &page.features {
+        let radar = &feature.properties;
+        assert_eq!(radar.station_type, "Profiler");
+        assert_eq!(feature.id, radar.id);
+        assert!(radar.rda.is_none());
+        assert!(radar.latency.current.is_none() && radar.latency.host.is_none());
+        assert!(radar.performance.is_none() && radar.adaptation.is_none());
+    }
+
+    let feature = client
+        .radar
+        .get_station(
+            weather_gov::radar::get_station::Request {
+                station_id: "KATX".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_station");
+    let radar = &feature.properties;
+    assert_eq!(radar.id2, "KATX");
+    assert_eq!(radar.station_type, "WSR-88D");
+    assert_eq!(feature.id, radar.id);
+    let latency = radar.latency.current.as_ref().expect("a latency");
+    assert_eq!(latency.unit_code, "nwsUnit:s");
+    let rda = radar.rda.as_ref().expect("an RDA status");
+    assert!(!rda.properties.volume_coverage_pattern.is_empty());
+    for report in [&radar.performance, &radar.adaptation] {
+        let report = report.as_ref().and_then(Option::as_ref).expect("a report");
+        match &report.properties {
+            RadarReportProperties::Map(readings) => assert!(readings
+                .values()
+                .any(|r| matches!(r, RadarReportPropertiesMapValue::QuantitativeValue(_)))),
+            // Between reports a WSR-88D sends `[]` with a null timestamp, as a TDWR always does.
+            RadarReportProperties::StringList(none) => {
+                assert!(none.is_empty() && report.timestamp == Some(None))
+            }
+        }
+    }
+}
+
+#[tokio::test]
+async fn radar_alarms_and_queue() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let log = client
+        .radar
+        .list_station_alarms(
+            weather_gov::radar::list_station_alarms::Request {
+                station_id: "KATX".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_station_alarms");
+    assert!(!log.graph.is_empty());
+    assert!(log
+        .id
+        .as_deref()
+        .is_some_and(|id| id.ends_with("/radar/stations/KATX/alarms")));
+    assert!(log.graph.iter().all(|alarm| alarm.station_id == "KATX"));
+    let times: Vec<_> = log.graph.iter().map(|alarm| *alarm.timestamp).collect();
+    assert!(
+        times.windows(2).all(|pair| pair[0] >= pair[1]),
+        "newest first"
+    );
+
+    let asked = recorded("radar/get_queue/examples/seattle_capped.request.json");
+    let arrived = asked["arrived"].as_str().expect("an interval");
+    let station = asked["station"].as_str().expect("a station");
+    let limit = asked["limit"].as_i64().expect("a limit");
+    assert_eq!(asked["host"], "rds");
+    let (start, end) = interval(arrived);
+    // The request and every product share one host enum, so the two compare directly.
+    let host = weather_gov::types::RadarHost::Rds;
+    // A required enum field leaves the request with no `Default`, so every field is named.
+    let queue = client
+        .radar
+        .get_queue(
+            weather_gov::radar::get_queue::Request {
+                host,
+                limit: Some(limit),
+                arrived: Some(arrived.to_string()),
+                created: None,
+                published: None,
+                station: Some(station.to_string()),
+                type_: None,
+                feed: None,
+                resolution: None,
+                extra: Default::default(),
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_queue");
+    assert_eq!(queue.graph.len() as i64, limit);
+    let arrivals: Vec<_> = queue.graph.iter().map(|p| *p.arrival_time).collect();
+    assert!(
+        arrivals.windows(2).all(|pair| pair[0] <= pair[1]),
+        "oldest first"
+    );
+    for product in &queue.graph {
+        assert_eq!(product.host, host);
+        assert_eq!(product.station_id, station);
+        assert!(start <= *product.arrival_time && *product.arrival_time < end);
+        assert!(product.creation_time <= product.arrival_time);
+        assert!(product.size > 0);
+    }
 }

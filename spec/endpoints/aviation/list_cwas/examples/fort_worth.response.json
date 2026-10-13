@@ -1,0 +1,659 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": {
+      "@version": "1.1"
+    },
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                35.203,
+                -99.902
+              ],
+              [
+                34.822,
+                -98.492
+              ],
+              [
+                32.28,
+                -97.742
+              ],
+              [
+                31.612,
+                -98.404
+              ],
+              [
+                31.711,
+                -100.91
+              ],
+              [
+                35.203,
+                -99.902
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/cwsus/ZFW/cwas/2026-09-30/301",
+          "issueTime": "2026-09-30T22:34:00+00:00",
+          "cwsu": "ZFW",
+          "sequence": 301,
+          "start": "2026-09-30T22:34:00+00:00",
+          "end": "2026-09-30T23:10:00+00:00",
+          "observedProperty": "https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/Tstm",
+          "text": "AREA TSRA. MOV FROM 22025KT TOPS TO FL350. OK TX"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                33.989,
+                -98.09
+              ],
+              [
+                34.069,
+                -96.735
+              ],
+              [
+                31.294,
+                -96.327
+              ],
+              [
+                31.612,
+                -98.404
+              ],
+              [
+                33.989,
+                -98.09
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/cwsus/ZFW/cwas/2026-09-30/201",
+          "issueTime": "2026-09-30T18:38:00+00:00",
+          "cwsu": "ZFW",
+          "sequence": 201,
+          "start": "2026-09-30T18:38:00+00:00",
+          "end": "2026-09-30T20:00:00+00:00",
+          "observedProperty": "https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/Tstm",
+          "text": "DVLPG AREA TSRA. MOV FROM 21025KT TOPS TO FL400. OK TX"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                33.601,
+                -100.288
+              ],
+              [
+                33.458,
+                -97.742
+              ],
+              [
+                31.931,
+                -98.134
+              ],
+              [
+                31.688,
+                -101.477
+              ],
+              [
+                33.601,
+                -100.288
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/cwsus/ZFW/cwas/2026-09-30/101",
+          "issueTime": "2026-09-30T11:30:00+00:00",
+          "cwsu": "ZFW",
+          "sequence": 101,
+          "start": "2026-09-30T11:30:00+00:00",
+          "end": "2026-09-30T13:00:00+00:00",
+          "observedProperty": "https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/Icing",
+          "text": "AREA OCNL MOD RIME/MXD ICE 160-FL280 RPRTD BY AIRCRAFT. TX"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                32.928,
+                -107.422
+              ],
+              [
+                32.616,
+                -107.301
+              ],
+              [
+                32.39,
+                -108.083
+              ],
+              [
+                32.616,
+                -108.137
+              ],
+              [
+                32.928,
+                -107.422
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/cwsus/ZFW/cwas/2026-09-29/101",
+          "issueTime": "2026-09-29T15:15:00+00:00",
+          "cwsu": "ZFW",
+          "sequence": 101,
+          "start": "2026-09-29T15:15:00+00:00",
+          "end": "2026-09-29T15:30:00+00:00",
+          "observedProperty": "https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/SvrTstm",
+          "text": "AREA SEV TSRA. MOV FROM 23015KT TOPS TO FL340. LARGE HAIL POSS. OVR 50KT WIND GUST POSS. NM"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                32.73,
+                -100.593
+              ],
+              [
+                30.858,
+                -100.496
+              ],
+              [
+                31.173,
+                -101.826
+              ],
+              [
+                32.296,
+                -101.786
+              ],
+              [
+                32.73,
+                -100.593
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/cwsus/ZFW/cwas/2026-09-28/301",
+          "issueTime": "2026-09-28T20:29:00+00:00",
+          "cwsu": "ZFW",
+          "sequence": 301,
+          "start": "2026-09-28T20:29:00+00:00",
+          "end": "2026-09-28T21:00:00+00:00",
+          "observedProperty": "https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/Tstm",
+          "text": "AREA TSRA. MOV FROM 23010KT TOPS ABV FL350. TX"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                35.19,
+                -95.628
+              ],
+              [
+                34.286,
+                -93.991
+              ],
+              [
+                33.807,
+                -94.414
+              ],
+              [
+                34.882,
+                -95.987
+              ],
+              [
+                35.19,
+                -95.628
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/cwsus/ZFW/cwas/2026-09-28/201",
+          "issueTime": "2026-09-28T14:25:00+00:00",
+          "cwsu": "ZFW",
+          "sequence": 201,
+          "start": "2026-09-28T14:25:00+00:00",
+          "end": "2026-09-28T15:00:00+00:00",
+          "observedProperty": "https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/Tstm",
+          "text": "AREA TSRA. MOV FROM 32010KT TOPS TO FL350. AR OK"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                34.304,
+                -97.424
+              ],
+              [
+                33.315,
+                -95.758
+              ],
+              [
+                32.384,
+                -95.5
+              ],
+              [
+                33.518,
+                -97.924
+              ],
+              [
+                34.304,
+                -97.424
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/cwsus/ZFW/cwas/2026-09-28/101",
+          "issueTime": "2026-09-28T10:14:00+00:00",
+          "cwsu": "ZFW",
+          "sequence": 101,
+          "start": "2026-09-28T10:14:00+00:00",
+          "end": "2026-09-28T11:00:00+00:00",
+          "observedProperty": "https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/Tstm",
+          "text": "AREA TSRA. MOV FROM 31010KT TOPS TO FL370. OK TX"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                34.54,
+                -96.735
+              ],
+              [
+                34.304,
+                -96.214
+              ],
+              [
+                33.833,
+                -96.45
+              ],
+              [
+                34.15,
+                -96.943
+              ],
+              [
+                34.54,
+                -96.735
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/cwsus/ZFW/cwas/2026-09-28/202",
+          "issueTime": "2026-09-28T00:24:00+00:00",
+          "cwsu": "ZFW",
+          "sequence": 202,
+          "start": "2026-09-28T00:24:00+00:00",
+          "end": "2026-09-28T01:00:00+00:00",
+          "observedProperty": "https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/Tstm",
+          "text": "AREA TSRA. MOV FROM 32015KT TOPS AOA FL450. HAIL TO 0.5\" POSS. OVR 50KT WIND GUST POSS. OK TX"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                34.893,
+                -97.733
+              ],
+              [
+                34.716,
+                -95.784
+              ],
+              [
+                33.883,
+                -95.784
+              ],
+              [
+                34.18,
+                -97.935
+              ],
+              [
+                34.893,
+                -97.733
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/cwsus/ZFW/cwas/2026-09-27/201",
+          "issueTime": "2026-09-27T23:06:00+00:00",
+          "cwsu": "ZFW",
+          "sequence": 201,
+          "start": "2026-09-27T23:06:00+00:00",
+          "end": "2026-09-28T00:00:00+00:00",
+          "observedProperty": "https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/Tstm",
+          "text": "AREA TSRA. MOV FROM 31015KT TOPS TO FL350. OK"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                33.124,
+                -97.773
+              ],
+              [
+                31.304,
+                -97.38
+              ],
+              [
+                31.358,
+                -99.521
+              ],
+              [
+                32.411,
+                -100.076
+              ],
+              [
+                33.124,
+                -97.773
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/cwsus/ZFW/cwas/2026-09-27/101",
+          "issueTime": "2026-09-27T19:17:00+00:00",
+          "cwsu": "ZFW",
+          "sequence": 101,
+          "start": "2026-09-27T19:17:00+00:00",
+          "end": "2026-09-27T20:00:00+00:00",
+          "observedProperty": "https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/Tstm",
+          "text": "DVLPG AREA TSRA. MOV FROM 27015KT TOPS TO FL400. TX"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                35.751,
+                -98.648
+              ],
+              [
+                35.584,
+                -98.167
+              ],
+              [
+                35.04,
+                -98.034
+              ],
+              [
+                34.45,
+                -98.723
+              ],
+              [
+                34.752,
+                -99.355
+              ],
+              [
+                35.751,
+                -98.648
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/cwsus/ZFW/cwas/2026-09-26/101",
+          "issueTime": "2026-09-26T21:43:00+00:00",
+          "cwsu": "ZFW",
+          "sequence": 101,
+          "start": "2026-09-26T21:43:00+00:00",
+          "end": "2026-09-26T23:00:00+00:00",
+          "observedProperty": "https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/Tstm",
+          "text": "AREA TSRA. MOV FROM 22020KT TOPS TO FL450. LARGE HAIL POSS. OVR 50KT WIND GUST POSS. OK"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                35.42,
+                -99.405
+              ],
+              [
+                33.656,
+                -98.492
+              ],
+              [
+                33.244,
+                -99.682
+              ],
+              [
+                35.203,
+                -99.902
+              ],
+              [
+                35.42,
+                -99.405
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/cwsus/ZFW/cwas/2026-09-25/101",
+          "issueTime": "2026-09-25T18:12:00+00:00",
+          "cwsu": "ZFW",
+          "sequence": 101,
+          "start": "2026-09-25T18:12:00+00:00",
+          "end": "2026-09-25T19:00:00+00:00",
+          "observedProperty": "https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/Tstm",
+          "text": "AREA TSRA. MOV FROM 21030KT TOPS TO FL390. OK TX"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                35.219,
+                -101.706
+              ],
+              [
+                35.219,
+                -100.687
+              ],
+              [
+                34.434,
+                -101.298
+              ],
+              [
+                34.368,
+                -102.466
+              ],
+              [
+                35.219,
+                -101.706
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/cwsus/ZFW/cwas/2026-09-25/202",
+          "issueTime": "2026-09-25T00:43:00+00:00",
+          "cwsu": "ZFW",
+          "sequence": 202,
+          "start": "2026-09-25T00:43:00+00:00",
+          "end": "2026-09-25T01:00:00+00:00",
+          "observedProperty": "https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/Tstm",
+          "text": "AREA TSRA. MOV FROM 21020KT TOPS TO FL420. TX"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                35.258,
+                -99.288
+              ],
+              [
+                34.08,
+                -99.86
+              ],
+              [
+                34.316,
+                -100.431
+              ],
+              [
+                35.203,
+                -99.902
+              ],
+              [
+                35.258,
+                -99.288
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/cwsus/ZFW/cwas/2026-09-24/201",
+          "issueTime": "2026-09-24T18:25:00+00:00",
+          "cwsu": "ZFW",
+          "sequence": 201,
+          "start": "2026-09-24T18:25:00+00:00",
+          "end": "2026-09-24T19:00:00+00:00",
+          "observedProperty": "https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/Tstm",
+          "text": "AREA TSRA. MOV FROM 22020KT TOPS TO FL390. OK TX"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                35.203,
+                -100.674
+              ],
+              [
+                35.049,
+                -99.979
+              ],
+              [
+                34.306,
+                -100.661
+              ],
+              [
+                34.625,
+                -100.848
+              ],
+              [
+                35.203,
+                -100.674
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/cwsus/ZFW/cwas/2026-09-24/101",
+          "issueTime": "2026-09-24T18:14:00+00:00",
+          "cwsu": "ZFW",
+          "sequence": 101,
+          "start": "2026-09-24T18:14:00+00:00",
+          "end": "2026-09-24T19:00:00+00:00",
+          "observedProperty": "https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/SvrTstm",
+          "text": "AREA SEV TSRA. MOV FROM 22020KT TOPS TO FL510. OVR 50KT WIND GUST POSS. TX"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                34.689,
+                -99.542
+              ],
+              [
+                33.798,
+                -99.049
+              ],
+              [
+                33.963,
+                -99.717
+              ],
+              [
+                34.434,
+                -100.288
+              ],
+              [
+                34.689,
+                -99.542
+              ]
+            ]
+          ]
+        },
+        "properties": {
+          "id": "https://api.weather.gov/aviation/cwsus/ZFW/cwas/2026-09-24/102",
+          "issueTime": "2026-09-24T00:21:00+00:00",
+          "cwsu": "ZFW",
+          "sequence": 102,
+          "start": "2026-09-24T00:21:00+00:00",
+          "end": "2026-09-24T01:00:00+00:00",
+          "observedProperty": "https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/Tstm",
+          "text": "AREA TSRA. MOV FROM 18010KT TOPS TO FL320. OK TX"
+        }
+      }
+    ]
+  }
+}

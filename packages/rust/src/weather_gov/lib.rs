@@ -5,14 +5,18 @@
 //! See <https://www.weather.gov/documentation/services-web-api>.
 
 pub mod alerts;
+pub mod aviation;
 pub mod client;
 pub mod core;
 mod dispatch;
 pub mod forecast;
+pub mod glossary;
 pub mod meta;
 pub mod offices;
 pub mod points;
 pub mod products;
+pub mod radar;
+pub mod radio;
 pub mod stations;
 pub mod types;
 pub mod zones;
