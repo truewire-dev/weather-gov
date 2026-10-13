@@ -70,5 +70,8 @@
         "zones"
       ]
     }
-  }
+  },
+  "notes": [
+    "The `regions` counts need not add up to `marine`. On 2026-10-13 all 20 samples summed one over it: `GL` counted 12 while `/alerts/active?region=GL` listed 11."
+  ]
 }
