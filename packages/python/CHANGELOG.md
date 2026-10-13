@@ -4,6 +4,12 @@
 
 Generated with truewire 0.11.
 
+- **Breaking: `Alert.description` and `Alert.response` may be `None`.** The service sends an
+  explicit null for both (about 40 descriptions a week, and the occasional Civil Emergency
+  Message's response), which 0.1.0 refused while validating. `description` is now
+  `str | None` and still always present; `response` is still optional and, when present,
+  may be `None`. Code that type-checked against 0.1.0, such as `alert['description'].lower()`,
+  now needs a `None` check, and pyright reports `reportOptionalMemberAccess` until it has one.
 - **Changed: a 422 raises `BadRequest`, like a 400.** It raised plain `ApiError`, while
   the TypeScript client has raised `BadRequest` for both since its own fix.
 - **Fixed: a list filter with more than one value kept only the last.** The service reads
@@ -39,6 +45,16 @@ Generated with truewire 0.11.
   runtime, but type checkers flag them (pyright reports `reportPrivateImportUsage`), so
   import all four from `weather_gov.schemas`. `Station` gains optional `distance` and
   `bearing`, which only `stations.list_stations_for_gridpoint` sends.
+- **Seven more endpoints: the rest of the alerts API, and the glossary.**
+  `alerts.list_alerts` (the last week, in effect or not, by `cursor`),
+  `alerts.count_active_alerts`, `alerts.get_active_alerts_for_zone`, `_for_area` and
+  `_for_region`, `alerts.list_alert_types`, and `glossary.list_terms`.
+- **`AlertCollection` is a shared schema.** The four endpoints that return alerts in effect
+  and `alerts.list_alerts` all return it, so it moved from
+  `weather_gov.alerts.get_active_alerts` to `weather_gov.schemas`, with `AlertPagination`.
+  The old path still imports at runtime, but type checkers flag it, so import it from
+  `weather_gov.schemas`. It gains an optional `pagination.next`, which only
+  `alerts.list_alerts` sends.
 - **Nine more endpoints: one station, one observation, TAFs, office news, and radio.**
   `stations.get_station`, `stations.get_observation` (the observation at an exact
   timestamp) and `stations.list_tafs`; `offices.get_briefing`, `offices.list_headlines`,

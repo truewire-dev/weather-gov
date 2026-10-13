@@ -1,0 +1,53 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/glossary",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/glossary",
+    "method": "GET",
+    "description": "The whole weather glossary: several thousand terms, each with its definition. One response, about 900 KB; the service offers no filter or paging.",
+    "request": {
+      "title": "ListTermsRequest",
+      "type": "object",
+      "description": "Takes nothing.",
+      "properties": {},
+      "required": []
+    },
+    "response": {
+      "title": "GlossaryResponse",
+      "type": "object",
+      "description": "The glossary.",
+      "properties": {
+        "glossary": {
+          "type": "array",
+          "description": "Terms, roughly alphabetical.",
+          "items": {
+            "title": "GlossaryTerm",
+            "type": "object",
+            "description": "One term.",
+            "properties": {
+              "term": {
+                "type": "string",
+                "description": "The term, such as `1-2-3 Rule`."
+              },
+              "definition": {
+                "type": "string",
+                "description": "Its definition. Some contain HTML markup, such as links and line breaks."
+              }
+            },
+            "required": [
+              "term",
+              "definition"
+            ]
+          }
+        }
+      },
+      "required": [
+        "glossary"
+      ]
+    }
+  }
+}

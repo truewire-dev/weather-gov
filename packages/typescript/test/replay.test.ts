@@ -39,6 +39,35 @@ const ZONE_WINDOW = recorded<{ zone_id: string; start: string; end: string; limi
 const ZONE_STATIONS = recorded<{ zone_id: string }>(
   'stations/list_stations_for_zone/examples/seattle.request.json',
 )
+const ALERT_WINDOW = recorded<{ start: string; end: string; status: ['actual']; limit: number }>(
+  'alerts/list_alerts/examples/first_page.request.json',
+)
+const ZONE = recorded<{ zone_id: string }>('alerts/get_active_alerts_for_zone/examples/in_effect.request.json')
+const AREA = recorded<{ area: string }>('alerts/get_active_alerts_for_area/examples/in_effect.request.json')
+const REGION = recorded<{ region: 'AL' | 'AT' | 'GL' | 'GM' | 'PA' | 'PI' }>(
+  'alerts/get_active_alerts_for_region/examples/in_effect.request.json',
+)
+
+/** The marine areas each region groups, from the OpenAPI's `MarineRegionCode`. */
+const MARINE_REGIONS: Record<string, string[]> = {
+  AL: ['PK'],
+  AT: ['AM', 'AN'],
+  GL: ['LC', 'LE', 'LH', 'LM', 'LO', 'LS', 'SL'],
+  GM: ['GM'],
+  PA: ['PZ'],
+  PI: ['PH', 'PM', 'PS'],
+}
+
+/** Each alert's zone and county codes, after checking there is at least one alert. */
+function ugcCodes(page: {
+  type: string
+  features: { properties: { geocode?: { UGC?: string[] } } }[]
+}): string[][] {
+  expect(page.type).toBe('FeatureCollection')
+  expect(page.features.length, 'nothing was in effect there when this was recorded').toBeGreaterThan(0)
+  return page.features.map(feature => feature.properties.geocode!.UGC!)
+}
+
 const SPGDS = recorded<{ published: string }>('radar/list_spgds/examples/one_minute.request.json')
 const QUEUE = recorded<{ host: RadarHost; station: string; arrived: string; limit: number }>(
   'radar/get_queue/examples/seattle_capped.request.json',
@@ -259,6 +288,74 @@ describe('recorded examples replay through the generated client', () => {
     expect(ALERT.id).toContain(':')
     if (alert.geometry !== null && alert.geometry !== undefined) {
       expect(['Polygon', 'MultiPolygon']).toContain(alert.geometry.type)
+    }
+  })
+
+  it('alerts.listAlerts honours the limit and the window, newest first', async () => {
+    const page = await client.alerts.listAlerts({
+      start: new Date(ALERT_WINDOW.start),
+      end: new Date(ALERT_WINDOW.end),
+      status: ALERT_WINDOW.status,
+      limit: ALERT_WINDOW.limit,
+    })
+    expect(page.features.length).toBe(ALERT_WINDOW.limit)
+    const sent = page.features.map(feature => feature.properties.sent!.getTime())
+    expect([...sent].sort((a, b) => b - a)).toEqual(sent)
+    for (const moment of sent) {
+      expect(moment).toBeGreaterThanOrEqual(Date.parse(ALERT_WINDOW.start))
+      expect(moment).toBeLessThanOrEqual(Date.parse(ALERT_WINDOW.end))
+    }
+    for (const feature of page.features) expect(feature.properties.status).toBe('Actual')
+    expect(page.pagination!.next).toContain('cursor=')
+  })
+
+  it('alerts.countActiveAlerts: land and marine add up to the total', async () => {
+    const count = await client.alerts.countActiveAlerts({})
+    expect(count.total).toBe(count.land + count.marine)
+    // The regions need not add up to `marine`: the service has counted one over it.
+    for (const n of Object.values(count.regions)) expect(n).toBeGreaterThan(0)
+    for (const region of Object.keys(count.regions)) expect(Object.keys(MARINE_REGIONS)).toContain(region)
+    expect(Object.keys(count.zones).length).toBeGreaterThan(0)
+    expect(Object.keys(count.areas).length).toBeGreaterThan(0)
+  })
+
+  it('alerts.getActiveAlertsForZone returns alerts for the zone in the path', async () => {
+    // Not every alert names the zone: a county's alerts include ones for the forecast zones
+    // overlapping it. Each is held to the zone's state or marine area, one to the zone.
+    const zone = ugcCodes(await client.alerts.getActiveAlertsForZone({ zone_id: ZONE.zone_id }))
+    expect(zone.some(codes => codes.includes(ZONE.zone_id))).toBe(true)
+    for (const codes of zone) expect(codes.some(code => code.startsWith(ZONE.zone_id.slice(0, 2)))).toBe(true)
+  })
+
+  it('alerts.getActiveAlertsForArea returns alerts covering the area in the path', async () => {
+    for (const codes of ugcCodes(await client.alerts.getActiveAlertsForArea({ area: AREA.area }))) {
+      expect(codes.some(code => code.startsWith(AREA.area))).toBe(true)
+    }
+  })
+
+  it('alerts.getActiveAlertsForRegion returns alerts covering the region in the path', async () => {
+    const areas = MARINE_REGIONS[REGION.region]!
+    for (const codes of ugcCodes(await client.alerts.getActiveAlertsForRegion({ region: REGION.region }))) {
+      expect(codes.some(code => areas.includes(code.slice(0, 2)))).toBe(true)
+    }
+  })
+
+  it('alerts.listAlertTypes lists each event name once', async () => {
+    const types = (await client.alerts.listAlertTypes({})).eventTypes
+    expect(types.length).toBeGreaterThan(100)
+    expect(new Set(types).size).toBe(types.length)
+    for (const name of ['Tornado Warning', 'Severe Thunderstorm Warning', 'Winter Storm Watch']) {
+      expect(types).toContain(name)
+    }
+  })
+
+  it('glossary.listTerms returns the whole glossary in one response', async () => {
+    const terms = (await client.glossary.listTerms({})).glossary
+    expect(terms.length).toBeGreaterThan(3000)
+    expect(terms.some(entry => entry.term === '1-2-3 Rule')).toBe(true)
+    for (const entry of terms) {
+      expect(entry.term).toBeTruthy()
+      expect(entry.definition).toBeTruthy()
     }
   })
 

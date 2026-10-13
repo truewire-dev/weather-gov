@@ -1,0 +1,41 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/alerts_types",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/alerts/types",
+    "method": "GET",
+    "description": "Every event name the service issues alerts under, such as `Tornado Warning`. These are the values `event` takes on the alert endpoints.",
+    "request": {
+      "title": "ListAlertTypesRequest",
+      "type": "object",
+      "description": "Takes nothing.",
+      "properties": {},
+      "required": []
+    },
+    "response": {
+      "title": "AlertTypeList",
+      "type": "object",
+      "description": "The event names.",
+      "properties": {
+        "eventTypes": {
+          "type": "array",
+          "description": "Event names, roughly alphabetical.",
+          "items": {
+            "type": "string",
+            "description": "One event name."
+          }
+        }
+      },
+      "required": [
+        "eventTypes"
+      ]
+    }
+  },
+  "notes": [
+    "The list is not declared as an `enum` on `event`: it is served, not documented, and the service can add a type without a spec change."
+  ]
+}
