@@ -1663,7 +1663,7 @@
           },
           {
             "type": "null",
-            "description": "Not stated: every TDWR answers null."
+            "description": "Not stated: every TDWR, and a WSR-88D between reports."
           }
         ],
         "description": "When the report was made."
@@ -1673,7 +1673,7 @@
         "description": "Monitoring host that collected it, such as `rdss` or `tdss`."
       },
       "properties": {
-        "description": "The readings, by name. Their set depends on the kind of radar and is not documented, so they are a map rather than fields; a TDWR sends `[]`.",
+        "description": "The readings, by name. Their set depends on the kind of radar and is not documented, so they are a map rather than fields. Any radar may send `[]` with a null `timestamp`: a TDWR always, a WSR-88D between reports (24 to 95 of 159 at a time on 2026-10-13).",
         "anyOf": [
           {
             "type": "object",

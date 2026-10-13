@@ -490,7 +490,7 @@ class RadarReport(TypedDict):
   reportingHost: str
   """Monitoring host that collected it, such as `rdss` or `tdss`."""
   properties: dict[str, QuantitativeValue | str | float] | list[str]
-  """The readings, by name. Their set depends on the kind of radar and is not documented, so they are a map rather than fields; a TDWR sends `[]`."""
+  """The readings, by name. Their set depends on the kind of radar and is not documented, so they are a map rather than fields. Any radar may send `[]` with a null `timestamp`: a TDWR always, a WSR-88D between reports (24 to 95 of 159 at a time on 2026-10-13)."""
 
 
 class RadarServerNetwork(TypedDict):
