@@ -380,9 +380,10 @@ FORT_WORTH = {'latitude': (25.0, 40.0), 'longitude': (-112.0, -88.0)}
 """Fort Worth Center's airspace, generously: north Texas and its neighbours."""
 ALASKA = {'latitude': (45.0, 75.0), 'longitude': (-200.0, -125.0)}
 """Alaska, with the Aleutians past the antimeridian: the service does not wrap -190 to 170."""
-EAST = {'latitude': (20.0, 50.0), 'longitude': (-100.0, -60.0)}
-"""The eastern third of the contiguous US and its coastal waters, where the `E` convective
-SIGMETs are issued."""
+EAST = {'latitude': (5.0, 50.0), 'longitude': (-100.0, -60.0)}
+"""The eastern third of the contiguous US and the waters off it, where the `E` convective
+SIGMETs are issued. Miami's oceanic airspace reaches into the Caribbean: the 162 `E` outlines
+of 2026-10-06 to 10-13 spanned latitude 12.22 to 44.92 and longitude -93.96 to -67.01."""
 
 
 def is_newest_first(features: Any) -> None:

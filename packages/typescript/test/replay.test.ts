@@ -65,8 +65,11 @@ type Box = { latitude: [number, number]; longitude: [number, number] }
 const FORT_WORTH: Box = { latitude: [25, 40], longitude: [-112, -88] }
 /** Alaska, with the Aleutians past the antimeridian: the service does not wrap -190 to 170. */
 const ALASKA: Box = { latitude: [45, 75], longitude: [-200, -125] }
-/** The eastern third of the contiguous US, where the `E` convective SIGMETs are issued. */
-const EAST: Box = { latitude: [20, 50], longitude: [-100, -60] }
+/**
+ * The eastern third of the contiguous US and the waters off it, where the `E` convective
+ * SIGMETs are issued; Miami's oceanic airspace reaches 12 N in the Caribbean.
+ */
+const EAST: Box = { latitude: [5, 50], longitude: [-100, -60] }
 
 /**
  * An aviation outline: a closed polygon, latitude first -- the reverse of every other

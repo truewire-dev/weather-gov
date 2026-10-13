@@ -747,8 +747,9 @@ type Area = ((f64, f64), (f64, f64));
 const FORT_WORTH: Area = ((25.0, 40.0), (-112.0, -88.0));
 /// Alaska, with the Aleutians past the antimeridian: the service does not wrap -190 to 170.
 const ALASKA: Area = ((45.0, 75.0), (-200.0, -125.0));
-/// The eastern third of the contiguous US, where the `E` convective SIGMETs are issued.
-const EAST: Area = ((20.0, 50.0), (-100.0, -60.0));
+/// The eastern third of the contiguous US and the waters off it, where the `E` convective
+/// SIGMETs are issued; Miami's oceanic airspace reaches 12 N in the Caribbean.
+const EAST: Area = ((5.0, 50.0), (-100.0, -60.0));
 
 /// An aviation outline: a closed polygon, latitude first -- the reverse of every other
 /// geometry in this API, which the box around the issuing unit's airspace proves.
