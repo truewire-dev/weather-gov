@@ -5,6 +5,7 @@
 //! See <https://www.weather.gov/documentation/services-web-api>.
 
 pub mod alerts;
+pub mod aviation;
 pub mod client;
 pub mod core;
 mod dispatch;

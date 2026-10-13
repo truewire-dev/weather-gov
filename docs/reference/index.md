@@ -1,6 +1,6 @@
 # Reference
 
-Ten groups, forty-three endpoints, every one but `radar.get_profiler` recorded against the live API. Each signature is
+Eleven groups, fifty endpoints, every one but `radar.get_profiler` recorded against the live API. Each signature is
 generated from the endpoint's schema, so the types in your editor are the reference: every
 field carries its description, and every method's docstring links the service's own page
 for the endpoint.
@@ -99,6 +99,24 @@ repeated key.
 
 `radio.list_transmitters` pages by a whole URL in `pagination.next`, so it has no paged
 twin: pass the `cursor` from that URL to fetch the next page yourself.
+
+## `aviation`
+
+| Endpoint | Upstream | Returns |
+| --- | --- | --- |
+| `get_cwsu` | `GET /aviation/cwsus/{cwsu_id}` | whole: one Center Weather Service Unit, in schema.org |
+| `list_cwas` | `GET /aviation/cwsus/{cwsu_id}/cwas` | whole: the unit's advisories of about the last week, newest first |
+| `get_cwa` | `GET /aviation/cwsus/{cwsu_id}/cwas/{date}/{sequence}` | whole: one Center Weather Advisory, with its outline |
+| `list_sigmets` | `GET /aviation/sigmets` | whole: SIGMETs and AIRMETs of about the last week, filtered, newest first |
+| `list_sigmets_for_atsu` | `GET /aviation/sigmets/{atsu}` | whole: the same, from one unit |
+| `list_sigmets_for_atsu_on_date` | `GET /aviation/sigmets/{atsu}/{date}` | whole: the same, from one unit on one UTC date |
+| `get_sigmet` | `GET /aviation/sigmets/{atsu}/{date}/{time}` | whole: one SIGMET or AIRMET, with its outline |
+
+The outlines put latitude first, the reverse of every other geometry in this API, and are
+not wrapped at the antimeridian. Nothing here pages: a list answers everything it matched.
+`list_sigmets` has no `atsu` or `end` filter, though the service documents both: it
+redirects the first and does not apply the second as an upper bound. The endpoints'
+`notes` hold the measurements.
 
 ## `glossary`
 

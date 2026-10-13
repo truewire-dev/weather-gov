@@ -1,0 +1,48 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/sigmet",
+  "meta": {},
+  "notes": [
+    "No `envelope`: the area is most of what a SIGMET is for, so the client returns the whole feature, as `zones.get_zone` does.",
+    "The OpenAPI also offers `application/vnd.noaa.uswx+xml` here. This client asks for GeoJSON only.",
+    "A message that does not exist answers 500 `UnexpectedProblem`, not 404 (measured 2026-09-30, `/aviation/sigmets/KKCI/2026-09-30/0001`)."
+  ],
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/aviation/sigmets/{atsu}/{date}/{time}",
+    "method": "GET",
+    "description": "One SIGMET or AIRMET, with its area, named by its unit and the UTC date and minute it was issued. Several messages a unit issues in the same minute share that name, and the service then answers one of them: measured 2026-09-30, `KKCI/2026-09-30/2355` answered the Kansas City region's SIGMET out of the several `KKCI` issued at 23:55. To see them all, filter `aviation.list_sigmets_for_atsu_on_date`.",
+    "request": {
+      "title": "GetSigmetRequest",
+      "type": "object",
+      "description": "Which message: its unit, issue date and issue time, as they end its URL.",
+      "properties": {
+        "atsu": {
+          "type": "string",
+          "description": "Air traffic services unit, such as `KKCI` (the Aviation Weather Center, which issues the SIGMETs for the contiguous US) or `ANC` (Anchorage). Three or four capital letters."
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "UTC date the message was issued."
+        },
+        "time": {
+          "type": "string",
+          "pattern": "^[0-9]{4}$",
+          "description": "UTC time the message was issued, as `HHMM` (`2355`): the last segment of its URL. A clock time without a date, so not a timestamp format."
+        }
+      },
+      "required": [
+        "atsu",
+        "date",
+        "time"
+      ]
+    },
+    "response": {
+      "$ref": "SigmetFeature",
+      "description": "The message."
+    }
+  }
+}

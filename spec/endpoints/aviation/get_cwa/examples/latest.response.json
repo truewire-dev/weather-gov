@@ -1,0 +1,50 @@
+{
+  "status": 200,
+  "payload": {
+    "@context": {
+      "@version": "1.1"
+    },
+    "type": "Feature",
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            35.203,
+            -99.902
+          ],
+          [
+            34.822,
+            -98.492
+          ],
+          [
+            32.28,
+            -97.742
+          ],
+          [
+            31.612,
+            -98.404
+          ],
+          [
+            31.711,
+            -100.91
+          ],
+          [
+            35.203,
+            -99.902
+          ]
+        ]
+      ]
+    },
+    "properties": {
+      "id": "https://api.weather.gov/aviation/cwsus/ZFW/cwas/2026-09-30/301",
+      "issueTime": "2026-09-30T22:34:00+00:00",
+      "cwsu": "ZFW",
+      "sequence": 301,
+      "start": "2026-09-30T22:34:00+00:00",
+      "end": "2026-09-30T23:10:00+00:00",
+      "observedProperty": "https://codes.nws.noaa.gov/NWSI-10-803/BasisForIssuance/Tstm",
+      "text": "AREA TSRA. MOV FROM 22025KT TOPS TO FL350. OK TX"
+    }
+  }
+}

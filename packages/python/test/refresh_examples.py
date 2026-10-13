@@ -26,6 +26,10 @@ will still be the Seattle grid cell next week. These examples are not:
   alerts expire the place records an empty collection. Each keeps its place while
   `/alerts/active/count` still counts an alert there, and otherwise moves to the place with
   the fewest, which keeps the recording small.
+- `aviation.get_cwa`, `aviation.get_sigmet` and `aviation.list_sigmets_for_atsu_on_date`
+  name a day. The service keeps about a week of advisories, and an expired one answers 500
+  rather than 404. Each is repointed to the newest message with an outline from the unit its list example
+  records, so the one recording is also found in the other.
 - `stations.get_observation` names one observation by its exact timestamp, which ages out
   with the rest of the week. It is repointed to the newest METAR in the same settled
   window the observation examples read.
@@ -37,7 +41,7 @@ will still be the Seattle grid cell next week. These examples are not:
 - `radio.list_transmitters` records the last page, the smallest, and its cursor moves if
   the transmitter list does. A cursor past the end records an empty `@graph` with a 200.
 
-Run before `truewire capture`, not after a capture failed: only one of these fails loudly.
+Run before `truewire capture`, not after a capture failed: not all of these fail loudly.
 
 Some examples cannot be repointed, because what they prove may not exist in the service's
 week at all. Those are listed in `frozen_examples.txt` and are not re-recorded.
@@ -91,6 +95,13 @@ ACTIVE = 'https://api.weather.gov/alerts/active?status=actual&severity=Severe'
 """The same query `alerts.get_active_alerts` records, so the alert picked here is one that
 recording also holds."""
 
+AVIATION = PROJECT / 'spec/endpoints/aviation'
+CWAS = AVIATION / 'list_cwas/examples/fort_worth.request.json'
+CWA = AVIATION / 'get_cwa/examples/latest.request.json'
+SIGMETS = AVIATION / 'list_sigmets_for_atsu/examples/anchorage.request.json'
+SIGMETS_ON_DATE = AVIATION / 'list_sigmets_for_atsu_on_date/examples/anchorage.request.json'
+SIGMET = AVIATION / 'get_sigmet/examples/anchorage_latest.request.json'
+
 COUNT = 'https://api.weather.gov/alerts/active/count'
 
 ALERTS = 'https://api.weather.gov/alerts'
@@ -98,10 +109,6 @@ ALERTS = 'https://api.weather.gov/alerts'
 NULL_SEARCH_PAGES = 30
 """How many pages of 500 alerts the null search reads, newest first, before giving up. The
 service's week is about 25 pages."""
-
-ATTEMPTS = 4
-"""How many times one request is sent. The service answers a few percent of requests with a
-500 that the same request, sent again, answers with a 200."""
 
 OBSERVATION = PROJECT / 'spec/endpoints/stations/get_observation/examples/ksea_metar.request.json'
 HEADLINE = PROJECT / 'spec/endpoints/offices/get_headline/examples/wakefield.request.json'
@@ -114,7 +121,12 @@ RADIO_PAGE = 500
 """Rows on every page of `/radio` but the last, measured; the service takes no `limit`."""
 
 
-def fetch(url: str) -> dict:
+ATTEMPTS = 4
+"""How many times one request is sent. The service answers a few percent of requests with a
+500 that the same request, sent again, answers with a 200."""
+
+
+def fetch(url: str, attempts: int = ATTEMPTS) -> dict:
   request = urllib.request.Request(
     url,
     headers={
@@ -122,12 +134,12 @@ def fetch(url: str) -> dict:
       'User-Agent': f'truewire-weather-gov ({CONTACT})',
     },
   )
-  for attempt in range(1, ATTEMPTS + 1):
+  for attempt in range(1, attempts + 1):
     try:
       with urllib.request.urlopen(request, timeout=30) as response:
         return json.load(response)
     except urllib.error.HTTPError as error:
-      if error.code < 500 or attempt == ATTEMPTS:
+      if error.code < 500 or attempt == attempts:
         raise
       time.sleep(2 * attempt)
   raise AssertionError('unreachable')
@@ -324,6 +336,54 @@ def refresh_alert() -> None:
   rewrite(ALERT, {'id': alerts[0]['properties']['id']})
 
 
+def newest_with_area(url: str, what: str) -> dict:
+  """The newest feature at `url` that has an outline: the point of fetching one alone."""
+  for feature in fetch(url)['features']:
+    if feature['geometry'] is not None:
+      return feature['properties']
+  raise SystemExit(f'{what} has issued nothing with an outline this week')
+
+
+def refresh_cwa() -> None:
+  """Point the single-advisory example at the newest one its unit's list holds that the
+  service will answer for.
+
+  Most will not: on 2026-10-12, 221 of the 223 advisories eight units listed answered 500 at
+  their own URL, every one issued since 2026-10-06. So each listed advisory with an outline
+  is asked for in turn, newest first, twice at most, and the first that answers is taken.
+  If none does, the example keeps its advisory, and this step fails.
+  """
+  cwsu = json.loads(CWAS.read_text())['request']['cwsu_id']
+  listed = [
+    feature['properties']
+    for feature in fetch(f'https://api.weather.gov/aviation/cwsus/{cwsu}/cwas')['features']
+    if feature['geometry'] is not None
+  ]
+  for advisory in listed:
+    try:
+      fetch(advisory['id'], attempts=2)
+    except urllib.error.HTTPError as error:
+      if error.code < 500:
+        raise
+      continue
+    issued = datetime.fromisoformat(advisory['issueTime'])
+    rewrite(CWA, {'cwsu_id': cwsu, 'date': f'{issued:%Y-%m-%d}', 'sequence': advisory['sequence']})
+    return
+  raise SystemExit(
+    f'CWSU {cwsu} lists {len(listed)} advisories with an outline, and the service answers 500 '
+    'for every one of them; the example keeps its advisory'
+  )
+
+
+def refresh_sigmet() -> None:
+  """Point the one-day and the single-message examples at the unit's newest message."""
+  atsu = json.loads(SIGMETS.read_text())['request']['atsu']
+  sigmet = newest_with_area(f'https://api.weather.gov/aviation/sigmets/{atsu}', f'ATSU {atsu}')
+  issued = datetime.fromisoformat(sigmet['issueTime'])
+  rewrite(SIGMETS_ON_DATE, {'atsu': atsu, 'date': f'{issued:%Y-%m-%d}'})
+  rewrite(SIGMET, {'atsu': atsu, 'date': f'{issued:%Y-%m-%d}', 'time': f'{issued:%H%M}'})
+
+
 def main() -> int:
   failed = []
   for step in (
@@ -334,6 +394,8 @@ def main() -> int:
     refresh_second_page,
     refresh_null_description,
     refresh_alert_places,
+    refresh_cwa,
+    refresh_sigmet,
     refresh_observation_time,
     refresh_headline,
     refresh_briefing,

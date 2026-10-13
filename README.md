@@ -182,7 +182,7 @@ GET /alerts/active: HTTP 400: query.zone[0]: Does not match the regex pattern
 
 ## What is covered
 
-Forty-three endpoints, in ten groups:
+Fifty endpoints, in eleven groups:
 
 | Group | Endpoints |
 | --- | --- |
@@ -194,16 +194,17 @@ Forty-three endpoints, in ten groups:
 | `products` | `list_product_types` |
 | `zones` | `list_zones`, `list_zones_by_type`, `get_zone`, `get_forecast`, `list_transmitters` |
 | `radio` | `list_transmitters`, `get_transmitter` |
+| `aviation` | `get_cwsu`, `list_cwas`, `get_cwa`, `list_sigmets`, `list_sigmets_for_atsu`, `list_sigmets_for_atsu_on_date`, `get_sigmet` |
 | `glossary` | `list_terms` |
 | `radar` | `list_stations`, `get_station`, `list_station_alarms`, `list_servers`, `get_server`, `get_queue`, `list_spgds`, `get_profiler` (no recording) |
 
-Three response vocabularies, because the API uses three: GeoJSON for most of it, schema.org for the offices, JSON-LD for the product types, the radio transmitters, the terminal aerodrome forecasts, the offices' briefings, headlines and weather stories, the glossary, and the radar network's servers, queues and alarms. The spec describes each as it actually arrives.
+Three response vocabularies, because the API uses three: GeoJSON for most of it, schema.org for the offices and the aviation weather units, JSON-LD for the product types, the radio transmitters, the terminal aerodrome forecasts, the offices' briefings, headlines and weather stories, the glossary, and the radar network's servers, queues and alarms. The spec describes each as it actually arrives, down to the aviation outlines, which put latitude first where the rest of the API puts longitude first.
 
-The same forty-three endpoints in [TypeScript](packages/typescript/README.md) and [Rust](packages/rust/README.md), from this one spec. The three clients are equivalent, `stations.get_observations_paged` included.
+The same fifty endpoints in [TypeScript](packages/typescript/README.md) and [Rust](packages/rust/README.md), from this one spec. The three clients are equivalent, `stations.get_observations_paged` included.
 
 ## Recordings
 
-Every endpoint but one carries the request half of at least one example — the exact parameters the tests and the recording script replay — and every one of them has a recorded response. Forty-two of forty-three, and no endpoint declares a missing credential, because there are no credentials to miss.
+Every endpoint but one carries the request half of at least one example — the exact parameters the tests and the recording script replay — and every one of them has a recorded response. Forty-nine of fifty, and no endpoint declares a missing credential, because there are no credentials to miss.
 
 The one is `radar.get_profiler`. The service documents it, but on 2026-10-01 every profiler answered a JSON 404, so its spec says why it has no recording rather than leaving it out. It is built from the documentation, with a response left unconstrained because no body has been seen to describe, and its 404s are never saved as examples. Likewise `radar.get_queue` takes the documented `created` filter, which answered 503 on every try that day, so no example uses it.
 
@@ -215,6 +216,7 @@ Some examples go stale on their own, and [`packages/python/test/refresh_examples
 - Alerts expire, usually within hours, and `alerts.get_alert` names one by identifier. The replacement is read from whatever is severe and in effect right now.
 - The same goes for the zone, area and region the `get_active_alerts_for_*` examples name, which move to a place `alerts.count_active_alerts` still counts an alert in, and for the six-hour window of `alerts.list_alerts`, which moves with the observations'.
 - `alerts.list_alerts`' second page carries the cursor its first page answers, which expires with the window, so it is read again from the service for the moved window. `alerts.get_alert`'s `null_description` moves to the newest alert in the service's week whose description is an explicit null.
+- The service keeps about a week of aviation advisories, and `aviation.get_cwa`, `aviation.get_sigmet` and `aviation.list_sigmets_for_atsu_on_date` name a day. Each is moved to the newest message of the unit its list example records.
 - `stations.get_observation` names one observation by its exact timestamp, which ages out with the rest of the week. It moves to the newest METAR in the same settled window.
 - `offices.get_headline` names a headline by id, and offices retire them. It moves to the first headline the office lists now; `offices.get_briefing`'s `active` example moves to an office with a briefing out, when its own has none.
 - `radio.list_transmitters` records the last page, the smallest of about 131, and its cursor moves if the list does. A cursor past the end records an empty `@graph` with a 200, so the refresh finds the last page again.
