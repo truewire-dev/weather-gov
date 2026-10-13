@@ -1276,7 +1276,10 @@ async fn radar_stations_profilers_and_one_radar() {
             RadarReportProperties::Map(readings) => assert!(readings
                 .values()
                 .any(|r| matches!(r, RadarReportPropertiesMapValue::QuantitativeValue(_)))),
-            RadarReportProperties::StringList(_) => panic!("a WSR-88D sends its readings"),
+            // Between reports a WSR-88D sends `[]` with a null timestamp, as a TDWR always does.
+            RadarReportProperties::StringList(none) => {
+                assert!(none.is_empty() && report.timestamp == Some(None))
+            }
         }
     }
 }
