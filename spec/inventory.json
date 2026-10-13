@@ -1,6 +1,6 @@
 {
   "source": "https://www.weather.gov/documentation/services-web-api",
-  "approved": null,
+  "approved": {"by": "Truewire Lead", "date": "2026-10-13"},
   "endpoints": [
     {"method": "GET", "path": "/alerts/active", "endpoint": "alerts.get_active_alerts"},
     {"method": "GET", "path": "/alerts/{id}", "endpoint": "alerts.get_alert"},
