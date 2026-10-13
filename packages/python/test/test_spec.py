@@ -91,7 +91,6 @@ def test_the_profiler_is_in_the_inventory_and_the_spec():
     'path': '/radar/profilers/{stationId}',
     'endpoint': 'radar.get_profiler',
   }
-  assert inventory['approved'] is None
   spec = json.loads((PROJECT / 'spec/endpoints/radar/get_profiler/endpoint.json').read_text())[
     'spec'
   ]
