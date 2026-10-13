@@ -7,6 +7,7 @@ use truewire_core::HttpEndpoint;
 use crate::alerts::Alerts;
 use crate::aviation::Aviation;
 use crate::forecast::Forecast;
+use crate::glossary::Glossary;
 use crate::meta::DefaultMeta;
 use crate::offices::Offices;
 use crate::points::Points;
@@ -27,6 +28,8 @@ pub struct Weather {
     pub aviation: Aviation,
     /// Forecasts for one grid cell: the twice-daily narrative, the hourly series, and the raw gridded data both are rendered from.
     pub forecast: Forecast,
+    /// The service's glossary of weather terms and abbreviations.
+    pub glossary: Glossary,
     /// The weather forecast offices that issue everything else here.
     pub offices: Offices,
     /// Turning a latitude/longitude into the grid the rest of the API is addressed by.
@@ -55,6 +58,7 @@ impl Weather {
             alerts: Alerts::new(core.clone()),
             aviation: Aviation::new(core.clone()),
             forecast: Forecast::new(core.clone()),
+            glossary: Glossary::new(core.clone()),
             offices: Offices::new(core.clone()),
             points: Points::new(core.clone()),
             products: Products::new(core.clone()),

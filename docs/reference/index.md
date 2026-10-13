@@ -1,6 +1,6 @@
 # Reference
 
-Ten groups, forty-three endpoints, every one but `radar.get_profiler` recorded against the live API. Each signature is
+Eleven groups, fifty endpoints, every one but `radar.get_profiler` recorded against the live API. Each signature is
 generated from the endpoint's schema, so the types in your editor are the reference: every
 field carries its description, and every method's docstring links the service's own page
 for the endpoint.
@@ -49,6 +49,12 @@ moment between two answers 404.
 | Endpoint | Upstream | Returns |
 | --- | --- | --- |
 | `get_active_alerts` | `GET /alerts/active` | whole: a feature collection of alerts |
+| `get_active_alerts_for_zone` | `GET /alerts/active/zone/{zone_id}` | whole: the same, for one zone |
+| `get_active_alerts_for_area` | `GET /alerts/active/area/{area}` | whole: the same, for one state or marine area |
+| `get_active_alerts_for_region` | `GET /alerts/active/region/{region}` | whole: the same, for one marine region |
+| `count_active_alerts` | `GET /alerts/active/count` | whole: counts by land, marine, region, area and zone |
+| `list_alerts` | `GET /alerts` | whole: the last week of alerts, in effect or not, by `cursor` |
+| `list_alert_types` | `GET /alerts/types` | whole: every event name alerts are issued under |
 | `get_alert` | `GET /alerts/{id}` | whole: one alert, with its polygon when it has one |
 
 `status`, `region`, `severity`, `urgency` and `certainty` are enumerations spelled as the
@@ -111,6 +117,12 @@ not wrapped at the antimeridian. Nothing here pages: a list answers everything i
 `list_sigmets` has no `atsu` or `end` filter, though the service documents both: it
 redirects the first and does not apply the second as an upper bound. The endpoints'
 `notes` hold the measurements.
+
+## `glossary`
+
+| Endpoint | Upstream | Returns |
+| --- | --- | --- |
+| `list_terms` | `GET /glossary` | whole: every term with its definition, in JSON-LD, about 900 KB |
 
 ## `radar`
 

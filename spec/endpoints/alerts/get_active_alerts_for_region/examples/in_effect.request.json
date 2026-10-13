@@ -1,0 +1,6 @@
+{
+  "description": "The alerts in effect for one marine region that had one when recorded",
+  "request": {
+    "region": "PI"
+  }
+}

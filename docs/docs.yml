@@ -8,6 +8,7 @@ nav:
     pages:
       - how-to/index.md
       - how-to/walk-observations.md
+      - how-to/walk-alerts.md
   - reference/index.md
 quickstart:
   python:

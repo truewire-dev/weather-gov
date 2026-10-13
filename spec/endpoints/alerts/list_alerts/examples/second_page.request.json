@@ -1,0 +1,12 @@
+{
+  "description": "Second page following first_page: decoded cursor with original window, status and limit",
+  "request": {
+    "start": "2026-09-29T00:00:00Z",
+    "end": "2026-09-29T06:00:00Z",
+    "status": [
+      "actual"
+    ],
+    "limit": 3,
+    "cursor": "eyJ0IjoxNzkwNjYwODIwLCJpIjoidXJuOm9pZDoyLjQ5LjAuMS44NDAuMC4wZjVkM2EwZTNlMzY4Zjk1YzA1M2ViZjFhODVjYjc3ZGY4ZmZlNGUzLjAwMS4xIn0="
+  }
+}

@@ -1,0 +1,11 @@
+# Examples `recapture.sh` does not re-record, one request half per line.
+#
+# Each proves a shape the service sends rarely, and `refresh_examples.py` cannot find a
+# replacement for it: the alert it names has expired, so re-recording it would answer a
+# 404, and there may be no other alert like it in the service's week. The recording keeps
+# the response the service sent when it was captured; `test_recordings.py` still asserts on
+# it, and `dev/capture/alert-review.md` says how it was found.
+#
+# alerts.get_alert: a response that is an explicit null. One alert in a 7-day walk of
+# 11657 had one on 2026-10-11, and none had one on 2026-10-12.
+spec/endpoints/alerts/get_alert/examples/null_response.request.json

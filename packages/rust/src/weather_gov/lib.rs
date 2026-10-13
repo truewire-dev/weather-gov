@@ -10,6 +10,7 @@ pub mod client;
 pub mod core;
 mod dispatch;
 pub mod forecast;
+pub mod glossary;
 pub mod meta;
 pub mod offices;
 pub mod points;
