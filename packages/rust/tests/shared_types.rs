@@ -1,11 +1,11 @@
 use truewire_core::serde_json::{self, json, Value};
-use weather_gov::products::list_product_types::ProductTypeCollection;
 // truewire 0.11 inlines the geometries per feature (`ZoneFeatureGeometry`,
 // `AlertFeatureGeometry`) and names the JSON-LD fields `id`/`id2`, `graph`. The shared
 // `ZoneGeometry`/`AlertGeometry`/`ZoneKind` types and the `at_*` names return after the
 // next release (TRU-1046); these tests pin the wire behaviour, which 0.11 already keeps.
 use weather_gov::types::{
-    AlertFeature, AlertFeatureGeometry, Zone, ZoneFeature, ZoneFeatureGeometry, ZoneType2,
+    AlertFeature, AlertFeatureGeometry, ProductTypeCollection, Zone, ZoneFeature,
+    ZoneFeatureGeometry, ZoneType2,
 };
 
 fn zone_wire() -> Value {

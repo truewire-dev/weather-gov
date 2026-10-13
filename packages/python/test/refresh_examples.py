@@ -352,6 +352,8 @@ def refresh_products() -> None:
   window = json.loads((OBSERVATIONS[0] / 'ksea_window.request.json').read_text())['request']
   rewrite(PRODUCTS, {'start': window['start'], 'end': window['end']})
   rewrite(PRODUCT, {'product_id': fetch(LATEST_AFD)['id']})
+
+
 def newest_with_area(url: str, what: str) -> dict:
   """The newest feature at `url` that has an outline: the point of fetching one alone."""
   for feature in fetch(url)['features']:
