@@ -11,6 +11,7 @@ use crate::offices::Offices;
 use crate::points::Points;
 use crate::products::Products;
 use crate::radar::Radar;
+use crate::radio::Radio;
 use crate::stations::Stations;
 use crate::zones::Zones;
 
@@ -31,6 +32,8 @@ pub struct Weather {
     pub products: Products,
     /// The radar network: the NEXRAD, TDWR and profiler radars, their status and alarms, and the servers and queues that distribute their Level II data.
     pub radar: Radar,
+    /// NOAA Weather Radio: the transmitters that broadcast forecasts and warnings, and the counties each one serves.
+    pub radio: Radio,
     /// Observation stations and what they have reported.
     pub stations: Stations,
     /// Forecast, county, fire-weather and marine zones: the areas forecasts, alerts and radio broadcasts are issued for.
@@ -52,6 +55,7 @@ impl Weather {
             points: Points::new(core.clone()),
             products: Products::new(core.clone()),
             radar: Radar::new(core.clone()),
+            radio: Radio::new(core.clone()),
             stations: Stations::new(core.clone()),
             zones: Zones::new(core),
         }

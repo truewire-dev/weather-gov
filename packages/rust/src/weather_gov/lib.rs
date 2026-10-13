@@ -14,6 +14,7 @@ pub mod offices;
 pub mod points;
 pub mod products;
 pub mod radar;
+pub mod radio;
 pub mod stations;
 pub mod types;
 pub mod zones;

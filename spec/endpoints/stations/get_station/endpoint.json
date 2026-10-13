@@ -1,0 +1,31 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/obs_station",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/stations/{station_id}",
+    "method": "GET",
+    "description": "One observation station: where it is, who runs it, and which zones it sits in.",
+    "request": {
+      "title": "GetStationRequest",
+      "type": "object",
+      "description": "Which station.",
+      "properties": {
+        "station_id": {
+          "type": "string",
+          "description": "Station identifier, such as `KSEA`. `stations.list_stations` returns it as `stationIdentifier`."
+        }
+      },
+      "required": [
+        "station_id"
+      ]
+    },
+    "response": {
+      "$ref": "StationFeature",
+      "description": "The station, in the GeoJSON feature the API wraps it in. Returned whole: the geometry is the only place the station's coordinates are."
+    }
+  }
+}

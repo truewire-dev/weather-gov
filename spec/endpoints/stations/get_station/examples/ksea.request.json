@@ -1,0 +1,6 @@
+{
+  "description": "The Seattle-Tacoma airport station",
+  "request": {
+    "station_id": "KSEA"
+  }
+}

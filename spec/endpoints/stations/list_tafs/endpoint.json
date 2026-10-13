@@ -1,0 +1,85 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/tafs",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/stations/{station_id}/tafs",
+    "method": "GET",
+    "description": "The Terminal Aerodrome Forecasts issued for an airport station over roughly the last week, newest first. Only when and for how long each one applies: the forecast text is at each one's `id`, which answers only in XML.",
+    "request": {
+      "title": "ListTafsRequest",
+      "type": "object",
+      "description": "Which airport.",
+      "properties": {
+        "station_id": {
+          "type": "string",
+          "description": "Station identifier of an airport, such as `KSEA`. `stations.list_stations` returns it as `stationIdentifier`."
+        }
+      },
+      "required": [
+        "station_id"
+      ]
+    },
+    "response": {
+      "title": "TafCollection",
+      "type": "object",
+      "description": "The forecasts, as a JSON-LD graph.",
+      "properties": {
+        "@graph": {
+          "type": "array",
+          "description": "The forecasts, newest first.",
+          "items": {
+            "title": "TafSummary",
+            "type": "object",
+            "description": "When one Terminal Aerodrome Forecast was issued, and the span it covers.",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "URL of the forecast itself, such as `https://api.weather.gov/stations/KSEA/tafs/2026-09-30/1700`. It answers only in IWXXM XML, which is why no endpoint here fetches it."
+              },
+              "issueTime": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the forecast was issued."
+              },
+              "location": {
+                "type": "string",
+                "description": "Station identifier of the airport, such as `KSEA`."
+              },
+              "start": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Start of the span the forecast covers."
+              },
+              "end": {
+                "type": "string",
+                "format": "date-time",
+                "description": "End of the span the forecast covers."
+              },
+              "geometry": {
+                "type": "string",
+                "description": "Where the airport is, as Well-Known Text: `POINT(47.44 -122.31)`. Latitude first, the reverse of the GeoJSON `coordinates` elsewhere in this API."
+              }
+            },
+            "required": [
+              "id",
+              "issueTime",
+              "location",
+              "start",
+              "end"
+            ]
+          }
+        }
+      },
+      "required": [
+        "@graph"
+      ]
+    }
+  },
+  "notes": [
+    "JSON-LD, not GeoJSON: the service answers `application/ld+json` whatever `Accept` asks for, as the OpenAPI documents."
+  ]
+}

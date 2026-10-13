@@ -7,6 +7,7 @@ import { Offices } from './offices/index.js'
 import { Points } from './points/index.js'
 import { Products } from './products/index.js'
 import { Radar } from './radar/index.js'
+import { Radio } from './radio/index.js'
 import { Stations } from './stations/index.js'
 import { Zones } from './zones/index.js'
 
@@ -32,6 +33,8 @@ export class Weather {
   readonly products: Products
   /** The radar network: the NEXRAD, TDWR and profiler radars, their status and alarms, and the servers and queues that distribute their Level II data. */
   readonly radar: Radar
+  /** NOAA Weather Radio: the transmitters that broadcast forecasts and warnings, and the counties each one serves. */
+  readonly radio: Radio
   /** Observation stations and what they have reported. */
   readonly stations: Stations
   /** Forecast, county, fire-weather and marine zones: the areas forecasts, alerts and radio broadcasts are issued for. */
@@ -44,6 +47,7 @@ export class Weather {
     this.points = new Points(core)
     this.products = new Products(core)
     this.radar = new Radar(core)
+    this.radio = new Radio(core)
     this.stations = new Stations(core)
     this.zones = new Zones(core)
   }
