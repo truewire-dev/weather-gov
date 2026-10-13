@@ -13,7 +13,7 @@ link, then an empty page.
 api.weather.gov answers a few percent of pages with an HTTP 500 that the same
 request, sent again, answers normally: 6 of 95 pages in one five-day walk. The
 client does not retry a 500, so a walk of more than a few pages must, or it dies
-partway. Retry the same request, cursor included; a `BadRequest` will not change.
+partway. Retry the same request, cursor included; a `BadRequest` or an `AuthError` will not change.
 
 ```python
 import asyncio
@@ -21,7 +21,7 @@ from collections.abc import AsyncIterator
 from datetime import datetime
 from urllib.parse import parse_qs, urlsplit
 
-from truewire_core.exceptions import ApiError, BadRequest
+from truewire_core.exceptions import ApiError, AuthError, BadRequest
 from weather_gov import Weather
 from weather_gov.schemas import AlertCollection, AlertFeature
 
@@ -36,7 +36,7 @@ async def list_page(
       return await client.alerts.list_alerts(
         start=start, end=end, status=['actual'], limit=limit, cursor=cursor
       )
-    except BadRequest:
+    except (BadRequest, AuthError):
       raise
     except ApiError:
       await asyncio.sleep(attempt)
