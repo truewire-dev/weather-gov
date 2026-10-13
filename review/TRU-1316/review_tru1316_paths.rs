@@ -1,0 +1,10 @@
+#[allow(unused_imports)] use weather_gov::stations::get_observations::ObservationCollection;
+#[allow(unused_imports)] use weather_gov::stations::get_observations::ObservationCollectionType;
+#[allow(unused_imports)] use weather_gov::stations::get_observations::ObservationPagination;
+#[allow(unused_imports)] use weather_gov::stations::list_stations::StationCollection;
+#[allow(unused_imports)] use weather_gov::stations::list_stations::StationCollectionType;
+#[allow(unused_imports)] use weather_gov::stations::list_stations::CollectionPagination;
+#[allow(unused_imports)] use weather_gov::alerts::get_active_alerts::AlertCollection;
+#[allow(unused_imports)] use weather_gov::alerts::get_active_alerts::AlertCollectionType;
+#[allow(unused_imports)] use weather_gov::products::list_product_types::ProductTypeCollection;
+#[allow(unused_imports)] use weather_gov::products::list_product_types::ProductType;
