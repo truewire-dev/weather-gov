@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.0 (unreleased)
+## 0.3.0
 
 - **Breaking: `Weather` gains public `glossary`, `radar`, `radio` and `zones` fields.**
   Struct literals must initialize all four; exhaustive destructuring must name them or
