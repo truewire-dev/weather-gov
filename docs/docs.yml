@@ -12,7 +12,7 @@ nav:
   - reference/index.md
 quickstart:
   python:
-    install: pip install truewire-weather-gov
+    install: python -m venv .venv && . .venv/bin/activate && pip install truewire-weather-gov
     code: |
       import asyncio
 
@@ -26,7 +26,7 @@ quickstart:
             office=point['gridId'], grid_x=point['gridX'], grid_y=point['gridY']
           )
           for period in forecast['periods'][:3]:
-            print(period['name'], period['temperature'], period['shortForecast'])
+            print(f'{period["name"]} {period["temperature"]:.0f}°{period["temperatureUnit"]} {period["shortForecast"]}')
 
 
       asyncio.run(main())

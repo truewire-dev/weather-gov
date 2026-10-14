@@ -12,7 +12,7 @@ default would be a lie about who is calling. The client sends it on every call a
 ## What to put in it
 
 An email address you read, or the URL of your project's page or repository. It is not a
-secret. Use the same one from every machine that runs your code, so that the service sees
+secret, and nothing checks it: to try the client, the placeholder `you@example.com` works. Use the same one from every machine that runs your code, so that the service sees
 one caller.
 
 ## Setting it
@@ -62,6 +62,6 @@ recordings. The contact is sent there too.
 
 - **A key.** Nothing here reads one, so a page or a package that asks for a weather.gov API
   key is not talking about this API.
-- **An empty or placeholder contact.** `you@example.com` is for these pages. Any string is
-  accepted, but the service asks for a way to reach you, and one that reaches nobody can get
-  your traffic blocked.
+- **A placeholder contact in production.** Nothing checks the value, so `you@example.com`
+  works for a first try. Before you ship, name yourself: the service asks for a way to reach
+  you, and one that reaches nobody can get your traffic blocked.
