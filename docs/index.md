@@ -61,7 +61,9 @@ async def main() -> None:
       office=point['gridId'], grid_x=point['gridX'], grid_y=point['gridY']
     )
     for period in forecast['periods'][:3]:
-      print(f'{period["name"]:<16} {period["temperature"]:.0f}°{period["temperatureUnit"]}  {period["shortForecast"]}')
+      print(
+        f'{period["name"]:<16} {period["temperature"]:.0f}°{period["temperatureUnit"]}  {period["shortForecast"]}'
+      )
 
 
 asyncio.run(main())
