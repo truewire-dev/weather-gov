@@ -1,0 +1,6 @@
+{
+  "description": "Every alert administrative message the service holds",
+  "request": {
+    "type_id": "ADM"
+  }
+}

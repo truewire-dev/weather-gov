@@ -6,4 +6,5 @@
 #[derive(Debug, Clone, PartialEq)]
 pub struct DefaultMeta {
     pub payload: Option<String>,
+    pub empty_map: Option<String>,
 }

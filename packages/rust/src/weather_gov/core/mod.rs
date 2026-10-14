@@ -133,7 +133,8 @@ impl HttpEndpoint<DefaultMeta> for Core {
         if response.status >= 400 {
             return Err(map_error(&method, &path, &response));
         }
-        unwrap(response.json()?, call.meta.payload.as_deref())
+        let value = unwrap(response.json()?, call.meta.payload.as_deref())?;
+        Ok(empty_map(value, call.meta.empty_map.as_deref()))
     }
 }
 
@@ -191,6 +192,25 @@ fn unwrap(raw: Value, payload: Option<&str>) -> Result<Value> {
         };
     }
     Ok(value)
+}
+
+/// Turn the `[]` the service sends for an empty map at `path` into `{}`.
+///
+/// `path` is the dotted path an endpoint declared as `meta.empty_map`, read from the
+/// unwrapped value. The service writes an empty map as `[]` there
+/// (`products::list_locations_for_type` for most type codes); the type is a map, so the
+/// caller gets an empty map. Anything else at the path is left for deserialization to judge.
+fn empty_map(mut value: Value, path: Option<&str>) -> Value {
+    let Some(path) = path else {
+        return value;
+    };
+    let pointer = format!("/{}", path.replace('.', "/"));
+    if let Some(found) = value.pointer_mut(&pointer) {
+        if found.as_array().is_some_and(Vec::is_empty) {
+            *found = Value::Object(Default::default());
+        }
+    }
+    value
 }
 
 /// Map a non-2xx answer onto the runtime's errors.

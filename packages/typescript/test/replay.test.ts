@@ -17,6 +17,7 @@ import type {
   AdvisoryPolygon,
   PointGeometry,
   PolygonGeometry,
+  Product,
   QuantitativeValue,
   SigmetFeature,
   ZoneFeature,
@@ -29,6 +30,27 @@ const CONTACT = 'tests@truewire.dev'
 function recorded<T>(file: string): T {
   const full = path.join(projectRoot, 'spec/endpoints', file)
   return (JSON.parse(readFileSync(full, 'utf8')) as { request: T }).request
+}
+const PRODUCTS = recorded<{ type: string[]; start: string; end: string; limit: number }>(
+  'products/list_products/examples/afd_window.request.json',
+)
+const PRODUCT = recorded<{ product_id: string }>('products/get_product/examples/seattle_afd.request.json')
+const PRODUCT_TYPE = recorded<{ type_id: string }>(
+  'products/list_products_by_type/examples/admin_messages.request.json',
+)
+
+/** A product list: header fields only, all of one type, newest first. */
+function isProductList(products: Product[], code: string, office?: string): void {
+  expect(products.length).toBeGreaterThan(0)
+  for (const product of products) {
+    expect(product['@id'].endsWith(`/products/${product.id}`)).toBe(true)
+    expect(product.productCode).toBe(code)
+    expect(product.productName).toBeTruthy()
+    expect(product.productText).toBeUndefined()
+    if (office !== undefined) expect(product.issuingOffice).toBe(office)
+  }
+  const issued = products.map(product => product.issuanceTime.getTime())
+  expect([...issued].sort((a, b) => b - a)).toEqual(issued)
 }
 
 const WINDOW = recorded<{ station_id: string; start: string; end: string; limit: number }>(
@@ -597,6 +619,98 @@ describe('recorded examples replay through the generated client', () => {
       return feature.properties.distance!.value as number
     })
     expect([...distances].sort((a, b) => a - b)).toEqual(distances)
+  })
+
+  it('products.listProducts honours the type, the limit and a window whose end is exclusive', async () => {
+    const page = await client.products.listProducts({
+      type: PRODUCTS.type,
+      start: new Date(PRODUCTS.start),
+      end: new Date(PRODUCTS.end),
+      limit: PRODUCTS.limit,
+    })
+    const products = page['@graph']
+    isProductList(products, PRODUCTS.type[0]!)
+    expect(products).toHaveLength(PRODUCTS.limit)
+    const [start, end] = [Date.parse(PRODUCTS.start), Date.parse(PRODUCTS.end)]
+    for (const product of products) {
+      expect(product.issuanceTime.getTime()).toBeGreaterThanOrEqual(start)
+      expect(product.issuanceTime.getTime()).toBeLessThan(end)
+    }
+  })
+
+  it('products.listLocations keeps the nulls the service sends for nameless ids', async () => {
+    const { locations } = await client.products.listLocations({})
+    expect(Object.keys(locations).length).toBeGreaterThan(1000)
+    expect(locations.SEW).toBe('Seattle/Tacoma, WA')
+    expect(Object.values(locations)).toContain(null)
+  })
+
+  it('products.getProduct returns the product the id names, with its text', async () => {
+    const product = await client.products.getProduct({ product_id: PRODUCT.product_id })
+    expect(product.id).toBe(PRODUCT.product_id)
+    expect(product.productCode).toBe('AFD')
+    expect(product.issuingOffice).toBe('KSEW')
+    expect(product.productText).toContain('AFDSEW')
+    expect(product.productText).toContain('Area Forecast Discussion')
+  })
+
+  it('products.listProductsByType returns one type from more than one office', async () => {
+    const page = await client.products.listProductsByType({ type_id: PRODUCT_TYPE.type_id })
+    isProductList(page['@graph'], PRODUCT_TYPE.type_id)
+    expect(new Set(page['@graph'].map(product => product.issuingOffice)).size).toBeGreaterThan(1)
+  })
+
+  it('products.listLocationsForType names every location that issues the type', async () => {
+    const { locations } = await client.products.listLocationsForType({ type_id: 'AFD' })
+    expect(Object.keys(locations).length).toBeGreaterThan(100)
+    expect(locations.SEW).toBe('Seattle/Tacoma, WA')
+    for (const name of Object.values(locations)) expect(name).toBeTruthy()
+  })
+
+  it('products.listLocationsForType turns the empty list the service sends into an empty map', async () => {
+    // For a type nobody issues the service sends `"locations": []`, not `{}`. The core
+    // normalises it (`meta.empty_map`), so validation passes and the type holds.
+    const { locations } = await client.products.listLocationsForType({ type_id: 'AGF' })
+    expect(Array.isArray(locations)).toBe(false)
+    expect(locations).toEqual({})
+  })
+
+  it('products.listProducts sends two types as one comma-separated item, and both come back', async () => {
+    // `type=AFD&type=ZFP` would answer with ZFP alone; the mock refuses any form but
+    // `type=AFD,ZFP` (`match.query_arrays: "comma"`).
+    const asked = recorded<{ type: string[]; location: string[]; start: string; end: string; limit: number }>(
+      'products/list_products/examples/two_types.request.json',
+    )
+    expect(asked.type).toHaveLength(2)
+    const page = await client.products.listProducts({
+      type: asked.type,
+      location: asked.location,
+      start: new Date(asked.start),
+      end: new Date(asked.end),
+      limit: asked.limit,
+    })
+    expect(new Set(page['@graph'].map(product => product.productCode))).toEqual(new Set(asked.type))
+  })
+
+  it('products.listTypesForLocation answers in the product-type vocabulary', async () => {
+    const types = await client.products.listTypesForLocation({ location_id: 'SEW' })
+    const codes = types['@graph'].map(entry => entry.productCode)
+    expect(codes).toContain('AFD')
+    expect([...new Set(codes)].sort()).toEqual(codes)
+    expect(codes.length).toBeGreaterThan(10)
+    expect(codes.length).toBeLessThan(300)
+  })
+
+  it('products.listProductsByTypeAndLocation returns only that office', async () => {
+    const page = await client.products.listProductsByTypeAndLocation({ type_id: 'AFD', location_id: 'SEW' })
+    isProductList(page['@graph'], 'AFD', 'KSEW')
+  })
+
+  it('products.getLatestProduct returns the newest one, with its text', async () => {
+    const product = await client.products.getLatestProduct({ type_id: 'AFD', location_id: 'SEW' })
+    expect(product.productCode).toBe('AFD')
+    expect(product.issuingOffice).toBe('KSEW')
+    expect(product.productText).toContain('AFDSEW')
   })
 
   it('stations.getStation keeps the whole feature: the geometry is the only place it is', async () => {

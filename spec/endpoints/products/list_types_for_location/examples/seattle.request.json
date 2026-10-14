@@ -1,0 +1,6 @@
+{
+  "description": "Every product type Seattle issues",
+  "request": {
+    "location_id": "SEW"
+  }
+}

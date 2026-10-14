@@ -47,7 +47,10 @@ impl GetTransmitter {
         request: Request,
         options: CallOptions,
     ) -> Result<serde_json::Value> {
-        let meta = DefaultMeta { payload: None };
+        let meta = DefaultMeta {
+            payload: None,
+            empty_map: None,
+        };
         let call = HttpCall {
             method: Some("GET"),
             path: "/radio/{call_sign}",

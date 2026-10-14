@@ -98,6 +98,30 @@ export function unwrap(raw: unknown, payload: string | undefined): unknown {
   return value
 }
 
+/**
+ * Turn the `[]` the service sends for an empty map at `path` into `{}`.
+ *
+ * `path` is the dotted path an endpoint declared as `meta.empty_map`, read from the
+ * unwrapped value. The service writes an empty map as `[]` there
+ * (`products.listLocationsForType` for most type codes); the type is a map, so the caller
+ * gets `{}`. Anything else at the path is left for validation to judge.
+ */
+export function emptyMap(value: unknown, path: string | undefined): unknown {
+  if (path === undefined) return value
+  const keys = path.split('.')
+  const last = keys.pop() as string
+  let holder = value
+  for (const key of keys) {
+    if (holder === null || typeof holder !== 'object' || Array.isArray(holder)) return value
+    holder = (holder as Record<string, unknown>)[key]
+  }
+  if (holder === null || typeof holder !== 'object' || Array.isArray(holder)) return value
+  const record = holder as Record<string, unknown>
+  const found = record[last]
+  if (Array.isArray(found) && found.length === 0) record[last] = {}
+  return value
+}
+
 export interface TransportOptions {
   /**
    * How the service can reach you -- an email address or a project URL. It is sent in
@@ -150,7 +174,7 @@ export class Transport implements HttpEndpoint<DefaultMeta> {
     if (response.status >= 400) raiseForStatus(method, path, response.status, text)
     if (call.responseCodec === undefined) return undefined as Res
     const body: unknown = text === '' ? undefined : parseJsonText(text)
-    const value = unwrap(body, call.meta.payload)
+    const value = emptyMap(unwrap(body, call.meta.payload), call.meta.empty_map)
     return (call.validate ?? this.validate) ? call.responseCodec.parse(value) : (value as Res)
   }
 }

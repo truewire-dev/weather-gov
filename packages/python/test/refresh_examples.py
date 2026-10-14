@@ -16,6 +16,11 @@ will still be the Seattle grid cell next week. These examples are not:
 - `alerts.get_alert` names one alert by identifier. Alerts expire, usually within hours,
   and the identifier is then gone. The replacement is read from whatever is severe and in
   effect right now -- the same query `alerts.get_active_alerts` records.
+- `products.list_products` names a six-hour window, and the service keeps about a week of
+  products there. It moves with the observation window.
+- `products.get_product` names one product by id. The service drops a product after a week
+  or two, so the id is repointed to Seattle's latest area forecast discussion -- the one
+  `products.get_latest_product` records.
 - `alerts.list_alerts` names a six-hour window, and the service keeps about a week of
   alerts. It moves with the observation window. Its `second_page` example carries the
   cursor the first page answers, which expires with the window, so it is re-read from the
@@ -72,6 +77,11 @@ OBSERVATIONS = (
   PROJECT / 'spec/endpoints/stations/get_observations_for_zone/examples',
 )
 ALERT = PROJECT / 'spec/endpoints/alerts/get_alert/examples/one.request.json'
+PRODUCTS = PROJECT / 'spec/endpoints/products/list_products/examples/afd_window.request.json'
+PRODUCT = PROJECT / 'spec/endpoints/products/get_product/examples/seattle_afd.request.json'
+
+LATEST_AFD = 'https://api.weather.gov/products/types/AFD/locations/SEW/latest'
+"""The same call `products.get_latest_product` records."""
 RADAR = PROJECT / 'spec/endpoints/radar'
 RADAR_WINDOWS = {
   RADAR / 'list_spgds/examples/one_minute.request.json': ('published', 'PT1M'),
@@ -336,6 +346,14 @@ def refresh_alert() -> None:
   rewrite(ALERT, {'id': alerts[0]['properties']['id']})
 
 
+def refresh_products() -> None:
+  """Move the product window to the observations' window, and the product id to Seattle's
+  latest area forecast discussion. Runs after `refresh_observations`, whose window it reads."""
+  window = json.loads((OBSERVATIONS[0] / 'ksea_window.request.json').read_text())['request']
+  rewrite(PRODUCTS, {'start': window['start'], 'end': window['end']})
+  rewrite(PRODUCT, {'product_id': fetch(LATEST_AFD)['id']})
+
+
 def newest_with_area(url: str, what: str) -> dict:
   """The newest feature at `url` that has an outline: the point of fetching one alone."""
   for feature in fetch(url)['features']:
@@ -400,6 +418,7 @@ def main() -> int:
     refresh_headline,
     refresh_briefing,
     refresh_radio,
+    refresh_products,
   ):
     try:
       step()

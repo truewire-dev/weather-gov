@@ -33,7 +33,10 @@ fn non_null_values_and_requiredness_are_preserved() {
     assert_eq!(wire["response"], "Shelter");
     body.as_object_mut().unwrap().remove("response");
     let parsed: Alert = serde_json::from_value(body.clone()).unwrap();
-    assert!(serde_json::to_value(parsed).unwrap().get("response").is_none());
+    assert!(serde_json::to_value(parsed)
+        .unwrap()
+        .get("response")
+        .is_none());
 }
 
 #[test]

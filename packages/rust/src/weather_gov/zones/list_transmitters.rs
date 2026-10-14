@@ -51,7 +51,10 @@ impl ListTransmitters {
         if let Some(object) = request.as_object_mut() {
             object.insert("zone_type".to_string(), serde_json::json!("county"));
         }
-        let meta = DefaultMeta { payload: None };
+        let meta = DefaultMeta {
+            payload: None,
+            empty_map: None,
+        };
         let call = HttpCall {
             method: Some("GET"),
             path: "/zones/{zone_type}/{zone_id}/radio",

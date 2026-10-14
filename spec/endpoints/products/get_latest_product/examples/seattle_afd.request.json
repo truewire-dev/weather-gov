@@ -1,0 +1,7 @@
+{
+  "description": "Seattle's latest area forecast discussion",
+  "request": {
+    "type_id": "AFD",
+    "location_id": "SEW"
+  }
+}

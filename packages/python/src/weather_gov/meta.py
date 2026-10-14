@@ -11,3 +11,4 @@ class DefaultMeta(TypedDict):
   """`meta` for every endpoint whose nearest `router.json` resolves to the `default` core."""
 
   payload: NotRequired[str]
+  empty_map: NotRequired[str]

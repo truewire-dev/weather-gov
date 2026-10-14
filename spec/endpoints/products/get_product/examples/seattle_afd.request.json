@@ -1,0 +1,6 @@
+{
+  "description": "The latest area forecast discussion from Seattle, by id",
+  "request": {
+    "product_id": "47ade56d-d185-4e5a-ad50-d2e11ef19861"
+  }
+}

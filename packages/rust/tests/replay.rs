@@ -17,7 +17,7 @@ use truewire_core::serde_json::Value;
 use truewire_core::CallOptions;
 use weather_gov::core::CoreOptions;
 use weather_gov::types::{
-    QuantitativeValue, RadarReportProperties, RadarReportPropertiesMapValue,
+    Product, QuantitativeValue, RadarReportProperties, RadarReportPropertiesMapValue,
     RadarServerPingTargetsValue,
 };
 use weather_gov::Weather;
@@ -708,6 +708,283 @@ async fn stations_for_a_zone_and_a_grid_cell() {
         distances.windows(2).all(|pair| pair[0] <= pair[1]),
         "nearest first"
     );
+}
+
+/// A product list: header fields only, all of one type, newest first.
+fn is_product_list(products: &[Product], code: &str, office: Option<&str>) {
+    assert!(!products.is_empty());
+    for product in products {
+        // `@id` is the URL and renders as `id`; the bare `id` renders as `id2`.
+        assert!(product.id.ends_with(&format!("/products/{}", product.id2)));
+        assert_eq!(product.product_code, code);
+        assert!(!product.product_name.is_empty());
+        assert!(
+            product.product_text.is_none(),
+            "lists carry headers, not text"
+        );
+        if let Some(office) = office {
+            assert_eq!(product.issuing_office, office);
+        }
+    }
+    let issued: Vec<_> = products
+        .iter()
+        .map(|product| product.issuance_time)
+        .collect();
+    let mut sorted = issued.clone();
+    sorted.sort();
+    sorted.reverse();
+    assert_eq!(issued, sorted, "the service answers newest first");
+}
+
+#[tokio::test]
+async fn products_list_products_honours_type_limit_and_an_exclusive_end() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let example = recorded("products/list_products/examples/afd_window.request.json");
+    let code = example["type"][0]
+        .as_str()
+        .expect("a product type")
+        .to_string();
+    let limit = example["limit"].as_i64().expect("a limit");
+    let (start, end) = (timestamp(&example["start"]), timestamp(&example["end"]));
+    let page = client
+        .products
+        .list_products(
+            weather_gov::products::list_products::Request {
+                type_: Some(vec![code.clone()]),
+                start: Some(start),
+                end: Some(end),
+                limit: Some(limit),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_products");
+    is_product_list(&page.graph, &code, None);
+    assert_eq!(page.graph.len() as i64, limit, "the limit was honoured");
+    for product in &page.graph {
+        assert!(start <= product.issuance_time && product.issuance_time < end);
+    }
+}
+
+#[tokio::test]
+async fn products_locations_keep_the_nulls_and_name_every_issuer_of_a_type() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let all = client
+        .products
+        .list_locations(
+            weather_gov::products::list_locations::Request::default(),
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_locations");
+    assert!(all.locations.len() > 1000);
+    assert_eq!(
+        all.locations.get("SEW"),
+        Some(&Some("Seattle/Tacoma, WA".to_string()))
+    );
+    assert!(all.locations.values().any(Option::is_none));
+
+    let afd = client
+        .products
+        .list_locations_for_type(
+            weather_gov::products::list_locations_for_type::Request {
+                type_id: "AFD".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_locations_for_type");
+    assert!(afd.locations.len() > 100);
+    assert!(afd
+        .locations
+        .values()
+        .all(|name| name.as_deref().is_some_and(|name| !name.is_empty())));
+}
+
+#[tokio::test]
+async fn products_list_locations_for_type_turns_an_empty_list_into_an_empty_map() {
+    let mock = start_mock();
+    let client = client(&mock);
+    // For a type nobody issues the service sends `"locations": []`, which a `HashMap` cannot
+    // decode. The core turns it into `{}` (`meta.empty_map`).
+    let agf = client
+        .products
+        .list_locations_for_type(
+            weather_gov::products::list_locations_for_type::Request {
+                type_id: "AGF".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_locations_for_type");
+    assert!(agf.locations.is_empty());
+}
+
+#[tokio::test]
+async fn products_list_products_sends_two_types_as_one_comma_separated_item() {
+    let mock = start_mock();
+    let client = client(&mock);
+    // `type=AFD&type=ZFP` would answer with ZFP alone; the mock refuses any form but
+    // `type=AFD,ZFP` (`match.query_arrays: "comma"`).
+    let example = recorded("products/list_products/examples/two_types.request.json");
+    let strings = |key: &str| -> Vec<String> {
+        example[key]
+            .as_array()
+            .expect("a recorded list")
+            .iter()
+            .map(|item| item.as_str().expect("a string").to_string())
+            .collect()
+    };
+    let asked = strings("type");
+    assert_eq!(asked.len(), 2);
+    let page = client
+        .products
+        .list_products(
+            weather_gov::products::list_products::Request {
+                type_: Some(asked.clone()),
+                location: Some(strings("location")),
+                start: Some(timestamp(&example["start"])),
+                end: Some(timestamp(&example["end"])),
+                limit: example["limit"].as_i64(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_products");
+    let mut returned: Vec<_> = page
+        .graph
+        .iter()
+        .map(|product| product.product_code.clone())
+        .collect();
+    returned.sort();
+    returned.dedup();
+    let mut expected = asked;
+    expected.sort();
+    assert_eq!(returned, expected);
+}
+
+#[tokio::test]
+async fn products_get_product_and_the_latest_carry_their_text() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let example = recorded("products/get_product/examples/seattle_afd.request.json");
+    let id = example["product_id"]
+        .as_str()
+        .expect("a product id")
+        .to_string();
+    let product = client
+        .products
+        .get_product(
+            weather_gov::products::get_product::Request {
+                product_id: id.clone(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_product");
+    assert_eq!(product.id2, id);
+    assert_eq!(
+        (
+            product.product_code.as_str(),
+            product.issuing_office.as_str()
+        ),
+        ("AFD", "KSEW")
+    );
+    let text = product
+        .product_text
+        .expect("a product fetched by id has text");
+    assert!(text.contains("AFDSEW") && text.contains("Area Forecast Discussion"));
+
+    let latest = client
+        .products
+        .get_latest_product(
+            weather_gov::products::get_latest_product::Request {
+                type_id: "AFD".to_string(),
+                location_id: "SEW".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("get_latest_product");
+    assert_eq!(latest.issuing_office, "KSEW");
+    assert!(latest
+        .product_text
+        .expect("the latest product has text")
+        .contains("AFDSEW"));
+}
+
+#[tokio::test]
+async fn products_by_type_by_location_and_types_for_a_location() {
+    let mock = start_mock();
+    let client = client(&mock);
+    let example = recorded("products/list_products_by_type/examples/admin_messages.request.json");
+    let code = example["type_id"]
+        .as_str()
+        .expect("a product type")
+        .to_string();
+    let by_type = client
+        .products
+        .list_products_by_type(
+            weather_gov::products::list_products_by_type::Request {
+                type_id: code.clone(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_products_by_type");
+    is_product_list(&by_type.graph, &code, None);
+    let offices: std::collections::HashSet<_> = by_type
+        .graph
+        .iter()
+        .map(|product| product.issuing_office.as_str())
+        .collect();
+    assert!(offices.len() > 1);
+
+    let seattle = client
+        .products
+        .list_products_by_type_and_location(
+            weather_gov::products::list_products_by_type_and_location::Request {
+                type_id: "AFD".to_string(),
+                location_id: "SEW".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_products_by_type_and_location");
+    is_product_list(&seattle.graph, "AFD", Some("KSEW"));
+
+    let types = client
+        .products
+        .list_types_for_location(
+            weather_gov::products::list_types_for_location::Request {
+                location_id: "SEW".to_string(),
+                ..Default::default()
+            },
+            CallOptions::default(),
+        )
+        .await
+        .expect("list_types_for_location");
+    let codes: Vec<_> = types
+        .graph
+        .iter()
+        .map(|entry| entry.product_code.clone())
+        .collect();
+    let mut sorted = codes.clone();
+    sorted.sort();
+    sorted.dedup();
+    assert_eq!(codes, sorted, "unique, ordered by code");
+    assert!(codes.iter().any(|code| code == "AFD"));
+    assert!(codes.len() > 10 && codes.len() < 300);
 }
 
 /// A recorded calendar date, read through the type's own `Deserialize`.

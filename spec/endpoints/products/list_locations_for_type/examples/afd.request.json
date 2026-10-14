@@ -1,0 +1,6 @@
+{
+  "description": "Every location that issues area forecast discussions",
+  "request": {
+    "type_id": "AFD"
+  }
+}

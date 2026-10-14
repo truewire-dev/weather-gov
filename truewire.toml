@@ -17,7 +17,11 @@ dir = "spec"
 # `envelope.payload` so `truewire check` still validates the whole wire frame (ADR 0010),
 # and repeat it here as `meta.payload` so the core knows what to unwrap on this call. The
 # two are checked against each other by `test_spec.py`; neither can drift.
-meta = { type = "object", properties = { payload = { type = "string" } }, additionalProperties = false }
+#
+# `meta.empty_map` names a field the service sends as `[]` when the map it holds is empty
+# (`products.list_locations_for_type` for most type codes); the core turns that `[]` into
+# `{}` before validating, so the field stays a map in every language.
+meta = { type = "object", properties = { payload = { type = "string" }, empty_map = { type = "string" } }, additionalProperties = false }
 
 [python]
 package = "weather_gov"

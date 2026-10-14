@@ -1,0 +1,6 @@
+{
+  "description": "A type no location issues today: the service sends the empty map as []",
+  "request": {
+    "type_id": "AGF"
+  }
+}

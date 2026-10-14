@@ -133,6 +133,27 @@ def unwrap(raw: Any, payload: str | None) -> Any:
   return value
 
 
+def empty_map(value: Any, path: str | None) -> Any:
+  """Turn the `[]` the service sends for an empty map at `path` into `{}`.
+
+  `path` is the dotted path an endpoint declared as `meta.empty_map`, read from the
+  unwrapped value. The service writes an empty map as `[]` there
+  (`products.list_locations_for_type` for most type codes); the type is a map, so the
+  caller gets `{}`. Anything else at the path is left for validation to judge.
+  """
+  if path is None:
+    return value
+  *parents, last = path.split('.')
+  holder = value
+  for key in parents:
+    if not isinstance(holder, dict):
+      return value
+    holder = holder.get(key)
+  if isinstance(holder, dict) and holder.get(last) == []:
+    holder[last] = {}
+  return value
+
+
 @dataclass(kw_only=True)
 class Transport:
   """The HTTP transport: one host, one connection pool, one `User-Agent`."""
@@ -235,7 +256,7 @@ class Endpoint:
     raw = await self.client.send(method, path, params=params)
     if response_type is None:
       return None  # type: ignore[return-value]
-    value = unwrap(json.loads(raw), meta.get('payload'))
+    value = empty_map(unwrap(json.loads(raw), meta.get('payload')), meta.get('empty_map'))
     check = self.client.validate if validate is None else validate
     if check:
       return validator(cast(type, response_type)).python(value)

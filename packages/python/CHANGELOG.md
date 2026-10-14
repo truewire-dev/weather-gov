@@ -45,6 +45,18 @@ Generated with truewire 0.11.
   runtime, but type checkers flag them (pyright reports `reportPrivateImportUsage`), so
   import all four from `weather_gov.schemas`. `Station` gains optional `distance` and
   `bearing`, which only `stations.list_stations_for_gridpoint` sends.
+- **Eight more endpoints: the rest of the text products API.** `products.list_products`
+  (a span, filtered by type, office, location or WMO heading), `products.get_product`,
+  `products.list_products_by_type`, `products.list_products_by_type_and_location`,
+  `products.get_latest_product`, `products.list_locations`,
+  `products.list_locations_for_type` and `products.list_types_for_location`. The service
+  sends an empty location map as `[]` (most type codes in `list_locations_for_type`); the
+  core turns it into `{}`. `get_latest_product` answers HTTP 500, not 404, where the
+  location has issued nothing of that type.
+- **`ProductTypeCollection` is a shared schema.** `products.list_product_types` and
+  `products.list_types_for_location` both return it, so it moved from
+  `weather_gov.products.list_product_types` to `weather_gov.schemas`, with `ProductType`;
+  the old import of `ProductTypeCollection` still works.
 - **Seven more endpoints: aviation weather.** A new `aviation` group: `get_cwsu`,
   `list_cwas` and `get_cwa` for the Center Weather Service Units and their advisories, and
   `list_sigmets`, `list_sigmets_for_atsu`, `list_sigmets_for_atsu_on_date` and

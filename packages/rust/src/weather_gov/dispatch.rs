@@ -156,9 +156,61 @@ impl Weather {
                 let response = self.points.get_point(request, options).await?;
                 dump(&response)
             }
+            "products.get_latest_product" => {
+                let request = decode(request)?;
+                let response = self.products.get_latest_product(request, options).await?;
+                dump(&response)
+            }
+            "products.get_product" => {
+                let request = decode(request)?;
+                let response = self.products.get_product(request, options).await?;
+                dump(&response)
+            }
+            "products.list_locations" => {
+                let request = decode(request)?;
+                let response = self.products.list_locations(request, options).await?;
+                dump(&response)
+            }
+            "products.list_locations_for_type" => {
+                let request = decode(request)?;
+                let response = self
+                    .products
+                    .list_locations_for_type(request, options)
+                    .await?;
+                dump(&response)
+            }
             "products.list_product_types" => {
                 let request = decode(request)?;
                 let response = self.products.list_product_types(request, options).await?;
+                dump(&response)
+            }
+            "products.list_products" => {
+                let request = decode(request)?;
+                let response = self.products.list_products(request, options).await?;
+                dump(&response)
+            }
+            "products.list_products_by_type" => {
+                let request = decode(request)?;
+                let response = self
+                    .products
+                    .list_products_by_type(request, options)
+                    .await?;
+                dump(&response)
+            }
+            "products.list_products_by_type_and_location" => {
+                let request = decode(request)?;
+                let response = self
+                    .products
+                    .list_products_by_type_and_location(request, options)
+                    .await?;
+                dump(&response)
+            }
+            "products.list_types_for_location" => {
+                let request = decode(request)?;
+                let response = self
+                    .products
+                    .list_types_for_location(request, options)
+                    .await?;
                 dump(&response)
             }
             "radar.get_profiler" => {
@@ -420,9 +472,49 @@ impl Weather {
                 let request = decode(request)?;
                 self.points.get_point_raw(request, options).await
             }
+            "products.get_latest_product" => {
+                let request = decode(request)?;
+                self.products.get_latest_product_raw(request, options).await
+            }
+            "products.get_product" => {
+                let request = decode(request)?;
+                self.products.get_product_raw(request, options).await
+            }
+            "products.list_locations" => {
+                let request = decode(request)?;
+                self.products.list_locations_raw(request, options).await
+            }
+            "products.list_locations_for_type" => {
+                let request = decode(request)?;
+                self.products
+                    .list_locations_for_type_raw(request, options)
+                    .await
+            }
             "products.list_product_types" => {
                 let request = decode(request)?;
                 self.products.list_product_types_raw(request, options).await
+            }
+            "products.list_products" => {
+                let request = decode(request)?;
+                self.products.list_products_raw(request, options).await
+            }
+            "products.list_products_by_type" => {
+                let request = decode(request)?;
+                self.products
+                    .list_products_by_type_raw(request, options)
+                    .await
+            }
+            "products.list_products_by_type_and_location" => {
+                let request = decode(request)?;
+                self.products
+                    .list_products_by_type_and_location_raw(request, options)
+                    .await
+            }
+            "products.list_types_for_location" => {
+                let request = decode(request)?;
+                self.products
+                    .list_types_for_location_raw(request, options)
+                    .await
             }
             "radar.get_profiler" => {
                 let request = decode(request)?;

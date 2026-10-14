@@ -175,7 +175,7 @@ async fn yesterday(client: &Weather) -> truewire_core::Result<()> {
 }
 ```
 
-Fifty endpoints across eleven groups, the same as the other two clients.
+Fifty-eight endpoints across eleven groups, the same as the other two clients.
 
 ## Tests
 

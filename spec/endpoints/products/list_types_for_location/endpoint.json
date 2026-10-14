@@ -1,0 +1,31 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/location_products",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/products/locations/{location_id}/types",
+    "method": "GET",
+    "description": "The product types one location issues.",
+    "request": {
+      "title": "ListLocationProductTypesRequest",
+      "type": "object",
+      "description": "Which location.",
+      "properties": {
+        "location_id": {
+          "type": "string",
+          "description": "Issuance location, such as `SEW` for Seattle. `products.list_locations` names every id; `products.list_locations_for_type` narrows them to one type."
+        }
+      },
+      "required": [
+        "location_id"
+      ]
+    },
+    "response": {
+      "$ref": "ProductTypeCollection",
+      "description": "The types, ordered by code."
+    }
+  }
+}

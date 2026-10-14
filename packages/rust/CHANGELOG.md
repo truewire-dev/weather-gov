@@ -29,9 +29,10 @@
 - **`Weather::RATE` and `Weather::RETRY`** state the client's `[policy]`: the requests per
   second the core's `HttpClient` paces to, and whether it retries on its own. `truewire.toml`
   declares no `[policy]`, so they are `None` and `false`.
-- **Breaking: eight types moved to `weather_gov::types`.** `ObservationCollection`,
-  `StationCollection` and `AlertCollection` are each returned by more than one endpoint
-  now, so they are shared schemas. Import them, and the types they carry, from
+- **Breaking: ten types moved to `weather_gov::types`.** `ObservationCollection`,
+  `StationCollection`, `AlertCollection` and `ProductTypeCollection` are each returned by
+  more than one endpoint now, so they are shared schemas. Import them, and the types they
+  carry, from
   `weather_gov::types`:
   - `stations::get_observations::ObservationCollection`
   - `stations::get_observations::ObservationCollectionType`
@@ -41,6 +42,8 @@
   - `stations::list_stations::CollectionPagination`
   - `alerts::get_active_alerts::AlertCollection`
   - `alerts::get_active_alerts::AlertCollectionType`
+  - `products::list_product_types::ProductTypeCollection`
+  - `products::list_product_types::ProductType`
 
   The old paths fail to compile (`E0432`, or `E0603` for the three the modules still
   import privately).
@@ -50,6 +53,17 @@
 - **Breaking: `types::Station` gains `distance` and `bearing`.** Both are
   `Option<QuantitativeValue>` and only `stations.list_stations_for_gridpoint` sends them.
   A `Station { .. }` literal must now name both, or end in `..Default::default()`.
+- **Eight more endpoints: the rest of the text products API.** `products::list_products`
+  (a span, filtered by type, office, location or WMO heading), `products::get_product`,
+  `products::list_products_by_type`, `products::list_products_by_type_and_location`,
+  `products::get_latest_product`, `products::list_locations`,
+  `products::list_locations_for_type` and `products::list_types_for_location`. The service
+  sends an empty location map as `[]` (most type codes in `list_locations_for_type`); the
+  core turns it into an empty `HashMap`. `get_latest_product` answers HTTP 500, not 404,
+  where the location has issued nothing of that type.
+- **Breaking: `meta::DefaultMeta` gains `empty_map`.** It is the `meta` every generated
+  call passes its core, and an `Option<String>` naming the field to read `[]` as an empty
+  map. A `DefaultMeta { .. }` literal must now name it.
 - **Eight more endpoints: zones, and the stations of a zone or grid cell.** A new `zones`
   group (`list_zones`, `list_zones_by_type`, `get_zone`, `get_forecast` and
   `list_transmitters`), and `stations.list_stations_for_zone`,

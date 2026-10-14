@@ -819,55 +819,6 @@
       "properties"
     ]
   },
-  "AlertCollection": {
-    "title": "AlertCollection",
-    "type": "object",
-    "description": "Alerts as a GeoJSON feature collection.",
-    "properties": {
-      "type": {
-        "type": "string",
-        "enum": [
-          "FeatureCollection"
-        ],
-        "description": "Always `FeatureCollection`."
-      },
-      "features": {
-        "type": "array",
-        "description": "The alerts.",
-        "items": {
-          "$ref": "AlertFeature",
-          "description": "One alert."
-        }
-      },
-      "title": {
-        "type": "string",
-        "description": "Human-readable title of the collection."
-      },
-      "updated": {
-        "type": "string",
-        "format": "date-time",
-        "description": "When the collection was assembled."
-      },
-      "pagination": {
-        "title": "AlertPagination",
-        "type": "object",
-        "description": "Present on `alerts.list_alerts` only: where the next page is.",
-        "properties": {
-          "next": {
-            "type": "string",
-            "description": "URL containing the next cursor, which must be percent-decoded with a URL parser. Resend the original filters and limit. Stop on an empty page or absent next cursor, not on a short non-empty page."
-          }
-        },
-        "required": [
-          "next"
-        ]
-      }
-    },
-    "required": [
-      "type",
-      "features"
-    ]
-  },
   "ForecastPeriod": {
     "title": "ForecastPeriod",
     "type": "object",
@@ -1352,6 +1303,191 @@
       "county"
     ],
     "description": "The zone type. The service answers with five of these: `public` (what `forecast` and `land` also address), `county`, `fire`, `coastal` and `offshore` (what `marine` also addresses)."
+  },
+  "Product": {
+    "title": "Product",
+    "type": "object",
+    "description": "One issued text product: a bulletin such as an area forecast discussion or a tornado warning. Lists carry the header fields only; fetching one product by id, or the latest of a type at a location, adds `productText`.",
+    "properties": {
+      "@id": {
+        "type": "string",
+        "description": "URL of this product on the service, `https://api.weather.gov/products/<id>`."
+      },
+      "id": {
+        "type": "string",
+        "description": "Product id, a UUID. `products.get_product` takes it as `product_id`."
+      },
+      "wmoCollectiveId": {
+        "type": "string",
+        "description": "WMO abbreviated heading the bulletin was sent under, such as `FXUS66`."
+      },
+      "issuingOffice": {
+        "type": "string",
+        "description": "Four-letter ICAO code of the issuing office, such as `KSEW`. The three-letter location the product endpoints take (`SEW`) is this without its leading letter for the continental offices."
+      },
+      "issuanceTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When the product was issued, to the minute. Not unique: the service issues about 160 products a minute across the country."
+      },
+      "productCode": {
+        "type": "string",
+        "description": "Three-letter product type, such as `AFD`. `products.list_product_types` names every code."
+      },
+      "productName": {
+        "type": "string",
+        "description": "What the product type is, such as `Area Forecast Discussion`."
+      },
+      "productText": {
+        "type": "string",
+        "description": "The bulletin itself, as fixed-width plain text with its WMO header lines. Absent from lists."
+      }
+    },
+    "required": [
+      "@id",
+      "id",
+      "wmoCollectiveId",
+      "issuingOffice",
+      "issuanceTime",
+      "productCode",
+      "productName"
+    ]
+  },
+  "ProductCollection": {
+    "title": "ProductCollection",
+    "type": "object",
+    "description": "Text products in a JSON-LD graph, newest first. Header fields only: no `productText`.",
+    "properties": {
+      "@graph": {
+        "type": "array",
+        "description": "The products, newest `issuanceTime` first.",
+        "items": {
+          "$ref": "Product",
+          "description": "One product, without its text."
+        }
+      }
+    },
+    "required": [
+      "@graph"
+    ]
+  },
+  "ProductTypeCollection": {
+    "title": "ProductTypeCollection",
+    "type": "object",
+    "description": "Product types, in a JSON-LD graph -- the third response vocabulary this API uses, after GeoJSON and schema.org.",
+    "properties": {
+      "@graph": {
+        "type": "array",
+        "description": "The product types, ordered by code.",
+        "items": {
+          "title": "ProductType",
+          "type": "object",
+          "description": "One kind of text product.",
+          "properties": {
+            "productCode": {
+              "type": "string",
+              "description": "Three-letter code, such as `AFD`."
+            },
+            "productName": {
+              "type": "string",
+              "description": "What the code stands for, such as `Area Forecast Discussion`."
+            }
+          },
+          "required": [
+            "productCode",
+            "productName"
+          ]
+        }
+      }
+    },
+    "required": [
+      "@graph"
+    ]
+  },
+  "ProductLocationCollection": {
+    "title": "ProductLocationCollection",
+    "type": "object",
+    "description": "Text product issuance locations, keyed by location id.",
+    "properties": {
+      "locations": {
+        "description": "Location name by location id, such as `SEW` -> `Seattle/Tacoma, WA`. A map, not a list: the service sends one object keyed by id, except that it sends an empty map as `[]` (140 of 338 type codes in `products.list_locations_for_type`, 2026-10-11). The core turns that `[]` into an empty map, so this is always a map to a caller.",
+        "not": {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ],
+          "description": "Wire: an object, or an empty array; never a scalar."
+        },
+        "maxItems": 0,
+        "additionalProperties": {
+          "anyOf": [
+            {
+              "type": "string",
+              "description": "The location name, such as `Seattle/Tacoma, WA`."
+            },
+            {
+              "type": "null",
+              "description": "The service has no name for this id. Most ids in `products.list_locations` are such, including bare numbers such as `01`."
+            }
+          ],
+          "description": "The location name, or null where the service has none."
+        }
+      }
+    },
+    "required": [
+      "locations"
+    ]
+  },
+  "AlertCollection": {
+    "title": "AlertCollection",
+    "type": "object",
+    "description": "Alerts as a GeoJSON feature collection.",
+    "properties": {
+      "type": {
+        "type": "string",
+        "enum": [
+          "FeatureCollection"
+        ],
+        "description": "Always `FeatureCollection`."
+      },
+      "features": {
+        "type": "array",
+        "description": "The alerts.",
+        "items": {
+          "$ref": "AlertFeature",
+          "description": "One alert."
+        }
+      },
+      "title": {
+        "type": "string",
+        "description": "Human-readable title of the collection."
+      },
+      "updated": {
+        "type": "string",
+        "format": "date-time",
+        "description": "When the collection was assembled."
+      },
+      "pagination": {
+        "title": "AlertPagination",
+        "type": "object",
+        "description": "Present on `alerts.list_alerts` only: where the next page is.",
+        "properties": {
+          "next": {
+            "type": "string",
+            "description": "URL containing the next cursor, which must be percent-decoded with a URL parser. Resend the original filters and limit. Stop on an empty page or absent next cursor, not on a short non-empty page."
+          }
+        },
+        "required": [
+          "next"
+        ]
+      }
+    },
+    "required": [
+      "type",
+      "features"
+    ]
   },
   "RadarHost": {
     "title": "RadarHost",

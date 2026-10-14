@@ -1,0 +1,15 @@
+{
+  "description": "Seattle's area forecast discussions and zone forecasts of a settled half day, sent as type=AFD,ZFP: both types come back",
+  "request": {
+    "type": [
+      "AFD",
+      "ZFP"
+    ],
+    "location": [
+      "SEW"
+    ],
+    "start": "2026-10-10T12:00:00Z",
+    "end": "2026-10-11T00:00:00Z",
+    "limit": 10
+  }
+}

@@ -156,6 +156,7 @@ impl GetPoint {
     ) -> Result<serde_json::Value> {
         let meta = DefaultMeta {
             payload: Some("properties".to_string()),
+            empty_map: None,
         };
         let call = HttpCall {
             method: Some("GET"),

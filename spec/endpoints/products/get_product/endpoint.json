@@ -1,0 +1,31 @@
+{
+  "docs": "https://www.weather.gov/documentation/services-web-api#/default/product",
+  "meta": {},
+  "spec": {
+    "kind": "rpc",
+    "transports": [
+      "http"
+    ],
+    "path": "/products/{product_id}",
+    "method": "GET",
+    "description": "One text product by id, with its text.",
+    "request": {
+      "title": "GetProductRequest",
+      "type": "object",
+      "description": "Which product.",
+      "properties": {
+        "product_id": {
+          "type": "string",
+          "description": "Product id, a UUID, such as the `id` of a row of `products.list_products`. The service keeps a product for about a week to a fortnight, depending on type; after that the id answers 404."
+        }
+      },
+      "required": [
+        "product_id"
+      ]
+    },
+    "response": {
+      "$ref": "Product",
+      "description": "The product, with its text."
+    }
+  }
+}
