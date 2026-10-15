@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.0
 
 Generated with truewire 0.11. This changelog starts here; the new endpoints and the schema
 moves since 0.1.0 match the Python package's Unreleased section
