@@ -44,3 +44,6 @@ name = "Weather"
 package = "weather_gov"
 src = "packages/rust/src"
 name = "Weather"
+
+[score]
+stranger = 2026-10-17  # agent newcomer, see docs/stranger/2026-10-17.md
